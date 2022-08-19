@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".TitleFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white">
+
+        <ImageButton
+                android:src="@drawable/smile_happy"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:id="@+id/b_happySmile"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintHorizontal_bias="0.38"
+                tools:ignore="SpeakableTextPresentCheck,RedundantDescriptionCheck,DuplicateSpeakableTextCheck"
+                android:minHeight="48dp"
+                android:contentDescription="@string/smile_desc"
+                app:layout_constraintVertical_bias="0.592"
+                android:background="@color/white" />
+
+        <ImageButton
+                android:src="@drawable/smile_sad"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:id="@+id/b_sad"
+                app:layout_constraintBottom_toBottomOf="@+id/b_happySmile"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/b_happySmile"
+                tools:ignore="SpeakableTextPresentCheck,RedundantDescriptionCheck"
+                android:minHeight="48dp"
+                android:contentDescription="@string/smile_desc"
+                app:layout_constraintVertical_bias="0.0"
+                android:background="@color/white"
+                app:layout_constraintStart_toEndOf="@+id/b_happySmile"
+                app:layout_constraintHorizontal_bias="0.0"
+                android:layout_marginStart="20dp" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</FrameLayout>
