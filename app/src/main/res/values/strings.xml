@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">ZeroApp</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="smile_desc">Just smile button</string>
+    <string name="sad_smile_desc">Sad smile</string>
+    <string name="happy_smile_desc">Happy smile</string>
+    <string name="how_are_you_today">How are you today?</string>
 </resources>

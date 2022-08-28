@@ -12,6 +12,21 @@
             android:layout_height="match_parent"
             android:background="@color/white">
 
+        <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_margin="16dp"
+                android:text="@string/how_are_you_today"
+                android:gravity="center"
+                app:layout_constraintVertical_bias="0.091"
+                android:textSize="32sp"
+                android:textColor="@color/black"
+                />
+
         <ImageButton
                 android:src="@drawable/smile_happy"
                 android:layout_width="48dp"
@@ -21,11 +36,11 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintHorizontal_bias="0.38"
+                app:layout_constraintHorizontal_bias="0.424"
                 tools:ignore="SpeakableTextPresentCheck,RedundantDescriptionCheck,DuplicateSpeakableTextCheck"
                 android:minHeight="48dp"
-                android:contentDescription="@string/smile_desc"
-                app:layout_constraintVertical_bias="0.592"
+                android:contentDescription="@string/happy_smile_desc"
+                app:layout_constraintVertical_bias="0.481"
                 android:background="@color/white" />
 
         <ImageButton
@@ -38,7 +53,7 @@
                 app:layout_constraintTop_toTopOf="@+id/b_happySmile"
                 tools:ignore="SpeakableTextPresentCheck,RedundantDescriptionCheck"
                 android:minHeight="48dp"
-                android:contentDescription="@string/smile_desc"
+                android:contentDescription="@string/sad_smile_desc"
                 app:layout_constraintVertical_bias="0.0"
                 android:background="@color/white"
                 app:layout_constraintStart_toEndOf="@+id/b_happySmile"
