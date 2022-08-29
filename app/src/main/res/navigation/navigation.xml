@@ -7,7 +7,17 @@
 
     <fragment
             android:id="@+id/titleFragment"
-            android:name="com.example.zeroapp.TitleFragment"
+            android:name="com.example.zeroapp.titleFragment.TitleFragment"
             android:label="fragment_title"
-            tools:layout="@layout/fragment_title" />
+            tools:layout="@layout/fragment_title" >
+        <action
+                android:id="@+id/action_titleFragment_to_history"
+                app:destination="@id/history"
+                app:popUpTo="@id/titleFragment" />
+    </fragment>
+    <fragment
+            android:id="@+id/history"
+            android:name="com.example.zeroapp.historyFragment.HistoryFragment"
+            android:label="fragment_history"
+            tools:layout="@layout/fragment_history" />
 </navigation>

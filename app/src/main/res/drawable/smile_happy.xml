@@ -1,7 +1,7 @@
-<vector android:height="55dp" android:tint="#000000"
+<vector android:height="@dimen/button_height" android:tint="#000000"
     android:viewportHeight="24" android:viewportWidth="24
 "
-    android:width="55dp" xmlns:android="http://schemas.android.com/apk/res/android">
+    android:width="60dp" xmlns:android="http://schemas.android.com/apk/res/android">
     <path android:fillColor="@android:color/white" android:pathData="M15.5,9.5m-1.5,0a1.5,1.5 0,1 1,3 0a1.5,1.5 0,1 1,-3 0"/>
     <path android:fillColor="@android:color/white" android:pathData="M8.5,9.5m-1.5,0a1.5,1.5 0,1 1,3 0a1.5,1.5 0,1 1,-3 0"/>
     <path android:fillColor="@android:color/white" android:pathData="M15.5,9.5m-1.5,0a1.5,1.5 0,1 1,3 0a1.5,1.5 0,1 1,-3 0"/>

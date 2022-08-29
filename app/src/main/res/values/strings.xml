@@ -1,7 +1,12 @@
 <resources>
     <string name="app_name">ZeroApp</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="sad_smile_desc">Sad smile</string>
+    <string name="very_happy_smile_desc">Very happy smile</string>
     <string name="happy_smile_desc">Happy smile</string>
+    <string name="low_smile_desc">Low smile</string>
+    <string name="none_smile_desc">None smile</string>
+    <string name="sad_smile_desc">Sad smile</string>
     <string name="how_are_you_today">How are you today?</string>
+    <string name="desc_you_day">Describe your day in a nutshell</string>
+    <string name="your_past">Your past</string>
 </resources>

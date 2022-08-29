@@ -5,7 +5,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".TitleFragment">
+        tools:context=".titleFragment.TitleFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -13,51 +13,148 @@
             android:background="@color/white">
 
         <TextView
+                android:id="@+id/how_are_you"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                android:layout_margin="16dp"
+                android:layout_margin="@dimen/margin_normal"
                 android:text="@string/how_are_you_today"
                 android:gravity="center"
-                app:layout_constraintVertical_bias="0.091"
-                android:textSize="32sp"
+                app:layout_constraintVertical_bias="0.15"
+                android:textSize="@dimen/textSize_large"
                 android:textColor="@color/black"
-                />
+                android:fontFamily="@font/playfair_display" />
 
-        <ImageButton
-                android:src="@drawable/smile_happy"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:id="@+id/b_happySmile"
-                app:layout_constraintStart_toStartOf="parent"
+        <Button
+                android:id="@+id/b_your_past"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="invisible"
+                tools:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintHorizontal_bias="0.424"
-                tools:ignore="SpeakableTextPresentCheck,RedundantDescriptionCheck,DuplicateSpeakableTextCheck"
-                android:minHeight="48dp"
-                android:contentDescription="@string/happy_smile_desc"
-                app:layout_constraintVertical_bias="0.481"
-                android:background="@color/white" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintHorizontal_bias="0.500"
+                android:text="@string/your_past"
+                app:layout_constraintVertical_bias="0.900" />
+
+        <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textDescribeLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/desc_you_day"
+                android:layout_marginEnd="@dimen/margin_normal"
+                android:layout_marginStart="@dimen/margin_normal"
+                android:minWidth="56dp"
+                android:maxWidth="488dp"
+                app:layout_constraintTop_toBottomOf="@+id/guideline"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:counterEnabled="true"
+                app:counterMaxLength="50"
+                app:layout_constraintStart_toStartOf="parent"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+            <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/textDescribeDay"
+                    android:maxLength="50"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
 
         <ImageButton
-                android:src="@drawable/smile_sad"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:id="@+id/b_sad"
-                app:layout_constraintBottom_toBottomOf="@+id/b_happySmile"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/b_happySmile"
-                tools:ignore="SpeakableTextPresentCheck,RedundantDescriptionCheck"
-                android:minHeight="48dp"
-                android:contentDescription="@string/sad_smile_desc"
-                app:layout_constraintVertical_bias="0.0"
+                android:id="@+id/b_happySmile"
+                android:src="@drawable/smile_happy"
+                android:layout_width="@dimen/button_width"
+                android:layout_height="@dimen/button_height"
+                tools:ignore="SpeakableTextPresentCheck,RedundantDescriptionCheck,DuplicateSpeakableTextCheck"
+                android:minHeight="@dimen/button_height"
+                android:contentDescription="@string/happy_smile_desc"
                 android:background="@color/white"
+                app:layout_constraintStart_toEndOf="@+id/b_smile_low"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintEnd_toStartOf="@+id/b_very_happy"
+                app:layout_constraintTop_toTopOf="@+id/b_sad"
+                app:layout_constraintBottom_toBottomOf="@+id/b_sad"
+                app:layout_constraintVertical_bias="0.731" />
+
+        <ImageButton
+                android:id="@+id/b_sad"
+                android:src="@drawable/smile_sad"
+                android:layout_width="@dimen/button_width"
+                android:layout_height="@dimen/button_height"
+                tools:ignore="SpeakableTextPresentCheck,RedundantDescriptionCheck"
+                android:minHeight="@dimen/button_height"
+                android:contentDescription="@string/sad_smile_desc"
+                android:background="@color/white"
+                android:layout_marginStart="20dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintEnd_toStartOf="@+id/b_none"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintVertical_bias="0.707" />
+
+        <ImageButton
+                android:id="@+id/b_very_happy"
+                android:src="@drawable/smile_very_happy"
+                android:layout_width="@dimen/button_width"
+                android:layout_height="@dimen/button_height"
+                tools:ignore="SpeakableTextPresentCheck,RedundantDescriptionCheck"
+                android:minHeight="@dimen/button_height"
+                android:contentDescription="@string/very_happy_smile_desc"
+                android:background="@color/white"
+                android:layout_marginEnd="20dp"
                 app:layout_constraintStart_toEndOf="@+id/b_happySmile"
-                app:layout_constraintHorizontal_bias="0.0"
-                android:layout_marginStart="20dp" />
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/b_sad"
+                app:layout_constraintBottom_toBottomOf="@+id/b_sad"
+                app:layout_constraintVertical_bias="0.729" />
+
+        <ImageButton
+                android:id="@+id/b_smile_low"
+                android:src="@drawable/smile_low"
+                android:layout_width="@dimen/button_width"
+                android:layout_height="@dimen/button_height"
+                tools:ignore="SpeakableTextPresentCheck,RedundantDescriptionCheck"
+                android:minHeight="@dimen/button_height"
+                android:contentDescription="@string/sad_smile_desc"
+                android:background="@color/white"
+                app:layout_constraintStart_toEndOf="@+id/b_none"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintEnd_toStartOf="@+id/b_happySmile"
+                app:layout_constraintTop_toTopOf="@+id/b_sad"
+                app:layout_constraintBottom_toBottomOf="@+id/b_sad"
+                app:layout_constraintVertical_bias="0.731" />
+
+        <ImageButton
+                android:id="@+id/b_none"
+                android:src="@drawable/smile_none"
+                android:layout_width="@dimen/button_width"
+                android:layout_height="@dimen/button_height"
+                tools:ignore="SpeakableTextPresentCheck,RedundantDescriptionCheck"
+                android:minHeight="@dimen/button_height"
+                android:contentDescription="@string/sad_smile_desc"
+                android:background="@color/white"
+                app:layout_constraintStart_toEndOf="@+id/b_sad"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintEnd_toStartOf="@+id/b_smile_low"
+                app:layout_constraintTop_toTopOf="@+id/b_sad"
+                app:layout_constraintBottom_toBottomOf="@+id/b_sad"
+                app:layout_constraintVertical_bias="0.731" />
+
+        <androidx.constraintlayout.widget.Guideline
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintGuide_begin="180dp"
+                android:id="@+id/guideline" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>
