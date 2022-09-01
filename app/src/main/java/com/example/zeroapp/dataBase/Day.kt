@@ -13,7 +13,7 @@ data class Day(
     var dayId: Long = 0L,
 
     @ColumnInfo(name = "date")
-    val currentDate: String = DateFormat.format("MM/dd/yy", System.currentTimeMillis()).toString(),
+    val currentDate: String = DateFormat.format("dd/MM/yy", System.currentTimeMillis()).toString(),
 
     @ColumnInfo(name = "image_id")
     val imageId: Int,

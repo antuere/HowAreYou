@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.zeroapp.R
 import com.example.zeroapp.dataBase.DayDatabase
@@ -29,7 +30,7 @@ class TitleFragment : Fragment() {
         val application = requireNotNull(this.activity).application
         val dayDatabaseDao = DayDatabase.getInstance(application).dayDatabaseDao
 
-        val viewModelFactory = TitleFragmentViewModelFactory(dayDatabaseDao)
+        val viewModelFactory = TitleFragmentViewModelFactory(dayDatabaseDao, application)
         viewModel = ViewModelProvider(this, viewModelFactory)[TitleFragmentViewModel::class.java]
 
         val smileButtons = listOf(
@@ -44,12 +45,21 @@ class TitleFragment : Fragment() {
             setSmileListeners(it)
         }
 
+
         bindind.bYourPast.setOnClickListener {
             val fragment = HistoryFragment()
-            parentFragmentManager.beginTransaction().replace(R.id.myNavHostFragment, fragment)
+            parentFragmentManager
+                .beginTransaction()
+                .addToBackStack(null)
+                .replace(R.id.myNavHostFragment, fragment)
                 .commit()
-
         }
+
+        viewModel.lastDay.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                bindind.bYourPast.visibility = View.VISIBLE
+            }
+        })
 
         return bindind.root
     }
