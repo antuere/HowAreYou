@@ -10,7 +10,7 @@ import androidx.room.PrimaryKey
 data class Day(
 
     @PrimaryKey(autoGenerate = true)
-    var dayId: Long = 0,
+    var dayId: Long = 0L,
 
     @ColumnInfo(name = "date")
     val currentDate: String = DateFormat.format("MM/dd/yy", System.currentTimeMillis()).toString(),
@@ -19,6 +19,6 @@ data class Day(
     val imageId: Int,
 
     @ColumnInfo(name = "day_text")
-    val dayText: String,
+    var dayText: String,
 
 )

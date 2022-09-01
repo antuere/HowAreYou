@@ -10,6 +10,8 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.zeroapp.dataBase.DayDatabase
 import com.example.zeroapp.databinding.FragmentHistoryBinding
+import com.example.zeroapp.timberTag
+import timber.log.Timber
 
 class HistoryFragment : Fragment() {
 
@@ -31,6 +33,7 @@ class HistoryFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Timber.i("my log viewCreated")
 
         val application = requireNotNull(this.activity).application
         val dayDatabaseDao = DayDatabase.getInstance(application).dayDatabaseDao
@@ -39,13 +42,15 @@ class HistoryFragment : Fragment() {
 
         viewModel = ViewModelProvider(this, factory)[HistoryViewModel::class.java]
 
-        val manager = GridLayoutManager(activity, 4)
+        val manager = GridLayoutManager(activity, 3)
         bindind.dayList.layoutManager = manager
 
         val adapter = DayAdapter()
         bindind.dayList.adapter = adapter
+
         viewModel.listDays.observe(viewLifecycleOwner, Observer {
             it?.let {
+                Timber.i("my log Submit list")
                 adapter.submitList(it)
             }
         })

@@ -4,6 +4,8 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.example.zeroapp.timberTag
+import timber.log.Timber
 
 @Database(entities = [Day::class], version = 1)
 abstract class DayDatabase : RoomDatabase() {
@@ -18,6 +20,7 @@ abstract class DayDatabase : RoomDatabase() {
             synchronized(this) {
                 var instance = INSTANCE
                 if (instance == null) {
+                    Timber.i("my log Create BD")
                     instance = Room.databaseBuilder(
                         context.applicationContext,
                         DayDatabase::class.java,
@@ -25,7 +28,7 @@ abstract class DayDatabase : RoomDatabase() {
                     ).build()
                     INSTANCE = instance
                 }
-
+                Timber.i("my log return BD")
                 return instance
             }
         }
