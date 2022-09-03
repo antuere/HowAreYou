@@ -8,6 +8,8 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import com.example.zeroapp.R
 import com.example.zeroapp.dataBase.DayDatabase
 import com.example.zeroapp.databinding.FragmentTitleBinding
@@ -27,6 +29,13 @@ class TitleFragment : Fragment() {
     ): View? {
         bindind = FragmentTitleBinding.inflate(inflater, container, false)
 
+
+        return bindind.root
+    }
+
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         val application = requireNotNull(this.activity).application
         val dayDatabaseDao = DayDatabase.getInstance(application).dayDatabaseDao
 
@@ -47,12 +56,8 @@ class TitleFragment : Fragment() {
 
 
         bindind.bYourPast.setOnClickListener {
-            val fragment = HistoryFragment()
-            parentFragmentManager
-                .beginTransaction()
-                .addToBackStack(null)
-                .replace(R.id.myNavHostFragment, fragment)
-                .commit()
+            this.findNavController()
+                .navigate(TitleFragmentDirections.actionTitleFragmentToHistory())
         }
 
         viewModel.lastDay.observe(viewLifecycleOwner, Observer {
@@ -61,7 +66,6 @@ class TitleFragment : Fragment() {
             }
         })
 
-        return bindind.root
     }
 
 
@@ -72,6 +76,4 @@ class TitleFragment : Fragment() {
             bindind.bYourPast.visibility = View.VISIBLE
         }
     }
-
-
 }

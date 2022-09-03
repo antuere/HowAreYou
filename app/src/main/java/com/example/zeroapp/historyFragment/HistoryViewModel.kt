@@ -13,7 +13,18 @@ import timber.log.Timber
 class HistoryViewModel(val databaseDao: DayDatabaseDao) :
     ViewModel() {
 
-    var listDays = databaseDao.getAllDays()
+    var listDays: LiveData<List<Day>> = databaseDao.getAllDays()
 
+    private var _navigateToDetail = MutableLiveData<Long?>()
+    val navigateToDetail: LiveData<Long?>
+        get() = _navigateToDetail
+
+    fun smileOnClick(dayId : Long){
+        _navigateToDetail.value = dayId
+    }
+
+    fun navigateDone(){
+        _navigateToDetail.value = null
+    }
 
 }

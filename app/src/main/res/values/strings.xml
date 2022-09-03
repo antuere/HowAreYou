@@ -9,4 +9,6 @@
     <string name="how_are_you_today">How are you today?</string>
     <string name="desc_you_day">Describe your day in a nutshell</string>
     <string name="your_past">Your past</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

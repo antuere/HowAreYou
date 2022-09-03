@@ -17,7 +17,10 @@ interface DayDatabaseDao {
     fun clear()
 
     @Query("SELECT * FROM day_table ORDER BY dayId DESC LIMIT 1")
-    fun getDay() : Day?
+    fun getDay(): Day?
+
+    @Query("SELECT * FROM day_table WHERE dayId = :id")
+    fun getDayById(id: Long): Day?
 
     @Query("SELECT * FROM day_table ORDER BY dayId DESC")
     fun getAllDays(): LiveData<List<Day>>

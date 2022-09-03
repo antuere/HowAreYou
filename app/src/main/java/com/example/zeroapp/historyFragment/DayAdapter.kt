@@ -8,9 +8,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.zeroapp.R
 import com.example.zeroapp.dataBase.Day
 import com.example.zeroapp.databinding.DayItemBinding
+import com.example.zeroapp.getSmileImage
 import timber.log.Timber
 
-class DayAdapter : ListAdapter<Day, DayAdapter.DayViewHolder>(DayDiffCallback()) {
+class DayAdapter(val clickListener: DayListener) :
+    ListAdapter<Day, DayAdapter.DayViewHolder>(DayDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DayViewHolder {
         Timber.i("my log createViewHolder")
@@ -19,7 +21,7 @@ class DayAdapter : ListAdapter<Day, DayAdapter.DayViewHolder>(DayDiffCallback())
 
     override fun onBindViewHolder(holder: DayViewHolder, position: Int) {
         Timber.i("my log bindViewHolder")
-        holder.bind(getItem(position))
+        holder.bind(getItem(position), clickListener)
     }
 
 
@@ -45,20 +47,24 @@ class DayAdapter : ListAdapter<Day, DayAdapter.DayViewHolder>(DayDiffCallback())
             }
         }
 
-        fun bind(item: Day) {
+        fun bind(item: Day, clickListener: DayListener) {
             Timber.i("my log try bind item")
-            binding.imageView.setImageResource(
-                when (item.imageId) {
-                    R.id.b_very_happy -> R.drawable.smile_very_happy
-                    R.id.b_happySmile -> R.drawable.smile_happy
-                    R.id.b_none -> R.drawable.smile_none
-                    R.id.b_smile_low -> R.drawable.smile_low
-                    R.id.b_sad -> R.drawable.smile_sad
-                    else -> R.drawable.smile_none
+            with(binding) {
+                imageView.setImageResource(getSmileImage(item.imageId))
+                dateText.text = item.currentDate
+                itemView.setOnClickListener {
+                    clickListener.onClick(item)
                 }
-            )
-            binding.dateText.text = item.currentDate
+            }
+
         }
     }
 
+
+}
+
+class DayListener(val clickListener: (dayId: Long) -> Unit) {
+    fun onClick(day: Day) {
+        clickListener(day.dayId)
+    }
 }

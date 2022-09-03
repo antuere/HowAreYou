@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".detailFragment.DetailFragment">
+
+    <ImageView
+            android:id="@+id/smile_image"
+            android:src="@drawable/smile_none"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.075"
+            android:contentDescription="@string/none_smile_desc" />
+
+    <TextView
+            android:id="@+id/date_text"
+            android:textSize="@dimen/textSize_large"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="11/22/2022"
+            android:layout_marginTop="@dimen/margin_small"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintVertical_bias="0.281"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/smile_image" />
+
+    <TextView
+            android:id="@+id/desc_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/date_text"
+            android:layout_marginStart="@dimen/margin_normal"
+            android:layout_marginEnd="@dimen/margin_normal"
+            android:layout_marginTop="@dimen/margin_small"
+            android:textSize="@dimen/textSize_big"
+            tools:text="Its u day descjoijs hello hello hello"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

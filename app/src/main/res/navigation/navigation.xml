@@ -9,15 +9,27 @@
             android:id="@+id/titleFragment"
             android:name="com.example.zeroapp.titleFragment.TitleFragment"
             android:label="fragment_title"
-            tools:layout="@layout/fragment_title" >
+            tools:layout="@layout/fragment_title">
         <action
                 android:id="@+id/action_titleFragment_to_history"
-                app:destination="@id/history"
-                app:popUpTo="@id/titleFragment" />
+                app:destination="@id/history" />
     </fragment>
     <fragment
             android:id="@+id/history"
             android:name="com.example.zeroapp.historyFragment.HistoryFragment"
             android:label="fragment_history"
-            tools:layout="@layout/fragment_history" />
+            tools:layout="@layout/fragment_history">
+        <action
+                android:id="@+id/action_history_to_detailFragment"
+                app:destination="@id/detailFragment" />
+    </fragment>
+    <fragment
+            android:id="@+id/detailFragment"
+            android:name="com.example.zeroapp.detailFragment.DetailFragment"
+            android:label="fragment_detail"
+            tools:layout="@layout/fragment_detail">
+        <argument
+                android:name="dayId"
+                app:argType="long" />
+    </fragment>
 </navigation>

@@ -56,7 +56,6 @@ class TitleFragmentViewModel(val databaseDao: DayDatabaseDao, application: Appli
         }
     }
 
-
     private fun insertAndUpdateLastDay(day: Day) {
         Timber.i("my log day insert BD")
         viewModelScope.launch {

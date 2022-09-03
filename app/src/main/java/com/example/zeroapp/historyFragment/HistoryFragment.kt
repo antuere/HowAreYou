@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.zeroapp.dataBase.DayDatabase
 import com.example.zeroapp.databinding.FragmentHistoryBinding
@@ -45,7 +46,10 @@ class HistoryFragment : Fragment() {
         val manager = GridLayoutManager(activity, 3)
         bindind.dayList.layoutManager = manager
 
-        val adapter = DayAdapter()
+        val adapter = DayAdapter(DayListener { dayId ->
+            viewModel.smileOnClick(dayId)
+        })
+
         bindind.dayList.adapter = adapter
 
         viewModel.listDays.observe(viewLifecycleOwner, Observer {
@@ -55,6 +59,13 @@ class HistoryFragment : Fragment() {
             }
         })
 
+        viewModel.navigateToDetail.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                this.findNavController()
+                    .navigate(HistoryFragmentDirections.actionHistoryToDetailFragment(it))
+                viewModel.navigateDone()
+            }
+        })
 
     }
 }
