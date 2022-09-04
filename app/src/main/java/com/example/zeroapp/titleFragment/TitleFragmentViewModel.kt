@@ -1,7 +1,6 @@
 package com.example.zeroapp.titleFragment
 
 import android.app.Application
-import android.widget.Toast
 import androidx.lifecycle.*
 import com.example.zeroapp.dataBase.Day
 import com.example.zeroapp.dataBase.DayDatabaseDao
@@ -10,7 +9,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 
-class TitleFragmentViewModel(val databaseDao: DayDatabaseDao, application: Application) :
+class TitleFragmentViewModel(private val databaseDao: DayDatabaseDao, application: Application) :
     AndroidViewModel(application) {
 
 
@@ -18,7 +17,7 @@ class TitleFragmentViewModel(val databaseDao: DayDatabaseDao, application: Appli
     val lastDay: LiveData<Day?>
         get() = _lastDay
 
-    private val _showToast = MutableLiveData<Boolean>(false)
+    private val _showToast = MutableLiveData(false)
     val showToast: LiveData<Boolean>
         get() = _showToast
 

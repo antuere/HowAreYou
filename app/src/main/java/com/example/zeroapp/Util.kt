@@ -1,9 +1,5 @@
 package com.example.zeroapp
 
-import android.graphics.drawable.Drawable
-import timber.log.Timber
-
-val timberTag = Timber.tag("MyLog")
 
 fun getSmileImage(id: Int): Int {
     return when (id) {

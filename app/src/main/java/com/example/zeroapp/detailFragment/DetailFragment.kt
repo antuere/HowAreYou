@@ -1,6 +1,5 @@
 package com.example.zeroapp.detailFragment
 
-import android.app.Application
 import android.os.Bundle
 import android.view.*
 import androidx.core.view.MenuHost
@@ -24,7 +23,7 @@ class DetailFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentDetailBinding.inflate(inflater, container, false)
         return binding.root
     }

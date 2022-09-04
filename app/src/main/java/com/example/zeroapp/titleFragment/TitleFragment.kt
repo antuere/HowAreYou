@@ -8,16 +8,11 @@ import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.widget.ImageButton
 import android.widget.Toast
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import com.example.zeroapp.R
 import com.example.zeroapp.dataBase.DayDatabase
 import com.example.zeroapp.databinding.FragmentTitleBinding
-import com.example.zeroapp.historyFragment.HistoryFragment
-import com.example.zeroapp.timberTag
-import timber.log.Timber
 
 
 class TitleFragment : Fragment() {
@@ -28,7 +23,7 @@ class TitleFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         bindind = FragmentTitleBinding.inflate(inflater, container, false)
 
         return bindind.root
@@ -63,11 +58,11 @@ class TitleFragment : Fragment() {
             viewModel.showToastReset()
         }
 
-        viewModel.lastDay.observe(viewLifecycleOwner, Observer {
+        viewModel.lastDay.observe(viewLifecycleOwner) {
             it?.let {
                 bindind.bYourPast.visibility = View.VISIBLE
             }
-        })
+        }
 
         viewModel.showToast.observe(viewLifecycleOwner) {
             if (it) {

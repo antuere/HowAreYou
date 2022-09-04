@@ -9,9 +9,8 @@ import com.example.zeroapp.dataBase.DayDatabaseDao
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import timber.log.Timber
 
-class DetailViewModel(val databaseDao: DayDatabaseDao, val dayId: Long) : ViewModel() {
+class DetailViewModel(private val databaseDao: DayDatabaseDao, val dayId: Long) : ViewModel() {
 
     private val _currentDay = MutableLiveData<Day?>()
     val currentDay: LiveData<Day?>

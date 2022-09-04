@@ -7,12 +7,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.zeroapp.dataBase.DayDatabase
 import com.example.zeroapp.databinding.FragmentHistoryBinding
-import com.example.zeroapp.timberTag
 import timber.log.Timber
 
 class HistoryFragment : Fragment() {
@@ -27,7 +25,7 @@ class HistoryFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         bindind = FragmentHistoryBinding.inflate(inflater, container, false)
         return bindind.root
     }
@@ -51,20 +49,20 @@ class HistoryFragment : Fragment() {
 
         bindind.dayList.adapter = adapter
 
-        viewModel.listDays.observe(viewLifecycleOwner, Observer {
+        viewModel.listDays.observe(viewLifecycleOwner) {
             it?.let {
                 Timber.i("my log Submit list")
                 adapter.submitList(it)
             }
-        })
+        }
 
-        viewModel.navigateToDetail.observe(viewLifecycleOwner, Observer {
+        viewModel.navigateToDetail.observe(viewLifecycleOwner) {
             it?.let {
                 this.findNavController()
                     .navigate(HistoryFragmentDirections.actionHistoryToDetailFragment(it))
                 viewModel.navigateDone()
             }
-        })
+        }
 
         viewModel.deleteItem.observe(viewLifecycleOwner) {
             it?.let {

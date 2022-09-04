@@ -5,13 +5,12 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.zeroapp.R
 import com.example.zeroapp.dataBase.Day
 import com.example.zeroapp.databinding.DayItemBinding
 import com.example.zeroapp.getSmileImage
 import timber.log.Timber
 
-class DayAdapter(val clickListener: DayClickListener) :
+class DayAdapter(private val clickListener: DayClickListener) :
     ListAdapter<Day, DayAdapter.DayViewHolder>(DayDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DayViewHolder {

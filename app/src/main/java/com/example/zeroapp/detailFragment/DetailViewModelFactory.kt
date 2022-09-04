@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.zeroapp.dataBase.DayDatabaseDao
 import com.example.zeroapp.historyFragment.HistoryViewModel
 
-class DetailViewModelFactory(val databaseDao: DayDatabaseDao, val dayId: Long) :
+class DetailViewModelFactory(private val databaseDao: DayDatabaseDao, val dayId: Long) :
     ViewModelProvider.Factory {
 
     @Suppress("UNCHECKED_CAST")
