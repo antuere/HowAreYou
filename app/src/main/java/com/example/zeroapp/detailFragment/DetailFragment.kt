@@ -2,11 +2,13 @@ package com.example.zeroapp.detailFragment
 
 import android.app.Application
 import android.os.Bundle
+import android.view.*
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.zeroapp.R
 import com.example.zeroapp.dataBase.DayDatabase
@@ -27,8 +29,11 @@ class DetailFragment : Fragment() {
         return binding.root
     }
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val menuHost: MenuHost = requireActivity()
 
         val args: DetailFragmentArgs by navArgs()
         val application = requireNotNull(this.activity).application
@@ -46,5 +51,23 @@ class DetailFragment : Fragment() {
                 }
             }
         }
+
+        menuHost.addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.detail_menu, menu)
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                return when (menuItem.itemId) {
+                    R.id.delete_item -> {
+                        detailViewModel.deleteDay()
+                        this@DetailFragment.findNavController()
+                            .navigate(DetailFragmentDirections.actionDetailFragmentToHistory())
+                        true
+                    }
+                    else -> false
+                }
+            }
+        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
 }

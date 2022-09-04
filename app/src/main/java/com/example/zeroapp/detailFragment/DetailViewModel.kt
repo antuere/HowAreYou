@@ -33,4 +33,12 @@ class DetailViewModel(val databaseDao: DayDatabaseDao, val dayId: Long) : ViewMo
             databaseDao.getDayById(id)
         }
     }
+
+    fun deleteDay() {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                databaseDao.deleteDay(_currentDay.value!!.dayId)
+            }
+        }
+    }
 }

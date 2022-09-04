@@ -11,7 +11,7 @@ import com.example.zeroapp.databinding.DayItemBinding
 import com.example.zeroapp.getSmileImage
 import timber.log.Timber
 
-class DayAdapter(val clickListener: DayListener) :
+class DayAdapter(val clickListener: DayClickListener) :
     ListAdapter<Day, DayAdapter.DayViewHolder>(DayDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DayViewHolder {
@@ -47,13 +47,17 @@ class DayAdapter(val clickListener: DayListener) :
             }
         }
 
-        fun bind(item: Day, clickListener: DayListener) {
+        fun bind(item: Day, clickListener: DayClickListener) {
             Timber.i("my log try bind item")
             with(binding) {
                 imageView.setImageResource(getSmileImage(item.imageId))
                 dateText.text = item.currentDate
                 itemView.setOnClickListener {
                     clickListener.onClick(item)
+                }
+                itemView.setOnLongClickListener {
+                    clickListener.onClickLong(item)
+                    true
                 }
             }
 
@@ -67,4 +71,13 @@ class DayListener(val clickListener: (dayId: Long) -> Unit) {
     fun onClick(day: Day) {
         clickListener(day.dayId)
     }
+
+    fun onLongClick(day: Day) {
+        clickListener(day.dayId)
+    }
+}
+
+interface DayClickListener {
+    fun onClick(day: Day)
+    fun onClickLong(day: Day)
 }

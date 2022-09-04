@@ -18,23 +18,14 @@ class TitleFragmentViewModel(val databaseDao: DayDatabaseDao, application: Appli
     val lastDay: LiveData<Day?>
         get() = _lastDay
 
+    private val _showToast = MutableLiveData<Boolean>(false)
+    val showToast: LiveData<Boolean>
+        get() = _showToast
+
     init {
+        Timber.i("my log init TitleModel")
         getLastDay()
     }
-
-    private fun getLastDay() {
-        viewModelScope.launch {
-            _lastDay.value = getDayFromDB()
-            Timber.i("my log get last day from BD, its ${_lastDay.value?.currentDate ?: "null"}")
-        }
-    }
-
-    private suspend fun getDayFromDB(): Day? {
-        return withContext(Dispatchers.IO) {
-            databaseDao.getDay()
-        }
-    }
-
 
     fun smileClicked(imageId: Int, descDay: String) {
         Timber.i("my log smile click")
@@ -46,13 +37,23 @@ class TitleFragmentViewModel(val databaseDao: DayDatabaseDao, application: Appli
             Timber.i("my log day not null, ${_lastDay.value!!.currentDate}")
             if (day.currentDate == _lastDay.value!!.currentDate) {
                 Timber.i("my log day repeat")
-                Toast.makeText(
-                    getApplication(),
-                    "Today you already have write",
-                    Toast.LENGTH_SHORT
-                ).show()
+                _showToast.value = true
             } else insertAndUpdateLastDay(day)
 
+        }
+    }
+
+    fun getLastDay() {
+        viewModelScope.launch {
+            _lastDay.value = getDayFromDB()
+            Timber.i("my log get last day from BD, its ${_lastDay.value?.currentDate ?: "null"}")
+        }
+    }
+
+
+    private suspend fun getDayFromDB(): Day? {
+        return withContext(Dispatchers.IO) {
+            databaseDao.getDay()
         }
     }
 
@@ -74,5 +75,8 @@ class TitleFragmentViewModel(val databaseDao: DayDatabaseDao, application: Appli
         }
     }
 
+    fun showToastReset() {
+        _showToast.value = false
+    }
 
 }

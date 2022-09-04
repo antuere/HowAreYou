@@ -8,28 +8,37 @@
     <fragment
             android:id="@+id/titleFragment"
             android:name="com.example.zeroapp.titleFragment.TitleFragment"
-            android:label="fragment_title"
+            android:label="@string/app_name"
             tools:layout="@layout/fragment_title">
         <action
                 android:id="@+id/action_titleFragment_to_history"
-                app:destination="@id/history" />
+                app:destination="@id/history"
+                app:popUpTo="@id/titleFragment"
+                app:popUpToInclusive="false" />
     </fragment>
     <fragment
             android:id="@+id/history"
             android:name="com.example.zeroapp.historyFragment.HistoryFragment"
-            android:label="fragment_history"
+            android:label="@string/your_past"
             tools:layout="@layout/fragment_history">
         <action
                 android:id="@+id/action_history_to_detailFragment"
-                app:destination="@id/detailFragment" />
+                app:destination="@id/detailFragment"
+                app:popUpTo="@id/history"
+                app:popUpToInclusive="false" />
     </fragment>
     <fragment
             android:id="@+id/detailFragment"
             android:name="com.example.zeroapp.detailFragment.DetailFragment"
-            android:label="fragment_detail"
+            android:label="@string/about_day"
             tools:layout="@layout/fragment_detail">
         <argument
                 android:name="dayId"
                 app:argType="long" />
+        <action
+                android:id="@+id/action_detailFragment_to_history"
+                app:destination="@id/history"
+                app:popUpTo="@id/titleFragment"
+                app:popUpToInclusive="false" />
     </fragment>
 </navigation>

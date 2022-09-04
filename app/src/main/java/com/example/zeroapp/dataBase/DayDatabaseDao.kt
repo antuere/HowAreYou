@@ -19,6 +19,9 @@ interface DayDatabaseDao {
     @Query("SELECT * FROM day_table ORDER BY dayId DESC LIMIT 1")
     fun getDay(): Day?
 
+    @Query("DELETE FROM day_table WHERE dayId = :id ")
+    fun deleteDay(id: Long)
+
     @Query("SELECT * FROM day_table WHERE dayId = :id")
     fun getDayById(id: Long): Day?
 

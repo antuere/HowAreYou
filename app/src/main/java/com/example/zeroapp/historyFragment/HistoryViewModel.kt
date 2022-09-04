@@ -11,7 +11,7 @@ import kotlinx.coroutines.withContext
 import timber.log.Timber
 
 class HistoryViewModel(val databaseDao: DayDatabaseDao) :
-    ViewModel() {
+    ViewModel(), DayClickListener {
 
     var listDays: LiveData<List<Day>> = databaseDao.getAllDays()
 
@@ -19,12 +19,27 @@ class HistoryViewModel(val databaseDao: DayDatabaseDao) :
     val navigateToDetail: LiveData<Long?>
         get() = _navigateToDetail
 
-    fun smileOnClick(dayId : Long){
-        _navigateToDetail.value = dayId
-    }
+    private var _deleteItem = MutableLiveData<Long?>()
+    val deleteItem: LiveData<Long?>
+        get() = _deleteItem
 
-    fun navigateDone(){
+    fun navigateDone() {
         _navigateToDetail.value = null
+        _deleteItem.value = null
     }
 
+    override fun onClick(day: Day) {
+        _navigateToDetail.value = day.dayId
+    }
+
+    override fun onClickLong(day: Day) {
+//        _deleteItem.value = day.dayId
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                databaseDao.deleteDay(day.dayId)
+            }
+        }
+    }
 }
+
+

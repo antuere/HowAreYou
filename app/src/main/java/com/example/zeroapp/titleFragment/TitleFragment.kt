@@ -5,7 +5,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.widget.ImageButton
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
@@ -28,7 +30,6 @@ class TitleFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         bindind = FragmentTitleBinding.inflate(inflater, container, false)
-
 
         return bindind.root
     }
@@ -54,10 +55,12 @@ class TitleFragment : Fragment() {
             setSmileListeners(it)
         }
 
+        viewModel.getLastDay()
 
         bindind.bYourPast.setOnClickListener {
             this.findNavController()
                 .navigate(TitleFragmentDirections.actionTitleFragmentToHistory())
+            viewModel.showToastReset()
         }
 
         viewModel.lastDay.observe(viewLifecycleOwner, Observer {
@@ -66,12 +69,24 @@ class TitleFragment : Fragment() {
             }
         })
 
+        viewModel.showToast.observe(viewLifecycleOwner) {
+            if (it) {
+                Toast.makeText(
+                    this.context,
+                    "Today you already have write",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+
     }
 
 
     private fun setSmileListeners(button: ImageButton) {
         button.setOnClickListener {
             val dayText = bindind.textDescribeDay.text.toString()
+            val animation = AnimationUtils.loadAnimation(it.context, R.anim.scale_button)
+            it.startAnimation(animation)
             viewModel.smileClicked(it.id, dayText)
             bindind.bYourPast.visibility = View.VISIBLE
         }
