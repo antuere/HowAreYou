@@ -11,6 +11,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.zeroapp.dataBase.DayDatabase
 import com.example.zeroapp.databinding.FragmentHistoryBinding
+import com.example.zeroapp.showAlertDialog
 import timber.log.Timber
 
 class HistoryFragment : Fragment() {
@@ -66,7 +67,7 @@ class HistoryFragment : Fragment() {
 
         viewModel.deleteItem.observe(viewLifecycleOwner) {
             it?.let {
-                Toast.makeText(view.context, "DayID its $it", Toast.LENGTH_SHORT).show()
+                showAlertDialog(viewModel, it, this.context)
             }
         }
 

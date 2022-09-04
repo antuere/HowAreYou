@@ -1,14 +1,13 @@
 package com.example.zeroapp.historyFragment
 
 import androidx.lifecycle.*
+import com.example.zeroapp.MyExtendedViewModel
 import com.example.zeroapp.dataBase.Day
 import com.example.zeroapp.dataBase.DayDatabaseDao
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import com.example.zeroapp.showAlertDialog
 
-class HistoryViewModel(private val databaseDao: DayDatabaseDao) :
-    ViewModel(), DayClickListener {
+class HistoryViewModel(override var databaseDao: DayDatabaseDao) :
+    MyExtendedViewModel(), DayClickListener {
 
     var listDays: LiveData<List<Day>> = databaseDao.getAllDays()
 
@@ -30,11 +29,7 @@ class HistoryViewModel(private val databaseDao: DayDatabaseDao) :
     }
 
     override fun onClickLong(day: Day) {
-        viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                databaseDao.deleteDay(day.dayId)
-            }
-        }
+        _deleteItem.value = day.dayId
     }
 }
 

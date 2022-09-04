@@ -1,10 +1,8 @@
 package com.example.zeroapp.historyFragment
 
-import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.zeroapp.dataBase.DayDatabaseDao
-import com.example.zeroapp.titleFragment.TitleFragmentViewModel
 
 class HistoryViewModelFactory(val databaseDao: DayDatabaseDao) : ViewModelProvider.Factory {
 

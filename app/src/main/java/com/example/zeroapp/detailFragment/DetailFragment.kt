@@ -13,6 +13,7 @@ import com.example.zeroapp.R
 import com.example.zeroapp.dataBase.DayDatabase
 import com.example.zeroapp.databinding.FragmentDetailBinding
 import com.example.zeroapp.getSmileImage
+import com.example.zeroapp.showAlertDialog
 
 
 class DetailFragment : Fragment() {
@@ -35,10 +36,11 @@ class DetailFragment : Fragment() {
         val menuHost: MenuHost = requireActivity()
 
         val args: DetailFragmentArgs by navArgs()
+        val dayId = args.dayId
         val application = requireNotNull(this.activity).application
         val dayDatabaseDao = DayDatabase.getInstance(application).dayDatabaseDao
 
-        val detailFactory = DetailViewModelFactory(dayDatabaseDao, args.dayId)
+        val detailFactory = DetailViewModelFactory(dayDatabaseDao, dayId)
         val detailViewModel = ViewModelProvider(this, detailFactory)[DetailViewModel::class.java]
 
         detailViewModel.currentDay.observe(viewLifecycleOwner) {
@@ -51,6 +53,14 @@ class DetailFragment : Fragment() {
             }
         }
 
+        detailViewModel.navigateToHistory.observe(viewLifecycleOwner) {
+            if (it) {
+                this.findNavController()
+                    .navigate(DetailFragmentDirections.actionDetailFragmentToHistory())
+                detailViewModel.navigateDone()
+            }
+        }
+
         menuHost.addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
                 menuInflater.inflate(R.menu.detail_menu, menu)
@@ -59,9 +69,7 @@ class DetailFragment : Fragment() {
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 return when (menuItem.itemId) {
                     R.id.delete_item -> {
-                        detailViewModel.deleteDay()
-                        this@DetailFragment.findNavController()
-                            .navigate(DetailFragmentDirections.actionDetailFragmentToHistory())
+                        showAlertDialog(detailViewModel, dayId, this@DetailFragment.context)
                         true
                     }
                     else -> false

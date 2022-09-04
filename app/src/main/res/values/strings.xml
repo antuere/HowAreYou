@@ -10,7 +10,11 @@
     <string name="desc_you_day">Describe your day in a nutshell</string>
     <string name="your_past">Your past</string>
     <string name="about_day">About past day</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!-- Label and descriptions -->
     <string name="delete">Delete</string>
+    <string name="dialog_delete_title">Delete day</string>
+    <string name="dialog_delete_message">Deleting this day?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+
 </resources>
