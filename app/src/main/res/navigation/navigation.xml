@@ -25,7 +25,8 @@
                 android:id="@+id/action_history_to_detailFragment"
                 app:destination="@id/detailFragment"
                 app:popUpTo="@id/historyFragment"
-                app:popUpToInclusive="false" />
+                app:popUpToInclusive="false"
+                />
     </fragment>
     <fragment
             android:id="@+id/detailFragment"
