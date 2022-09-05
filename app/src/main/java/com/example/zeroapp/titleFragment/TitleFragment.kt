@@ -37,7 +37,7 @@ class TitleFragment : Fragment() {
 
         val viewModelFactory = TitleFragmentViewModelFactory(dayDatabaseDao, application)
         viewModel = ViewModelProvider(this, viewModelFactory)[TitleFragmentViewModel::class.java]
-
+        viewModel.showToastReset()
         val smileButtons = listOf(
             bindind.bHappySmile,
             bindind.bSad,

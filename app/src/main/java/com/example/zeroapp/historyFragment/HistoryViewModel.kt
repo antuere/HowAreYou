@@ -31,6 +31,10 @@ class HistoryViewModel(override var databaseDao: DayDatabaseDao) :
     override fun onClickLong(day: Day) {
         _deleteItem.value = day.dayId
     }
+
+    fun resetDeleteItem() {
+        _deleteItem.value = null
+    }
 }
 
 

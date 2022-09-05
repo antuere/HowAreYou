@@ -10,8 +10,14 @@
     <string name="desc_you_day">Describe your day in a nutshell</string>
     <string name="your_past">Your past</string>
     <string name="about_day">About past day</string>
-    <!-- Label and descriptions -->
+    <!-- Menus -->
     <string name="delete">Delete</string>
+    <string name="add"></string>
+    <string name="history">History</string>
+    <string name="settings">Settings</string>
+    <string name="summary">Summary</string>
+
+    <!-- Label and descriptions -->
     <string name="dialog_delete_title">Delete day</string>
     <string name="dialog_delete_message">Deleting this day?</string>
     <string name="yes">Yes</string>

@@ -6,7 +6,6 @@ import androidx.appcompat.app.AlertDialog
 import com.example.zeroapp.detailFragment.DetailViewModel
 import kotlin.coroutines.CoroutineContext
 
-
 fun getSmileImage(id: Int): Int {
     return when (id) {
         R.id.b_very_happy -> R.drawable.smile_very_happy

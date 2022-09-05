@@ -62,7 +62,8 @@
                     android:id="@+id/textDescribeDay"
                     android:maxLength="100"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:textColorHint="#757575" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -155,6 +156,8 @@
                 android:layout_height="wrap_content"
                 app:layout_constraintGuide_begin="180dp"
                 android:id="@+id/guideline" />
+
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

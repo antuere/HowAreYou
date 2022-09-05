@@ -68,6 +68,7 @@ class HistoryFragment : Fragment() {
         viewModel.deleteItem.observe(viewLifecycleOwner) {
             it?.let {
                 showAlertDialog(viewModel, it, this.context)
+                viewModel.resetDeleteItem()
             }
         }
 

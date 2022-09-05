@@ -12,19 +12,19 @@
             tools:layout="@layout/fragment_title">
         <action
                 android:id="@+id/action_titleFragment_to_history"
-                app:destination="@id/history"
+                app:destination="@id/historyFragment"
                 app:popUpTo="@id/titleFragment"
                 app:popUpToInclusive="false" />
     </fragment>
     <fragment
-            android:id="@+id/history"
+            android:id="@+id/historyFragment"
             android:name="com.example.zeroapp.historyFragment.HistoryFragment"
             android:label="@string/your_past"
             tools:layout="@layout/fragment_history">
         <action
                 android:id="@+id/action_history_to_detailFragment"
                 app:destination="@id/detailFragment"
-                app:popUpTo="@id/history"
+                app:popUpTo="@id/historyFragment"
                 app:popUpToInclusive="false" />
     </fragment>
     <fragment
@@ -37,8 +37,18 @@
                 app:argType="long" />
         <action
                 android:id="@+id/action_detailFragment_to_history"
-                app:destination="@id/history"
+                app:destination="@id/historyFragment"
                 app:popUpTo="@id/titleFragment"
                 app:popUpToInclusive="false" />
     </fragment>
+    <fragment
+            android:id="@+id/settingsFragment"
+            android:name="com.example.zeroapp.settingsFragment.SettingsFragment"
+            android:label="@string/settings"
+            tools:layout="@layout/fragment_settings" />
+    <fragment
+            android:id="@+id/summaryFragment"
+            android:name="com.example.zeroapp.summaryFragment.SummaryFragment"
+            android:label="@string/summary"
+            tools:layout="@layout/fragment_summary" />
 </navigation>
