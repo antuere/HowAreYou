@@ -28,20 +28,6 @@
                 android:textColor="@color/black"
                 android:fontFamily="@font/playfair_display" />
 
-        <Button
-                android:id="@+id/b_your_past"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="invisible"
-                tools:visibility="visible"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintHorizontal_bias="0.500"
-                android:text="@string/your_past"
-                app:layout_constraintVertical_bias="0.900" />
-
         <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textDescribeLayout"
                 android:layout_width="match_parent"
@@ -157,6 +143,19 @@
                 app:layout_constraintGuide_begin="180dp"
                 android:id="@+id/guideline" />
 
+        <TextView
+                android:id="@+id/wishForUser"
+                android:text="We hope you had another great day, so enjoy! We are waiting for you tomorrow"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/textDescribeLayout"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_margin="@dimen/margin_normal"
+                android:visibility="gone"
+                tools:visibility="visible"
+                android:textAlignment="textStart"
+                app:layout_constraintHorizontal_bias="0.0" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

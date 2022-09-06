@@ -1,5 +1,6 @@
 package com.example.zeroapp.detailFragment
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.*
 import androidx.core.view.MenuHost
@@ -9,17 +10,25 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.example.zeroapp.R
+import com.example.zeroapp.*
 import com.example.zeroapp.dataBase.DayDatabase
 import com.example.zeroapp.databinding.FragmentDetailBinding
-import com.example.zeroapp.getSmileImage
-import com.example.zeroapp.showAlertDialog
+import com.google.android.material.transition.MaterialContainerTransform
 
 
 class DetailFragment : Fragment() {
 
     private lateinit var binding: FragmentDetailBinding
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        sharedElementEnterTransition = MaterialContainerTransform().apply {
+            drawingViewId = R.id.myNavHostFragment
+            duration = 300L
+            scrimColor = Color.TRANSPARENT
+            setAllContainerColors(requireContext().themeColor(com.google.android.material.R.attr.colorSurface))
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -69,7 +78,11 @@ class DetailFragment : Fragment() {
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 return when (menuItem.itemId) {
                     R.id.delete_item -> {
-                        showAlertDialog(detailViewModel, dayId, this@DetailFragment.context)
+                        showMaterialDialog(
+                            detailViewModel,
+                            dayId,
+                            this@DetailFragment.context,
+                        )
                         true
                     }
                     else -> false

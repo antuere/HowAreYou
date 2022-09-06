@@ -4,7 +4,8 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".detailFragment.DetailFragment">
+        tools:context=".detailFragment.DetailFragment"
+        android:transitionName="@string/transition_name">
 
     <ImageView
             android:id="@+id/smile_image"

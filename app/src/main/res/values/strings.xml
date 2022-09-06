@@ -10,6 +10,8 @@
     <string name="desc_you_day">Describe your day in a nutshell</string>
     <string name="your_past">Your past</string>
     <string name="about_day">About past day</string>
+    <string name="transition_name">transition_name_unique</string>
+    <string name="transition_name_item">transition_name_unique_%1$s</string>
     <!-- Menus -->
     <string name="delete">Delete</string>
     <string name="add"></string>
@@ -20,7 +22,7 @@
     <!-- Label and descriptions -->
     <string name="dialog_delete_title">Delete day</string>
     <string name="dialog_delete_message">Deleting this day?</string>
-    <string name="yes">Yes</string>
+    <string name="yes">Delete</string>
     <string name="no">No</string>
 
 </resources>

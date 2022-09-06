@@ -1,10 +1,12 @@
 package com.example.zeroapp.historyFragment
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.zeroapp.R
 import com.example.zeroapp.dataBase.Day
 import com.example.zeroapp.databinding.DayItemBinding
 import com.example.zeroapp.getSmileImage
@@ -51,15 +53,22 @@ class DayAdapter(private val clickListener: DayClickListener) :
             with(binding) {
                 imageView.setImageResource(getSmileImage(item.imageId))
                 dateText.text = item.currentDate
+
+                val transitionName =
+                    itemView.context.getString(R.string.transition_name_item, item.dayId.toString())
+                itemView.transitionName = transitionName
+
                 itemView.setOnClickListener {
-                    clickListener.onClick(item)
+                    clickListener.onClick(item, root)
                 }
                 itemView.setOnLongClickListener {
                     clickListener.onClickLong(item)
                     true
                 }
-            }
+                Timber.i("my log itemView transName = ${itemView.transitionName}")
+                Timber.i("my log root transName = ${root.transitionName}")
 
+            }
         }
     }
 
@@ -77,6 +86,6 @@ class DayListener(val clickListener: (dayId: Long) -> Unit) {
 }
 
 interface DayClickListener {
-    fun onClick(day: Day)
+    fun onClick(day: Day, view: View)
     fun onClickLong(day: Day)
 }

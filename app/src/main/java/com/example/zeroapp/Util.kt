@@ -1,9 +1,19 @@
 package com.example.zeroapp
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.DialogInterface
+import android.graphics.Color
+import android.view.ViewGroup
+import androidx.annotation.AttrRes
+import androidx.annotation.ColorInt
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.res.use
+import androidx.transition.TransitionManager
+import com.example.zeroapp.databinding.DayItemBinding
 import com.example.zeroapp.detailFragment.DetailViewModel
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.transition.MaterialFade
 import kotlin.coroutines.CoroutineContext
 
 fun getSmileImage(id: Int): Int {
@@ -36,4 +46,35 @@ fun showAlertDialog(model: MyExtendedViewModel, dayId: Long, context: Context?) 
         .create()
 
     dialog.show()
+}
+
+fun showMaterialDialog(
+    model: MyExtendedViewModel,
+    dayId: Long,
+    context: Context?,
+) {
+    val materialDialog = MaterialAlertDialogBuilder(context!!)
+        .setTitle(R.string.dialog_delete_title)
+        .setMessage(R.string.dialog_delete_message)
+        .setNegativeButton(R.string.no) { dialog, _ ->
+            dialog.dismiss()
+        }
+        .setPositiveButton(R.string.yes) { dialog, _ ->
+            model.deleteDay(dayId)
+            if (model is DetailViewModel) model.navigateToHistory()
+            dialog.dismiss()
+        }
+    materialDialog.show()
+}
+
+@ColorInt
+@SuppressLint("Recycle")
+fun Context.themeColor(
+    @AttrRes themeAttrId: Int
+): Int {
+    return obtainStyledAttributes(
+        intArrayOf(themeAttrId)
+    ).use {
+        it.getColor(0, Color.MAGENTA)
+    }
 }
