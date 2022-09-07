@@ -19,6 +19,9 @@
     <dimen name="button_height_small">24dp</dimen>
     <dimen name="button_width_small">24dp</dimen>
 
+    <dimen name="button_height_normal">28dp</dimen>
+    <dimen name="button_width_normal">28dp</dimen>
+
     <dimen name="button_height_detail">85dp</dimen>
     <dimen name="button_wight_detail">85dp</dimen>
 </resources>
