@@ -9,8 +9,8 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.zeroapp.databinding.ActivityMainBinding
+import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.tabs.TabLayout
 import timber.log.Timber
 
 class MainActivity : AppCompatActivity() {
@@ -18,6 +18,10 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var bottomNavView: BottomNavigationView
     private lateinit var navController: NavController
+
+    private lateinit var _toolbar: MaterialToolbar
+    val toolbar: MaterialToolbar
+        get() = _toolbar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,10 +51,16 @@ class MainActivity : AppCompatActivity() {
             }
 
         }
+
+        _toolbar = binding.toolBarApp
+
+        setSupportActionBar(_toolbar)
         setupActionBarWithNavController(navController, appBarConfiguration)
+
         bottomNavView.setupWithNavController(navController)
         Timber.plant(Timber.DebugTree())
     }
+
 
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp()

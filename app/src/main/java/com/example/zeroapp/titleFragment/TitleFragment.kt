@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
+import android.widget.Button
 import android.widget.ImageButton
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
@@ -63,6 +64,12 @@ class TitleFragment : Fragment() {
             }
         }
 
+        viewModel.showWish.observe(viewLifecycleOwner) {
+            if (it) {
+                showWish(smileButtons, true)
+            } else showWish(smileButtons, false)
+        }
+
     }
 
 
@@ -74,6 +81,19 @@ class TitleFragment : Fragment() {
             viewModel.smileClicked(it.id, dayText)
 
             bindind.textDescribeDay.text?.clear()
+        }
+    }
+
+
+    private fun showWish(buttons: List<ImageButton>, show: Boolean) {
+        bindind.apply {
+            buttons.forEach {
+                it.visibility = if (show) View.GONE else View.VISIBLE
+            }
+            textDescribeLayout.visibility = if (show) View.GONE else View.VISIBLE
+            howAreYou.visibility = if (show) View.GONE else View.VISIBLE
+            wishForUser.visibility = if (show) View.VISIBLE else View.GONE
+
         }
     }
 }

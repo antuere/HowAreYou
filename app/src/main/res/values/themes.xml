@@ -1,9 +1,9 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.ZeroApp" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+    <style name="Theme.ZeroApp" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">#016A78</item>
-        <item name="colorPrimaryVariant">#016A78</item>
+        <item name="colorPrimary">@color/teal_main</item>
+        <item name="colorPrimaryVariant">@color/teal_main</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_200</item>
@@ -12,9 +12,54 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Font -->
-        <item name="android:fontFamily">@font/playfair_display</item>
-        <item name="fontFamily">@font/playfair_display</item>
+        <item name="android:fontFamily">@font/roboto</item>
         <item name="android:textColor">@color/black</item>
+
+        <!-- Elements theme -->
+        <item name="materialAlertDialogTheme">@style/MyDialogStyle</item>
+        <item name="bottomNavigationStyle">@style/Widget.App.BottomNavigationView</item>
+        <item name="toolbarStyle">@style/Widget.App.Toolbar</item>
+
     </style>
 
+    <!-- Dialog theme -->
+    <style name="MyDialogStyle" parent="ThemeOverlay.Material3.MaterialAlertDialog.Centered">
+        <item name="alertDialogStyle">@style/MaterialAlertDialog.App</item>
+        <item name="materialAlertDialogTitleTextStyle">@style/MaterialAlertDialog.App.Title.Text
+        </item>
+        <item name="materialAlertDialogBodyTextStyle">@style/MaterialAlertDialog.App.Body.Text
+        </item>
+        <item name="buttonBarPositiveButtonStyle">@style/Widget.App.Button</item>
+        <item name="buttonBarNegativeButtonStyle">@style/Widget.App.Button</item>
+    </style>
+
+
+    <!-- Bottom navigation theme -->
+    <style name="Widget.App.BottomNavigationView" parent="Widget.Material3.BottomNavigationView">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.App.BottomNavigationView</item>
+        <item name="itemActiveIndicatorStyle">
+            @style/ThemeOverlay.App.BottomNavigationView.ActiveIndicator
+        </item>
+    </style>
+
+    <style name="ThemeOverlay.App.BottomNavigationView" parent="">
+        <item name="colorSurface">@color/teal_bottom</item>
+        <item name="colorOnSurfaceVariant">@color/gray</item>
+        <item name="colorOnSurface">@color/black</item>
+    </style>
+
+    <style name="ThemeOverlay.App.BottomNavigationView.ActiveIndicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
+        <item name="android:color">@color/white</item>
+    </style>
+
+    <!-- Toolbar theme -->
+    <style name="Widget.App.Toolbar" parent="Widget.Material3.Toolbar.Surface">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.App.Toolbar</item>
+    </style>
+
+    <style name="ThemeOverlay.App.Toolbar" parent="">
+        <item name="colorSurface">@color/teal_main</item>
+        <item name="colorOnSurface">@color/white</item>
+        <item name="colorOnSurfaceVariant">@color/white</item>
+    </style>
 </resources>

@@ -12,8 +12,11 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.zeroapp.*
 import com.example.zeroapp.dataBase.DayDatabase
+import com.example.zeroapp.databinding.ActivityMainBinding
 import com.example.zeroapp.databinding.FragmentDetailBinding
+import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.transition.MaterialContainerTransform
+import timber.log.Timber
 
 
 class DetailFragment : Fragment() {
@@ -25,8 +28,8 @@ class DetailFragment : Fragment() {
         sharedElementEnterTransition = MaterialContainerTransform().apply {
             drawingViewId = R.id.myNavHostFragment
             duration = 300L
-            scrimColor = Color.TRANSPARENT
-            setAllContainerColors(requireContext().themeColor(com.google.android.material.R.attr.colorSurface))
+            scrimColor = Color.WHITE
+            setAllContainerColors(requireContext().themeColor(com.google.android.material.R.attr.colorOnPrimary))
         }
     }
 
@@ -35,6 +38,8 @@ class DetailFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentDetailBinding.inflate(inflater, container, false)
+
+
         return binding.root
     }
 
@@ -42,7 +47,12 @@ class DetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val menuHost: MenuHost = requireActivity()
+        val activity = requireActivity() as MainActivity
+
+        val toolbar : MaterialToolbar = activity.toolbar
+        toolbar.setNavigationIcon(R.drawable.ic_back)
+
+        val menuHost: MenuHost = activity
 
         val args: DetailFragmentArgs by navArgs()
         val dayId = args.dayId
@@ -51,6 +61,7 @@ class DetailFragment : Fragment() {
 
         val detailFactory = DetailViewModelFactory(dayDatabaseDao, dayId)
         val detailViewModel = ViewModelProvider(this, detailFactory)[DetailViewModel::class.java]
+
 
         detailViewModel.currentDay.observe(viewLifecycleOwner) {
             it?.let {
@@ -72,6 +83,7 @@ class DetailFragment : Fragment() {
 
         menuHost.addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                Timber.i("my log, we in the menuHost")
                 menuInflater.inflate(R.menu.detail_menu, menu)
             }
 
@@ -88,6 +100,7 @@ class DetailFragment : Fragment() {
                     else -> false
                 }
             }
-        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
+        }, viewLifecycleOwner, Lifecycle.State.STARTED)
     }
+
 }

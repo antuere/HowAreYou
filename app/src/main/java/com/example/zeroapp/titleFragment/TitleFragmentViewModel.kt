@@ -30,7 +30,6 @@ class TitleFragmentViewModel(private val databaseDao: DayDatabaseDao, applicatio
     }
 
     fun smileClicked(imageId: Int, descDay: String) {
-        _showWish.value = true
         Timber.i("my log smile click")
         val day = Day(imageId = imageId, dayText = descDay)
         if (_lastDay.value == null) {
@@ -50,9 +49,7 @@ class TitleFragmentViewModel(private val databaseDao: DayDatabaseDao, applicatio
         viewModelScope.launch {
             val currentDate = DateFormat.format("dd/MM/yy", System.currentTimeMillis()).toString()
             _lastDay.value = getDayFromDB()
-            if (currentDate != (_lastDay.value?.currentDate ?: "test")) {
-                _showWish.value = false
-            }
+            _showWish.value = currentDate == (_lastDay.value?.currentDate ?: "offWish")
             Timber.i("my log get last day from BD, its ${_lastDay.value?.currentDate ?: "null"}")
         }
     }

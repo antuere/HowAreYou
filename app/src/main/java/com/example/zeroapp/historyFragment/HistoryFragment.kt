@@ -90,11 +90,6 @@ class HistoryFragment : Fragment(), DayClickListener {
     }
 
     override fun onClickLong(day: Day) {
-        val materialFade = MaterialFade().apply {
-            duration = 1000L
-        }
-
-        TransitionManager.beginDelayedTransition(bindind.root, materialFade)
         showMaterialDialog(viewModel, day.dayId, this.context)
     }
 }

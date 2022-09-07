@@ -4,17 +4,12 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.DialogInterface
 import android.graphics.Color
-import android.view.ViewGroup
 import androidx.annotation.AttrRes
 import androidx.annotation.ColorInt
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.res.use
-import androidx.transition.TransitionManager
-import com.example.zeroapp.databinding.DayItemBinding
 import com.example.zeroapp.detailFragment.DetailViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.transition.MaterialFade
-import kotlin.coroutines.CoroutineContext
 
 fun getSmileImage(id: Int): Int {
     return when (id) {
@@ -53,7 +48,8 @@ fun showMaterialDialog(
     dayId: Long,
     context: Context?,
 ) {
-    val materialDialog = MaterialAlertDialogBuilder(context!!)
+    val materialDialog = MaterialAlertDialogBuilder(
+        context!!)
         .setTitle(R.string.dialog_delete_title)
         .setMessage(R.string.dialog_delete_message)
         .setNegativeButton(R.string.no) { dialog, _ ->

@@ -145,17 +145,18 @@
 
         <TextView
                 android:id="@+id/wishForUser"
-                android:text="We hope you had another great day, so enjoy! We are waiting for you tomorrow"
+                android:text="@string/wish_for_users"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toBottomOf="@+id/textDescribeLayout"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 android:layout_margin="@dimen/margin_normal"
+                android:textSize="@dimen/textSize_big"
                 android:visibility="gone"
                 tools:visibility="visible"
-                android:textAlignment="textStart"
-                app:layout_constraintHorizontal_bias="0.0" />
+                app:layout_constraintHorizontal_bias="0.0"
+                android:gravity="center"/>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
