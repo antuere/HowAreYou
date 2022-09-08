@@ -36,6 +36,28 @@ class HistoryFragment : Fragment(), DayClickListener {
         savedInstanceState: Bundle?
     ): View {
         bindind = FragmentHistoryBinding.inflate(inflater, container, false)
+
+        val application = requireNotNull(this.activity).application
+        val dayDatabaseDao = DayDatabase.getInstance(application).dayDatabaseDao
+
+        val factory = HistoryViewModelFactory(dayDatabaseDao)
+
+        viewModel = ViewModelProvider(this, factory)[HistoryViewModel::class.java]
+
+        val manager = GridLayoutManager(activity, 3)
+        bindind.dayList.layoutManager = manager
+
+        val adapter = DayAdapter(this)
+
+        bindind.dayList.adapter = adapter
+
+        viewModel.listDays.observe(viewLifecycleOwner) {
+            it?.let {
+                Timber.i("my log Submit list")
+                adapter.submitList(it)
+            }
+        }
+
         return bindind.root
     }
 
@@ -50,27 +72,6 @@ class HistoryFragment : Fragment(), DayClickListener {
         }
 
         Timber.i("my log viewCreated")
-
-        val application = requireNotNull(this.activity).application
-        val dayDatabaseDao = DayDatabase.getInstance(application).dayDatabaseDao
-
-        val factory = HistoryViewModelFactory(dayDatabaseDao)
-
-        viewModel = ViewModelProvider(this, factory)[HistoryViewModel::class.java]
-
-        val manager = GridLayoutManager(activity, 4)
-        bindind.dayList.layoutManager = manager
-
-        val adapter = DayAdapter(this)
-
-        bindind.dayList.adapter = adapter
-
-        viewModel.listDays.observe(viewLifecycleOwner) {
-            it?.let {
-                Timber.i("my log Submit list")
-                adapter.submitList(it)
-            }
-        }
 
     }
 
@@ -92,7 +93,4 @@ class HistoryFragment : Fragment(), DayClickListener {
         showMaterialDialog(viewModel, day.dayId, this.context)
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-    }
 }

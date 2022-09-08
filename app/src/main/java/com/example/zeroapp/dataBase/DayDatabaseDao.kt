@@ -1,7 +1,7 @@
 package com.example.zeroapp.dataBase
 
-import androidx.lifecycle.LiveData
 import androidx.room.*
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface DayDatabaseDao {
@@ -25,6 +25,6 @@ interface DayDatabaseDao {
     fun getDayById(id: Long): Day?
 
     @Query("SELECT * FROM day_table ORDER BY dayId DESC")
-    fun getAllDays(): LiveData<List<Day>>
+    fun getAllDays(): Flow<List<Day>>
 
 }
