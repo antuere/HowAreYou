@@ -7,22 +7,17 @@
             android:icon="@drawable/ic_summary"
             android:orderInCategory="1" />
 
-    <item
-            android:id="@+id/titleFragment"
-            android:title="@string/add"
-            android:icon="@drawable/ic_add_new"
-            android:orderInCategory="2" />
 
     <item
             android:id="@+id/historyFragment"
             android:title="@string/history"
             android:icon="@drawable/ic_history"
-            android:orderInCategory="3" />
+            android:orderInCategory="2" />
 
 
     <item
             android:id="@+id/settingsFragment"
             android:title="@string/settings"
             android:icon="@drawable/ic_settings"
-            android:orderInCategory="4" />
+            android:orderInCategory="3" />
 </menu>

@@ -43,6 +43,7 @@
             android:layout_marginEnd="@dimen/margin_normal"
             android:layout_marginTop="@dimen/margin_small"
             android:textSize="@dimen/textSize_big"
+            android:fontFamily="@font/roboto"
             tools:text="Its u day descjoijs hello hello hello"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

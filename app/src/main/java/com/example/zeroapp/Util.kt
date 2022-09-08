@@ -59,6 +59,7 @@ fun showMaterialDialog(
             model.deleteDay(dayId)
             if (model is DetailViewModel) model.navigateToHistory()
             dialog.dismiss()
+
         }
     materialDialog.show()
 }

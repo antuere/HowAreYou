@@ -72,7 +72,6 @@ class HistoryFragment : Fragment(), DayClickListener {
             }
         }
 
-
     }
 
     override fun onClick(day: Day, view: View) {
@@ -91,5 +90,9 @@ class HistoryFragment : Fragment(), DayClickListener {
 
     override fun onClickLong(day: Day) {
         showMaterialDialog(viewModel, day.dayId, this.context)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
     }
 }

@@ -19,6 +19,7 @@
         <item name="materialAlertDialogTheme">@style/MyDialogStyle</item>
         <item name="bottomNavigationStyle">@style/Widget.App.BottomNavigationView</item>
         <item name="toolbarStyle">@style/Widget.App.Toolbar</item>
+        <item name="floatingActionButtonStyle">@style/Widget.App.FloatingActionButton</item>
 
     </style>
 
@@ -36,7 +37,10 @@
 
     <!-- Bottom navigation theme -->
     <style name="Widget.App.BottomNavigationView" parent="Widget.Material3.BottomNavigationView">
+
         <item name="materialThemeOverlay">@style/ThemeOverlay.App.BottomNavigationView</item>
+        <item name="itemTextAppearanceInactive">@style/TextAppearance.App.TitleSmall</item>
+        <item name="itemTextAppearanceActive">@style/TextAppearance.App.TitleMedium</item>
         <item name="itemActiveIndicatorStyle">
             @style/ThemeOverlay.App.BottomNavigationView.ActiveIndicator
         </item>
@@ -61,5 +65,15 @@
         <item name="colorSurface">@color/teal_main</item>
         <item name="colorOnSurface">@color/white</item>
         <item name="colorOnSurfaceVariant">@color/white</item>
+    </style>
+
+    <!-- FAB theme -->
+    <style name="Widget.App.FloatingActionButton" parent="Widget.Material3.FloatingActionButton.Primary">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.App.FloatingActionButton</item>
+    </style>
+
+    <style name="ThemeOverlay.App.FloatingActionButton" parent="">
+        <item name="colorContainer">@color/teal_main</item>
+        <item name="colorOnContainer">@color/white</item>
     </style>
 </resources>

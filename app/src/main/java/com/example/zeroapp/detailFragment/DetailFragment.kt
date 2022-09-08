@@ -12,7 +12,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.zeroapp.*
 import com.example.zeroapp.dataBase.DayDatabase
-import com.example.zeroapp.databinding.ActivityMainBinding
 import com.example.zeroapp.databinding.FragmentDetailBinding
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.transition.MaterialContainerTransform
@@ -22,13 +21,14 @@ import timber.log.Timber
 class DetailFragment : Fragment() {
 
     private lateinit var binding: FragmentDetailBinding
+    private lateinit var toolbar: MaterialToolbar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         sharedElementEnterTransition = MaterialContainerTransform().apply {
             drawingViewId = R.id.myNavHostFragment
             duration = 300L
-            scrimColor = Color.WHITE
+            scrimColor = Color.TRANSPARENT
             setAllContainerColors(requireContext().themeColor(com.google.android.material.R.attr.colorOnPrimary))
         }
     }
@@ -39,18 +39,17 @@ class DetailFragment : Fragment() {
     ): View {
         binding = FragmentDetailBinding.inflate(inflater, container, false)
 
-
         return binding.root
     }
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         val activity = requireActivity() as MainActivity
 
-        val toolbar : MaterialToolbar = activity.toolbar
+        toolbar = activity.toolbar
         toolbar.setNavigationIcon(R.drawable.ic_back)
+        toolbar.isTitleCentered = false
 
         val menuHost: MenuHost = activity
 
@@ -59,11 +58,11 @@ class DetailFragment : Fragment() {
         val application = requireNotNull(this.activity).application
         val dayDatabaseDao = DayDatabase.getInstance(application).dayDatabaseDao
 
-        val detailFactory = DetailViewModelFactory(dayDatabaseDao, dayId)
-        val detailViewModel = ViewModelProvider(this, detailFactory)[DetailViewModel::class.java]
+        val factory = DetailViewModelFactory(dayDatabaseDao, dayId)
+        val viewModel = ViewModelProvider(this, factory)[DetailViewModel::class.java]
 
 
-        detailViewModel.currentDay.observe(viewLifecycleOwner) {
+        viewModel.currentDay.observe(viewLifecycleOwner) {
             it?.let {
                 binding.apply {
                     dateText.text = it.currentDate
@@ -73,11 +72,10 @@ class DetailFragment : Fragment() {
             }
         }
 
-        detailViewModel.navigateToHistory.observe(viewLifecycleOwner) {
+        viewModel.navigateToHistory.observe(viewLifecycleOwner) {
             if (it) {
-                this.findNavController()
-                    .navigate(DetailFragmentDirections.actionDetailFragmentToHistory())
-                detailViewModel.navigateDone()
+                this.findNavController().navigateUp()
+                viewModel.navigateDone()
             }
         }
 
@@ -91,7 +89,7 @@ class DetailFragment : Fragment() {
                 return when (menuItem.itemId) {
                     R.id.delete_item -> {
                         showMaterialDialog(
-                            detailViewModel,
+                            viewModel,
                             dayId,
                             this@DetailFragment.context,
                         )
@@ -103,4 +101,8 @@ class DetailFragment : Fragment() {
         }, viewLifecycleOwner, Lifecycle.State.STARTED)
     }
 
+    override fun onStop() {
+        super.onStop()
+        toolbar.isTitleCentered = true
+    }
 }

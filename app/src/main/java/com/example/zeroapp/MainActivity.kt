@@ -25,6 +25,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Timber.i("fix! activityMain: onCrete")
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -36,7 +37,6 @@ class MainActivity : AppCompatActivity() {
             setOf(
                 R.id.settingsFragment,
                 R.id.historyFragment,
-                R.id.titleFragment,
                 R.id.summaryFragment
             )
         )
@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity() {
             when (dest.id) {
                 R.id.settingsFragment -> showBottomBar()
                 R.id.historyFragment -> showBottomBar()
-                R.id.titleFragment -> showBottomBar()
+                R.id.addDayFragment -> hideBottomBar()
                 R.id.summaryFragment -> showBottomBar()
                 R.id.detailFragment -> hideBottomBar()
             }
