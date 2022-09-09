@@ -39,12 +39,11 @@ class HistoryFragment : Fragment(), DayClickListener {
 
         val application = requireNotNull(this.activity).application
         val dayDatabaseDao = DayDatabase.getInstance(application).dayDatabaseDao
-
         val factory = HistoryViewModelFactory(dayDatabaseDao)
 
         viewModel = ViewModelProvider(this, factory)[HistoryViewModel::class.java]
 
-        val manager = GridLayoutManager(activity, 3)
+        val manager = GridLayoutManager(activity, 4)
         bindind.dayList.layoutManager = manager
 
         val adapter = DayAdapter(this)
@@ -70,6 +69,9 @@ class HistoryFragment : Fragment(), DayClickListener {
         view.doOnPreDraw {
             startPostponedEnterTransition()
         }
+        reenterTransition = MaterialElevationScale(true).apply {
+            duration = 250L
+        }
 
         Timber.i("my log viewCreated")
 
@@ -77,12 +79,7 @@ class HistoryFragment : Fragment(), DayClickListener {
 
     override fun onClick(day: Day, view: View) {
 
-        exitTransition = MaterialElevationScale(false).apply {
-            duration = 300L
-        }
-        reenterTransition = MaterialElevationScale(true).apply {
-            duration = 300L
-        }
+
         val transitionName = getString(R.string.transition_name)
         val extras = FragmentNavigatorExtras(view to transitionName)
         findNavController()

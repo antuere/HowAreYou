@@ -11,6 +11,7 @@
     <string name="your_past">Your past</string>
     <string name="about_day">About past day</string>
     <string name="transition_name">transition_name_unique</string>
+    <string name="transition_name_for_sum">transition_name_sum</string>
     <string name="transition_name_item">transition_name_unique_%1$s</string>
     <!-- Menus -->
     <string name="delete">Delete</string>

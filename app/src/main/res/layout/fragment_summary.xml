@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/home"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".summaryFragment.SummaryFragment">
+        tools:context=".summaryFragment.SummaryFragment"
+
+        >
 
     <TextView
             android:layout_width="0dp"
@@ -20,23 +23,36 @@
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:id="@+id/coordinator"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            android:layout_marginEnd="@dimen/margin_normal_button"
+            android:transitionName="@string/transition_name_for_sum"
+            android:layout_marginBottom="@dimen/margin_normal_button"
+            >
 
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/fab_add_button"
+        <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="@string/add"
+                android:visibility="invisible"/>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+
+                android:id="@+id/fab_add_button"
+                android:layout_width="81dp"
+                android:layout_height="wrap_content"
                 android:layout_gravity="bottom|end"
-                android:layout_marginEnd="@dimen/margin_normal_button"
-                android:layout_marginBottom="@dimen/margin_normal_button"
                 android:src="@drawable/ic_plus"
-                android:visibility="invisible"
+                android:visibility="visible"
                 android:contentDescription="@string/button_for_add_new_day"
-                app:visibilityMode="ignore"/>
+                app:layout_anchorGravity="end|center"
+                app:layout_anchor="@+id/fab_add_button"
+                style="?android:attr/borderlessButtonStyle" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

@@ -5,12 +5,14 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".addDayFragment.AddDayFragment">
+        tools:context=".addDayFragment.AddDayFragment"
+    >
 
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="?android:attr/selectableItemBackground">
+            android:background="?android:attr/selectableItemBackground"
+            android:transitionName="@string/transition_name_for_sum">
 
         <TextView
                 android:id="@+id/how_are_you"

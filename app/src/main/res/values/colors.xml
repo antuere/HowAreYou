@@ -12,4 +12,6 @@
     <color name="gray">#80000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="shrine_blue">#B3E2FF</color>
+
+    <color name="color_for_card">#D9FBFF</color>
 </resources>

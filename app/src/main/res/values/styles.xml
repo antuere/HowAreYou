@@ -36,4 +36,9 @@
         <item name="android:fontFamily">@font/roboto_medium</item>
         <item name="android:textSize">@dimen/textSize_small_ultra</item>
     </style>
+
+    <style name="ShapeAppearance.App.MediumComponent.Card" parent="ShapeAppearance.Material3.MediumComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">18dp</item>
+    </style>
 </resources>
