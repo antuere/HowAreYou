@@ -11,6 +11,12 @@ import androidx.core.content.res.use
 import com.example.zeroapp.detailFragment.DetailViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
+
+enum class Constance(val key: String) {
+    KEY_SMILE("key for smile"),
+    KEY_BUNDLE("key for bundle")
+}
+
 fun getSmileImage(id: Int): Int {
     return when (id) {
         R.id.b_very_happy -> R.drawable.smile_very_happy
@@ -49,7 +55,8 @@ fun showMaterialDialog(
     context: Context?,
 ) {
     val materialDialog = MaterialAlertDialogBuilder(
-        context!!)
+        context!!
+    )
         .setTitle(R.string.dialog_delete_title)
         .setMessage(R.string.dialog_delete_message)
         .setNegativeButton(R.string.no) { dialog, _ ->

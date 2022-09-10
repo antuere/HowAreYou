@@ -6,17 +6,16 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.AnimationUtils
 import android.widget.ImageButton
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import androidx.transition.Slide
 import com.example.zeroapp.MainActivity
 import com.example.zeroapp.R
 import com.example.zeroapp.dataBase.DayDatabase
 import com.example.zeroapp.databinding.FragmentAddDayBinding
 import com.example.zeroapp.themeColor
 import com.google.android.material.transition.MaterialContainerTransform
+import timber.log.Timber
 
 
 class AddDayFragment : Fragment() {
@@ -47,19 +46,6 @@ class AddDayFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-//        enterTransition = MaterialContainerTransform().apply {
-//            startView = requireActivity().findViewById(R.id.fab_add_button)
-//            endView = binding.root
-//            duration = 300L
-//            scrimColor = Color.TRANSPARENT
-//            setAllContainerColors(requireContext().themeColor(com.google.android.material.R.attr.colorOnPrimary))
-//        }
-
-//        returnTransition = Slide().apply {
-//            duration = 300L
-//            addTarget(binding.root)
-//        }
-
         val activity = requireActivity() as MainActivity
         val toolbar = activity.toolbar
         toolbar.setNavigationIcon(R.drawable.ic_back)
@@ -87,11 +73,10 @@ class AddDayFragment : Fragment() {
     private fun setSmileListeners(button: ImageButton) {
         button.setOnClickListener {
             val dayText = binding.textDescribeDay.text.toString()
-            val animation = AnimationUtils.loadAnimation(it.context, R.anim.scale_button)
-            it.startAnimation(animation)
-            viewModel.smileClicked(it.id, dayText)
+            val buttonId = it.id
+            Timber.i("result : buttonId in addDay is $buttonId")
+            viewModel.smileClicked(buttonId, dayText)
             binding.textDescribeDay.text?.clear()
-
 
             findNavController().navigateUp()
         }

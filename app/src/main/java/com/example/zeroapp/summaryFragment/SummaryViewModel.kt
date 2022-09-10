@@ -16,6 +16,8 @@ import timber.log.Timber
 class SummaryViewModel(private val databaseDao: DayDatabaseDao) : ViewModel() {
 
     private var _lastDay = MutableLiveData<Day?>()
+    val lastDay: LiveData<Day?>
+        get() = _lastDay
 
     private val _hideAddButton = MutableLiveData(false)
     val hideAddButton: LiveData<Boolean>
@@ -47,5 +49,6 @@ class SummaryViewModel(private val databaseDao: DayDatabaseDao) : ViewModel() {
             databaseDao.getDay()
         }
     }
+
 
 }

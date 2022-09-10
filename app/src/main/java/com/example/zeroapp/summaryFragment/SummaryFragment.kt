@@ -1,26 +1,22 @@
 package com.example.zeroapp.summaryFragment
 
-import android.graphics.Color
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import androidx.core.content.ContextCompat
 import androidx.core.view.doOnPreDraw
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
-import androidx.transition.TransitionManager
-import com.example.zeroapp.MainActivity
-import com.example.zeroapp.R
+import com.example.zeroapp.*
 import com.example.zeroapp.dataBase.DayDatabase
 
 import com.example.zeroapp.databinding.FragmentSummaryBinding
-import com.example.zeroapp.themeColor
-import com.google.android.material.transition.MaterialContainerTransform
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.transition.MaterialElevationScale
-import com.google.android.material.transition.MaterialFade
-import kotlinx.coroutines.delay
 import timber.log.Timber
 
 class SummaryFragment : Fragment() {
@@ -31,6 +27,7 @@ class SummaryFragment : Fragment() {
 
     private lateinit var viewModel: SummaryViewModel
     private lateinit var bindind: FragmentSummaryBinding
+    private lateinit var fabButton: FloatingActionButton
 
 
     override fun onCreateView(
@@ -41,66 +38,76 @@ class SummaryFragment : Fragment() {
         Timber.i("sum log: onCreateView")
 
 
-
         return bindind.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
         val application = requireNotNull(this.activity).application
         val dayDatabaseDao = DayDatabase.getInstance(application).dayDatabaseDao
         val factory = SummaryViewModelFactory(dayDatabaseDao)
 
-
         viewModel = ViewModelProvider(this, factory)[SummaryViewModel::class.java]
         viewModel.updateLastDay()
 
-//        viewModel.hideAddButton.observe(viewLifecycleOwner) {
-//            if (it) {
-//                bindind.fabAddButton.visibility = View.GONE
-//            }
-//        }
-        postponeEnterTransition()
 
+        postponeEnterTransition()
         view.doOnPreDraw {
             startPostponedEnterTransition()
         }
 
         reenterTransition = MaterialElevationScale(true).apply {
-            duration = 350L
+            duration = 400L
         }
 
-        bindind.fabAddButton.setOnClickListener {
+        fabButton = bindind.fabAddButton
 
-            val transitionName = getString(R.string.transition_name_for_sum)
-            val extras = FragmentNavigatorExtras(bindind.coordinator to transitionName)
+        fabButton.setOnClickListener {
+            var transitionName = getString(R.string.transition_name_for_sum)
+            if (it.tag == getString(R.string.add)) {
+                val extrasAdd = FragmentNavigatorExtras(it to transitionName)
+                findNavController().navigate(
+                    SummaryFragmentDirections.actionSummaryFragmentToAddDayFragment(), extrasAdd
+                )
+            } else {
+                transitionName = getString(R.string.transition_name)
+                val extrasSmile = FragmentNavigatorExtras(it to transitionName)
+                findNavController().navigate(
+                    SummaryFragmentDirections.actionSummaryFragmentToDetailFragment(
+                        viewModel.lastDay.value!!.dayId
+                    ), extrasSmile
+                )
 
-            findNavController().navigate(
-                SummaryFragmentDirections.actionSummaryFragmentToAddDayFragment(), extras
-            )
+            }
         }
-
     }
+
 
     override fun onStart() {
         super.onStart()
         viewModel.hideAddButton.observe(viewLifecycleOwner) {
             if (it) {
-                bindind.fabAddButton.visibility = View.GONE
+                fabButton.setImageResource(getSmileImage(viewModel.lastDay.value!!.imageId))
+                fabButton.tag = getString(R.string.smile)
+                bindind.fabAddButton.transitionName = getString(R.string.transition_name)
+
+            } else {
+                fabButton.setImageResource(R.drawable.ic_plus)
+                fabButton.tag = getString(R.string.add)
+
             }
         }
     }
 
     override fun onResume() {
         super.onResume()
-        Timber.i("fix! sum log: onResume")
         viewModel.hideAddButton.observe(viewLifecycleOwner) {
             if (!it) {
-                bindind.fabAddButton.visibility = View.VISIBLE
+                bindind.fabAddButton.transitionName = getString(R.string.transition_name_for_sum)
+
             }
         }
-    }
 
+    }
 }

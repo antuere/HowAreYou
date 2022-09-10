@@ -11,6 +11,7 @@
             android:layout_height="wrap_content"
             app:shapeAppearance="@style/ShapeAppearance.App.MediumComponent.Card"
             app:cardBackgroundColor="@color/color_for_card"
+            app:strokeColor="@color/white"
             >
 
         <LinearLayout

@@ -2,6 +2,7 @@
     <string name="app_name">ZeroApp</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="very_happy_smile_desc">Very happy smile</string>
+    <string name="smile">Smile</string>
     <string name="happy_smile_desc">Happy smile</string>
     <string name="low_smile_desc">Low smile</string>
     <string name="none_smile_desc">None smile</string>

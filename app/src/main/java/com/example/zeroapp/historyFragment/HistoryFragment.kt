@@ -70,7 +70,7 @@ class HistoryFragment : Fragment(), DayClickListener {
             startPostponedEnterTransition()
         }
         reenterTransition = MaterialElevationScale(true).apply {
-            duration = 250L
+            duration = 300L
         }
 
         Timber.i("my log viewCreated")
@@ -78,7 +78,6 @@ class HistoryFragment : Fragment(), DayClickListener {
     }
 
     override fun onClick(day: Day, view: View) {
-
 
         val transitionName = getString(R.string.transition_name)
         val extras = FragmentNavigatorExtras(view to transitionName)
