@@ -29,4 +29,6 @@
 
     <dimen name="button_height_detail">85dp</dimen>
     <dimen name="button_wight_detail">85dp</dimen>
+
+
 </resources>

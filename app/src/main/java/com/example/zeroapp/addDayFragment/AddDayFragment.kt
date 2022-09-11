@@ -22,13 +22,14 @@ class AddDayFragment : Fragment() {
 
     private lateinit var binding: FragmentAddDayBinding
     private lateinit var viewModel: AddDayFragmentViewModel
+    private lateinit var smileButtons: List<ImageButton>
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         sharedElementEnterTransition = MaterialContainerTransform().apply {
             drawingViewId = R.id.myNavHostFragment
-            duration = 400L
+            duration = 350L
             scrimColor = Color.TRANSPARENT
             setAllContainerColors(requireContext().themeColor(com.google.android.material.R.attr.colorOnPrimary))
         }
@@ -56,7 +57,7 @@ class AddDayFragment : Fragment() {
         val viewModelFactory = AddDayFragmentViewModelFactory(dayDatabaseDao)
         viewModel = ViewModelProvider(this, viewModelFactory)[AddDayFragmentViewModel::class.java]
 
-        val smileButtons = listOf(
+        smileButtons = listOf(
             binding.bHappySmile,
             binding.bSad,
             binding.bSmileLow,

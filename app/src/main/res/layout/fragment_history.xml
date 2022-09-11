@@ -4,16 +4,14 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".historyFragment.HistoryFragment">
-
-
+        tools:context=".historyFragment.HistoryFragment"
+        android:transitionGroup="true">
 
 
     <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/day_list"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:transitionGroup="true"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"

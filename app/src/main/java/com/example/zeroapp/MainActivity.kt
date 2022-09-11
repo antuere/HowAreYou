@@ -67,7 +67,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun hideBottomBar() {
-        bottomNavView.visibility = View.GONE
+        bottomNavView.visibility = View.INVISIBLE
     }
 
     private fun showBottomBar() {

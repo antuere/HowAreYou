@@ -24,11 +24,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@color/white"
+            android:transitionGroup="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             android:layout_marginEnd="@dimen/margin_normal_button"
+            android:transitionName="@string/transition_name_for_sum"
             android:layout_marginBottom="@dimen/margin_normal_button">
 
 
@@ -36,15 +38,12 @@
 
                 android:id="@+id/fab_add_button"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_gravity="bottom|end"
                 android:src="@drawable/ic_plus"
-                android:visibility="visible"
                 android:elevation="0dp"
                 app:elevation="0dp"
                 android:contentDescription="@string/button_for_add_new_day"
-                android:transitionName="@string/transition_name_for_sum"
-                app:layout_anchorGravity="end|center"
                 app:layout_anchor="@+id/fab_add_button"
                 style="?android:attr/borderlessButtonStyle" />
 

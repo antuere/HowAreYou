@@ -1,25 +1,22 @@
 package com.example.zeroapp.historyFragment
 
+import android.annotation.SuppressLint
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.view.doOnPreDraw
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.transition.TransitionManager
 import com.example.zeroapp.R
 import com.example.zeroapp.dataBase.Day
 import com.example.zeroapp.dataBase.DayDatabase
 import com.example.zeroapp.databinding.FragmentHistoryBinding
-import com.example.zeroapp.showAlertDialog
 import com.example.zeroapp.showMaterialDialog
 import com.google.android.material.transition.MaterialElevationScale
-import com.google.android.material.transition.MaterialFade
 import timber.log.Timber
 
 class HistoryFragment : Fragment(), DayClickListener {
@@ -30,6 +27,8 @@ class HistoryFragment : Fragment(), DayClickListener {
 
     private lateinit var viewModel: HistoryViewModel
     private lateinit var bindind: FragmentHistoryBinding
+
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -69,15 +68,16 @@ class HistoryFragment : Fragment(), DayClickListener {
         view.doOnPreDraw {
             startPostponedEnterTransition()
         }
-        reenterTransition = MaterialElevationScale(true).apply {
-            duration = 300L
-        }
 
         Timber.i("my log viewCreated")
 
     }
 
     override fun onClick(day: Day, view: View) {
+
+        reenterTransition = MaterialElevationScale(true).apply {
+            duration = 350L
+        }
 
         val transitionName = getString(R.string.transition_name)
         val extras = FragmentNavigatorExtras(view to transitionName)

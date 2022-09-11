@@ -6,14 +6,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import androidx.core.content.ContextCompat
 import androidx.core.view.doOnPreDraw
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import com.example.zeroapp.*
 import com.example.zeroapp.dataBase.DayDatabase
-
 import com.example.zeroapp.databinding.FragmentSummaryBinding
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.transition.MaterialElevationScale
@@ -51,50 +48,52 @@ class SummaryFragment : Fragment() {
         viewModel = ViewModelProvider(this, factory)[SummaryViewModel::class.java]
         viewModel.updateLastDay()
 
-
         postponeEnterTransition()
         view.doOnPreDraw {
             startPostponedEnterTransition()
         }
 
-        reenterTransition = MaterialElevationScale(true).apply {
-            duration = 400L
-        }
-
         fabButton = bindind.fabAddButton
-
         fabButton.setOnClickListener {
+
+            reenterTransition = MaterialElevationScale(true).apply {
+                duration = 350L
+            }
+
             var transitionName = getString(R.string.transition_name_for_sum)
             if (it.tag == getString(R.string.add)) {
-                val extrasAdd = FragmentNavigatorExtras(it to transitionName)
+                val extrasAdd = FragmentNavigatorExtras(bindind.coordinator to transitionName)
                 findNavController().navigate(
                     SummaryFragmentDirections.actionSummaryFragmentToAddDayFragment(), extrasAdd
                 )
             } else {
                 transitionName = getString(R.string.transition_name)
-                val extrasSmile = FragmentNavigatorExtras(it to transitionName)
+                val extrasSmile = FragmentNavigatorExtras(bindind.coordinator to transitionName)
                 findNavController().navigate(
                     SummaryFragmentDirections.actionSummaryFragmentToDetailFragment(
                         viewModel.lastDay.value!!.dayId
                     ), extrasSmile
                 )
+            }
+        }
 
+        viewModel.hideAddButton.observe(viewLifecycleOwner) {
+            if (it) {
+                fabButton.setImageResource(getSmileImage(viewModel.lastDay.value!!.imageId))
+                fabButton.tag = getString(R.string.smile)
+
+            } else {
+                fabButton.setImageResource(R.drawable.ic_plus)
+                fabButton.tag = getString(R.string.add)
             }
         }
     }
-
 
     override fun onStart() {
         super.onStart()
         viewModel.hideAddButton.observe(viewLifecycleOwner) {
             if (it) {
-                fabButton.setImageResource(getSmileImage(viewModel.lastDay.value!!.imageId))
-                fabButton.tag = getString(R.string.smile)
-                bindind.fabAddButton.transitionName = getString(R.string.transition_name)
-
-            } else {
-                fabButton.setImageResource(R.drawable.ic_plus)
-                fabButton.tag = getString(R.string.add)
+                bindind.coordinator.transitionName = getString(R.string.transition_name)
 
             }
         }
@@ -104,8 +103,7 @@ class SummaryFragment : Fragment() {
         super.onResume()
         viewModel.hideAddButton.observe(viewLifecycleOwner) {
             if (!it) {
-                bindind.fabAddButton.transitionName = getString(R.string.transition_name_for_sum)
-
+                bindind.coordinator.transitionName = getString(R.string.transition_name_for_sum)
             }
         }
 

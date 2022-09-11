@@ -29,14 +29,14 @@ class SettingsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        postponeEnterTransition()
-        view.doOnPreDraw {
-            startPostponedEnterTransition()
-        }
-
-        reenterTransition = MaterialElevationScale(true).apply {
-            duration = 250L
-        }
+//        postponeEnterTransition()
+//        view.doOnPreDraw {
+//            startPostponedEnterTransition()
+//        }
+//
+//        reenterTransition = MaterialElevationScale(true).apply {
+//            duration = 250L
+//        }
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this)[SettingsViewModel::class.java]
     }

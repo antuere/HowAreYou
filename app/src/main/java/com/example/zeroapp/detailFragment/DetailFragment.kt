@@ -16,6 +16,7 @@ import com.example.zeroapp.databinding.FragmentDetailBinding
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.transition.MaterialContainerTransform
 import timber.log.Timber
+import com.example.zeroapp.themeColor
 
 
 class DetailFragment : Fragment() {
@@ -27,8 +28,8 @@ class DetailFragment : Fragment() {
         super.onCreate(savedInstanceState)
         sharedElementEnterTransition = MaterialContainerTransform().apply {
             drawingViewId = R.id.myNavHostFragment
-            duration = 400L
-            scrimColor = Color.TRANSPARENT
+            duration = 350L
+            scrimColor = Color.WHITE
             setAllContainerColors(requireContext().themeColor(com.google.android.material.R.attr.colorOnPrimary))
         }
     }
