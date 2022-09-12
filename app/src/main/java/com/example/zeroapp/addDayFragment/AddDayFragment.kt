@@ -11,11 +11,11 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.zeroapp.MainActivity
 import com.example.zeroapp.R
+import com.example.zeroapp.util.getSmileImage
 import com.example.zeroapp.dataBase.DayDatabase
 import com.example.zeroapp.databinding.FragmentAddDayBinding
-import com.example.zeroapp.themeColor
+import com.example.zeroapp.util.themeColor
 import com.google.android.material.transition.MaterialContainerTransform
-import timber.log.Timber
 
 
 class AddDayFragment : Fragment() {
@@ -29,7 +29,7 @@ class AddDayFragment : Fragment() {
         super.onCreate(savedInstanceState)
         sharedElementEnterTransition = MaterialContainerTransform().apply {
             drawingViewId = R.id.myNavHostFragment
-            duration = 350L
+            duration = resources.getInteger(R.integer.duration_normal).toLong()
             scrimColor = Color.TRANSPARENT
             setAllContainerColors(requireContext().themeColor(com.google.android.material.R.attr.colorOnPrimary))
         }
@@ -74,9 +74,9 @@ class AddDayFragment : Fragment() {
     private fun setSmileListeners(button: ImageButton) {
         button.setOnClickListener {
             val dayText = binding.textDescribeDay.text.toString()
-            val buttonId = it.id
-            Timber.i("result : buttonId in addDay is $buttonId")
-            viewModel.smileClicked(buttonId, dayText)
+            val imageId = getSmileImage(it.id)
+
+            viewModel.smileClicked(imageId, dayText)
             binding.textDescribeDay.text?.clear()
 
             findNavController().navigateUp()

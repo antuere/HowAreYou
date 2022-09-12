@@ -53,12 +53,12 @@ class SummaryFragment : Fragment() {
             startPostponedEnterTransition()
         }
 
+        reenterTransition = MaterialElevationScale(true).apply {
+            duration = resources.getInteger(R.integer.duration_normal).toLong()
+        }
+
         fabButton = bindind.fabAddButton
         fabButton.setOnClickListener {
-
-            reenterTransition = MaterialElevationScale(true).apply {
-                duration = 350L
-            }
 
             var transitionName = getString(R.string.transition_name_for_sum)
             if (it.tag == getString(R.string.add)) {
@@ -77,24 +77,18 @@ class SummaryFragment : Fragment() {
             }
         }
 
-        viewModel.hideAddButton.observe(viewLifecycleOwner) {
-            if (it) {
-                fabButton.setImageResource(getSmileImage(viewModel.lastDay.value!!.imageId))
-                fabButton.tag = getString(R.string.smile)
-
-            } else {
-                fabButton.setImageResource(R.drawable.ic_plus)
-                fabButton.tag = getString(R.string.add)
-            }
-        }
     }
 
     override fun onStart() {
         super.onStart()
         viewModel.hideAddButton.observe(viewLifecycleOwner) {
             if (it) {
+                fabButton.tag = getString(R.string.smile)
+                fabButton.setImageResource(viewModel.lastDay.value!!.imageId)
                 bindind.coordinator.transitionName = getString(R.string.transition_name)
-
+            } else {
+                fabButton.tag = getString(R.string.add)
+                fabButton.setImageResource(R.drawable.ic_plus)
             }
         }
     }
@@ -106,6 +100,7 @@ class SummaryFragment : Fragment() {
                 bindind.coordinator.transitionName = getString(R.string.transition_name_for_sum)
             }
         }
+        fabButton.show()
 
     }
 }

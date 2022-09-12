@@ -37,7 +37,7 @@ class SummaryViewModel(private val databaseDao: DayDatabaseDao) : ViewModel() {
 
             Timber.i("fix! sum viewModel: change in upd")
 
-            _hideAddButton.value = currentDate == (_lastDay.value?.currentDate ?: "offWish")
+            _hideAddButton.value = currentDate == (_lastDay.value?.currentDateString ?: "offWish")
 
             Timber.i("fix! sum viewModel: ${_hideAddButton.value}")
         }

@@ -2,9 +2,8 @@ package com.example.zeroapp.detailFragment
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.zeroapp.MyExtendedViewModel
+import com.example.zeroapp.util.MyExtendedViewModel
 import com.example.zeroapp.dataBase.Day
 import com.example.zeroapp.dataBase.DayDatabaseDao
 import kotlinx.coroutines.Dispatchers
@@ -39,12 +38,13 @@ class DetailViewModel(override var databaseDao: DayDatabaseDao, val dayId: Long)
         }
     }
 
-    fun navigateToHistory(){
-        _navigateToHistory.value = true
-    }
 
-    fun navigateDone(){
+    fun navigateDone() {
         _navigateToHistory.value = false
     }
 
+    override fun deleteDay(id: Long) {
+        super.deleteDay(id)
+        _navigateToHistory.value = true
+    }
 }

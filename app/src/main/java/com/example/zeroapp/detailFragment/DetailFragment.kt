@@ -11,12 +11,14 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.zeroapp.*
+import com.example.zeroapp.util.buildMaterialDialog
 import com.example.zeroapp.dataBase.DayDatabase
 import com.example.zeroapp.databinding.FragmentDetailBinding
+import com.example.zeroapp.util.getString
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.transition.MaterialContainerTransform
 import timber.log.Timber
-import com.example.zeroapp.themeColor
+import com.example.zeroapp.util.themeColor
 
 
 class DetailFragment : Fragment() {
@@ -28,7 +30,7 @@ class DetailFragment : Fragment() {
         super.onCreate(savedInstanceState)
         sharedElementEnterTransition = MaterialContainerTransform().apply {
             drawingViewId = R.id.myNavHostFragment
-            duration = 350L
+            duration = resources.getInteger(R.integer.duration_normal).toLong()
             scrimColor = Color.WHITE
             setAllContainerColors(requireContext().themeColor(com.google.android.material.R.attr.colorOnPrimary))
         }
@@ -66,9 +68,9 @@ class DetailFragment : Fragment() {
         viewModel.currentDay.observe(viewLifecycleOwner) {
             it?.let {
                 binding.apply {
-                    dateText.text = it.currentDate
+                    dateText.text = it.currentDateString
                     descText.text = it.dayText
-                    smileImage.setImageResource(getSmileImage(it.imageId))
+                    smileImage.setImageResource(it.imageId)
                 }
             }
         }
@@ -89,11 +91,12 @@ class DetailFragment : Fragment() {
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 return when (menuItem.itemId) {
                     R.id.delete_item -> {
-                        showMaterialDialog(
-                            viewModel,
+                        val dialog = buildMaterialDialog(
+                            { dayId -> viewModel.deleteDay(dayId) },
                             dayId,
-                            this@DetailFragment.context,
+                            this@DetailFragment.context
                         )
+                        dialog.show()
                         true
                     }
                     else -> false

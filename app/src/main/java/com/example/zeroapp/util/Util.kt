@@ -1,4 +1,4 @@
-package com.example.zeroapp
+package com.example.zeroapp.util
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -8,8 +8,10 @@ import androidx.annotation.AttrRes
 import androidx.annotation.ColorInt
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.res.use
-import com.example.zeroapp.detailFragment.DetailViewModel
+import com.example.zeroapp.R
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 enum class Constance(val key: String) {
@@ -17,6 +19,7 @@ enum class Constance(val key: String) {
     KEY_BUNDLE("key for bundle")
 }
 
+// Конвертер id кнопки к id изображения нужного смайлика
 fun getSmileImage(id: Int): Int {
     return when (id) {
         R.id.b_very_happy -> R.drawable.smile_very_happy
@@ -28,12 +31,12 @@ fun getSmileImage(id: Int): Int {
     }
 }
 
+// Построитель диалога для удаления дня (material 2)
 fun showAlertDialog(model: MyExtendedViewModel, dayId: Long, context: Context?) {
     val lisneter = DialogInterface.OnClickListener { _, id ->
         when (id) {
             DialogInterface.BUTTON_POSITIVE -> {
                 model.deleteDay(dayId)
-                if (model is DetailViewModel) model.navigateToHistory()
             }
             DialogInterface.BUTTON_NEGATIVE -> Unit
         }
@@ -49,11 +52,12 @@ fun showAlertDialog(model: MyExtendedViewModel, dayId: Long, context: Context?) 
     dialog.show()
 }
 
-fun showMaterialDialog(
-    model: MyExtendedViewModel,
+// Построитель диалога для удаления дня (Material3)
+fun buildMaterialDialog(
+    onClick: (dayId: Long) -> Unit,
     dayId: Long,
     context: Context?,
-) {
+): MaterialAlertDialogBuilder {
     val materialDialog = MaterialAlertDialogBuilder(
         context!!
     )
@@ -63,12 +67,11 @@ fun showMaterialDialog(
             dialog.dismiss()
         }
         .setPositiveButton(R.string.yes) { dialog, _ ->
-            model.deleteDay(dayId)
-            if (model is DetailViewModel) model.navigateToHistory()
+            onClick(dayId)
             dialog.dismiss()
 
         }
-    materialDialog.show()
+    return materialDialog
 }
 
 @ColorInt
@@ -82,3 +85,30 @@ fun Context.themeColor(
         it.getColor(0, Color.MAGENTA)
     }
 }
+
+//Конвертируем календарь в строку нужного формата
+fun Calendar.getString(): String {
+    val formatter = SimpleDateFormat("dd/MM/yy", Locale.US)
+
+    return formatter.format(this.time)
+}
+
+
+fun getMonthTitle(context: Context, num : Int) : String{
+    return when (num){
+        0 -> context.resources.getString(R.string.january)
+        1 -> context.resources.getString(R.string.february)
+        2 -> context.resources.getString(R.string.march)
+        3 -> context.resources.getString(R.string.april)
+        4 -> context.resources.getString(R.string.may)
+        5 -> context.resources.getString(R.string.june)
+        6 -> context.resources.getString(R.string.july)
+        7 -> context.resources.getString(R.string.august)
+        8 -> context.resources.getString(R.string.september)
+        9 -> context.resources.getString(R.string.october)
+        10 -> context.resources.getString(R.string.november)
+        11 -> context.resources.getString(R.string.december)
+        else -> throw IllegalArgumentException("Invalid number of month")
+    }
+}
+

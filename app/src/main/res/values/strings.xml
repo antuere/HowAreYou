@@ -29,5 +29,20 @@
     <string name="no">Cancel</string>
     <string name="wish_for_users">We hope you had another great day, so enjoy! We are waiting for you tomorrow</string>
     <string name="button_for_add_new_day">button for add new day</string>
+    <string name="history_hint">Add your first day and come back!</string>
+
+    <!-- Months -->
+    <string name="january">January</string>
+    <string name="february">February</string>
+    <string name="march">March</string>
+    <string name="april">April</string>
+    <string name="may">May</string>
+    <string name="june">June</string>
+    <string name="july">July</string>
+    <string name="august">August</string>
+    <string name="september">September</string>
+    <string name="october">October</string>
+    <string name="november">November</string>
+    <string name="december">December</string>
 
 </resources>

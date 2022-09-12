@@ -9,30 +9,77 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.zeroapp.R
 import com.example.zeroapp.dataBase.Day
 import com.example.zeroapp.databinding.DayItemBinding
-import com.example.zeroapp.getSmileImage
+import com.example.zeroapp.databinding.HeaderHistoryBinding
+import com.example.zeroapp.util.getMonthTitle
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import timber.log.Timber
+import java.lang.ClassCastException
+import java.util.*
+
+
+private const val ITEM_VIEW_TYPE_HEADER = 0
+private const val ITEM_VIEW_TYPE_DAY = 1
 
 class DayAdapter(private val clickListener: DayClickListener) :
-    ListAdapter<Day, DayAdapter.DayViewHolder>(DayDiffCallback()) {
+    ListAdapter<DataItem, RecyclerView.ViewHolder>(DayDiffCallback()) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DayViewHolder {
+    private val adapterScope = CoroutineScope(Dispatchers.Default)
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         Timber.i("my log createViewHolder")
-        return DayViewHolder.from(parent)
+        return when (viewType) {
+            ITEM_VIEW_TYPE_HEADER -> HeaderViewHolder.from(parent)
+            ITEM_VIEW_TYPE_DAY -> DayViewHolder.from(parent)
+            else -> throw ClassCastException("Not valid viewType $viewType")
+        }
     }
 
-    override fun onBindViewHolder(holder: DayViewHolder, position: Int) {
+    fun addHeaderAndSubmitList(list: List<Day>?) {
+        adapterScope.launch {
+            val items = when (list?.isEmpty()) {
+                true, null -> listOf(DataItem.Header(Calendar.getInstance()))
+                false -> listOf(DataItem.Header(list[0].currentDate)) + list.map {
+                    DataItem.DayItem(it)
+                }
+            }
+            withContext(Dispatchers.Main) {
+                submitList(items)
+            }
+        }
+    }
+
+
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         Timber.i("my log bindViewHolder")
-        holder.bind(getItem(position), clickListener)
+        when (holder) {
+            is DayViewHolder -> {
+                val item = getItem(position) as DataItem.DayItem
+                holder.bind(item.day, clickListener)
+            }
+            is HeaderViewHolder -> {
+                val item = getItem(position) as DataItem.Header
+                holder.bind(item.calendar)
+            }
+        }
     }
 
+    override fun getItemViewType(position: Int): Int {
+        return when (getItem(position)) {
+            is DataItem.Header -> ITEM_VIEW_TYPE_HEADER
+            is DataItem.DayItem -> ITEM_VIEW_TYPE_DAY
+        }
+    }
 
-    class DayDiffCallback : DiffUtil.ItemCallback<Day>() {
+    class DayDiffCallback : DiffUtil.ItemCallback<DataItem>() {
 
-        override fun areItemsTheSame(oldItem: Day, newItem: Day): Boolean {
-            return oldItem.dayId == newItem.dayId
+        override fun areItemsTheSame(oldItem: DataItem, newItem: DataItem): Boolean {
+            return oldItem.id == newItem.id
         }
 
-        override fun areContentsTheSame(oldItem: Day, newItem: Day): Boolean {
+        override fun areContentsTheSame(oldItem: DataItem, newItem: DataItem): Boolean {
             return oldItem == newItem
         }
     }
@@ -51,15 +98,14 @@ class DayAdapter(private val clickListener: DayClickListener) :
         fun bind(item: Day, clickListener: DayClickListener) {
             Timber.i("my log try bind item")
             with(binding) {
-                imageView.setImageResource(getSmileImage(item.imageId))
-                dateText.text = item.currentDate
-
+                imageView.setImageResource(item.imageId)
+                dateText.text = item.currentDateString
                 val transitionName =
                     itemView.context.getString(R.string.transition_name_item, item.dayId.toString())
                 itemView.transitionName = transitionName
 
                 itemView.setOnClickListener {
-                    clickListener.onClick(item, root)
+                    clickListener.onClick(item, itemView)
                 }
                 itemView.setOnLongClickListener {
                     clickListener.onClickLong(item)
@@ -73,19 +119,54 @@ class DayAdapter(private val clickListener: DayClickListener) :
     }
 
 
-}
+    class HeaderViewHolder private constructor(private val binding: HeaderHistoryBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
-class DayListener(val clickListener: (dayId: Long) -> Unit) {
-    fun onClick(day: Day) {
-        clickListener(day.dayId)
+        companion object {
+            fun from(parent: ViewGroup): HeaderViewHolder {
+                val layoutInflater = LayoutInflater.from(parent.context)
+                val binding = HeaderHistoryBinding.inflate(layoutInflater, parent, false)
+                return HeaderViewHolder(binding)
+            }
+        }
+
+        fun bind(calendar: Calendar) {
+            val month = calendar.get(Calendar.MONTH)
+            binding.header.text = getMonthTitle(itemView.context!!, month)
+        }
+
     }
 
-    fun onLongClick(day: Day) {
-        clickListener(day.dayId)
-    }
+
 }
 
 interface DayClickListener {
+
     fun onClick(day: Day, view: View)
+
     fun onClickLong(day: Day)
 }
+
+sealed class DataItem {
+
+    data class DayItem(val day: Day) : DataItem() {
+        override val id = day.dayId
+
+    }
+
+    data class Header(val calendar: Calendar) : DataItem() {
+        override val id = Long.MIN_VALUE
+    }
+
+    abstract val id: Long
+}
+
+//class DayListener(val clickListener: (dayId: Long) -> Unit) {
+//    fun onClick(day: Day) {
+//        clickListener(day.dayId)
+//    }
+//
+//    fun onLongClick(day: Day) {
+//        clickListener(day.dayId)
+//    }
+//}
