@@ -11,10 +11,8 @@ import com.example.zeroapp.dataBase.Day
 import com.example.zeroapp.databinding.DayItemBinding
 import com.example.zeroapp.databinding.HeaderHistoryBinding
 import com.example.zeroapp.util.getMonthTitle
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
+import kotlinx.coroutines.android.awaitFrame
 import timber.log.Timber
 import java.lang.ClassCastException
 import java.util.*
@@ -29,7 +27,6 @@ class DayAdapter(private val clickListener: DayClickListener) :
     private val adapterScope = CoroutineScope(Dispatchers.Default)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        Timber.i("my log createViewHolder")
         return when (viewType) {
             ITEM_VIEW_TYPE_HEADER -> HeaderViewHolder.from(parent)
             ITEM_VIEW_TYPE_DAY -> DayViewHolder.from(parent)
@@ -41,19 +38,19 @@ class DayAdapter(private val clickListener: DayClickListener) :
         adapterScope.launch {
             val items = when (list?.isEmpty()) {
                 true, null -> listOf(DataItem.Header(Calendar.getInstance()))
-                false -> listOf(DataItem.Header(list[0].currentDate)) + list.map {
+                false -> listOf(DataItem.Header(Calendar.getInstance())) + list.map {
                     DataItem.DayItem(it)
                 }
             }
-            withContext(Dispatchers.Main) {
-                submitList(items)
-            }
+
+            submitList(items)
+            awaitFrame()
+
         }
     }
 
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        Timber.i("my log bindViewHolder")
         when (holder) {
             is DayViewHolder -> {
                 val item = getItem(position) as DataItem.DayItem
@@ -96,7 +93,7 @@ class DayAdapter(private val clickListener: DayClickListener) :
         }
 
         fun bind(item: Day, clickListener: DayClickListener) {
-            Timber.i("my log try bind item")
+            Timber.i("my log bind item day")
             with(binding) {
                 imageView.setImageResource(item.imageId)
                 dateText.text = item.currentDateString
@@ -131,6 +128,7 @@ class DayAdapter(private val clickListener: DayClickListener) :
         }
 
         fun bind(calendar: Calendar) {
+            Timber.i("my log bind item header")
             val month = calendar.get(Calendar.MONTH)
             binding.header.text = getMonthTitle(itemView.context!!, month)
         }

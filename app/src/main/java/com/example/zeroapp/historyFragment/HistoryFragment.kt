@@ -30,16 +30,21 @@ class HistoryFragment : Fragment(), DayClickListener {
     private lateinit var bindind: FragmentHistoryBinding
 
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        Timber.i("my log history on create")
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        Timber.i("my log history on createView")
         bindind = FragmentHistoryBinding.inflate(inflater, container, false)
 
         val application = requireNotNull(this.activity).application
         val dayDatabaseDao = DayDatabase.getInstance(application).dayDatabaseDao
         val factory = HistoryViewModelFactory(dayDatabaseDao)
-
         viewModel = ViewModelProvider(this, factory)[HistoryViewModel::class.java]
 
         val manager = GridLayoutManager(activity, 4)
@@ -55,12 +60,15 @@ class HistoryFragment : Fragment(), DayClickListener {
         }
         bindind.dayList.layoutManager = manager
 
+        reenterTransition = MaterialElevationScale(true).apply {
+            duration = resources.getInteger(R.integer.duration_normal).toLong()
+        }
+
         val adapter = DayAdapter(this)
 
         bindind.dayList.adapter = adapter
 
         viewModel.listDays.observe(viewLifecycleOwner) {
-
             it?.let {
                 if (it.isEmpty()) {
                     val materialFade = MaterialFade().apply {
@@ -70,7 +78,7 @@ class HistoryFragment : Fragment(), DayClickListener {
 
                     bindind.historyHint.visibility = View.VISIBLE
                 } else {
-                    bindind.historyHint.visibility = View.INVISIBLE
+                    bindind.historyHint.visibility = View.GONE
                 }
                 adapter.addHeaderAndSubmitList(it)
                 Timber.i("my log Submit list")
@@ -92,14 +100,10 @@ class HistoryFragment : Fragment(), DayClickListener {
 
         Timber.i("my log viewCreated")
 
-        reenterTransition = MaterialElevationScale(true).apply {
-            duration = resources.getInteger(R.integer.duration_normal).toLong()
-        }
     }
 
-
     override fun onClick(day: Day, view: View) {
-
+        Timber.i("my log history onClick")
         val transitionName = getString(R.string.transition_name)
         val extras = FragmentNavigatorExtras(view to transitionName)
         findNavController()
