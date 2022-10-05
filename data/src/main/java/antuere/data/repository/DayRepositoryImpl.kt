@@ -1,4 +1,4 @@
-package antuere.data.localDatabase.repository
+package antuere.data.repository
 
 import antuere.data.localDatabase.DayDatabase
 import antuere.data.localDatabase.mappers.DayEntityMapper

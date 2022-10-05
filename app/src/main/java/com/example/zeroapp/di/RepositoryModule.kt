@@ -1,6 +1,6 @@
 package com.example.zeroapp.di
 
-import antuere.data.localDatabase.repository.DayRepositoryImpl
+import antuere.data.repository.DayRepositoryImpl
 import antuere.domain.repository.DayRepository
 import dagger.Binds
 import dagger.Module
