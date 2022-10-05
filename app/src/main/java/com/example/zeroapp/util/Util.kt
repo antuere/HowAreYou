@@ -10,14 +10,8 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.content.res.use
 import com.example.zeroapp.R
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import java.text.SimpleDateFormat
-import java.util.*
 
 
-enum class Constance(val key: String) {
-    KEY_SMILE("key for smile"),
-    KEY_BUNDLE("key for bundle")
-}
 
 // Конвертер id кнопки к id изображения нужного смайлика
 fun getSmileImage(id: Int): Int {
@@ -33,7 +27,7 @@ fun getSmileImage(id: Int): Int {
 
 // Построитель диалога для удаления дня (material 2)
 fun showAlertDialog(model: MyExtendedViewModel, dayId: Long, context: Context?) {
-    val lisneter = DialogInterface.OnClickListener { _, id ->
+    val listener = DialogInterface.OnClickListener { _, id ->
         when (id) {
             DialogInterface.BUTTON_POSITIVE -> {
                 model.deleteDay(dayId)
@@ -45,8 +39,8 @@ fun showAlertDialog(model: MyExtendedViewModel, dayId: Long, context: Context?) 
     val dialog = AlertDialog.Builder(context!!)
         .setTitle(R.string.dialog_delete_title)
         .setMessage(R.string.dialog_delete_message)
-        .setPositiveButton(R.string.yes, lisneter)
-        .setNegativeButton(R.string.no, lisneter)
+        .setPositiveButton(R.string.yes, listener)
+        .setNegativeButton(R.string.no, listener)
         .create()
 
     dialog.show()
@@ -85,14 +79,6 @@ fun Context.themeColor(
         it.getColor(0, Color.MAGENTA)
     }
 }
-
-//Конвертируем календарь в строку нужного формата
-fun Calendar.getString(): String {
-    val formatter = SimpleDateFormat("dd/MM/yy", Locale.US)
-
-    return formatter.format(this.time)
-}
-
 
 fun getMonthTitle(context: Context, num : Int) : String{
     return when (num){
