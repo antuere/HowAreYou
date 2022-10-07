@@ -1,6 +1,6 @@
 package antuere.domain
 
-import antuere.data.localDatabase.util.getString
+import antuere.domain.util.getString
 import java.util.*
 
 

@@ -2,15 +2,11 @@ package com.example.zeroapp.util
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.DialogInterface
 import android.graphics.Color
 import androidx.annotation.AttrRes
 import androidx.annotation.ColorInt
-import androidx.appcompat.app.AlertDialog
 import androidx.core.content.res.use
 import com.example.zeroapp.R
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
-
 
 
 // Конвертер id кнопки к id изображения нужного смайлика
@@ -23,49 +19,6 @@ fun getSmileImage(id: Int): Int {
         R.id.b_sad -> R.drawable.smile_sad
         else -> R.drawable.smile_none
     }
-}
-
-// Builder dialog for delete day (Material 2)
-fun showAlertDialog(model: MyExtendedViewModel, dayId: Long, context: Context?) {
-    val listener = DialogInterface.OnClickListener { _, id ->
-        when (id) {
-            DialogInterface.BUTTON_POSITIVE -> {
-                model.deleteDay(dayId)
-            }
-            DialogInterface.BUTTON_NEGATIVE -> Unit
-        }
-    }
-
-    val dialog = AlertDialog.Builder(context!!)
-        .setTitle(R.string.dialog_delete_title)
-        .setMessage(R.string.dialog_delete_message)
-        .setPositiveButton(R.string.yes, listener)
-        .setNegativeButton(R.string.no, listener)
-        .create()
-
-    dialog.show()
-}
-
-// Builder dialog for delete day (Material 3)
-fun buildMaterialDialog(
-    onClick: (dayId: Long) -> Unit,
-    dayId: Long,
-    context: Context?,
-): MaterialAlertDialogBuilder {
-    val materialDialog = MaterialAlertDialogBuilder(
-        context!!
-    )
-        .setTitle(R.string.dialog_delete_title)
-        .setMessage(R.string.dialog_delete_message)
-        .setNegativeButton(R.string.no) { dialog, _ ->
-            dialog.dismiss()
-        }
-        .setPositiveButton(R.string.yes) { dialog, _ ->
-            onClick(dayId)
-            dialog.dismiss()
-
-        }
-    return materialDialog
 }
 
 @ColorInt

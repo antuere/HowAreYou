@@ -1,10 +1,7 @@
 package com.example.zeroapp.di
 
 import antuere.domain.repository.DayRepository
-import antuere.domain.usecases.DeleteDayUseCase
-import antuere.domain.usecases.GetAllDaysUseCase
-import antuere.domain.usecases.GetCurrentDateUseCase
-import antuere.domain.usecases.UpdateLastDayUseCase
+import antuere.domain.usecases.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -33,6 +30,16 @@ class DomainModule {
     @Provides
     fun provideDeleteDayUseCase(dayRepository: DayRepository): DeleteDayUseCase {
         return DeleteDayUseCase(dayRepository)
+    }
+
+    @Provides
+    fun provideGetDayByIdUseCase(dayRepository: DayRepository): GetDayByIdUseCase {
+        return GetDayByIdUseCase(dayRepository)
+    }
+
+    @Provides
+    fun provideAddDayUseCase(dayRepository: DayRepository): AddDayUseCase {
+        return AddDayUseCase(dayRepository)
     }
 
 }

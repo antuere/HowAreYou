@@ -4,7 +4,6 @@ import android.view.View
 import androidx.lifecycle.*
 import androidx.navigation.fragment.FragmentNavigator
 import androidx.navigation.fragment.FragmentNavigatorExtras
-import com.example.zeroapp.util.MyExtendedViewModel
 import antuere.domain.Day
 import antuere.domain.usecases.DeleteDayUseCase
 import antuere.domain.usecases.GetAllDaysUseCase

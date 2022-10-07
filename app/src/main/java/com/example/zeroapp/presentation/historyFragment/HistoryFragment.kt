@@ -29,7 +29,6 @@ class HistoryFragment : Fragment() {
     @Inject
     lateinit var dialogDelete: MaterialAlertDialogBuilder
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Timber.i("my log history on create")

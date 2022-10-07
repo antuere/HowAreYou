@@ -9,20 +9,23 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import com.example.zeroapp.*
-import com.example.zeroapp.util.buildMaterialDialog
 import com.example.zeroapp.databinding.FragmentDetailBinding
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.transition.MaterialContainerTransform
 import timber.log.Timber
 import com.example.zeroapp.util.themeColor
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class DetailFragment : Fragment() {
 
     private val viewModel by viewModels<DetailViewModel>()
+
+    @Inject
+    lateinit var dialogDelete: MaterialAlertDialogBuilder
 
     private lateinit var binding: FragmentDetailBinding
     private lateinit var toolbar: MaterialToolbar
@@ -57,9 +60,6 @@ class DetailFragment : Fragment() {
 
         val menuHost: MenuHost = activity
 
-        val args: DetailFragmentArgs by navArgs()
-        val dayId = args.dayId
-
         viewModel.currentDay.observe(viewLifecycleOwner) {
             it?.let {
                 binding.apply {
@@ -86,12 +86,12 @@ class DetailFragment : Fragment() {
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 return when (menuItem.itemId) {
                     R.id.delete_item -> {
-                        val dialog = buildMaterialDialog(
-                            { dayId -> viewModel.deleteDay(dayId) },
-                            dayId,
-                            this@DetailFragment.context
-                        )
-                        dialog.show()
+                        dialogDelete.setPositiveButton(R.string.yes) { dialog, _ ->
+                            viewModel.deleteDay()
+                            viewModel.navigateDone()
+                            dialog.dismiss()
+                        }
+                        dialogDelete.show()
                         true
                     }
                     else -> false

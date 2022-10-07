@@ -12,6 +12,9 @@ import dagger.hilt.android.components.FragmentComponent
 @InstallIn(FragmentComponent::class)
 object DeleteDialogModule {
 
+
+
+    // Builder dialog for delete day (Material 3)
     @Provides
     fun provideDeleteDialog(fragment: Fragment): MaterialAlertDialogBuilder {
         val materialDialog = MaterialAlertDialogBuilder(

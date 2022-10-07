@@ -3,20 +3,24 @@ package com.example.zeroapp.presentation.detailFragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.zeroapp.util.MyExtendedViewModel
 import antuere.domain.Day
-import antuere.domain.repository.DayRepository
+import antuere.domain.usecases.DeleteDayUseCase
+import antuere.domain.usecases.GetDayByIdUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class DetailViewModel @Inject constructor(
-    override var dayRepository: DayRepository,
-    private val state: SavedStateHandle
-) : MyExtendedViewModel() {
+    private val getDayByIdUseCase: GetDayByIdUseCase,
+    private val deleteDayUseCase: DeleteDayUseCase,
+    state: SavedStateHandle
+) : ViewModel() {
 
+
+    private val dayId = state.get<Long>("dayId")
     private val _currentDay = MutableLiveData<Day?>()
     val currentDay: LiveData<Day?>
         get() = _currentDay
@@ -31,8 +35,7 @@ class DetailViewModel @Inject constructor(
 
     private fun getDay() {
         viewModelScope.launch {
-            val dayId = state.get<Long>("dayId")
-            _currentDay.value = dayRepository.getDayById(dayId!!)
+            _currentDay.value = getDayByIdUseCase.invoke(dayId!!)
         }
     }
 
@@ -41,8 +44,10 @@ class DetailViewModel @Inject constructor(
         _navigateToHistory.value = false
     }
 
-    override fun deleteDay(id: Long) {
-        super.deleteDay(id)
+    fun deleteDay() {
+        viewModelScope.launch {
+            deleteDayUseCase.invoke(dayId!!)
+        }
         _navigateToHistory.value = true
     }
 }

@@ -1,4 +1,4 @@
-package antuere.data.localDatabase.util
+package antuere.domain.util
 
 import java.text.SimpleDateFormat
 import java.util.*

@@ -3,7 +3,7 @@ package antuere.data.localDatabase
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import antuere.data.localDatabase.util.getString
+import antuere.domain.util.getString
 import java.util.*
 
 
