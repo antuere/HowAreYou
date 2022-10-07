@@ -7,25 +7,27 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.transition.TransitionManager
 import com.example.zeroapp.R
-import antuere.domain.Day
 import com.example.zeroapp.databinding.FragmentHistoryBinding
-import com.example.zeroapp.util.buildMaterialDialog
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.transition.MaterialElevationScale
 import com.google.android.material.transition.MaterialFade
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
+import javax.inject.Inject
 
 
 @AndroidEntryPoint
-class HistoryFragment : Fragment(), DayClickListener {
+class HistoryFragment : Fragment() {
 
     private val viewModel by viewModels<HistoryViewModel>()
     private lateinit var bindind: FragmentHistoryBinding
+
+    @Inject
+    lateinit var dialogDelete: MaterialAlertDialogBuilder
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,7 +59,7 @@ class HistoryFragment : Fragment(), DayClickListener {
             duration = resources.getInteger(R.integer.duration_normal).toLong()
         }
 
-        val adapter = DayAdapter(this)
+        val adapter = DayAdapter(viewModel)
 
         bindind.dayList.adapter = adapter
 
@@ -86,6 +88,31 @@ class HistoryFragment : Fragment(), DayClickListener {
 
         super.onViewCreated(view, savedInstanceState)
 
+        viewModel.navigateToDetail.observe(viewLifecycleOwner) {
+            if (it) {
+                val dayId = viewModel.dayId.value!!
+                val extras = viewModel.extras.value!!
+                findNavController()
+                    .navigate(
+                        HistoryFragmentDirections.actionHistoryToDetailFragment(dayId),
+                        extras
+                    )
+
+                viewModel.doneNavigateToDetail()
+            }
+        }
+
+        viewModel.showDialogDelete.observe(viewLifecycleOwner) {
+            if (it) {
+                dialogDelete.setPositiveButton(R.string.yes) { dialog, _ ->
+                    viewModel.deleteDay()
+                    dialog.dismiss()
+                }
+                dialogDelete.show()
+                viewModel.doneShowDialogDelete()
+            }
+        }
+
         postponeEnterTransition()
         view.doOnPreDraw {
             startPostponedEnterTransition()
@@ -93,20 +120,6 @@ class HistoryFragment : Fragment(), DayClickListener {
 
         Timber.i("my log viewCreated")
 
-    }
-
-    override fun onClick(day: Day, view: View) {
-        Timber.i("my log history onClick")
-        val transitionName = getString(R.string.transition_name)
-        val extras = FragmentNavigatorExtras(view to transitionName)
-        findNavController()
-            .navigate(HistoryFragmentDirections.actionHistoryToDetailFragment(day.dayId), extras)
-    }
-
-    override fun onClickLong(day: Day) {
-        val dialog =
-            buildMaterialDialog({ dayId -> viewModel.deleteDay(dayId) }, day.dayId, this.context)
-        dialog.show()
     }
 
 }

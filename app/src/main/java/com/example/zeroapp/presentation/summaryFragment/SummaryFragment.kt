@@ -23,7 +23,6 @@ class SummaryFragment : Fragment() {
     private lateinit var bindind: FragmentSummaryBinding
     private lateinit var fabButton: FloatingActionButton
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -38,7 +37,7 @@ class SummaryFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.updateLastDay()
+        viewModel.updateInfo()
 
         postponeEnterTransition()
         view.doOnPreDraw {

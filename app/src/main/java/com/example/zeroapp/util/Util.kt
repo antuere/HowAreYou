@@ -25,7 +25,7 @@ fun getSmileImage(id: Int): Int {
     }
 }
 
-// Построитель диалога для удаления дня (material 2)
+// Builder dialog for delete day (Material 2)
 fun showAlertDialog(model: MyExtendedViewModel, dayId: Long, context: Context?) {
     val listener = DialogInterface.OnClickListener { _, id ->
         when (id) {
@@ -46,7 +46,7 @@ fun showAlertDialog(model: MyExtendedViewModel, dayId: Long, context: Context?) 
     dialog.show()
 }
 
-// Построитель диалога для удаления дня (Material3)
+// Builder dialog for delete day (Material 3)
 fun buildMaterialDialog(
     onClick: (dayId: Long) -> Unit,
     dayId: Long,
