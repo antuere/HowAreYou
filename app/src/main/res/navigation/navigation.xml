@@ -7,12 +7,12 @@
 
     <fragment
             android:id="@+id/addDayFragment"
-            android:name="com.example.zeroapp.presentation.addDayFragment.AddDayFragment"
+            android:name="com.example.zeroapp.presentation.add_day.AddDayFragment"
             android:label="@string/today"
             tools:layout="@layout/fragment_add_day"/>
     <fragment
             android:id="@+id/historyFragment"
-            android:name="com.example.zeroapp.presentation.historyFragment.HistoryFragment"
+            android:name="com.example.zeroapp.presentation.history.HistoryFragment"
             android:label="@string/history"
             tools:layout="@layout/fragment_history">
         <action
@@ -23,7 +23,7 @@
     </fragment>
     <fragment
             android:id="@+id/detailFragment"
-            android:name="com.example.zeroapp.presentation.detailFragment.DetailFragment"
+            android:name="com.example.zeroapp.presentation.detail.DetailFragment"
             android:label="@string/about_day"
             tools:layout="@layout/fragment_detail">
         <argument
@@ -37,12 +37,12 @@
     </fragment>
     <fragment
             android:id="@+id/settingsFragment"
-            android:name="com.example.zeroapp.presentation.settingsFragment.SettingsFragment"
+            android:name="com.example.zeroapp.presentation.settings.SettingsFragment"
             android:label="@string/settings"
             tools:layout="@layout/fragment_settings" />
     <fragment
             android:id="@+id/summaryFragment"
-            android:name="com.example.zeroapp.presentation.summaryFragment.SummaryFragment"
+            android:name="com.example.zeroapp.presentation.summary.SummaryFragment"
             android:label="@string/summary"
             tools:layout="@layout/fragment_summary" >
         <action
