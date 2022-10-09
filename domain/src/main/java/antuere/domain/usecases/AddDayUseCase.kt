@@ -1,11 +1,11 @@
 package antuere.domain.usecases
 
-import antuere.domain.Day
+import antuere.domain.dto.Day
 import antuere.domain.repository.DayRepository
 
-class AddDayUseCase (private val dayRepository: DayRepository) {
-
-    suspend operator fun invoke(day: Day) {
-        dayRepository.insert(day)
+class AddDayUseCase(private val dayRepository: DayRepository) : UseCase<Unit, Day> {
+    override suspend fun run(param: Day) {
+        dayRepository.insert(param)
     }
 }
+

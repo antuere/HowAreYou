@@ -1,12 +1,14 @@
 package com.example.zeroapp.di
 
 import android.app.Application
+import android.content.Context
 import androidx.room.Room
-import antuere.data.localDatabase.DayDatabase
-import antuere.data.localDatabase.mappers.DayEntityMapper
+import antuere.data.room.DayDatabase
+import antuere.data.room.mapping.DayEntityMapper
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
@@ -16,9 +18,9 @@ class DataModule {
 
     @Provides
     @Singleton
-    fun provideDayDatabase(application: Application): DayDatabase {
+    fun provideDayDatabase(@ApplicationContext context:Context): DayDatabase {
         return Room.databaseBuilder(
-            application.applicationContext,
+            context,
             DayDatabase::class.java,
             "day_db"
         ).build()
