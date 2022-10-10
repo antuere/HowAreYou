@@ -1,4 +1,4 @@
-package antuere.domain.util
+package antuere.domain.mapping
 
 interface DomainMapper<T, DomainModel> {
 

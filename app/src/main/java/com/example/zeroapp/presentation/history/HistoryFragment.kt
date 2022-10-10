@@ -1,4 +1,4 @@
-package com.example.zeroapp.presentation.historyFragment
+package com.example.zeroapp.presentation.history
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -12,22 +12,24 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.transition.TransitionManager
 import com.example.zeroapp.R
 import com.example.zeroapp.databinding.FragmentHistoryBinding
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.example.zeroapp.presentation.base.ui_dialog.UIDialogListener
+import com.example.zeroapp.presentation.history.adapter.DayAdapter
 import com.google.android.material.transition.MaterialElevationScale
 import com.google.android.material.transition.MaterialFade
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
-import javax.inject.Inject
 
 
 @AndroidEntryPoint
 class HistoryFragment : Fragment() {
 
     private val viewModel by viewModels<HistoryViewModel>()
-    private lateinit var bindind: FragmentHistoryBinding
+    private lateinit var binding: FragmentHistoryBinding
 
-    @Inject
-    lateinit var dialogDelete: MaterialAlertDialogBuilder
+    private val dialogListener: UIDialogListener by lazy {
+        UIDialogListener(requireContext(), viewModel)
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,7 +41,7 @@ class HistoryFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         Timber.i("my log history on createView")
-        bindind = FragmentHistoryBinding.inflate(inflater, container, false)
+        binding = FragmentHistoryBinding.inflate(inflater, container, false)
 
         val manager = GridLayoutManager(activity, 4)
 
@@ -52,15 +54,15 @@ class HistoryFragment : Fragment() {
             }
 
         }
-        bindind.dayList.layoutManager = manager
+        binding.dayList.layoutManager = manager
 
         reenterTransition = MaterialElevationScale(true).apply {
             duration = resources.getInteger(R.integer.duration_normal).toLong()
         }
 
-        val adapter = DayAdapter(viewModel)
+        val adapter = DayAdapter(viewModel.dayClickListener)
 
-        bindind.dayList.adapter = adapter
+        binding.dayList.adapter = adapter
 
         viewModel.listDays.observe(viewLifecycleOwner) {
             it?.let {
@@ -70,22 +72,24 @@ class HistoryFragment : Fragment() {
                     }
                     TransitionManager.beginDelayedTransition(container!!, materialFade)
 
-                    bindind.historyHint.visibility = View.VISIBLE
+                    binding.historyHint.visibility = View.VISIBLE
                 } else {
-                    bindind.historyHint.visibility = View.GONE
+                    binding.historyHint.visibility = View.GONE
                 }
                 adapter.addHeaderAndSubmitList(it)
                 Timber.i("my log Submit list")
             }
         }
 
-        return bindind.root
+        return binding.root
     }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         super.onViewCreated(view, savedInstanceState)
+
+        dialogListener.collect(this)
 
         viewModel.navigateToDetail.observe(viewLifecycleOwner) {
             if (it) {
@@ -98,17 +102,6 @@ class HistoryFragment : Fragment() {
                     )
 
                 viewModel.doneNavigateToDetail()
-            }
-        }
-
-        viewModel.showDialogDelete.observe(viewLifecycleOwner) {
-            if (it) {
-                dialogDelete.setPositiveButton(R.string.yes) { dialog, _ ->
-                    viewModel.deleteDay()
-                    dialog.dismiss()
-                }
-                dialogDelete.show()
-                viewModel.doneShowDialogDelete()
             }
         }
 

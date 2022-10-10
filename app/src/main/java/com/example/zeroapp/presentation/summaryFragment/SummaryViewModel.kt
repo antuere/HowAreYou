@@ -4,18 +4,18 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import antuere.domain.Day
-import antuere.domain.usecases.GetCurrentDateUseCase
+import antuere.domain.dto.Day
 import antuere.domain.usecases.UpdateLastDayUseCase
+import antuere.domain.util.TimeUtility
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
 class SummaryViewModel @Inject constructor(
-    private val updateLastDayUseCase: UpdateLastDayUseCase,
-    private val getCurrentDateUseCase: GetCurrentDateUseCase
+    private val updateLastDayUseCase: UpdateLastDayUseCase
 ) :
     ViewModel() {
 
@@ -23,8 +23,8 @@ class SummaryViewModel @Inject constructor(
     val lastDay: LiveData<Day?>
         get() = _lastDay
 
-    private val _hideAddButton = MutableLiveData(false)
-    val hideAddButton: LiveData<Boolean>
+    private val _hideAddButton = MutableLiveData<HideAddButtonState>(HideAddButtonState.Add)
+    val hideAddButton: LiveData<HideAddButtonState>
         get() = _hideAddButton
 
     init {
@@ -35,10 +35,17 @@ class SummaryViewModel @Inject constructor(
     fun updateInfo() {
         viewModelScope.launch {
 
-            _lastDay.value = updateLastDayUseCase.invoke()
+            _lastDay.value = updateLastDayUseCase.invoke(Unit)
 
-            _hideAddButton.value =
-                getCurrentDateUseCase.invoke() == (_lastDay.value?.currentDateString ?: "offWish")
+            if (TimeUtility.format(Date()) == (_lastDay.value?.currentDateString ?: "show")) {
+
+                _hideAddButton.value = HideAddButtonState.Smile(lastDay.value?.imageId!!)
+
+            } else {
+
+                _hideAddButton.value = HideAddButtonState.Add
+
+            }
 
             Timber.i("fix! sum viewModel: ${_hideAddButton.value}")
         }

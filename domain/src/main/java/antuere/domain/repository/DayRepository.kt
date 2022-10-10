@@ -1,6 +1,6 @@
 package antuere.domain.repository
 
-import antuere.domain.Day
+import antuere.domain.dto.Day
 import kotlinx.coroutines.flow.Flow
 
 interface DayRepository {

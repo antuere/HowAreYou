@@ -12,10 +12,6 @@ import dagger.hilt.components.SingletonComponent
 @InstallIn(SingletonComponent::class)
 class DomainModule {
 
-    @Provides
-    fun provideGetCurrentDayUseCase(): GetCurrentDateUseCase {
-        return GetCurrentDateUseCase()
-    }
 
     @Provides
     fun provideUpdateLastDayUseCase(dayRepository: DayRepository): UpdateLastDayUseCase {

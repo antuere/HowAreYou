@@ -1,6 +1,5 @@
-package com.example.zeroapp.presentation.detailFragment
+package com.example.zeroapp.presentation.detail
 
-import android.graphics.Color
 import android.os.Bundle
 import android.view.*
 import androidx.core.view.MenuHost
@@ -11,33 +10,28 @@ import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
 import com.example.zeroapp.*
 import com.example.zeroapp.databinding.FragmentDetailBinding
+import com.example.zeroapp.presentation.base.ui_dialog.UIDialogListener
+import com.example.zeroapp.util.createSharedElementEnterTransition
 import com.google.android.material.appbar.MaterialToolbar
-import com.google.android.material.transition.MaterialContainerTransform
 import timber.log.Timber
-import com.example.zeroapp.util.themeColor
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class DetailFragment : Fragment() {
 
     private val viewModel by viewModels<DetailViewModel>()
 
-    @Inject
-    lateinit var dialogDelete: MaterialAlertDialogBuilder
+    private val dialogListener: UIDialogListener by lazy {
+        UIDialogListener(requireContext(), viewModel)
+    }
+
 
     private lateinit var binding: FragmentDetailBinding
     private lateinit var toolbar: MaterialToolbar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        sharedElementEnterTransition = MaterialContainerTransform().apply {
-            drawingViewId = R.id.myNavHostFragment
-            duration = resources.getInteger(R.integer.duration_normal).toLong()
-            scrimColor = Color.WHITE
-            setAllContainerColors(requireContext().themeColor(com.google.android.material.R.attr.colorOnPrimary))
-        }
+        sharedElementEnterTransition = createSharedElementEnterTransition()
     }
 
     override fun onCreateView(
@@ -52,9 +46,9 @@ class DetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        dialogListener.collect(this)
         val activity = requireActivity() as MainActivity
-
-        toolbar = activity.toolbar
+        toolbar = activity.toolbar!!
         toolbar.setNavigationIcon(R.drawable.ic_back)
         toolbar.isTitleCentered = false
 
@@ -86,12 +80,7 @@ class DetailFragment : Fragment() {
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 return when (menuItem.itemId) {
                     R.id.delete_item -> {
-                        dialogDelete.setPositiveButton(R.string.yes) { dialog, _ ->
-                            viewModel.deleteDay()
-                            viewModel.navigateDone()
-                            dialog.dismiss()
-                        }
-                        dialogDelete.show()
+                        viewModel.onDeleteButtonClicked()
                         true
                     }
                     else -> false

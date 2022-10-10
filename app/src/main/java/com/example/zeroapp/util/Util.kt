@@ -1,11 +1,6 @@
 package com.example.zeroapp.util
 
-import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.Color
-import androidx.annotation.AttrRes
-import androidx.annotation.ColorInt
-import androidx.core.content.res.use
 import com.example.zeroapp.R
 
 
@@ -21,17 +16,6 @@ fun getSmileImage(id: Int): Int {
     }
 }
 
-@ColorInt
-@SuppressLint("Recycle")
-fun Context.themeColor(
-    @AttrRes themeAttrId: Int
-): Int {
-    return obtainStyledAttributes(
-        intArrayOf(themeAttrId)
-    ).use {
-        it.getColor(0, Color.MAGENTA)
-    }
-}
 
 fun getMonthTitle(context: Context, num : Int) : String{
     return when (num){

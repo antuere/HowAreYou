@@ -1,20 +1,20 @@
-package antuere.data.localDatabase
+package antuere.data.localDatabase.entities
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import antuere.domain.util.getString
+import antuere.domain.util.TimeUtility
 import java.util.*
 
 
-@Entity(tableName = "day_table")
+@Entity(tableName = DayEntity.TABLE_NAME)
 data class DayEntity(
 
     @PrimaryKey(autoGenerate = true)
     var dayId: Long = 0L,
 
     @ColumnInfo(name = "date")
-    val currentDate: Calendar = Calendar.getInstance(),
+    val currentDate: Calendar = TimeUtility.calendar,
 
     @ColumnInfo(name = "image_id")
     val imageId: Int,
@@ -23,6 +23,10 @@ data class DayEntity(
     var dayText: String,
 
     @ColumnInfo(name = "date_text")
-    val currentDateString: String = currentDate.getString()
+    val currentDateString: String = TimeUtility.formatCurrentTime()
 
-)
+) {
+    companion object {
+        const val TABLE_NAME = "day_table"
+    }
+}

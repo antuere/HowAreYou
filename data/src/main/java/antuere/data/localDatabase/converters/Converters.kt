@@ -1,4 +1,4 @@
-package antuere.data.localDatabase.util
+package antuere.data.localDatabase.converters
 
 import androidx.room.TypeConverter
 import java.util.*

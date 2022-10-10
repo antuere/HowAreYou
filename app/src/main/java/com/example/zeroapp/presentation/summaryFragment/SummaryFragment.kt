@@ -73,13 +73,10 @@ class SummaryFragment : Fragment() {
     override fun onStart() {
         super.onStart()
         viewModel.hideAddButton.observe(viewLifecycleOwner) {
-            if (it) {
-                fabButton.tag = getString(R.string.smile)
-                fabButton.setImageResource(viewModel.lastDay.value!!.imageId)
-                bindind.coordinator.transitionName = getString(R.string.transition_name)
-            } else {
-                fabButton.tag = getString(R.string.add)
-                fabButton.setImageResource(R.drawable.ic_plus)
+            fabButton.tag = getString(it.tag)
+            fabButton.setImageResource(it.image)
+            if (it.tag == R.string.smile) {
+                bindind.coordinator.transitionName = getString(it.transitionName)
             }
         }
     }
@@ -87,8 +84,8 @@ class SummaryFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         viewModel.hideAddButton.observe(viewLifecycleOwner) {
-            if (!it) {
-                bindind.coordinator.transitionName = getString(R.string.transition_name_for_sum)
+            if (it.tag == R.string.add) {
+                bindind.coordinator.transitionName = getString(it.transitionName)
             }
         }
         fabButton.show()

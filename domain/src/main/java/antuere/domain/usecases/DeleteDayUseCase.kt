@@ -2,9 +2,9 @@ package antuere.domain.usecases
 
 import antuere.domain.repository.DayRepository
 
-class DeleteDayUseCase(private val dayRepository: DayRepository) {
+class DeleteDayUseCase(private val dayRepository: DayRepository) : UseCase<Unit, Long> {
 
-    suspend operator fun invoke(dayId: Long) {
-        dayRepository.deleteDay(dayId)
+    override suspend fun run(param: Long) {
+        dayRepository.deleteDay(param)
     }
 }

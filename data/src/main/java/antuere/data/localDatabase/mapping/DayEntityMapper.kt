@@ -1,8 +1,8 @@
-package antuere.data.localDatabase.mappers
+package antuere.data.localDatabase.mapping
 
-import antuere.data.localDatabase.DayEntity
-import antuere.domain.Day
-import antuere.domain.util.DomainMapper
+import antuere.data.localDatabase.entities.DayEntity
+import antuere.domain.dto.Day
+import antuere.domain.mapping.DomainMapper
 
 class DayEntityMapper : DomainMapper<DayEntity, Day> {
 

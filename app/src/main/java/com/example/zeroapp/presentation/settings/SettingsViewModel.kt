@@ -1,4 +1,4 @@
-package com.example.zeroapp.presentation.settingsFragment
+package com.example.zeroapp.presentation.settings
 
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel

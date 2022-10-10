@@ -14,27 +14,37 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 
+
+// TODO Попробовать Cicerone вместо гугловой навигации
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityMainBinding
-    private lateinit var bottomNavView: BottomNavigationView
-    private lateinit var navController: NavController
+    private var binding: ActivityMainBinding? = null
+    private var bottomNavView: BottomNavigationView? = null
+    private var navController: NavController? = null
 
-    private lateinit var _toolbar: MaterialToolbar
-    val toolbar: MaterialToolbar
-        get() = _toolbar
+    var toolbar: MaterialToolbar? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Timber.i("fix! activityMain: onCrete")
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        binding = ActivityMainBinding.inflate(layoutInflater).also {
+            setContentView(it.root)
+            setupBinding(it)
+        }
+
+    }
+
+    private fun setupBinding(binding: ActivityMainBinding) {
+        toolbar = binding.toolBarApp
+        setSupportActionBar(toolbar)
+
+        bottomNavView = binding.bottomView
 
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.myNavHostFragment) as NavHostFragment
+
         navController = navHostFragment.navController
-        bottomNavView = binding.bottomView
         val appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.settingsFragment,
@@ -43,7 +53,7 @@ class MainActivity : AppCompatActivity() {
             )
         )
 
-        navController.addOnDestinationChangedListener { _, dest, _ ->
+        navController?.addOnDestinationChangedListener { _, dest, _ ->
             when (dest.id) {
                 R.id.settingsFragment -> showBottomBar()
                 R.id.historyFragment -> showBottomBar()
@@ -54,25 +64,22 @@ class MainActivity : AppCompatActivity() {
 
         }
 
-        _toolbar = binding.toolBarApp
+        setupActionBarWithNavController(navController!!, appBarConfiguration)
+        bottomNavView?.setupWithNavController(navController!!)
 
-        setSupportActionBar(_toolbar)
-        setupActionBarWithNavController(navController, appBarConfiguration)
-
-        bottomNavView.setupWithNavController(navController)
         Timber.plant(Timber.DebugTree())
+
     }
 
-
     override fun onSupportNavigateUp(): Boolean {
-        return navController.navigateUp()
+        return navController?.navigateUp() ?: false
     }
 
     private fun hideBottomBar() {
-        bottomNavView.visibility = View.INVISIBLE
+        bottomNavView?.visibility = View.INVISIBLE
     }
 
     private fun showBottomBar() {
-        bottomNavView.visibility = View.VISIBLE
+        bottomNavView?.visibility = View.VISIBLE
     }
 }

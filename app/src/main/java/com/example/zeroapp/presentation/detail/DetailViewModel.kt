@@ -1,14 +1,19 @@
-package com.example.zeroapp.presentation.detailFragment
+package com.example.zeroapp.presentation.detail
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import antuere.domain.Day
+import antuere.domain.dto.Day
 import antuere.domain.usecases.DeleteDayUseCase
 import antuere.domain.usecases.GetDayByIdUseCase
+import com.example.zeroapp.R
+import com.example.zeroapp.presentation.base.ui_dialog.IUIDialogAction
+import com.example.zeroapp.presentation.base.ui_dialog.UIDialog
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -16,9 +21,12 @@ import javax.inject.Inject
 class DetailViewModel @Inject constructor(
     private val getDayByIdUseCase: GetDayByIdUseCase,
     private val deleteDayUseCase: DeleteDayUseCase,
-    state: SavedStateHandle
-) : ViewModel() {
+    state: SavedStateHandle,
+) : ViewModel(), IUIDialogAction {
 
+    private var _uiDialog = MutableStateFlow<UIDialog?>(null)
+    override val uiDialog: StateFlow<UIDialog?>
+        get() = _uiDialog
 
     private val dayId = state.get<Long>("dayId")
     private val _currentDay = MutableLiveData<Day?>()
@@ -44,10 +52,29 @@ class DetailViewModel @Inject constructor(
         _navigateToHistory.value = false
     }
 
-    fun deleteDay() {
+    private fun deleteDay() {
         viewModelScope.launch {
             deleteDayUseCase.invoke(dayId!!)
         }
         _navigateToHistory.value = true
+    }
+
+    fun onDeleteButtonClicked() {
+        _uiDialog.value = UIDialog(
+            title = R.string.dialog_delete_title,
+            desc = R.string.dialog_delete_message,
+            positiveButton = UIDialog.UiButton(
+                text = R.string.yes,
+                onClick = {
+                    deleteDay()
+                    navigateDone()
+                    _uiDialog.value = null
+                }),
+            negativeButton = UIDialog.UiButton(
+                text = R.string.no,
+                onClick = {
+                    _uiDialog.value = null
+                })
+        )
     }
 }

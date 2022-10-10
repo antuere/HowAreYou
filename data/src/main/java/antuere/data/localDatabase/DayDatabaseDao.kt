@@ -1,7 +1,7 @@
 package antuere.data.localDatabase
 
 import androidx.room.*
-import antuere.data.localDatabase.util.Converters
+import antuere.data.localDatabase.entities.DayEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -27,13 +27,5 @@ interface DayDatabaseDao {
 
     @Query("SELECT * FROM day_table ORDER BY dayId DESC")
     fun getAllDays(): Flow<List<DayEntity>>
-
-}
-
-@Database(entities = [DayEntity::class], version = 2)
-@TypeConverters(Converters::class)
-abstract class DayDatabase : RoomDatabase() {
-
-    abstract val dayDatabaseDao: DayDatabaseDao
 
 }
