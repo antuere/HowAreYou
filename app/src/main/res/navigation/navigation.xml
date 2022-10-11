@@ -42,7 +42,7 @@
             tools:layout="@layout/fragment_settings" />
     <fragment
             android:id="@+id/summaryFragment"
-            android:name="com.example.zeroapp.presentation.summaryFragment.SummaryFragment"
+            android:name="com.example.zeroapp.presentation.summary.SummaryFragment"
             android:label="@string/summary"
             tools:layout="@layout/fragment_summary" >
         <action

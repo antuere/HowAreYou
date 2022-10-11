@@ -2,7 +2,6 @@ package com.example.zeroapp.presentation.history
 
 import android.view.View
 import androidx.lifecycle.*
-import androidx.navigation.fragment.FragmentNavigator
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import antuere.domain.dto.Day
 import antuere.domain.usecases.DeleteDayUseCase
@@ -37,18 +36,11 @@ class HistoryViewModel @Inject constructor(
     val listDays: LiveData<List<Day>>
         get() = _listDays
 
-    private var _extras = MutableLiveData<FragmentNavigator.Extras>()
-    val extras: LiveData<FragmentNavigator.Extras>
-        get() = _extras
+    private var _dayId = 0L
 
-    private var _dayId = MutableLiveData<Long>()
-    val dayId: LiveData<Long>
-        get() = _dayId
-
-    private var _navigateToDetail = MutableLiveData(false)
-    val navigateToDetail: LiveData<Boolean>
-        get() = _navigateToDetail
-
+    private var _navigateToDetailState = MutableLiveData<NavigateToDetailState>()
+    val navigateToDetailState: LiveData<NavigateToDetailState>
+        get() = _navigateToDetailState
 
     init {
         runBlocking {
@@ -60,26 +52,28 @@ class HistoryViewModel @Inject constructor(
     val dayClickListener = object : DayClickListener {
         override fun onClick(day: Day, view: View) {
             val extras = FragmentNavigatorExtras(view to transitionName)
-            _extras.value = extras
 
-            _dayId.value = day.dayId
-            _navigateToDetail.value = true
+            _navigateToDetailState.value = NavigateToDetailState(
+                extras = extras,
+                dayId = day.dayId,
+                navigateToDetail = true
+            )
         }
 
         override fun onClickLong(day: Day) {
-            _dayId.value = day.dayId
+            _dayId = day.dayId
             onSmileClickedLong()
         }
     }
 
     fun doneNavigateToDetail() {
-        _navigateToDetail.value = false
+        _navigateToDetailState.value!!.navigateToDetail = false
     }
 
 
     private fun deleteDay() {
         viewModelScope.launch {
-            deleteDayUseCase.invoke(_dayId.value!!)
+            deleteDayUseCase.invoke(_dayId)
         }
     }
 

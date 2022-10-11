@@ -1,4 +1,4 @@
-package com.example.zeroapp.dataBase
+package antuere.data.localDatabase.migration
 
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase

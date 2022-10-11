@@ -2,6 +2,7 @@ package com.example.zeroapp.di
 
 import android.content.Context
 import com.example.zeroapp.R
+import com.example.zeroapp.util.WishAnalyzer
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -15,6 +16,11 @@ class AppModule {
     @Provides
     fun provideTransitionName(@ApplicationContext context: Context): String {
         return context.getString(R.string.transition_name)
+    }
+
+    @Provides
+    fun provideWishAnalyzer(@ApplicationContext context: Context): WishAnalyzer {
+        return WishAnalyzer(context)
     }
 
 }

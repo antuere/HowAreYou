@@ -5,7 +5,8 @@ import antuere.domain.repository.DayRepository
 
 class UpdateLastDayUseCase(private val dayRepository: DayRepository) : UseCase<Day?, Unit> {
 
-    override suspend fun run(param: Unit): Day? {
+
+    override suspend fun invoke(param: Unit): Day? {
         return dayRepository.getDay()
     }
 }

@@ -1,4 +1,4 @@
-package com.example.zeroapp.presentation.summaryFragment
+package com.example.zeroapp.presentation.summary
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -7,15 +7,16 @@ import androidx.lifecycle.viewModelScope
 import antuere.domain.dto.Day
 import antuere.domain.usecases.UpdateLastDayUseCase
 import antuere.domain.util.TimeUtility
+import com.example.zeroapp.util.WishAnalyzer
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
 class SummaryViewModel @Inject constructor(
-    private val updateLastDayUseCase: UpdateLastDayUseCase
+    private val updateLastDayUseCase: UpdateLastDayUseCase,
+    private val wishAnalyzer: WishAnalyzer
 ) :
     ViewModel() {
 
@@ -27,8 +28,11 @@ class SummaryViewModel @Inject constructor(
     val hideAddButton: LiveData<HideAddButtonState>
         get() = _hideAddButton
 
+    private var _wishText = MutableLiveData<String>()
+    val wishText: LiveData<String>
+        get() = _wishText
+
     init {
-        Timber.i("fix! sum viewModel: init sumModel")
         updateInfo()
     }
 
@@ -41,13 +45,14 @@ class SummaryViewModel @Inject constructor(
 
                 _hideAddButton.value = HideAddButtonState.Smile(lastDay.value?.imageId!!)
 
+                _wishText.value = wishAnalyzer.getWishString(lastDay.value?.imageId!!)
+
             } else {
 
                 _hideAddButton.value = HideAddButtonState.Add
+                _wishText.value = wishAnalyzer.getWishString(-1)
 
             }
-
-            Timber.i("fix! sum viewModel: ${_hideAddButton.value}")
         }
     }
 

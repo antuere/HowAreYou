@@ -26,7 +26,7 @@ fun Fragment.setToolbarIcon(@DrawableRes resId: Int) {
 fun Fragment.createSharedElementEnterTransition() = MaterialContainerTransform().apply {
     drawingViewId = R.id.myNavHostFragment
     duration = resources.getInteger(R.integer.duration_normal).toLong()
-    scrimColor = Color.WHITE
+    scrimColor = Color.TRANSPARENT
     setAllContainerColors(requireContext().themeColor(com.google.android.material.R.attr.colorOnPrimary))
 }
 

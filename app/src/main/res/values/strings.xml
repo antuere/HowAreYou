@@ -1,19 +1,20 @@
 <resources>
     <string name="app_name">ZeroApp</string>
-    <!-- TODO: Remove or change this placeholder text -->
+
+    <!-- Descriptions -->
     <string name="very_happy_smile_desc">Very happy smile</string>
-    <string name="smile">Smile</string>
     <string name="happy_smile_desc">Happy smile</string>
     <string name="low_smile_desc">Low smile</string>
     <string name="none_smile_desc">None smile</string>
     <string name="sad_smile_desc">Sad smile</string>
-    <string name="how_are_you_today">How are you today?</string>
-    <string name="desc_you_day">Describe your day in a nutshell</string>
-    <string name="your_past">Your past</string>
-    <string name="about_day">About past day</string>
+    <string name="smile">Smile</string>
+    <string name="button_for_add_new_day">button for add new day</string>
+
+    <!-- Transition -->
     <string name="transition_name">transition_name_unique</string>
     <string name="transition_name_for_sum">transition_name_sum</string>
     <string name="transition_name_item">transition_name_unique_%1$s</string>
+
     <!-- Menus -->
     <string name="delete">Delete</string>
     <string name="add">Add</string>
@@ -23,13 +24,25 @@
     <string name="summary">Summary</string>
 
     <!-- Label and descriptions -->
+    <string name="how_are_you_today">How are you today?</string>
+    <string name="desc_you_day">Describe your day in a nutshell</string>
+    <string name="your_past">Your past</string>
+    <string name="about_day">About past day</string>
     <string name="dialog_delete_title">Delete day</string>
     <string name="dialog_delete_message">Deleting this day?</string>
     <string name="yes">Delete</string>
     <string name="no">Cancel</string>
-    <string name="wish_for_users">We hope you had another great day, so enjoy! We are waiting for you tomorrow</string>
-    <string name="button_for_add_new_day">button for add new day</string>
     <string name="history_hint">Add your first day and come back!</string>
+
+    <!-- Wishes for users -->
+    <string name="wish_for_users_test">We hope you had another great day, so enjoy! We are waiting for you tomorrow</string>
+    <string name="wish_for_users_plug">We hope you had another great day, so lets keep the impressions of it!</string>
+    <string name="wish_for_users_very_happy">Great, share your happiness with the people around you!</string>
+    <string name="wish_for_users_happy">Almost a perfect day, but you still have time to make it better!</string>
+    <string name="wish_for_users_low">An ordinary day turns into a great one, you just have to sleep!</string>
+    <string name="wish_for_users_none">We are sad when you are sad. Maybe we can help, pay attention to the cards above</string>
+    <string name="wish_for_users_sad">Bad day? There is no way out of only one place :) We would be very happy if the cards above can make your day a little better</string>
+
 
     <!-- Months -->
     <string name="january">January</string>

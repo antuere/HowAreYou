@@ -11,6 +11,7 @@
 
     <dimen name="textSize_small_ultra">15sp</dimen>
     <dimen name="textSize_small">16sp</dimen>
+    <dimen name="textSize_small_one">18sp</dimen>
     <dimen name="textSize_small_two">20sp</dimen>
     <dimen name="textSize_large">32sp</dimen>
     <dimen name="textSize_big">20sp</dimen>
@@ -29,6 +30,7 @@
 
     <dimen name="button_height_detail">85dp</dimen>
     <dimen name="button_wight_detail">85dp</dimen>
+    <dimen name="margin_for_FAB">26dp</dimen>
 
 
 </resources>

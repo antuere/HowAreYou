@@ -4,12 +4,12 @@ import android.os.Bundle
 import android.view.*
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
 import com.example.zeroapp.*
 import com.example.zeroapp.databinding.FragmentDetailBinding
+import com.example.zeroapp.presentation.base.BaseBindingFragment
 import com.example.zeroapp.presentation.base.ui_dialog.UIDialogListener
 import com.example.zeroapp.util.createSharedElementEnterTransition
 import com.google.android.material.appbar.MaterialToolbar
@@ -17,7 +17,7 @@ import timber.log.Timber
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class DetailFragment : Fragment() {
+class DetailFragment : BaseBindingFragment<FragmentDetailBinding>(FragmentDetailBinding::inflate) {
 
     private val viewModel by viewModels<DetailViewModel>()
 
@@ -26,7 +26,6 @@ class DetailFragment : Fragment() {
     }
 
 
-    private lateinit var binding: FragmentDetailBinding
     private lateinit var toolbar: MaterialToolbar
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,14 +33,6 @@ class DetailFragment : Fragment() {
         sharedElementEnterTransition = createSharedElementEnterTransition()
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = FragmentDetailBinding.inflate(inflater, container, false)
-
-        return binding.root
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -56,7 +47,7 @@ class DetailFragment : Fragment() {
 
         viewModel.currentDay.observe(viewLifecycleOwner) {
             it?.let {
-                binding.apply {
+                binding!!.apply {
                     dateText.text = it.currentDateString
                     descText.text = it.dayText
                     smileImage.setImageResource(it.imageId)

@@ -5,7 +5,7 @@
         android:id="@+id/home"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".presentation.summaryFragment.SummaryFragment">
+        tools:context=".presentation.summary.SummaryFragment">
 
     <TextView
             android:layout_width="0dp"
@@ -18,24 +18,81 @@
             android:gravity="center"
             android:id="@+id/textView" />
 
+    <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="125dp"
+            app:shapeAppearance="@style/ShapeAppearance.App.MediumComponent.Card"
+            app:cardBackgroundColor="@color/color_for_card"
+            app:strokeColor="@color/color_for_card"
+            android:layout_margin="@dimen/margin_normal_button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            android:id="@+id/materialCardView">
+
+        <TextView
+                android:id="@+id/wish_text"
+                android:layout_width="275dp"
+                android:layout_height="85dp"
+                android:text="@string/wish_for_users_plug"
+                android:textSize="@dimen/textSize_small_one"
+                app:layout_constraintTop_toBottomOf="@+id/imageView"
+                android:layout_margin="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.card.MaterialCardView
+            android:layout_width="170dp"
+            android:layout_height="125dp"
+            app:shapeAppearance="@style/ShapeAppearance.App.MediumComponent.Card"
+            app:cardBackgroundColor="@color/color_for_card"
+            app:strokeColor="@color/color_for_card"
+            android:layout_margin="@dimen/margin_normal_button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0"
+            app:layout_constraintBottom_toTopOf="@+id/materialCardView"
+            app:layout_constraintHorizontal_bias="1.0">
+
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.card.MaterialCardView
+            android:layout_width="170dp"
+            android:layout_height="125dp"
+            app:shapeAppearance="@style/ShapeAppearance.App.MediumComponent.Card"
+            app:cardBackgroundColor="@color/color_for_card"
+            app:strokeColor="@color/color_for_card"
+            android:layout_margin="@dimen/margin_normal_button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0"
+            app:layout_constraintBottom_toTopOf="@+id/materialCardView"
+            app:layout_constraintHorizontal_bias="0.0">
+
+
+    </com.google.android.material.card.MaterialCardView>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:id="@+id/coordinator"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/white"
+            android:background="@drawable/shape_background"
             android:transitionGroup="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
-            android:layout_marginEnd="@dimen/margin_normal_button"
-            android:transitionName="@string/transition_name_for_sum"
-            android:layout_marginBottom="@dimen/margin_normal_button">
+            android:layout_margin="@dimen/margin_for_FAB"
+            android:transitionName="@string/transition_name_for_sum">
 
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-
                 android:id="@+id/fab_add_button"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

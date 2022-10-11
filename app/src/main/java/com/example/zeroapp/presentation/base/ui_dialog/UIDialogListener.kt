@@ -34,7 +34,6 @@ class UIDialogListener(private val context: Context, private val action: IUIDial
                     dialog = null
                 } else if (dialog == null) {
                     dialog = buildDialog(uiDialog).also { it.show() }
-
                 }
 
             }

@@ -29,6 +29,7 @@ class DetailViewModel @Inject constructor(
         get() = _uiDialog
 
     private val dayId = state.get<Long>("dayId")
+
     private val _currentDay = MutableLiveData<Day?>()
     val currentDay: LiveData<Day?>
         get() = _currentDay
@@ -46,7 +47,6 @@ class DetailViewModel @Inject constructor(
             _currentDay.value = getDayByIdUseCase.invoke(dayId!!)
         }
     }
-
 
     fun navigateDone() {
         _navigateToHistory.value = false

@@ -1,4 +1,4 @@
-package com.example.zeroapp.presentation.summaryFragment
+package com.example.zeroapp.presentation.summary
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
