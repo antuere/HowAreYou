@@ -81,6 +81,7 @@ class HistoryViewModel @Inject constructor(
         _uiDialog.value = UIDialog(
             title = R.string.dialog_delete_title,
             desc = R.string.dialog_delete_message,
+            icon = R.drawable.ic_delete_black,
             positiveButton = UIDialog.UiButton(
                 text = R.string.yes,
                 onClick = {

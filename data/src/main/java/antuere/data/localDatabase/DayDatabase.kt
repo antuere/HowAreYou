@@ -6,7 +6,7 @@ import androidx.room.TypeConverters
 import antuere.data.localDatabase.converters.Converters
 import antuere.data.localDatabase.entities.DayEntity
 
-@Database(entities = [DayEntity::class], version = 2)
+@Database(entities = [DayEntity::class], version = 3)
 @TypeConverters(Converters::class)
 abstract class DayDatabase : RoomDatabase() {
 

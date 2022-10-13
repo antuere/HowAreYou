@@ -60,6 +60,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.addDayFragment -> hideBottomBar()
                 R.id.summaryFragment -> showBottomBar()
                 R.id.detailFragment -> hideBottomBar()
+                R.id.favoritesFragment -> hideBottomBar()
             }
 
         }

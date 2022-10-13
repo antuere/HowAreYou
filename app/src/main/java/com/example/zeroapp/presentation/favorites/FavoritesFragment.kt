@@ -1,4 +1,4 @@
-package com.example.zeroapp.presentation.history
+package com.example.zeroapp.presentation.favorites
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,49 +10,44 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.transition.TransitionManager
 import com.example.zeroapp.R
-import com.example.zeroapp.databinding.FragmentHistoryBinding
+import com.example.zeroapp.databinding.FragmentFavoritesBinding
 import com.example.zeroapp.presentation.base.BaseBindingFragment
-import com.example.zeroapp.presentation.base.ui_dialog.UIDialogListener
-import com.example.zeroapp.presentation.history.adapter.DayAdapter
+import com.example.zeroapp.presentation.favorites.adapter.FavoritesAdapter
+import com.example.zeroapp.util.createSharedElementEnterTransition
+import com.example.zeroapp.util.setToolbarIcon
 import com.google.android.material.transition.MaterialElevationScale
 import com.google.android.material.transition.MaterialFade
 import dagger.hilt.android.AndroidEntryPoint
 
-
 @AndroidEntryPoint
-class HistoryFragment :
-    BaseBindingFragment<FragmentHistoryBinding>(FragmentHistoryBinding::inflate) {
+class FavoritesFragment :
+    BaseBindingFragment<FragmentFavoritesBinding>(FragmentFavoritesBinding::inflate) {
 
-    private val viewModel by viewModels<HistoryViewModel>()
+    private val viewModel by viewModels<FavoritesViewModel>()
 
-    private val dialogListener: UIDialogListener by lazy {
-        UIDialogListener(requireContext(), viewModel)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        sharedElementEnterTransition = createSharedElementEnterTransition()
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentHistoryBinding.inflate(inflater, container, false)
+        binding = FragmentFavoritesBinding.inflate(inflater, container, false)
 
         val manager = GridLayoutManager(activity, 4)
-        manager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
-            override fun getSpanSize(position: Int): Int {
-                return when (position) {
-                    0 -> 4
-                    else -> 1
-                }
-            }
+        binding!!.favoritesList.layoutManager = manager
 
-        }
-        binding!!.dayList.layoutManager = manager
+        setToolbarIcon(R.drawable.ic_back)
 
         reenterTransition = MaterialElevationScale(true).apply {
             duration = resources.getInteger(R.integer.duration_normal).toLong()
         }
 
-        val adapter = DayAdapter(viewModel.dayClickListener)
-        binding!!.dayList.adapter = adapter
+        val adapter = FavoritesAdapter(viewModel.dayClickListener)
+        binding!!.favoritesList.adapter = adapter
 
         viewModel.listDays.observe(viewLifecycleOwner) {
             it?.let {
@@ -62,29 +57,26 @@ class HistoryFragment :
                     }
                     TransitionManager.beginDelayedTransition(container!!, materialFade)
 
-                    binding!!.historyHint.visibility = View.VISIBLE
+                    binding!!.favoritesHint.visibility = View.VISIBLE
                 } else {
-                    binding!!.historyHint.visibility = View.GONE
+                    binding!!.favoritesHint.visibility = View.GONE
                 }
-                adapter.addHeaderAndSubmitList(it)
+                adapter.submitList(it)
             }
         }
 
         return binding!!.root
     }
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
         super.onViewCreated(view, savedInstanceState)
-        dialogListener.collect(this)
 
         viewModel.navigateToDetailState.observe(viewLifecycleOwner) {
             it?.let { state ->
                 if (state.navigateToDetail) {
                     findNavController()
                         .navigate(
-                            HistoryFragmentDirections.actionHistoryToDetailFragment(state.dayId!!),
+                            FavoritesFragmentDirections.actionFavoritesFragmentToDetailFragment(state.dayId!!),
                             state.extras!!
                         )
                     viewModel.doneNavigateToDetail()
@@ -96,6 +88,6 @@ class HistoryFragment :
         view.doOnPreDraw {
             startPostponedEnterTransition()
         }
-    }
 
+    }
 }

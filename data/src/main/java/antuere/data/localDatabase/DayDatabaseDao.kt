@@ -28,4 +28,7 @@ interface DayDatabaseDao {
     @Query("SELECT * FROM day_table ORDER BY dayId DESC")
     fun getAllDays(): Flow<List<DayEntity>>
 
+    @Query("SELECT * FROM day_table WHERE is_favorite = 1 ORDER BY dayId DESC ")
+    fun getFavoritesDays(): Flow<List<DayEntity>>
+
 }

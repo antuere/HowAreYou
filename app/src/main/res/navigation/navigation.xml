@@ -9,7 +9,7 @@
             android:id="@+id/addDayFragment"
             android:name="com.example.zeroapp.presentation.addDayFragment.AddDayFragment"
             android:label="@string/today"
-            tools:layout="@layout/fragment_add_day"/>
+            tools:layout="@layout/fragment_add_day" />
     <fragment
             android:id="@+id/historyFragment"
             android:name="com.example.zeroapp.presentation.history.HistoryFragment"
@@ -44,12 +44,26 @@
             android:id="@+id/summaryFragment"
             android:name="com.example.zeroapp.presentation.summary.SummaryFragment"
             android:label="@string/summary"
-            tools:layout="@layout/fragment_summary" >
+            tools:layout="@layout/fragment_summary">
         <action
                 android:id="@+id/action_summaryFragment_to_addDayFragment"
                 app:destination="@id/addDayFragment" />
         <action
                 android:id="@+id/action_summaryFragment_to_detailFragment"
                 app:destination="@id/detailFragment" />
+        <action
+                android:id="@+id/action_summaryFragment_to_favoritesFragment"
+                app:destination="@id/favoritesFragment" />
+    </fragment>
+    <fragment
+            android:id="@+id/favoritesFragment"
+            android:name="com.example.zeroapp.presentation.favorites.FavoritesFragment"
+            android:label="@string/favorites"
+            tools:layout="@layout/fragment_favorites">
+        <action
+                android:id="@+id/action_favoritesFragment_to_detailFragment"
+                app:destination="@id/detailFragment"
+                app:popUpTo="@id/favoritesFragment"
+                app:popUpToInclusive="false" />
     </fragment>
 </navigation>

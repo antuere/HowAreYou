@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:transitionName="@string/transition_name_for_fav"
+        tools:context=".presentation.history.HistoryFragment">
+
+
+    <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/favorites_list"
+            android:transitionGroup="true"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <TextView
+            android:id="@+id/favorites_hint"
+            android:layout_width="wrap_content"
+            android:layout_gravity="center|top"
+            android:layout_height="wrap_content"
+            android:text="@string/fav_hint"
+            android:textSize="@dimen/textSize_big"
+            android:layout_marginTop="@dimen/margin_high" />
+
+</FrameLayout>

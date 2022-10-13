@@ -23,6 +23,14 @@ class DayRepositoryImpl @Inject constructor(
         }
     }
 
+    override fun getFavoritesDays(): Flow<List<Day>> {
+        return dayDataBase.dayDatabaseDao.getFavoritesDays().map {
+            it.map { dayEntity ->
+                dayEntityMapper.mapToDomainModel(dayEntity)
+            }
+        }
+    }
+
     override suspend fun getDay(): Day? = withContext(Dispatchers.IO) {
         val dayEntity = dayDataBase.dayDatabaseDao.getDay()
         dayEntity?.let(dayEntityMapper::mapToDomainModel)
@@ -44,6 +52,11 @@ class DayRepositoryImpl @Inject constructor(
     override suspend fun insert(day: Day) = withContext(Dispatchers.IO) {
         val dayEntity = dayEntityMapper.mapFromDomainModel(day)
         dayDataBase.dayDatabaseDao.insert(dayEntity)
+    }
+
+    override suspend fun update(day: Day) = withContext(Dispatchers.IO) {
+        val dayEntity = dayEntityMapper.mapFromDomainModel(day)
+        dayDataBase.dayDatabaseDao.update(dayEntity)
     }
 }
 

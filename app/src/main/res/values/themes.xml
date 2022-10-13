@@ -20,6 +20,7 @@
         <item name="bottomNavigationStyle">@style/Widget.App.BottomNavigationView</item>
         <item name="toolbarStyle">@style/Widget.App.Toolbar</item>
         <item name="floatingActionButtonStyle">@style/Widget.App.FloatingActionButton</item>
+        <item name="materialCardViewStyle">@style/Widget.App.CardView</item>
 
     </style>
 
@@ -76,4 +77,15 @@
         <item name="colorContainer">@color/teal_main</item>
         <item name="colorOnContainer">@color/white</item>
     </style>
+
+    <!-- Card theme -->
+    <style name="Widget.App.CardView" parent="Widget.Material3.CardView.Elevated">
+        <item name="shapeAppearance">@style/ShapeAppearance.App.MediumComponent.Card</item>
+        <item name="materialThemeOverlay">@style/ThemeOverlay.App.Card</item>
+    </style>
+
+    <style name="ThemeOverlay.App.Card" parent="">
+        <item name="colorOutline">@color/for_card_stoke</item>
+    </style>
+
 </resources>

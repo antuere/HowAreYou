@@ -9,10 +9,12 @@
     <color name="teal_main">#008394</color>
     <color name="teal_bottom">@color/teal_main</color>
     <color name="black">#FF000000</color>
+    <color name="black_low">#4C4C4C</color>
     <color name="gray">#80000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="shrine_blue">#B3E2FF</color>
 
     <color name="color_for_card">#77C0C8</color>
+    <color name="for_card_stoke">#BEBEBE</color>
     <color name="gray_less">#757575</color>
 </resources>

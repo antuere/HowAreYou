@@ -24,6 +24,11 @@ class DomainModule {
     }
 
     @Provides
+    fun provideGetFavoritesDaysUseCase(dayRepository: DayRepository): GetFavoritesDaysUseCase {
+        return GetFavoritesDaysUseCase(dayRepository)
+    }
+
+    @Provides
     fun provideDeleteDayUseCase(dayRepository: DayRepository): DeleteDayUseCase {
         return DeleteDayUseCase(dayRepository)
     }
@@ -36,6 +41,12 @@ class DomainModule {
     @Provides
     fun provideAddDayUseCase(dayRepository: DayRepository): AddDayUseCase {
         return AddDayUseCase(dayRepository)
+    }
+
+    @Provides
+    fun provideUpdateDayUseCase(dayRepository: DayRepository): UpdateDayUseCase {
+        return UpdateDayUseCase(dayRepository)
+
     }
 
 }

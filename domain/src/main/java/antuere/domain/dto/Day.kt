@@ -14,6 +14,8 @@ data class Day(
 
     var dayText: String,
 
-    val currentDateString: String = TimeUtility.formatCurrentTime()
+    val currentDateString: String = TimeUtility.formatCurrentTime(),
+
+    var isFavorite: Boolean = false
 
 )

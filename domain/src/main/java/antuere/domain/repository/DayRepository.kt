@@ -7,6 +7,8 @@ interface DayRepository {
 
     fun getAllDays(): Flow<List<Day>>
 
+    fun getFavoritesDays(): Flow<List<Day>>
+
     suspend fun getDay(): Day?
 
     suspend fun getDayById(id: Long): Day?
@@ -16,6 +18,8 @@ interface DayRepository {
     suspend fun deleteAllDays()
 
     suspend fun insert(day: Day)
+
+    suspend fun update(day: Day)
 
 
 }

@@ -17,6 +17,10 @@ class UIDialogListener(private val context: Context, private val action: IUIDial
         return MaterialAlertDialogBuilder(context)
             .setTitle(uiDialog.title)
             .setMessage(uiDialog.desc)
+            .setIcon(uiDialog.icon)
+            .setOnCancelListener {
+                uiDialog.negativeButton.onClick.invoke()
+            }
             .setNegativeButton(uiDialog.negativeButton.text) { _, _ ->
                 uiDialog.negativeButton.onClick.invoke()
             }

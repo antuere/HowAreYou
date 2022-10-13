@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import antuere.domain.dto.Day
 import antuere.domain.usecases.DeleteDayUseCase
 import antuere.domain.usecases.GetDayByIdUseCase
+import antuere.domain.usecases.UpdateDayUseCase
 import com.example.zeroapp.R
 import com.example.zeroapp.presentation.base.ui_dialog.IUIDialogAction
 import com.example.zeroapp.presentation.base.ui_dialog.UIDialog
@@ -21,6 +22,7 @@ import javax.inject.Inject
 class DetailViewModel @Inject constructor(
     private val getDayByIdUseCase: GetDayByIdUseCase,
     private val deleteDayUseCase: DeleteDayUseCase,
+    private val updateDayUseCase: UpdateDayUseCase,
     state: SavedStateHandle,
 ) : ViewModel(), IUIDialogAction {
 
@@ -63,6 +65,7 @@ class DetailViewModel @Inject constructor(
         _uiDialog.value = UIDialog(
             title = R.string.dialog_delete_title,
             desc = R.string.dialog_delete_message,
+            icon = R.drawable.ic_delete_black,
             positiveButton = UIDialog.UiButton(
                 text = R.string.yes,
                 onClick = {
@@ -76,5 +79,12 @@ class DetailViewModel @Inject constructor(
                     _uiDialog.value = null
                 })
         )
+    }
+
+    fun onFavoriteButtonClicked() {
+        viewModelScope.launch {
+            _currentDay.value!!.isFavorite = _currentDay.value!!.isFavorite.not()
+            updateDayUseCase.invoke(_currentDay.value!!)
+        }
     }
 }

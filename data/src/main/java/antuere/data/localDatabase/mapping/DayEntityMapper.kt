@@ -12,7 +12,8 @@ class DayEntityMapper : DomainMapper<DayEntity, Day> {
             currentDate = model.currentDate,
             imageId = model.imageId,
             dayText = model.dayText,
-            currentDateString = model.currentDateString
+            currentDateString = model.currentDateString,
+            isFavorite = model.isFavorite
         )
     }
 
@@ -22,7 +23,8 @@ class DayEntityMapper : DomainMapper<DayEntity, Day> {
             currentDate = domainModel.currentDate,
             imageId = domainModel.imageId,
             dayText = domainModel.dayText,
-            currentDateString = domainModel.currentDateString
+            currentDateString = domainModel.currentDateString,
+            isFavorite = domainModel.isFavorite
         )
     }
 }

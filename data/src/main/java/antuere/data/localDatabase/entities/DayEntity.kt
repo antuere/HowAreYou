@@ -23,7 +23,10 @@ data class DayEntity(
     var dayText: String,
 
     @ColumnInfo(name = "date_text")
-    val currentDateString: String = TimeUtility.formatCurrentTime()
+    val currentDateString: String = TimeUtility.formatCurrentTime(),
+
+    @ColumnInfo(name = "is_favorite")
+    var isFavorite: Boolean = false
 
 ) {
     companion object {
