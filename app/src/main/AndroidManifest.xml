@@ -3,6 +3,8 @@
         xmlns:tools="http://schemas.android.com/tools"
         package="com.example.zeroapp">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+
     <application
             android:allowBackup="true"
             android:name=".application.HowAreYouApp"
@@ -17,7 +19,8 @@
         <activity
                 android:name=".MainActivity"
                 android:exported="true"
-                android:windowSoftInputMode="adjustPan">
+                android:windowSoftInputMode="adjustPan"
+                android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

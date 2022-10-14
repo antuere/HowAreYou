@@ -11,6 +11,7 @@
     <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/favorites_list"
             android:transitionGroup="true"
+            android:padding="@dimen/padding_small"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -22,7 +23,7 @@
             android:layout_gravity="center|top"
             android:layout_height="wrap_content"
             android:text="@string/fav_hint"
-            android:textSize="@dimen/textSize_big"
+            android:textSize="@dimen/textSize_small_two"
             android:layout_marginTop="@dimen/margin_high" />
 
 </FrameLayout>

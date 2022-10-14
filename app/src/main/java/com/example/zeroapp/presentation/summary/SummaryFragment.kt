@@ -61,12 +61,20 @@ class SummaryFragment :
             }
         }
 
-        binding!!.favorites.setOnClickListener {
 
+        binding!!.favorites.setOnClickListener {
             val transitionName = getString(R.string.transition_name_for_fav)
             val extras = FragmentNavigatorExtras(binding!!.favorites to transitionName)
             findNavController().navigate(
                 SummaryFragmentDirections.actionSummaryFragmentToFavoritesFragment(), extras
+            )
+        }
+
+        binding!!.cats.setOnClickListener {
+            val transitionName = getString(R.string.transition_name_for_cats)
+            val extras = FragmentNavigatorExtras(binding!!.cats to transitionName)
+            findNavController().navigate(
+                SummaryFragmentDirections.actionSummaryFragmentToCatsFragment(), extras
             )
         }
 

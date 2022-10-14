@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <!-- Base application theme. -->
     <style name="Theme.ZeroApp" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Primary brand color. -->
@@ -10,7 +10,7 @@
         <item name="colorSecondaryVariant">@color/teal_700</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <item name="android:statusBarColor" >?attr/colorPrimaryVariant</item>
         <!-- Font -->
         <item name="android:fontFamily">@font/roboto_medium</item>
         <item name="android:textColor">@color/black</item>
@@ -86,6 +86,20 @@
 
     <style name="ThemeOverlay.App.Card" parent="">
         <item name="colorOutline">@color/for_card_stoke</item>
+    </style>
+
+
+    <!-- Button theme -->
+    <style name="Widget.App.Button.Cats" parent="Widget.Material3.Button">
+        <item name="android:textAppearance">@style/TextAppearance.App.Button</item>
+        <item name="iconGravity">textStart</item>
+        <item name="iconSize">20dp</item>
+    </style>
+
+    <style name="TextAppearance.App.Button" parent="TextAppearance.Material3.LabelLarge">
+        <item name="fontFamily">@font/roboto_medium</item>
+        <item name="android:fontFamily">@font/roboto_medium</item>
+        <item name="android:textSize">18sp</item>
     </style>
 
 </resources>

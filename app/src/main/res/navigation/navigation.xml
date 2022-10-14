@@ -54,6 +54,9 @@
         <action
                 android:id="@+id/action_summaryFragment_to_favoritesFragment"
                 app:destination="@id/favoritesFragment" />
+        <action
+                android:id="@+id/action_summaryFragment_to_catsFragment"
+                app:destination="@id/catsFragment" />
     </fragment>
     <fragment
             android:id="@+id/favoritesFragment"
@@ -66,4 +69,8 @@
                 app:popUpTo="@id/favoritesFragment"
                 app:popUpToInclusive="false" />
     </fragment>
+    <fragment
+            android:id="@+id/catsFragment"
+            android:name="com.example.zeroapp.presentation.cats.CatsFragment"
+            android:label="@string/cats" />
 </navigation>

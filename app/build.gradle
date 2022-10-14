@@ -11,7 +11,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.zeroapp"
-        minSdk 22
+        minSdk 24
         targetSdk 33
         versionCode 1
         versionName "1.0"
@@ -69,6 +69,10 @@ dependencies {
 
     // Timber
     implementation "com.jakewharton.timber:timber:$version_timber"
+
+    // Glide
+    implementation "com.github.bumptech.glide:glide:$version_glide"
+    annotationProcessor "com.github.bumptech.glide:compiler:$version_glide"
 
     //Domain(module)
     implementation project(path: ':domain')

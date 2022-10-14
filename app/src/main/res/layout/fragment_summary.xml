@@ -23,6 +23,7 @@
                 android:id="@+id/wish_text"
                 android:layout_width="275dp"
                 android:layout_height="85dp"
+                android:layout_gravity="start"
                 android:text="@string/wish_for_users_plug"
                 android:textSize="@dimen/textSize_small_one"
                 android:layout_margin="20dp"
@@ -32,10 +33,11 @@
     </com.google.android.material.card.MaterialCardView>
 
     <com.google.android.material.card.MaterialCardView
-            android:id="@+id/materialCardView2"
+            android:id="@+id/cats"
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:cardBackgroundColor="@color/color_for_card"
+            android:transitionName="@string/transition_name_for_cats"
             android:layout_marginStart="@dimen/margin_normal_button_half"
             android:layout_marginEnd="@dimen/margin_normal_button"
             android:layout_marginTop="@dimen/margin_normal_button_half"
@@ -43,7 +45,19 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/guideline_horizontal_2"
             app:layout_constraintBottom_toTopOf="@+id/guideline_horizontal_1"
-            app:layout_constraintStart_toStartOf="@+id/guideline_vertical" />
+            app:layout_constraintStart_toStartOf="@+id/guideline_vertical">
+
+        <TextView
+                android:id="@+id/test2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cats"
+                android:textSize="@dimen/textSize_small_one"
+                android:layout_gravity="center"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+    </com.google.android.material.card.MaterialCardView>
 
     <com.google.android.material.card.MaterialCardView
             android:id="@+id/favorites"
@@ -64,9 +78,9 @@
                 android:id="@+id/test"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Favorite"
+                android:text="Favorites"
                 android:textSize="@dimen/textSize_small_one"
-                android:layout_margin="40dp"
+                android:layout_gravity="center"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
 
@@ -153,7 +167,8 @@
                 app:elevation="0dp"
                 android:contentDescription="@string/button_for_add_new_day"
                 app:layout_anchor="@+id/fab_add_button"
-                style="?android:attr/borderlessButtonStyle" />
+                style="?android:attr/borderlessButtonStyle"
+                tools:ignore="RedundantDescriptionCheck" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
@@ -184,5 +199,12 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             app:layout_constraintGuide_percent="0.3" />
+
+    <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_vertical_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.8" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -13,6 +13,7 @@
     <!-- Transition -->
     <string name="transition_name">transition_name_unique</string>
     <string name="transition_name_for_fav">transition_name_favorite</string>
+    <string name="transition_name_for_cats">transition_name_cats</string>
     <string name="transition_name_for_sum">transition_name_sum</string>
     <string name="transition_name_item">transition_name_unique_%1$s</string>
 
@@ -23,6 +24,7 @@
     <string name="today">Today</string>
     <string name="history">History</string>
     <string name="favorites">Favorites</string>
+    <string name="cats">Lovely cats</string>
     <string name="settings">Settings</string>
     <string name="summary">Summary</string>
 
@@ -34,6 +36,8 @@
     <string name="dialog_delete_message">Deleting this day?</string>
     <string name="yes">Delete</string>
     <string name="no">Cancel</string>
+    <string name="getCats">Update cute cats!</string>
+    <string name="title_cats">What could be better than cats?</string>
     <string name="history_hint">Add your first day and come back!</string>
     <string name="fav_hint">Add your first favorite day and come back!</string>
 

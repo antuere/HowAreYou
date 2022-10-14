@@ -4,6 +4,8 @@ import android.content.Context
 import com.example.zeroapp.R
 
 
+
+
 // Converter buttonId to drawable SmileId
 fun getSmileImage(id: Int): Int {
     return when (id) {

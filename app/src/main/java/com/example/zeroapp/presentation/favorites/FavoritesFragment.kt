@@ -12,6 +12,7 @@ import androidx.transition.TransitionManager
 import com.example.zeroapp.R
 import com.example.zeroapp.databinding.FragmentFavoritesBinding
 import com.example.zeroapp.presentation.base.BaseBindingFragment
+import com.example.zeroapp.presentation.base.ui_dialog.UIDialogListener
 import com.example.zeroapp.presentation.favorites.adapter.FavoritesAdapter
 import com.example.zeroapp.util.createSharedElementEnterTransition
 import com.example.zeroapp.util.setToolbarIcon
@@ -25,6 +26,10 @@ class FavoritesFragment :
 
     private val viewModel by viewModels<FavoritesViewModel>()
 
+    private val dialogListener: UIDialogListener by lazy {
+        UIDialogListener(requireContext(), viewModel)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         sharedElementEnterTransition = createSharedElementEnterTransition()
@@ -37,7 +42,7 @@ class FavoritesFragment :
     ): View {
         binding = FragmentFavoritesBinding.inflate(inflater, container, false)
 
-        val manager = GridLayoutManager(activity, 4)
+        val manager = GridLayoutManager(activity, 2)
         binding!!.favoritesList.layoutManager = manager
 
         setToolbarIcon(R.drawable.ic_back)
@@ -71,12 +76,15 @@ class FavoritesFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        dialogListener.collect(viewLifecycleOwner)
         viewModel.navigateToDetailState.observe(viewLifecycleOwner) {
             it?.let { state ->
                 if (state.navigateToDetail) {
                     findNavController()
                         .navigate(
-                            FavoritesFragmentDirections.actionFavoritesFragmentToDetailFragment(state.dayId!!),
+                            FavoritesFragmentDirections.actionFavoritesFragmentToDetailFragment(
+                                state.dayId!!
+                            ),
                             state.extras!!
                         )
                     viewModel.doneNavigateToDetail()

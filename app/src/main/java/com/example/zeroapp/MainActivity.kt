@@ -61,6 +61,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.summaryFragment -> showBottomBar()
                 R.id.detailFragment -> hideBottomBar()
                 R.id.favoritesFragment -> hideBottomBar()
+                R.id.catsFragment -> hideBottomBar()
             }
 
         }
@@ -77,7 +78,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun hideBottomBar() {
-        bottomNavView?.visibility = View.INVISIBLE
+        bottomNavView?.visibility = View.GONE
     }
 
     private fun showBottomBar() {
