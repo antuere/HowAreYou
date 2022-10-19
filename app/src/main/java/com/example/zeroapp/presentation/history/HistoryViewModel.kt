@@ -15,8 +15,10 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
+import timber.log.Timber
 import javax.inject.Inject
 
 
@@ -43,9 +45,19 @@ class HistoryViewModel @Inject constructor(
         get() = _navigateToDetailState
 
     init {
-        runBlocking {
+        viewModelScope.launch {
+//            Это работает, но конечно только один раз, когда происходит init.
+//            Также если удалить из списка день, то recycleView не обновляется и день все также висит
+
+//           getAllDaysUseCase.invoke(Unit).onEach {
+//                _listDays.value = it
+//            }.collect()
+
+//            Работает только с Flow которое возвращает Room, а которое сам делаю то пусто
             _listDays =
-                getAllDaysUseCase.invoke(Unit).asLiveData(Dispatchers.Main).toMutableLiveData()
+                getAllDaysUseCase.invoke(Unit).asLiveData(Dispatchers.IO).toMutableLiveData()
+
+            Timber.e("error from FireBase viewModel all days: ${_listDays.value}")
         }
     }
 

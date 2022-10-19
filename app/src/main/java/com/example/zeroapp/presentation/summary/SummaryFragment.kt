@@ -98,7 +98,5 @@ class SummaryFragment :
                 binding!!.coordinator.transitionName = getString(it.transitionName)
             }
         }
-        fabButton.show()
-
     }
 }

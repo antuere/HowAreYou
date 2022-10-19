@@ -15,14 +15,16 @@
         <item name="android:fontFamily">@font/roboto_medium</item>
         <item name="android:textColor">@color/black</item>
 
-        <!-- Elements theme -->
+        <!-- Elements UI theme -->
         <item name="materialAlertDialogTheme">@style/MyDialogStyle</item>
         <item name="bottomNavigationStyle">@style/Widget.App.BottomNavigationView</item>
         <item name="toolbarStyle">@style/Widget.App.Toolbar</item>
         <item name="floatingActionButtonStyle">@style/Widget.App.FloatingActionButton</item>
         <item name="materialCardViewStyle">@style/Widget.App.CardView</item>
+        <item name="circularProgressIndicatorStyle">@style/Widget.App.CircularProgressIndicator</item>
 
     </style>
+
 
     <!-- Dialog theme -->
     <style name="MyDialogStyle" parent="ThemeOverlay.Material3.MaterialAlertDialog.Centered">
@@ -57,6 +59,7 @@
         <item name="android:color">@color/white</item>
     </style>
 
+
     <!-- Toolbar theme -->
     <style name="Widget.App.Toolbar" parent="Widget.Material3.Toolbar.Surface">
         <item name="materialThemeOverlay">@style/ThemeOverlay.App.Toolbar</item>
@@ -68,6 +71,7 @@
         <item name="colorOnSurfaceVariant">@color/white</item>
     </style>
 
+
     <!-- FAB theme -->
     <style name="Widget.App.FloatingActionButton" parent="Widget.Material3.FloatingActionButton.Primary">
         <item name="materialThemeOverlay">@style/ThemeOverlay.App.FloatingActionButton</item>
@@ -77,6 +81,7 @@
         <item name="colorContainer">@color/teal_main</item>
         <item name="colorOnContainer">@color/white</item>
     </style>
+
 
     <!-- Card theme -->
     <style name="Widget.App.CardView" parent="Widget.Material3.CardView.Elevated">
@@ -100,6 +105,18 @@
         <item name="fontFamily">@font/roboto_medium</item>
         <item name="android:fontFamily">@font/roboto_medium</item>
         <item name="android:textSize">18sp</item>
+    </style>
+
+
+    <!-- CircularProgressIndicator theme -->
+    <style name="Widget.App.CircularProgressIndicator" parent="Widget.Material3.CircularProgressIndicator.Medium">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.App.CircularProgressIndicator</item>
+        <item name="trackThickness">4dp</item>
+        <item name="indicatorSize">70dp</item>
+    </style>
+
+    <style name="ThemeOverlay.App.CircularProgressIndicator" parent="">
+        <item name="colorPrimary">@color/white</item>
     </style>
 
 </resources>

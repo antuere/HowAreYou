@@ -33,7 +33,7 @@
     <string name="desc_you_day">Describe your day in a nutshell</string>
     <string name="about_day">About past day</string>
     <string name="dialog_delete_title">Delete day</string>
-    <string name="dialog_delete_message">Deleting this day?</string>
+    <string name="dialog_delete_message">Deleting permanently this day?</string>
     <string name="yes">Delete</string>
     <string name="no">Cancel</string>
     <string name="getCats">Update cute cats!</string>

@@ -1,4 +1,4 @@
-package com.example.zeroapp.presentation.addDayFragment
+package com.example.zeroapp.presentation.addDay
 
 import android.os.Bundle
 import android.view.View
@@ -39,9 +39,7 @@ class AddDayFragment : BaseBindingFragment<FragmentAddDayBinding>(FragmentAddDay
 
         setToolbarIcon(R.drawable.ic_back)
 
-        smileButtons.forEach {
-            setSmileListeners(it)
-        }
+        smileButtons.forEach(::setSmileListeners)
 
     }
 

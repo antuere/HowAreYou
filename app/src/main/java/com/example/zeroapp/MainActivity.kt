@@ -70,7 +70,6 @@ class MainActivity : AppCompatActivity() {
         bottomNavView?.setupWithNavController(navController!!)
 
         Timber.plant(Timber.DebugTree())
-
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -78,7 +77,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun hideBottomBar() {
-        bottomNavView?.visibility = View.GONE
+        bottomNavView?.visibility = View.INVISIBLE
     }
 
     private fun showBottomBar() {

@@ -5,9 +5,9 @@ import kotlinx.coroutines.flow.Flow
 
 interface DayRepository {
 
-    fun getAllDays(): Flow<List<Day>>
+    suspend fun getAllDays(): Flow<List<Day>>
 
-    fun getFavoritesDays(): Flow<List<Day>>
+    suspend fun getFavoritesDays(): Flow<List<Day>>
 
     suspend fun getDay(): Day?
 

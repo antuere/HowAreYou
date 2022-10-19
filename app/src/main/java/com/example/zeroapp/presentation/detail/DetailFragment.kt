@@ -21,10 +21,10 @@ import dagger.hilt.android.AndroidEntryPoint
 class DetailFragment : BaseBindingFragment<FragmentDetailBinding>(FragmentDetailBinding::inflate) {
 
     private val viewModel by viewModels<DetailViewModel>()
+
     private val dialogListener: UIDialogListener by lazy {
         UIDialogListener(requireContext(), viewModel)
     }
-
 
     private lateinit var toolbar: MaterialToolbar
 

@@ -4,6 +4,7 @@ plugins {
     id 'kotlin-kapt'
     id 'androidx.navigation.safeargs.kotlin'
     id "com.google.dagger.hilt.android"
+    id 'com.google.gms.google-services'
 }
 
 android {
@@ -35,6 +36,12 @@ android {
 
 dependencies {
 
+
+    //FireBase
+    implementation "com.google.firebase:firebase-storage-ktx:$version_firebase"
+    implementation "com.google.firebase:firebase-database-ktx:$version_firebase"
+
+    //Test
     testImplementation "junit:junit:$version_junit"
     androidTestImplementation "androidx.test.ext:junit:$version_junit_ext"
 

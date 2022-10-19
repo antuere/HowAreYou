@@ -1,4 +1,4 @@
-package com.example.zeroapp.presentation.addDayFragment
+package com.example.zeroapp.presentation.addDay
 
 
 import androidx.lifecycle.*

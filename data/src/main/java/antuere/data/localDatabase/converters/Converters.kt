@@ -5,12 +5,12 @@ import java.util.*
 
 class Converters {
     @TypeConverter
-    fun fromTimestamp(value: Long?): Calendar? = value?.let { value_new ->
+    fun calendarFromLong(value: Long?): Calendar? = value?.let { value_new ->
         GregorianCalendar().also { calendar ->
             calendar.timeInMillis = value_new
         }
     }
 
     @TypeConverter
-    fun toTimestamp(timestamp: Calendar?): Long? = timestamp?.timeInMillis
+    fun calendarToLong(timestamp: Calendar?): Long? = timestamp?.timeInMillis
 }

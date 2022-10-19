@@ -43,7 +43,7 @@ class FavoritesViewModel @Inject constructor(
         get() = _navigateToDetailState
 
     init {
-        runBlocking {
+        viewModelScope.launch {
             _listDays =
                 getFavoritesDaysUseCase.invoke(Unit).asLiveData(Dispatchers.Main)
                     .toMutableLiveData()

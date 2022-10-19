@@ -4,6 +4,7 @@ plugins {
     id 'kotlin-kapt'
     id 'androidx.navigation.safeargs.kotlin'
     id "com.google.dagger.hilt.android"
+    id 'com.google.gms.google-services'
 }
 
 android {
@@ -52,6 +53,13 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-extensions:$version_lifecycle_extensions"
     implementation "androidx.compose.ui:ui-graphics:$version_compose"
 
+    //Coroutines Android
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$version_coroutine_android")
+
+    //FireBase
+    implementation "com.google.firebase:firebase-storage-ktx:$version_firebase"
+    implementation "com.google.firebase:firebase-database-ktx:$version_firebase"
+
     // Dagger - Hilt
     implementation "com.google.dagger:hilt-android:$version_dagger_hilt"
     kapt "com.google.dagger:hilt-android-compiler:$version_dagger_hilt"
@@ -66,6 +74,9 @@ dependencies {
     // Test
     testImplementation "junit:junit:$version_junit"
     androidTestImplementation "androidx.test.ext:$version_junit_ext"
+    implementation "androidx.test:monitor:$version_android_test_monitor"
+    implementation "androidx.test.ext:junit-ktx:$version_junit_ext"
+    androidTestImplementation "junit:junit:$version_junit"
 
     // Timber
     implementation "com.jakewharton.timber:timber:$version_timber"

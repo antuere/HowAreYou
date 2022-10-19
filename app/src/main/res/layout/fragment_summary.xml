@@ -48,7 +48,7 @@
             app:layout_constraintStart_toStartOf="@+id/guideline_vertical">
 
         <TextView
-                android:id="@+id/test2"
+                android:id="@+id/cats_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Cats"
@@ -75,7 +75,7 @@
             app:layout_constraintEnd_toStartOf="@+id/guideline_vertical">
 
         <TextView
-                android:id="@+id/test"
+                android:id="@+id/favorites_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Favorites"
@@ -116,7 +116,7 @@
             app:layout_constraintStart_toStartOf="@+id/guideline_vertical" />
 
     <com.google.android.material.card.MaterialCardView
-            android:id="@+id/materialCardView6"
+            android:id="@+id/mental_health"
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:cardBackgroundColor="@color/color_for_card"
@@ -127,7 +127,24 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toTopOf="@+id/guideline_horizontal_3"
-            app:layout_constraintEnd_toStartOf="@+id/guideline_vertical" />
+            app:layout_constraintEnd_toEndOf="@+id/guideline_vertical"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintVertical_bias="0.0">
+
+        <TextView
+                android:id="@+id/mental_health_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Mental health"
+                android:textSize="@dimen/textSize_small_one"
+                android:padding="@dimen/padding_small"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+
+    </com.google.android.material.card.MaterialCardView>
+
+
 
     <com.google.android.material.card.MaterialCardView
             android:id="@+id/materialCardView7"
