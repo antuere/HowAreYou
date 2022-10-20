@@ -1,6 +1,5 @@
 package antuere.data.remoteDataBase.mapping
 
-import antuere.data.remoteDataBase.converters.ConvertersRemote
 import antuere.data.remoteDataBase.entities.DayEntityRemote
 import antuere.domain.dto.Day
 import antuere.domain.mapping.DomainMapper
@@ -11,10 +10,9 @@ class DayEntityMapperRemote : DomainMapper<DayEntityRemote, Day> {
     override fun mapToDomainModel(model: DayEntityRemote): Day {
         return Day(
             dayId = model.dayId,
-            currentDate = ConvertersRemote.calendarFromLong(model.currentDate)!!,
             imageId = model.imageId,
             dayText = model.dayText,
-            currentDateString = model.currentDateString,
+            dateString = model.dateString,
             isFavorite = model.isFavorite
         )
     }
@@ -22,10 +20,9 @@ class DayEntityMapperRemote : DomainMapper<DayEntityRemote, Day> {
     override fun mapFromDomainModel(domainModel: Day): DayEntityRemote {
         return DayEntityRemote(
             dayId = domainModel.dayId,
-            currentDate = ConvertersRemote.calendarToLong(domainModel.currentDate)!!,
             imageId = domainModel.imageId,
             dayText = domainModel.dayText,
-            currentDateString = domainModel.currentDateString,
+            dateString = domainModel.dateString,
             isFavorite = domainModel.isFavorite
         )
     }

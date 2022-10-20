@@ -4,17 +4,13 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import antuere.domain.util.TimeUtility
-import java.util.*
 
 
 @Entity(tableName = DayEntity.TABLE_NAME)
 data class DayEntity(
 
-    @PrimaryKey(autoGenerate = true)
-    var dayId: Long = 0L,
-
-    @ColumnInfo(name = "date")
-    val currentDate: Calendar = TimeUtility.calendar,
+    @PrimaryKey(autoGenerate = false)
+    var dayId: Long = TimeUtility.currentDate.time,
 
     @ColumnInfo(name = "image_id")
     val imageId: Int,
@@ -23,7 +19,7 @@ data class DayEntity(
     var dayText: String,
 
     @ColumnInfo(name = "date_text")
-    val currentDateString: String = TimeUtility.formatCurrentTime(),
+    val dateString: String = TimeUtility.formatCurrentTime(),
 
     @ColumnInfo(name = "is_favorite")
     var isFavorite: Boolean = false

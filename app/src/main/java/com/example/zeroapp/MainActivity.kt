@@ -49,7 +49,8 @@ class MainActivity : AppCompatActivity() {
             setOf(
                 R.id.settingsFragment,
                 R.id.historyFragment,
-                R.id.summaryFragment
+                R.id.summaryFragment,
+                R.id.loginFragment
             )
         )
 
@@ -62,6 +63,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.detailFragment -> hideBottomBar()
                 R.id.favoritesFragment -> hideBottomBar()
                 R.id.catsFragment -> hideBottomBar()
+                R.id.loginFragment -> hideBottomBar()
             }
 
         }

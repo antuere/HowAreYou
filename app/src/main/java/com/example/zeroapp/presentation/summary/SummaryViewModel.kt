@@ -41,7 +41,7 @@ class SummaryViewModel @Inject constructor(
 
             _lastDay.value = updateLastDayUseCase.invoke(Unit)
 
-            if (TimeUtility.format(Date()) == (_lastDay.value?.currentDateString ?: "show")) {
+            if (TimeUtility.format(Date()) == (_lastDay.value?.dateString ?: "show")) {
 
                 _hideAddButton.value = HideAddButtonState.Smile(lastDay.value?.imageId!!)
 

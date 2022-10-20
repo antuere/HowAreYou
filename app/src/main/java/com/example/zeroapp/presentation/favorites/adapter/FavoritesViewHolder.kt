@@ -22,7 +22,7 @@ class FavoritesViewHolder private constructor(private val binding: DayItemBindin
     fun bind(item: Day, clickListener: DayClickListener) {
         with(binding) {
             imageView.setImageResource(item.imageId)
-            dateText.text = item.currentDateString
+            dateText.text = item.dateString
             val transitionName =
                 itemView.context.getString(R.string.transition_name_item, item.dayId.toString())
             itemView.transitionName = transitionName

@@ -7,6 +7,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.example.zeroapp.R
 import com.example.zeroapp.util.WishAnalyzer
+import com.google.firebase.auth.FirebaseAuth
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -40,6 +41,12 @@ object AppModule {
                     .placeholder(R.drawable.cat_placeholder)
                     .error(R.drawable.cat_black)
             )
+    }
+
+    @Provides
+    @Singleton
+    fun provideFirebaseAuth() : FirebaseAuth {
+        return FirebaseAuth.getInstance()
     }
 
 }

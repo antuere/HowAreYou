@@ -40,6 +40,8 @@ dependencies {
     //FireBase
     implementation "com.google.firebase:firebase-storage-ktx:$version_firebase"
     implementation "com.google.firebase:firebase-database-ktx:$version_firebase"
+    implementation "com.google.firebase:firebase-auth-ktx:$version_firebase_auth"
+    implementation "com.google.android.gms:play-services-auth:$version_firebase_auth_services"
 
     //Test
     testImplementation "junit:junit:$version_junit"

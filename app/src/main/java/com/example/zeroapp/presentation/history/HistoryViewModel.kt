@@ -46,18 +46,8 @@ class HistoryViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-//            Это работает, но конечно только один раз, когда происходит init.
-//            Также если удалить из списка день, то recycleView не обновляется и день все также висит
-
-//           getAllDaysUseCase.invoke(Unit).onEach {
-//                _listDays.value = it
-//            }.collect()
-
-//            Работает только с Flow которое возвращает Room, а которое сам делаю то пусто
             _listDays =
                 getAllDaysUseCase.invoke(Unit).asLiveData(Dispatchers.IO).toMutableLiveData()
-
-            Timber.e("error from FireBase viewModel all days: ${_listDays.value}")
         }
     }
 

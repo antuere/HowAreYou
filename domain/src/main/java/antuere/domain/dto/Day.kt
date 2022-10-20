@@ -6,15 +6,13 @@ import java.util.*
 
 data class Day(
 
-    var dayId: Long = 0L,
-
-    val currentDate: Calendar = TimeUtility.calendar,
+    var dayId: Long = TimeUtility.currentDate.time,
 
     val imageId: Int,
 
     var dayText: String,
 
-    val currentDateString: String = TimeUtility.formatCurrentTime(),
+    val dateString: String = TimeUtility.formatCurrentTime(),
 
     var isFavorite: Boolean = false
 

@@ -13,6 +13,7 @@ import com.example.zeroapp.databinding.FragmentDetailBinding
 import com.example.zeroapp.presentation.base.BaseBindingFragment
 import com.example.zeroapp.presentation.base.ui_dialog.UIDialogListener
 import com.example.zeroapp.util.createSharedElementEnterTransition
+import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
 import com.google.android.material.appbar.MaterialToolbar
 import timber.log.Timber
 import dagger.hilt.android.AndroidEntryPoint
@@ -45,10 +46,11 @@ class DetailFragment : BaseBindingFragment<FragmentDetailBinding>(FragmentDetail
 
         val menuHost: MenuHost = activity
 
+
         viewModel.currentDay.observe(viewLifecycleOwner) {
             it?.let {
                 binding!!.apply {
-                    dateText.text = it.currentDateString
+                    dateText.text = it.dateString
                     descText.text = it.dayText
                     smileImage.setImageResource(it.imageId)
                 }

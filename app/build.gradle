@@ -43,6 +43,7 @@ android {
 dependencies {
 
     implementation "androidx.core:core-ktx:$version_core"
+    implementation 'androidx.annotation:annotation:1.5.0'
     runtimeOnly "androidx.appcompat:appcompat:$version_appcompat"
     runtimeOnly "com.google.android.material:material:$version_material"
     runtimeOnly "androidx.constraintlayout:constraintlayout:$version_constraint_layout"
@@ -53,12 +54,13 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-extensions:$version_lifecycle_extensions"
     implementation "androidx.compose.ui:ui-graphics:$version_compose"
 
-    //Coroutines Android
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$version_coroutine_android")
 
     //FireBase
     implementation "com.google.firebase:firebase-storage-ktx:$version_firebase"
     implementation "com.google.firebase:firebase-database-ktx:$version_firebase"
+    implementation "com.google.firebase:firebase-auth-ktx:$version_firebase_auth"
+    implementation "com.google.android.gms:play-services-auth:$version_firebase_auth_services"
+    implementation "com.firebaseui:firebase-ui-auth:$version_firebase_ui"
 
     // Dagger - Hilt
     implementation "com.google.dagger:hilt-android:$version_dagger_hilt"
