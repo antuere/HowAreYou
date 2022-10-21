@@ -1,47 +1,55 @@
 package antuere.data.repository
 
 import antuere.data.localDatabase.DayDatabase
+import antuere.data.localDatabase.entities.DayEntity
 import antuere.data.localDatabase.mapping.DayEntityMapper
+import antuere.data.remoteDataBase.FirebaseApi
 import antuere.data.remoteDataBase.entities.DayEntityRemote
 import antuere.data.remoteDataBase.mapping.DayEntityMapperRemote
 import antuere.domain.dto.Day
 import antuere.domain.repository.DayRepository
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.tasks.await
+import timber.log.Timber
 import javax.inject.Inject
+
 
 class DayRepositoryImpl @Inject constructor(
     private val dayDataBaseRoom: DayDatabase,
-    dayDatabaseRemote: DatabaseReference,
+    private val firebaseApi: FirebaseApi,
     private val dayEntityMapperRemote: DayEntityMapperRemote,
     private val dayEntityMapper: DayEntityMapper,
-    firebaseAuth: FirebaseAuth
 ) : DayRepository {
 
-    companion object {
-        private const val DAYS_PATH = "Days"
-    }
-
-    private val daysNode = dayDatabaseRemote.child(firebaseAuth.currentUser!!.uid).child(DAYS_PATH)
+    private var daysNode: DatabaseReference? = null
 
     init {
-        CoroutineScope(Dispatchers.IO).launch {
-            val query = daysNode.get().await()
+        updateDaysFromFireBase()
+    }
 
-            if (query.exists()) {
-                query.children.forEach {
-                    val dayRemote = it.getValue(DayEntityRemote::class.java)
-                    val day = dayEntityMapperRemote.mapToDomainModel(dayRemote!!)
-                    insertRoom(day)
+    override fun updateDaysFromFireBase() {
+        daysNode = firebaseApi.getDaysNode()
+        if (daysNode != null) {
+            CoroutineScope(Dispatchers.IO).launch {
+                val query = daysNode!!.get().await()
+                if (query.exists()) {
+                    query.children.forEach {
+                        val dayRemote = it.getValue(DayEntityRemote::class.java)
+                        val day = dayEntityMapperRemote.mapToDomainModel(dayRemote!!)
+                        insertRoom(day)
+                    }
+                }
+
+                getAllDays().collect { days ->
+                    days.forEach { insertFirebase(it) }
                 }
             }
         }
     }
-
 
     override suspend fun getAllDays(): Flow<List<Day>> {
 
@@ -70,16 +78,16 @@ class DayRepositoryImpl @Inject constructor(
         dayEntity?.let(dayEntityMapper::mapToDomainModel)
     }
 
-    override suspend fun deleteDay(id: Long) = withContext(Dispatchers.IO) {
+    override suspend fun deleteDay(id: Long): Unit = withContext(Dispatchers.IO) {
         dayDataBaseRoom.dayDatabaseDao.deleteDay(id)
 
         val query = daysNode
-            .orderByChild("dayId")
-            .equalTo(id.toDouble())
-            .get()
-            .await()
+            ?.orderByChild("dayId")
+            ?.equalTo(id.toDouble())
+            ?.get()
+            ?.await()
 
-        query.children.forEach {
+        query?.children?.forEach {
             it.ref.removeValue()
         }
     }
@@ -87,8 +95,8 @@ class DayRepositoryImpl @Inject constructor(
     override suspend fun deleteAllDays() = withContext(Dispatchers.IO) {
         dayDataBaseRoom.dayDatabaseDao.clear()
 
-        val query = daysNode.get().await()
-        if (query.exists()) {
+        val query = daysNode?.get()?.await()
+        if (query?.exists() == true) {
             query.children.forEach {
                 it.ref.removeValue()
             }
@@ -105,9 +113,8 @@ class DayRepositoryImpl @Inject constructor(
         dayDataBaseRoom.dayDatabaseDao.update(dayEntity)
 
         val dayRemote = dayEntityMapperRemote.mapFromDomainModel(day)
-        daysNode.child(dayRemote.dayId.toString()).setValue(dayRemote).await()
+        daysNode?.child(dayRemote.dayId.toString())?.setValue(dayRemote)?.await()
     }
-
 
     private suspend fun insertRoom(day: Day) = withContext(Dispatchers.IO) {
         val dayEntity = dayEntityMapper.mapFromDomainModel(day)
@@ -116,7 +123,7 @@ class DayRepositoryImpl @Inject constructor(
 
     private suspend fun insertFirebase(day: Day) {
         val dayRemote = dayEntityMapperRemote.mapFromDomainModel(day)
-        daysNode.child(dayRemote.dayId.toString()).setValue(dayRemote).await()
+        daysNode?.child(dayRemote.dayId.toString())?.setValue(dayRemote)?.await()
     }
 }
 

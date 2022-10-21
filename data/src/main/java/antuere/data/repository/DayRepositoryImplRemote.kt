@@ -136,4 +136,8 @@ class DayRepositoryImplRemote @Inject constructor(
         val dayRemote = dayEntityMapperRemote.mapFromDomainModel(day)
         daysNode.child(dayRemote.dayId.toString()).setValue(dayRemote).await()
     }
+
+    override fun updateDaysFromFireBase() {
+        TODO("Not yet implemented")
+    }
 }

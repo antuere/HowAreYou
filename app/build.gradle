@@ -44,6 +44,7 @@ dependencies {
 
     implementation "androidx.core:core-ktx:$version_core"
     implementation 'androidx.annotation:annotation:1.5.0'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     runtimeOnly "androidx.appcompat:appcompat:$version_appcompat"
     runtimeOnly "com.google.android.material:material:$version_material"
     runtimeOnly "androidx.constraintlayout:constraintlayout:$version_constraint_layout"

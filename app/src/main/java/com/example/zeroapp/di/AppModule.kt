@@ -1,6 +1,7 @@
 package com.example.zeroapp.di
 
 import android.content.Context
+import antuere.data.remoteDataBase.FirebaseApi
 import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestManager
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -8,6 +9,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.zeroapp.R
 import com.example.zeroapp.util.WishAnalyzer
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DatabaseReference
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -45,8 +47,16 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideFirebaseAuth() : FirebaseAuth {
+    fun provideFirebaseAuth(): FirebaseAuth {
         return FirebaseAuth.getInstance()
     }
+
+
+    @Provides
+    @Singleton
+    fun provideFireBaseApi(auth: FirebaseAuth, realtimeDb: DatabaseReference): FirebaseApi {
+        return FirebaseApi(auth, realtimeDb)
+    }
+
 
 }
