@@ -22,7 +22,6 @@ class LoginViewModel @Inject constructor(
     val loginState: LiveData<LoginState?>
         get() = _loginState
 
-
     private fun loginSuccessful() {
         viewModelScope.launch {
             updateFromFireBaseUseCase.invoke(Unit)
@@ -47,5 +46,12 @@ class LoginViewModel @Inject constructor(
 
     fun stateReset() {
         _loginState.value = null
+    }
+
+    fun checkCurrentAuth() {
+        if (firebaseApi.auth.currentUser != null) {
+            _loginState.value = LoginState.Successful
+            loginSuccessful()
+        }
     }
 }

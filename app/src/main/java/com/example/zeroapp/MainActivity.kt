@@ -63,7 +63,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.favoritesFragment -> hideBottomBar()
                 R.id.catsFragment -> hideBottomBar()
                 R.id.loginFragment -> hideBottomBar()
-                R.id.registerFragment -> hideBottomBar()
+                R.id.registerFragment -> goneBottomBar()
             }
 
         }
@@ -84,5 +84,9 @@ class MainActivity : AppCompatActivity() {
 
     private fun showBottomBar() {
         bottomNavView?.visibility = View.VISIBLE
+    }
+
+    private fun goneBottomBar() {
+        bottomNavView?.visibility = View.GONE
     }
 }

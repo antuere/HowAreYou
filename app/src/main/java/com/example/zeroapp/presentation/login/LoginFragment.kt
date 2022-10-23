@@ -10,7 +10,6 @@ import androidx.navigation.fragment.findNavController
 import com.example.zeroapp.R
 import com.example.zeroapp.databinding.FragmentLoginBinding
 import com.example.zeroapp.presentation.base.BaseBindingFragment
-import com.example.zeroapp.presentation.register.RegisterState
 import com.example.zeroapp.util.setToolbarIcon
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -32,7 +31,6 @@ class LoginFragment : BaseBindingFragment<FragmentLoginBinding>(FragmentLoginBin
             setupBinding(this)
             return root
         }
-
     }
 
     private fun setupBinding(binding: FragmentLoginBinding) {
@@ -49,6 +47,7 @@ class LoginFragment : BaseBindingFragment<FragmentLoginBinding>(FragmentLoginBin
             }
         }
 
+        viewModel.checkCurrentAuth()
         viewModel.loginState.observe(viewLifecycleOwner) { state ->
             state?.let {
                 when (it) {
@@ -61,6 +60,7 @@ class LoginFragment : BaseBindingFragment<FragmentLoginBinding>(FragmentLoginBin
         }
 
     }
+
 
     private fun showToast(message: String) {
         Toast.makeText(

@@ -40,13 +40,13 @@ class SummaryFragment :
 
             var transitionName = getString(R.string.transition_name_for_sum)
             if (it.tag == getString(R.string.add)) {
-                val extrasAdd = FragmentNavigatorExtras(binding!!.coordinator to transitionName)
+                val extrasAdd = FragmentNavigatorExtras(binding!!.fabAddButton to transitionName)
                 findNavController().navigate(
                     SummaryFragmentDirections.actionSummaryFragmentToAddDayFragment(), extrasAdd
                 )
             } else {
                 transitionName = getString(R.string.transition_name)
-                val extrasSmile = FragmentNavigatorExtras(binding!!.coordinator to transitionName)
+                val extrasSmile = FragmentNavigatorExtras(binding!!.fabAddButton to transitionName)
                 findNavController().navigate(
                     SummaryFragmentDirections.actionSummaryFragmentToDetailFragment(
                         viewModel.lastDay.value!!.dayId
@@ -86,7 +86,7 @@ class SummaryFragment :
             fabButton.tag = getString(it.tag)
             fabButton.setImageResource(it.image)
             if (it.tag == R.string.smile) {
-                binding!!.coordinator.transitionName = getString(it.transitionName)
+                binding!!.fabAddButton.transitionName = getString(it.transitionName)
             }
         }
     }
@@ -95,7 +95,7 @@ class SummaryFragment :
         super.onResume()
         viewModel.hideAddButton.observe(viewLifecycleOwner) {
             if (it.tag == R.string.add) {
-                binding!!.coordinator.transitionName = getString(it.transitionName)
+                binding!!.fabAddButton.transitionName = getString(it.transitionName)
             }
         }
     }

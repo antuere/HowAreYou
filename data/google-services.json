@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "506067010164",
+    "firebase_url": "https://howareyou-56a20-default-rtdb.firebaseio.com",
+    "project_id": "howareyou-56a20",
+    "storage_bucket": "howareyou-56a20.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:506067010164:android:8273fbc5d5ac051b2c8721",
+        "android_client_info": {
+          "package_name": "antuere.data"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "506067010164-2vtvbo2crlrtnd1mrup4kvpm3n2i92fu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "antuere.data",
+            "certificate_hash": "89ba7c58dc5bf2bcf4421edc2e9279638c801a8f"
+          }
+        },
+        {
+          "client_id": "506067010164-f76kue9b8s6nolvlcj1050rpk9k4eaes.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBUHqyk3EqWyFqo6Z6mxVwE63vTOEUvMXc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "506067010164-f76kue9b8s6nolvlcj1050rpk9k4eaes.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

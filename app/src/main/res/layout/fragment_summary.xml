@@ -123,11 +123,11 @@
             android:layout_marginStart="@dimen/margin_normal_button"
             android:layout_marginTop="@dimen/margin_normal_button"
             android:layout_marginBottom="@dimen/margin_normal_button_half"
-            android:layout_marginEnd="@dimen/margin_normal_button_half"
+            android:layout_marginEnd="@dimen/margin_normal_button"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toTopOf="@+id/guideline_horizontal_3"
-            app:layout_constraintEnd_toEndOf="@+id/guideline_vertical"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintVertical_bias="0.0">
 
@@ -135,7 +135,7 @@
                 android:id="@+id/mental_health_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Mental health"
+                android:text="Place for quotes"
                 android:textSize="@dimen/textSize_small_one"
                 android:padding="@dimen/padding_small"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -145,49 +145,23 @@
     </com.google.android.material.card.MaterialCardView>
 
 
-
-    <com.google.android.material.card.MaterialCardView
-            android:id="@+id/materialCardView7"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:cardBackgroundColor="@color/color_for_card"
-            android:layout_marginStart="@dimen/margin_normal_button_half"
-            android:layout_marginEnd="@dimen/margin_normal_button"
-            android:layout_marginTop="@dimen/margin_normal_button"
-            android:layout_marginBottom="@dimen/margin_normal_button_half"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/guideline_horizontal_3"
-            app:layout_constraintStart_toStartOf="@+id/guideline_vertical" />
-
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-            android:id="@+id/coordinator"
-            android:elevation="6dp"
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_add_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/shape_background"
-            android:transitionGroup="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
+            android:transitionGroup="true"
+            android:src="@drawable/ic_plus"
+            app:elevation="6dp"
             android:layout_margin="@dimen/margin_for_FAB"
-            android:transitionName="@string/transition_name_for_sum">
+            android:contentDescription="@string/button_for_add_new_day"
+            android:transitionName="@string/transition_name_for_sum"
+            style="?android:attr/borderlessButtonStyle"
+            tools:ignore="RedundantDescriptionCheck" />
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/fab_add_button"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="bottom|end"
-                android:src="@drawable/ic_plus"
-                android:elevation="6dp"
-                app:elevation="0dp"
-                android:contentDescription="@string/button_for_add_new_day"
-                app:layout_anchor="@+id/fab_add_button"
-                style="?android:attr/borderlessButtonStyle"
-                tools:ignore="RedundantDescriptionCheck" />
-
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline_vertical"
