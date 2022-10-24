@@ -42,7 +42,7 @@
             app:layout_constraintStart_toStartOf="parent"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintVertical_bias="0.36"
+            app:layout_constraintVertical_bias="0.33"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -108,7 +108,7 @@
             android:layout_width="match_parent"
             android:layout_marginEnd="@dimen/margin_normal"
             android:layout_marginStart="@dimen/margin_normal"
-            android:layout_marginTop="@dimen/margin_high"
+            android:layout_marginTop="@dimen/margin_normal"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
