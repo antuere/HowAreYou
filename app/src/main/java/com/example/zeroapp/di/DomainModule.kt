@@ -49,8 +49,8 @@ class DomainModule {
     }
 
     @Provides
-    fun provideUpdateFromFireBaseUseCase(dayRepository: DayRepository): UpdateFromFireBaseUseCase {
-        return UpdateFromFireBaseUseCase(dayRepository)
+    fun provideRefreshRemoteDataUseCase(dayRepository: DayRepository): RefreshRemoteDataUseCase {
+        return RefreshRemoteDataUseCase(dayRepository)
 
     }
 

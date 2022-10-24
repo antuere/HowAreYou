@@ -1,4 +1,4 @@
-package com.example.zeroapp.presentation.register
+package com.example.zeroapp.presentation.registerWithEmail
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,22 +8,30 @@ import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.zeroapp.R
-import com.example.zeroapp.databinding.FragmentRegisterBinding
+import com.example.zeroapp.databinding.FragmentRegisterEmailBinding
 import com.example.zeroapp.presentation.base.BaseBindingFragment
 import com.example.zeroapp.util.setToolbarIcon
+import com.google.android.material.transition.MaterialSharedAxis
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class RegisterFragment :
-    BaseBindingFragment<FragmentRegisterBinding>(FragmentRegisterBinding::inflate) {
+class RegisterEmailFragment :
+    BaseBindingFragment<FragmentRegisterEmailBinding>(FragmentRegisterEmailBinding::inflate) {
 
 
-    private val viewModel by viewModels<RegisterViewModel>()
+    private val viewModel by viewModels<RegisterEmailViewModel>()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        enterTransition = MaterialSharedAxis(MaterialSharedAxis.X, true)
+        returnTransition = MaterialSharedAxis(MaterialSharedAxis.X, false)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         binding = this.inflater(inflater, container, false)
         setToolbarIcon(R.drawable.ic_back)
@@ -36,7 +44,7 @@ class RegisterFragment :
     }
 
 
-    private fun setupBinding(binding: FragmentRegisterBinding) {
+    private fun setupBinding(binding: FragmentRegisterEmailBinding) {
 
         binding.apply {
             buttonSignUp.setOnClickListener {
@@ -49,13 +57,15 @@ class RegisterFragment :
             }
         }
 
+
+
         viewModel.registerState.observe(viewLifecycleOwner) { state ->
             state?.let {
                 when (it) {
-                    is RegisterState.PasswordsError -> showToast(getString(it.res))
+                    is RegisterState.Successful -> findNavController().navigateUp()
                     is RegisterState.EmptyFields -> showToast(getString(it.res))
+                    is RegisterState.PasswordsError -> showToast(getString(it.res))
                     is RegisterState.ErrorFromFireBase -> showToast(it.message)
-                    else -> findNavController().navigateUp()
                 }
                 viewModel.stateReset()
             }
@@ -70,4 +80,5 @@ class RegisterFragment :
             Toast.LENGTH_SHORT
         ).show()
     }
+
 }

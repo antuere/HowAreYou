@@ -21,7 +21,7 @@ interface DayRepository {
 
     suspend fun update(day: Day)
 
-    fun updateDaysFromFireBase()
+    fun refreshRemoteData()
 
 
 }

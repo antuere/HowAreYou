@@ -1,4 +1,4 @@
-package com.example.zeroapp.presentation.register
+package com.example.zeroapp.presentation.registerWithEmail
 
 import androidx.annotation.StringRes
 

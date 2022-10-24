@@ -1,19 +1,19 @@
-package com.example.zeroapp.presentation.login
+package com.example.zeroapp.presentation.loginWithEmail
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import antuere.data.remoteDataBase.FirebaseApi
-import antuere.domain.usecases.UpdateFromFireBaseUseCase
+import antuere.domain.usecases.RefreshRemoteDataUseCase
 import com.example.zeroapp.R
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class LoginViewModel @Inject constructor(
-    private val updateFromFireBaseUseCase: UpdateFromFireBaseUseCase,
+class LoginEmailViewModel @Inject constructor(
+    private val refreshRemoteDataUseCase: RefreshRemoteDataUseCase,
     private val firebaseApi: FirebaseApi
 ) : ViewModel() {
 
@@ -24,7 +24,7 @@ class LoginViewModel @Inject constructor(
 
     private fun loginSuccessful() {
         viewModelScope.launch {
-            updateFromFireBaseUseCase.invoke(Unit)
+            refreshRemoteDataUseCase.invoke(Unit)
         }
     }
 
@@ -44,12 +44,12 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    fun stateReset() {
+    fun navigationDone() {
         _loginState.value = null
     }
 
     fun checkCurrentAuth() {
-        if (firebaseApi.auth.currentUser != null) {
+        if (firebaseApi.isHasUser()) {
             _loginState.value = LoginState.Successful
             loginSuccessful()
         }

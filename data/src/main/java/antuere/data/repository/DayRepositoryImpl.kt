@@ -1,7 +1,6 @@
 package antuere.data.repository
 
 import antuere.data.localDatabase.DayDatabase
-import antuere.data.localDatabase.entities.DayEntity
 import antuere.data.localDatabase.mapping.DayEntityMapper
 import antuere.data.remoteDataBase.FirebaseApi
 import antuere.data.remoteDataBase.entities.DayEntityRemote
@@ -11,10 +10,8 @@ import antuere.domain.repository.DayRepository
 import com.google.firebase.database.DatabaseReference
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.tasks.await
-import timber.log.Timber
 import javax.inject.Inject
 
 
@@ -28,10 +25,10 @@ class DayRepositoryImpl @Inject constructor(
     private var daysNode: DatabaseReference? = null
 
     init {
-        updateDaysFromFireBase()
+        refreshRemoteData()
     }
 
-    override fun updateDaysFromFireBase() {
+    override fun refreshRemoteData() {
         daysNode = firebaseApi.getDaysNode()
         if (daysNode != null) {
             CoroutineScope(Dispatchers.IO).launch {

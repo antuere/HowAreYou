@@ -10,7 +10,7 @@
 
     <Button
             android:id="@+id/button_signIn"
-            style="@style/Widget.App.Button.Cats"
+            android:transitionName="@string/transition_name_for_sign_in_methods"
             android:layout_width="wrap_content"
             android:layout_margin="@dimen/margin_high"
             android:layout_height="wrap_content"
@@ -19,8 +19,23 @@
             android:text="@string/sign_in"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintVertical_bias="0.05"
-            app:layout_constraintHorizontal_bias="0.85" />
+            app:layout_constraintVertical_bias="0.25"
+            app:layout_constraintHorizontal_bias="0.5" />
+
+    <Button
+            android:id="@+id/button_signOut"
+            style="@style/Widget.App.Button.Default.Outlined"
+            android:layout_width="wrap_content"
+            android:layout_margin="@dimen/margin_high"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:text="@string/sign_out"
+            android:visibility="invisible"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintVertical_bias="0.32"
+            app:layout_constraintHorizontal_bias="0.5" />
 
     <TextView
             android:id="@+id/welcome_user"

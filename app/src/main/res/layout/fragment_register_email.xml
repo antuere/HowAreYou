@@ -2,7 +2,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:transitionGroup="true">
 
 
 
@@ -10,7 +11,7 @@
             android:id="@+id/nickname_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Nickname"
+            android:hint="@string/nickname"
             android:layout_marginEnd="@dimen/margin_normal"
             android:layout_marginStart="@dimen/margin_normal"
             android:layout_marginBottom="@dimen/margin_normal"
@@ -25,7 +26,8 @@
                 android:id="@+id/nickname_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColorHint="@color/gray_less" />
+                android:textColorHint="@color/gray_less"
+                android:inputType="textPersonName" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -33,19 +35,20 @@
             android:id="@+id/email_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Email"
+            android:hint="@string/email"
             android:layout_marginEnd="@dimen/margin_normal"
             android:layout_marginStart="@dimen/margin_normal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintVertical_bias="0.361"
+            app:layout_constraintVertical_bias="0.36"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/email_text"
+                android:inputType="textEmailAddress"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColorHint="@color/gray_less" />
@@ -56,7 +59,8 @@
             android:id="@+id/password_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Password"
+            android:hint="@string/password"
+            app:endIconMode="password_toggle"
             android:layout_marginTop="@dimen/margin_normal"
             android:layout_marginEnd="@dimen/margin_normal"
             android:layout_marginStart="@dimen/margin_normal"
@@ -68,6 +72,7 @@
 
         <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/password_text"
+                android:inputType="textPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColorHint="@color/gray_less" />
@@ -77,8 +82,9 @@
     <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/confirm_password_layout"
             android:layout_width="match_parent"
+            app:endIconMode="password_toggle"
             android:layout_height="wrap_content"
-            android:hint="Confrim password"
+            android:hint="@string/confirm_password"
             android:layout_marginTop="@dimen/margin_normal"
             android:layout_marginEnd="@dimen/margin_normal"
             android:layout_marginStart="@dimen/margin_normal"
@@ -90,6 +96,7 @@
 
         <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/confirm_password_text"
+                android:inputType="textPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColorHint="@color/gray_less" />

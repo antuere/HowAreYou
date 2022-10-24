@@ -155,7 +155,7 @@
             app:layout_constraintHorizontal_bias="1.0"
             android:transitionGroup="true"
             android:src="@drawable/ic_plus"
-            app:elevation="6dp"
+            app:elevation="4dp"
             android:layout_margin="@dimen/margin_for_FAB"
             android:contentDescription="@string/button_for_add_new_day"
             android:transitionName="@string/transition_name_for_sum"

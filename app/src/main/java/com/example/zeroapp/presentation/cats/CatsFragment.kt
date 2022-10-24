@@ -51,6 +51,7 @@ class CatsFragment : BaseBindingFragment<FragmentCatsBinding>(FragmentCatsBindin
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentCatsBinding.inflate(inflater, container, false)
+
         getCatsImage()
 
         setToolbarIcon(R.drawable.ic_back)

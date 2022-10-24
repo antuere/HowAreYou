@@ -11,23 +11,24 @@ data class FirebaseApi(
 ) {
     companion object {
         private const val DAYS_PATH = "days"
+        private const val USERS_PATH = "users"
     }
 
-    private fun isHasUser(): Boolean {
+    fun isHasUser(): Boolean {
         return auth.currentUser != null
     }
 
     fun getDaysNode(): DatabaseReference? {
-        return if (isHasUser()) realTimeDb.child(auth.currentUser!!.uid)
+        return if (isHasUser()) realTimeDb.child(USERS_PATH).child(auth.currentUser!!.uid)
             .child(DAYS_PATH) else null
     }
 
     fun getUserNode(): DatabaseReference? {
-        return if (isHasUser()) realTimeDb.child(auth.currentUser!!.uid)
+        return if (isHasUser()) realTimeDb.child(USERS_PATH).child(auth.currentUser!!.uid)
         else null
     }
 
-     suspend fun getUserNickNameAsync(): Deferred<String?> {
+    suspend fun getUserNickNameAsync(): Deferred<String?> {
         val scope = CoroutineScope(Dispatchers.IO)
         return scope.async {
             if (isHasUser()) {

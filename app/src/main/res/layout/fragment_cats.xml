@@ -22,7 +22,6 @@
 
     <Button
             android:id="@+id/button_get_cat"
-            style="@style/Widget.App.Button.Cats"
             android:layout_width="match_parent"
             android:layout_margin="@dimen/margin_normal"
             android:layout_height="65dp"

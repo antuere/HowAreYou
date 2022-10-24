@@ -22,7 +22,8 @@
         <item name="floatingActionButtonStyle">@style/Widget.App.FloatingActionButton</item>
         <item name="materialCardViewStyle">@style/Widget.App.CardView</item>
         <item name="circularProgressIndicatorStyle">@style/Widget.App.CircularProgressIndicator</item>
-
+        <item name="materialButtonStyle">@style/Widget.App.Button.Default</item>
+        <item name="materialButtonOutlinedStyle">@style/Widget.App.Button.Default.Outlined</item>
     </style>
 
 
@@ -94,8 +95,8 @@
     </style>
 
 
-    <!-- Button theme -->
-    <style name="Widget.App.Button.Cats" parent="Widget.Material3.Button">
+    <!-- Button theme (filled) -->
+    <style name="Widget.App.Button.Default" parent="Widget.Material3.Button">
         <item name="android:textAppearance">@style/TextAppearance.App.Button</item>
         <item name="iconGravity">textStart</item>
         <item name="iconSize">20dp</item>
@@ -104,7 +105,15 @@
     <style name="TextAppearance.App.Button" parent="TextAppearance.Material3.LabelLarge">
         <item name="fontFamily">@font/roboto_medium</item>
         <item name="android:fontFamily">@font/roboto_medium</item>
-        <item name="android:textSize">18sp</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+
+    <!-- Button theme (outlined) -->
+    <style name="Widget.App.Button.Default.Outlined" parent="Widget.Material3.Button.OutlinedButton">
+        <item name="android:textAppearance">@style/TextAppearance.App.Button</item>
+        <item name="iconGravity">textStart</item>
+        <item name="iconSize">20dp</item>
     </style>
 
 

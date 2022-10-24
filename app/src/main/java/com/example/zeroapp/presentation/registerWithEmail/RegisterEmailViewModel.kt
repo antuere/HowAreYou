@@ -1,4 +1,4 @@
-package com.example.zeroapp.presentation.register
+package com.example.zeroapp.presentation.registerWithEmail
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -9,7 +9,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class RegisterViewModel @Inject constructor(
+class RegisterEmailViewModel @Inject constructor(
     private val firebaseApi: FirebaseApi
 ) : ViewModel() {
 

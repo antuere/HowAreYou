@@ -1,22 +1,34 @@
-package com.example.zeroapp.presentation.login
+package com.example.zeroapp.presentation.loginWithEmail
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.zeroapp.R
-import com.example.zeroapp.databinding.FragmentLoginBinding
+import com.example.zeroapp.databinding.FragmentLoginEmailBinding
 import com.example.zeroapp.presentation.base.BaseBindingFragment
+import com.example.zeroapp.util.createSharedElementEnterTransition
 import com.example.zeroapp.util.setToolbarIcon
+import com.google.android.material.transition.MaterialSharedAxis
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class LoginFragment : BaseBindingFragment<FragmentLoginBinding>(FragmentLoginBinding::inflate) {
+class LoginEmailFragment : BaseBindingFragment<FragmentLoginEmailBinding>(FragmentLoginEmailBinding::inflate) {
 
-    private val viewModel by viewModels<LoginViewModel>()
+    private val viewModel by viewModels<LoginEmailViewModel>()
+
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        sharedElementEnterTransition = createSharedElementEnterTransition()
+
+        exitTransition = MaterialSharedAxis(MaterialSharedAxis.X, true)
+        reenterTransition = MaterialSharedAxis(MaterialSharedAxis.X, false)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -33,7 +45,9 @@ class LoginFragment : BaseBindingFragment<FragmentLoginBinding>(FragmentLoginBin
         }
     }
 
-    private fun setupBinding(binding: FragmentLoginBinding) {
+    private fun setupBinding(binding: FragmentLoginEmailBinding) {
+
+        viewModel.checkCurrentAuth()
 
         binding.apply {
             buttonSignIn.setOnClickListener {
@@ -43,19 +57,22 @@ class LoginFragment : BaseBindingFragment<FragmentLoginBinding>(FragmentLoginBin
             }
 
             signUpHint.setOnClickListener {
-                findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToRegisterFragment())
+                findNavController().navigate(LoginEmailFragmentDirections.actionLoginFragmentToRegisterFragment())
+            }
+
+            resetPasswordHint.setOnClickListener {
+                findNavController().navigate(LoginEmailFragmentDirections.actionLoginFragmentToResetPasswordFragment())
             }
         }
 
-        viewModel.checkCurrentAuth()
         viewModel.loginState.observe(viewLifecycleOwner) { state ->
             state?.let {
                 when (it) {
+                    is LoginState.Successful -> findNavController().navigateUp()
                     is LoginState.EmptyFields -> showToast(getString(it.res))
                     is LoginState.ErrorFromFireBase -> showToast(it.message)
-                    else -> findNavController().navigateUp()
                 }
-                viewModel.stateReset()
+                viewModel.navigationDone()
             }
         }
 
@@ -68,5 +85,12 @@ class LoginFragment : BaseBindingFragment<FragmentLoginBinding>(FragmentLoginBin
             message,
             Toast.LENGTH_SHORT
         ).show()
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        postponeEnterTransition()
+        view.doOnPreDraw {
+            startPostponedEnterTransition()
+        }
     }
 }

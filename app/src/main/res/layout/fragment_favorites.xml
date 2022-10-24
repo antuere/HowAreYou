@@ -5,12 +5,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:transitionName="@string/transition_name_for_fav"
+        android:transitionGroup="true"
         tools:context=".presentation.history.HistoryFragment">
 
 
     <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/favorites_list"
-            android:transitionGroup="true"
             android:padding="@dimen/padding_small"
             android:layout_width="match_parent"
             android:layout_height="match_parent">

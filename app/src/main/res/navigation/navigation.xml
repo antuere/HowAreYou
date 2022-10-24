@@ -41,8 +41,8 @@
             android:label="@string/settings"
             tools:layout="@layout/fragment_settings" >
         <action
-                android:id="@+id/action_settingsFragment_to_loginFragment"
-                app:destination="@id/loginFragment"
+                android:id="@+id/action_settingsFragment_to_signInMethodsFragment"
+                app:destination="@id/signInMethodsFragment"
                 app:popUpTo="@id/settingsFragment"
                 app:popUpToInclusive="false" />
     </fragment>
@@ -81,18 +81,38 @@
             android:label="@string/cats" />
     <fragment
             android:id="@+id/loginFragment"
-            android:name="com.example.zeroapp.presentation.login.LoginFragment"
+            android:name="com.example.zeroapp.presentation.loginWithEmail.LoginEmailFragment"
             android:label="@string/login"
-            tools:layout="@layout/fragment_login">
+            tools:layout="@layout/fragment_login_email">
         <action
                 android:id="@+id/action_loginFragment_to_registerFragment"
                 app:destination="@id/registerFragment"
                 app:popUpTo="@id/loginFragment"
                 app:popUpToInclusive="false" />
+        <action
+                android:id="@+id/action_loginFragment_to_resetPasswordFragment"
+                app:destination="@id/resetPasswordFragment"
+                app:popUpTo="@id/loginFragment"
+                app:popUpToInclusive="false"/>
     </fragment>
     <fragment
             android:id="@+id/registerFragment"
-            android:name="com.example.zeroapp.presentation.register.RegisterFragment"
+            android:name="com.example.zeroapp.presentation.registerWithEmail.RegisterEmailFragment"
             android:label="@string/register"
-            tools:layout="@layout/fragment_register"/>
+            tools:layout="@layout/fragment_register_email"/>
+    <fragment
+            android:id="@+id/resetPasswordFragment"
+            android:name="com.example.zeroapp.presentation.resetPassword.ResetPasswordFragment"
+            android:label="@string/reset_password_button"
+            tools:layout="@layout/fragment_reset_password"/>
+    <fragment
+            android:id="@+id/signInMethodsFragment"
+            android:name="com.example.zeroapp.presentation.signInMethods.SignInMethodsFragment"
+            android:label="@string/login_methods" >
+        <action
+                android:id="@+id/action_signInMethodsFragment_to_loginFragment"
+                app:destination="@id/loginFragment"
+                app:popUpTo="@id/signInMethodsFragment"
+                app:popUpToInclusive="false" />
+    </fragment>
 </navigation>

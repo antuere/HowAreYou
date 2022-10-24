@@ -64,6 +64,8 @@ class MainActivity : AppCompatActivity() {
                 R.id.catsFragment -> hideBottomBar()
                 R.id.loginFragment -> hideBottomBar()
                 R.id.registerFragment -> goneBottomBar()
+                R.id.resetPasswordFragment -> hideBottomBar()
+                R.id.signInMethodsFragment -> hideBottomBar()
             }
 
         }
