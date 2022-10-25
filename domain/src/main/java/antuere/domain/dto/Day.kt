@@ -1,12 +1,10 @@
 package antuere.domain.dto
 
 import antuere.domain.util.TimeUtility
-import java.util.*
-
 
 data class Day(
 
-    var dayId: Long = TimeUtility.currentDate.time,
+    var dayId: Long = TimeUtility.parseFormat().time,
 
     val imageId: Int,
 

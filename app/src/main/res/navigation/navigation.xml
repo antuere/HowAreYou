@@ -7,7 +7,7 @@
 
     <fragment
             android:id="@+id/addDayFragment"
-            android:name="com.example.zeroapp.presentation.addDay.AddDayFragment"
+            android:name="com.example.zeroapp.presentation.add_day.AddDayFragment"
             android:label="@string/today"
             tools:layout="@layout/fragment_add_day" />
     <fragment
@@ -81,7 +81,7 @@
             android:label="@string/cats" />
     <fragment
             android:id="@+id/loginFragment"
-            android:name="com.example.zeroapp.presentation.loginWithEmail.LoginEmailFragment"
+            android:name="com.example.zeroapp.presentation.login_with_email.LoginEmailFragment"
             android:label="@string/login"
             tools:layout="@layout/fragment_login_email">
         <action
@@ -97,17 +97,17 @@
     </fragment>
     <fragment
             android:id="@+id/registerFragment"
-            android:name="com.example.zeroapp.presentation.registerWithEmail.RegisterEmailFragment"
+            android:name="com.example.zeroapp.presentation.register_with_email.RegisterEmailFragment"
             android:label="@string/register"
             tools:layout="@layout/fragment_register_email"/>
     <fragment
             android:id="@+id/resetPasswordFragment"
-            android:name="com.example.zeroapp.presentation.resetPassword.ResetPasswordFragment"
+            android:name="com.example.zeroapp.presentation.reset_password.ResetPasswordFragment"
             android:label="@string/reset_password_button"
             tools:layout="@layout/fragment_reset_password"/>
     <fragment
             android:id="@+id/signInMethodsFragment"
-            android:name="com.example.zeroapp.presentation.signInMethods.SignInMethodsFragment"
+            android:name="com.example.zeroapp.presentation.sign_in_methods.SignInMethodsFragment"
             android:label="@string/login_methods" >
         <action
                 android:id="@+id/action_signInMethodsFragment_to_loginFragment"

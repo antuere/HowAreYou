@@ -43,6 +43,10 @@ class CatsFragment : BaseBindingFragment<FragmentCatsBinding>(FragmentCatsBindin
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         sharedElementEnterTransition = createSharedElementEnterTransition()
+
+        reenterTransition = MaterialElevationScale(true).apply {
+            duration = resources.getInteger(R.integer.duration_normal).toLong()
+        }
     }
 
     override fun onCreateView(
@@ -55,10 +59,6 @@ class CatsFragment : BaseBindingFragment<FragmentCatsBinding>(FragmentCatsBindin
         getCatsImage()
 
         setToolbarIcon(R.drawable.ic_back)
-
-        reenterTransition = MaterialElevationScale(true).apply {
-            duration = resources.getInteger(R.integer.duration_normal).toLong()
-        }
 
         return binding!!.root
     }

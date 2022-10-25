@@ -1,6 +1,7 @@
 package com.example.zeroapp.di
 
 import antuere.domain.repository.DayRepository
+import antuere.domain.repository.QuoteRepository
 import antuere.domain.usecases.*
 import dagger.Module
 import dagger.Provides
@@ -51,7 +52,11 @@ class DomainModule {
     @Provides
     fun provideRefreshRemoteDataUseCase(dayRepository: DayRepository): RefreshRemoteDataUseCase {
         return RefreshRemoteDataUseCase(dayRepository)
+    }
 
+    @Provides
+    fun provideGetDayQuoteUseCase(quoteRepository: QuoteRepository): GetDayQuoteUseCase {
+        return GetDayQuoteUseCase(quoteRepository)
     }
 
 }

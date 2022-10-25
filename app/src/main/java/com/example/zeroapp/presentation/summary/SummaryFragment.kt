@@ -1,7 +1,9 @@
 package com.example.zeroapp.presentation.summary
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.FragmentNavigatorExtras
@@ -17,9 +19,41 @@ import dagger.hilt.android.AndroidEntryPoint
 class SummaryFragment :
     BaseBindingFragment<FragmentSummaryBinding>(FragmentSummaryBinding::inflate) {
 
+
     private val viewModel by viewModels<SummaryViewModel>()
     private lateinit var fabButton: FloatingActionButton
 
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        reenterTransition = MaterialElevationScale(true).apply {
+            duration = resources.getInteger(R.integer.duration_normal).toLong()
+        }
+
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding = this.inflater(inflater, container, false)
+
+
+        viewModel.dayQuote.observe(viewLifecycleOwner) { quote ->
+            quote?.let {
+                binding!!.quotesText.text = it.text
+                val author = "${it.author} "
+                binding!!.quotesAuthor.text = author
+
+                viewModel.saveQuote(it.text, author)
+
+            }
+        }
+
+        return binding?.root
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -29,10 +63,6 @@ class SummaryFragment :
         postponeEnterTransition()
         view.doOnPreDraw {
             startPostponedEnterTransition()
-        }
-
-        reenterTransition = MaterialElevationScale(true).apply {
-            duration = resources.getInteger(R.integer.duration_normal).toLong()
         }
 
         fabButton = binding!!.fabAddButton
@@ -60,7 +90,6 @@ class SummaryFragment :
                 binding!!.wishText.text = wishString
             }
         }
-
 
         binding!!.favorites.setOnClickListener {
             val transitionName = getString(R.string.transition_name_for_fav)

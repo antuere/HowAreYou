@@ -22,6 +22,14 @@ class SettingsFragment :
 
     private val viewModel by viewModels<SettingsViewModel>()
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        enterTransition = MaterialElevationScale(true).apply {
+            duration = resources.getInteger(R.integer.duration_normal).toLong()
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -30,13 +38,19 @@ class SettingsFragment :
         binding = this.inflater(inflater, container, false)
 
         viewModel.updateUserNickname()
+        viewModel.checkCurrentUser()
 
         viewModel.userNickname.observe(viewLifecycleOwner) {
             it?.let {
-                binding!!.buttonSignIn.visibility = View.INVISIBLE
-                binding!!.buttonSignOut.visibility = View.VISIBLE
                 val welcomeText = " ${getString(R.string.hello_user)} $it "
                 binding!!.welcomeUser.text = welcomeText
+            }
+        }
+
+        viewModel.isHasUser.observe(viewLifecycleOwner){
+            if(it){
+                binding!!.buttonSignIn.visibility = View.INVISIBLE
+                binding!!.buttonSignOut.visibility = View.VISIBLE
             }
         }
 
@@ -75,10 +89,6 @@ class SettingsFragment :
         postponeEnterTransition()
         view.doOnPreDraw {
             startPostponedEnterTransition()
-        }
-
-        enterTransition = MaterialElevationScale(true).apply {
-            duration = resources.getInteger(R.integer.duration_normal).toLong()
         }
 
     }

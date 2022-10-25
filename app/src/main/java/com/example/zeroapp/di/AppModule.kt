@@ -1,13 +1,17 @@
 package com.example.zeroapp.di
 
 import android.content.Context
-import antuere.data.remoteDataBase.FirebaseApi
+import android.content.SharedPreferences
+import antuere.data.remote_day_database.FirebaseApi
 import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestManager
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.example.zeroapp.R
 import com.example.zeroapp.util.WishAnalyzer
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import dagger.Module
@@ -51,11 +55,31 @@ object AppModule {
         return FirebaseAuth.getInstance()
     }
 
+    @Provides
+    @Singleton
+    fun provideGoogleSignInClient(@ApplicationContext context: Context): GoogleSignInClient {
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(context.getString(R.string.default_web_client_id))
+            .requestEmail()
+            .build()
+        return GoogleSignIn.getClient(context, gso)
+    }
+
 
     @Provides
     @Singleton
-    fun provideFireBaseApi(auth: FirebaseAuth, realtimeDb: DatabaseReference): FirebaseApi {
-        return FirebaseApi(auth, realtimeDb)
+    fun provideFireBaseApi(
+        auth: FirebaseAuth,
+        realtimeDb: DatabaseReference,
+        googleClient: GoogleSignInClient
+    ): FirebaseApi {
+        return FirebaseApi(auth, realtimeDb, googleClient)
+    }
+
+    @Provides
+    @Singleton
+    fun provideSharedPreferences(@ApplicationContext context: Context): SharedPreferences {
+        return context.getSharedPreferences("myPref", Context.MODE_PRIVATE)
     }
 
 

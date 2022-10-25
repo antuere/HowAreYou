@@ -2,9 +2,9 @@ package com.example.zeroapp.di
 
 import android.content.Context
 import androidx.room.Room
-import antuere.data.localDatabase.DayDatabase
-import antuere.data.localDatabase.mapping.DayEntityMapper
-import antuere.data.remoteDataBase.mapping.DayEntityMapperRemote
+import antuere.data.local_day_database.DayDatabase
+import antuere.data.local_day_database.mapping.DayEntityMapper
+import antuere.data.remote_day_database.mapping.DayEntityMapperRemote
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
@@ -46,4 +46,6 @@ class DataModule {
     fun provideDayDatabaseRemote(): DatabaseReference {
         return Firebase.database.reference
     }
+
+
 }

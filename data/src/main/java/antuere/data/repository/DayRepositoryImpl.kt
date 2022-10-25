@@ -1,10 +1,10 @@
 package antuere.data.repository
 
-import antuere.data.localDatabase.DayDatabase
-import antuere.data.localDatabase.mapping.DayEntityMapper
-import antuere.data.remoteDataBase.FirebaseApi
-import antuere.data.remoteDataBase.entities.DayEntityRemote
-import antuere.data.remoteDataBase.mapping.DayEntityMapperRemote
+import antuere.data.local_day_database.DayDatabase
+import antuere.data.local_day_database.mapping.DayEntityMapper
+import antuere.data.remote_day_database.FirebaseApi
+import antuere.data.remote_day_database.entities.DayEntityRemote
+import antuere.data.remote_day_database.mapping.DayEntityMapperRemote
 import antuere.domain.dto.Day
 import antuere.domain.repository.DayRepository
 import com.google.firebase.database.DatabaseReference

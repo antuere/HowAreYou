@@ -29,6 +29,15 @@ class HistoryFragment :
         UIDialogListener(requireContext(), viewModel)
     }
 
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        reenterTransition = MaterialElevationScale(true).apply {
+            duration = resources.getInteger(R.integer.duration_normal).toLong()
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -46,10 +55,6 @@ class HistoryFragment :
 
         }
         binding!!.dayList.layoutManager = manager
-
-        reenterTransition = MaterialElevationScale(true).apply {
-            duration = resources.getInteger(R.integer.duration_normal).toLong()
-        }
 
         val adapter = DayAdapter(viewModel.dayClickListener)
         binding!!.dayList.adapter = adapter
@@ -76,7 +81,6 @@ class HistoryFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        super.onViewCreated(view, savedInstanceState)
         dialogListener.collect(this)
 
         viewModel.navigateToDetailState.observe(viewLifecycleOwner) {

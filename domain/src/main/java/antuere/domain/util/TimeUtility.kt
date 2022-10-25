@@ -7,7 +7,7 @@ object TimeUtility {
     private const val DEFAULT_FORMAT = "dd/MM/yy"
     val calendar: Calendar
         get() = Calendar.getInstance()
-    val currentDate: Date
+    private val currentDate: Date
         get() = calendar.time
 
     fun formatCurrentTime(format: String = DEFAULT_FORMAT): String {
@@ -17,4 +17,15 @@ object TimeUtility {
     fun format(date: Date, format: String = DEFAULT_FORMAT): String {
         return SimpleDateFormat(format, Locale.US).format(date)
     }
+
+    fun parseFormat(format: String = DEFAULT_FORMAT): Date {
+        val currentDateFormat = formatCurrentTime()
+        return SimpleDateFormat(format, Locale.US).parse(currentDateFormat)
+    }
+
+
+    fun getDayOfMonth(): String {
+        return calendar.get(Calendar.DAY_OF_MONTH).toString()
+    }
+
 }

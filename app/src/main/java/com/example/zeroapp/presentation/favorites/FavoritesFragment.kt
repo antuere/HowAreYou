@@ -16,7 +16,6 @@ import com.example.zeroapp.presentation.base.ui_dialog.UIDialogListener
 import com.example.zeroapp.presentation.favorites.adapter.FavoritesAdapter
 import com.example.zeroapp.util.createSharedElementEnterTransition
 import com.example.zeroapp.util.setToolbarIcon
-import com.google.android.material.transition.MaterialElevationScale
 import com.google.android.material.transition.MaterialFade
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -46,10 +45,6 @@ class FavoritesFragment :
         binding!!.favoritesList.layoutManager = manager
 
         setToolbarIcon(R.drawable.ic_back)
-
-        reenterTransition = MaterialElevationScale(true).apply {
-            duration = resources.getInteger(R.integer.duration_normal).toLong()
-        }
 
         val adapter = FavoritesAdapter(viewModel.dayClickListener)
         binding!!.favoritesList.adapter = adapter

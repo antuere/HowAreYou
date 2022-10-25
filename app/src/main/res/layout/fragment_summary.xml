@@ -5,6 +5,7 @@
         android:id="@+id/home"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:transitionGroup="true"
         tools:context=".presentation.summary.SummaryFragment">
 
     <com.google.android.material.card.MaterialCardView
@@ -116,10 +117,11 @@
             app:layout_constraintStart_toStartOf="@+id/guideline_vertical" />
 
     <com.google.android.material.card.MaterialCardView
-            android:id="@+id/mental_health"
+            android:id="@+id/quotes_card"
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:cardBackgroundColor="@color/color_for_card"
+            android:padding="@dimen/padding_very_small"
             android:layout_marginStart="@dimen/margin_normal_button"
             android:layout_marginTop="@dimen/margin_normal_button"
             android:layout_marginBottom="@dimen/margin_normal_button_half"
@@ -128,21 +130,51 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toTopOf="@+id/guideline_horizontal_3"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintVertical_bias="0.0">
-
-        <TextView
-                android:id="@+id/mental_health_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Place for quotes"
-                android:textSize="@dimen/textSize_small_one"
-                android:padding="@dimen/padding_small"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
 
 
     </com.google.android.material.card.MaterialCardView>
+
+    <TextView
+            android:id="@+id/quotes_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/quotes_title"
+            android:textSize="@dimen/textSize_small_two"
+            android:elevation="1dp"
+            android:layout_marginStart="@dimen/margin_normal"
+            app:layout_constraintHorizontal_bias="0.2"
+            app:layout_constraintVertical_bias="0.1"
+            app:layout_constraintStart_toStartOf="@+id/quotes_card"
+            app:layout_constraintBottom_toBottomOf="@+id/quotes_card"
+            app:layout_constraintTop_toTopOf="@+id/quotes_card" />
+
+    <TextView
+            android:id="@+id/quotes_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Template a beautifully quote"
+            android:textSize="@dimen/textSize_small_one"
+            android:elevation="1dp"
+            android:layout_marginStart="@dimen/margin_normal"
+            app:layout_constraintHorizontal_bias="0.1"
+            app:layout_constraintVertical_bias="0.3"
+            app:layout_constraintStart_toStartOf="@+id/quotes_card"
+            app:layout_constraintBottom_toBottomOf="@+id/quotes_card"
+            app:layout_constraintTop_toTopOf="@+id/quotes_card" />
+
+    <TextView
+            android:id="@+id/quotes_author"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Porter"
+            android:textSize="@dimen/textSize_small_one"
+            android:elevation="1dp"
+            android:layout_marginBottom="@dimen/margin_normal"
+            android:layout_marginEnd="@dimen/margin_normal"
+            app:layout_constraintBottom_toBottomOf="@+id/quotes_card"
+            app:layout_constraintEnd_toEndOf="@+id/quotes_card"
+            android:textStyle="italic" />
 
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton

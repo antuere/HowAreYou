@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import antuere.data.remoteDataBase.FirebaseApi
+import antuere.data.remote_day_database.FirebaseApi
 import antuere.domain.usecases.RefreshRemoteDataUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -20,8 +20,13 @@ class SettingsViewModel @Inject constructor(
     val userNickname: LiveData<String?>
         get() = _userNickname
 
+    private var _isHasUser = MutableLiveData<Boolean>()
+    val isHasUser: LiveData<Boolean>
+        get() = _isHasUser
+
     init {
         updateUserNickname()
+        checkCurrentUser()
     }
 
 
@@ -32,6 +37,10 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
+    fun checkCurrentUser() {
+        _isHasUser.value = firebaseApi.isHasUser()
+    }
+
     fun onSignOutClicked() {
         firebaseApi.auth.signOut()
 
@@ -40,4 +49,6 @@ class SettingsViewModel @Inject constructor(
             refreshRemoteDataUseCase.invoke(Unit)
         }
     }
+
+
 }
