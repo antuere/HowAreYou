@@ -35,6 +35,7 @@
     <string name="register_google_title">Register with Google</string>
     <string name="login_google_title">Login with Google</string>
     <string name="quotes_title">Quote of the day</string>
+    <string name="filter_title">Filter</string>
 
     <!-- Login/register -->
     <string name="email">Email</string>
@@ -48,6 +49,7 @@
     <string name="about_day">About past day</string>
     <string name="dialog_delete_title">Delete day</string>
     <string name="dialog_delete_message">Deleting permanently this day?</string>
+    <string name="date_picker_title">Select days</string>
     <string name="yes">Delete</string>
     <string name="no">Cancel</string>
     <string name="getCats">Update cute cats!</string>

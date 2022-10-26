@@ -32,7 +32,7 @@ class SettingsViewModel @Inject constructor(
 
     fun updateUserNickname() {
         viewModelScope.launch {
-            val result = firebaseApi.getUserNickNameAsync().await()
+            val result = firebaseApi.getUserNicknameAsync().await()
             _userNickname.value = result
         }
     }

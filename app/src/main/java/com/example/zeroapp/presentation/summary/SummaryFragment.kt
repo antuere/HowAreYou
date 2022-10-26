@@ -111,7 +111,7 @@ class SummaryFragment :
 
     override fun onStart() {
         super.onStart()
-        viewModel.hideAddButton.observe(viewLifecycleOwner) {
+        viewModel.fabButtonState.observe(viewLifecycleOwner) {
             fabButton.tag = getString(it.tag)
             fabButton.setImageResource(it.image)
             if (it.tag == R.string.smile) {
@@ -122,7 +122,7 @@ class SummaryFragment :
 
     override fun onResume() {
         super.onResume()
-        viewModel.hideAddButton.observe(viewLifecycleOwner) {
+        viewModel.fabButtonState.observe(viewLifecycleOwner) {
             if (it.tag == R.string.add) {
                 binding!!.fabAddButton.transitionName = getString(it.transitionName)
             }

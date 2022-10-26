@@ -73,7 +73,7 @@ class LoginEmailFragment : BaseBindingFragment<FragmentLoginEmailBinding>(Fragme
                     is LoginState.EmptyFields -> showToast(getString(it.res))
                     is LoginState.ErrorFromFireBase -> showToast(it.message)
                 }
-                viewModel.navigationDone()
+                viewModel.nullifyState()
             }
         }
 

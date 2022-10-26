@@ -17,7 +17,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 @HiltViewModel
@@ -64,7 +63,7 @@ class FavoritesViewModel @Inject constructor(
 
         override fun onClickLong(day: Day) {
             _dayId = day.dayId
-            onSmileClickedLong()
+            onClickLongSmile()
         }
     }
 
@@ -72,7 +71,7 @@ class FavoritesViewModel @Inject constructor(
         _navigateToDetailState.value!!.navigateToDetail = false
     }
 
-    fun onSmileClickedLong() {
+    fun onClickLongSmile() {
         _uiDialog.value = UIDialog(
             title = R.string.dialog_delete_title,
             desc = R.string.dialog_delete_message,

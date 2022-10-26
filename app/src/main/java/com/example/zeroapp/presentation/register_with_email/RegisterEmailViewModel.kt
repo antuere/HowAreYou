@@ -24,7 +24,7 @@ class RegisterEmailViewModel @Inject constructor(
                 .addOnCompleteListener { signUpTask ->
                     if (signUpTask.isSuccessful) {
                         _registerState.value = RegisterState.Successful
-                        firebaseApi.getUserNode()?.child("nickName")?.setValue(name)
+                        firebaseApi.setUserNickname(name)
                     }
                 }.addOnFailureListener {
                     _registerState.value = RegisterState.ErrorFromFireBase(it.message!!)
@@ -52,7 +52,7 @@ class RegisterEmailViewModel @Inject constructor(
     }
 
 
-    fun stateReset () {
+    fun nullifyState () {
         _registerState.value = null
     }
 }

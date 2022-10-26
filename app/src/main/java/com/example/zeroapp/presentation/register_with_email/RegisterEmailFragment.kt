@@ -67,7 +67,7 @@ class RegisterEmailFragment :
                     is RegisterState.PasswordsError -> showToast(getString(it.res))
                     is RegisterState.ErrorFromFireBase -> showToast(it.message)
                 }
-                viewModel.stateReset()
+                viewModel.nullifyState()
             }
 
         }

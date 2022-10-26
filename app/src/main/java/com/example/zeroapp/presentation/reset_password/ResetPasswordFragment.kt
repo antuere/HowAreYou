@@ -64,7 +64,7 @@ class ResetPasswordFragment :
                     is ResetPasswordState.EmptyFields -> showToast(getString(it.res))
                     is ResetPasswordState.ErrorFromFireBase -> showToast(it.message)
                 }
-                viewModel.navigationDone()
+                viewModel.nullifyState()
             }
 
         }

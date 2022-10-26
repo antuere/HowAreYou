@@ -61,7 +61,7 @@ class DetailViewModel @Inject constructor(
         _navigateToHistory.value = true
     }
 
-    fun onDeleteButtonClicked() {
+    fun onClickDeleteButton() {
         _uiDialog.value = UIDialog(
             title = R.string.dialog_delete_title,
             desc = R.string.dialog_delete_message,
@@ -81,7 +81,7 @@ class DetailViewModel @Inject constructor(
         )
     }
 
-    fun onFavoriteButtonClicked() {
+    fun onClickFavoriteButton() {
         viewModelScope.launch {
             _currentDay.value!!.isFavorite = _currentDay.value!!.isFavorite.not()
             updateDayUseCase.invoke(_currentDay.value!!)

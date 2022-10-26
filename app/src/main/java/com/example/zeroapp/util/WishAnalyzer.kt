@@ -5,6 +5,10 @@ import com.example.zeroapp.R
 
 class WishAnalyzer(private val context: Context) {
 
+    companion object {
+        const val DEFAULT = -1
+    }
+
     fun getWishString(id: Int): String {
         return when (id) {
             R.drawable.smile_very_happy -> context.getString(R.string.wish_for_users_very_happy)

@@ -13,9 +13,8 @@ import com.example.zeroapp.databinding.FragmentDetailBinding
 import com.example.zeroapp.presentation.base.BaseBindingFragment
 import com.example.zeroapp.presentation.base.ui_dialog.UIDialogListener
 import com.example.zeroapp.util.createSharedElementEnterTransition
-import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
+import com.example.zeroapp.util.setToolbarIcon
 import com.google.android.material.appbar.MaterialToolbar
-import timber.log.Timber
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -23,11 +22,17 @@ class DetailFragment : BaseBindingFragment<FragmentDetailBinding>(FragmentDetail
 
     private val viewModel by viewModels<DetailViewModel>()
 
+    private val mainActivity: MainActivity by lazy {
+        requireActivity() as MainActivity
+    }
+
     private val dialogListener: UIDialogListener by lazy {
         UIDialogListener(requireContext(), viewModel)
     }
 
-    private lateinit var toolbar: MaterialToolbar
+    private val toolbar: MaterialToolbar by lazy {
+        mainActivity.toolbar!!
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,15 +42,10 @@ class DetailFragment : BaseBindingFragment<FragmentDetailBinding>(FragmentDetail
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         dialogListener.collect(this)
-        val activity = requireActivity() as MainActivity
-        toolbar = activity.toolbar!!
-        toolbar.setNavigationIcon(R.drawable.ic_back)
+
+        setToolbarIcon(R.drawable.ic_back)
         toolbar.isTitleCentered = false
-
-        val menuHost: MenuHost = activity
-
 
         viewModel.currentDay.observe(viewLifecycleOwner) {
             it?.let {
@@ -64,12 +64,15 @@ class DetailFragment : BaseBindingFragment<FragmentDetailBinding>(FragmentDetail
             }
         }
 
+        buildMenu()
+    }
+
+    private fun buildMenu() {
+        val menuHost: MenuHost = mainActivity
         menuHost.addMenuProvider(object : MenuProvider {
 
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                Timber.i("my log, we in the menuHost")
                 menuInflater.inflate(R.menu.detail_menu, menu)
-
             }
 
             override fun onPrepareMenu(menu: Menu) {
@@ -91,14 +94,14 @@ class DetailFragment : BaseBindingFragment<FragmentDetailBinding>(FragmentDetail
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 return when (menuItem.itemId) {
                     R.id.delete_item -> {
-                        viewModel.onDeleteButtonClicked()
+                        viewModel.onClickDeleteButton()
                         true
                     }
                     R.id.fav_item -> {
                         val anim =
                             AnimationUtils.loadAnimation(requireContext(), R.anim.scale_button)
-                        activity.findViewById<View>(R.id.fav_item).startAnimation(anim)
-                        viewModel.onFavoriteButtonClicked()
+                        mainActivity.findViewById<View>(R.id.fav_item).startAnimation(anim)
+                        viewModel.onClickFavoriteButton()
 
                         if (menuItem.isChecked) {
                             menuItem.setIcon(R.drawable.ic_baseline_favorite_border)

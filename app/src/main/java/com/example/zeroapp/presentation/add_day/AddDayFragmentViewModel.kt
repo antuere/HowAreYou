@@ -12,7 +12,7 @@ import javax.inject.Inject
 class AddDayFragmentViewModel @Inject constructor(private val addDayUseCase: AddDayUseCase) :
     ViewModel() {
 
-    fun onSmileClicked(imageId: Int, descDay: String) {
+    fun onClickSmile(imageId: Int, descDay: String) {
         val day = Day(imageId = imageId, dayText = descDay)
 
         viewModelScope.launch {

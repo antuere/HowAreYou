@@ -48,7 +48,7 @@ class AddDayFragment : BaseBindingFragment<FragmentAddDayBinding>(FragmentAddDay
             val dayText = binding?.textDescribeDay?.text.toString()
             val imageId = getSmileImage(it.id)
 
-            viewModel.onSmileClicked(imageId, dayText)
+            viewModel.onClickSmile(imageId, dayText)
             binding?.textDescribeDay?.text?.clear()
 
             findNavController().navigateUp()

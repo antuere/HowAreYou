@@ -59,4 +59,9 @@ class DomainModule {
         return GetDayQuoteUseCase(quoteRepository)
     }
 
+    @Provides
+    fun provideGetSelectedDaysUseCase(dayRepository: DayRepository): GetSelectedDaysUseCase {
+        return GetSelectedDaysUseCase(dayRepository)
+    }
+
 }

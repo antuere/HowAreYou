@@ -31,4 +31,8 @@ interface DayDatabaseDao {
     @Query("SELECT * FROM day_table WHERE is_favorite = 1 ORDER BY dayId DESC ")
     fun getFavoritesDays(): Flow<List<DayEntity>>
 
+    @Query("SELECT * FROM day_table WHERE dayId BETWEEN :dayStart AND :dayEnd ORDER BY dayId DESC ")
+    fun getSelectedDays(dayStart: Long, dayEnd: Long): Flow<List<DayEntity>>
+
+
 }

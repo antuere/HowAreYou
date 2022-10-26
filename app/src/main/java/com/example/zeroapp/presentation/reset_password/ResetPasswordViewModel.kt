@@ -35,7 +35,7 @@ class ResetPasswordViewModel @Inject constructor(
 
     }
 
-    fun navigationDone() {
+    fun nullifyState() {
         _resetState.value = null
     }
 

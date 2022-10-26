@@ -6,19 +6,20 @@ import androidx.navigation.fragment.FragmentNavigatorExtras
 import antuere.domain.dto.Day
 import antuere.domain.usecases.DeleteDayUseCase
 import antuere.domain.usecases.GetAllDaysUseCase
+import antuere.domain.usecases.GetSelectedDaysUseCase
 import com.example.zeroapp.R
+import com.example.zeroapp.presentation.base.ui_date_picker.IUIDatePickerAction
+import com.example.zeroapp.presentation.base.ui_date_picker.UIDatePicker
 import com.example.zeroapp.presentation.base.ui_dialog.IUIDialogAction
 import com.example.zeroapp.presentation.base.ui_dialog.UIDialog
 import com.example.zeroapp.presentation.history.adapter.DayClickListener
 import com.example.zeroapp.util.toMutableLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 
@@ -26,13 +27,18 @@ import javax.inject.Inject
 class HistoryViewModel @Inject constructor(
     getAllDaysUseCase: GetAllDaysUseCase,
     private val deleteDayUseCase: DeleteDayUseCase,
+    private val getSelectedDaysUseCase: GetSelectedDaysUseCase,
     private val transitionName: String,
 ) :
-    ViewModel(), IUIDialogAction {
+    ViewModel(), IUIDialogAction, IUIDatePickerAction {
 
     private var _uiDialog = MutableStateFlow<UIDialog?>(null)
     override val uiDialog: StateFlow<UIDialog?>
         get() = _uiDialog
+
+    private var _uiDatePicker = MutableStateFlow<UIDatePicker?>(null)
+    override val datePicker: StateFlow<UIDatePicker?>
+        get() = _uiDatePicker
 
     private var _listDays = MutableLiveData<List<Day>>()
     val listDays: LiveData<List<Day>>
@@ -64,7 +70,7 @@ class HistoryViewModel @Inject constructor(
 
         override fun onClickLong(day: Day) {
             _dayId = day.dayId
-            onSmileClickedLong()
+            onClickLongSmile()
         }
     }
 
@@ -79,7 +85,7 @@ class HistoryViewModel @Inject constructor(
         }
     }
 
-    fun onSmileClickedLong() {
+    fun onClickLongSmile() {
         _uiDialog.value = UIDialog(
             title = R.string.dialog_delete_title,
             desc = R.string.dialog_delete_message,
@@ -97,6 +103,36 @@ class HistoryViewModel @Inject constructor(
                 })
         )
     }
+
+    fun onClickFilterButton() {
+        _uiDatePicker.value = UIDatePicker(
+            title = R.string.date_picker_title,
+            positiveButton = UIDatePicker.UiButtonPositive(
+                onClick = {
+                    val kotlinPair: Pair<Long, Long> = Pair(it.first, it.second)
+                    viewModelScope.launch {
+                        _listDays =
+                            getSelectedDaysUseCase.invoke(kotlinPair).asLiveData(Dispatchers.IO)
+                                .toMutableLiveData()
+                    }
+                    _uiDatePicker.value = null
+                }),
+            negativeButton = UIDatePicker.UiButtonNegative(
+                onClick = {
+                    _uiDatePicker.value = null
+                })
+
+        )
+    }
+
+    fun onClickFilterButtonTest(pair: Pair<Long, Long>) {
+        viewModelScope.launch {
+            _listDays =
+                getSelectedDaysUseCase.invoke(pair).asLiveData(Dispatchers.IO)
+                    .toMutableLiveData()
+        }
+    }
+
 }
 
 

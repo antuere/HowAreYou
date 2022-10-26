@@ -44,7 +44,7 @@ class LoginEmailViewModel @Inject constructor(
         }
     }
 
-    fun navigationDone() {
+    fun nullifyState() {
         _loginState.value = null
     }
 

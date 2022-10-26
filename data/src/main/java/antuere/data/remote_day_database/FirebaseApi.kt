@@ -36,7 +36,12 @@ data class FirebaseApi(
         return realTimeDb.child(QUOTE_PATH)
     }
 
-    suspend fun getUserNickNameAsync(): Deferred<String?> {
+    fun setUserNickname(name : String) {
+        getUserNode()?.child("nickName")?.setValue(name)
+    }
+
+
+    suspend fun getUserNicknameAsync(): Deferred<String?> {
         val scope = CoroutineScope(Dispatchers.IO)
         return scope.async {
             if (isHasUser()) {
@@ -53,5 +58,6 @@ data class FirebaseApi(
     fun getSignInIntent(): Intent {
         return googleSignInClient.signInIntent
     }
+
 
 }

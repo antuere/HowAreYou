@@ -67,7 +67,7 @@ class SignInMethodsFragment :
         }
 
         binding!!.buttonGoogleMethod.setOnClickListener {
-            val intent = viewModel.getSignInIntent()
+            val intent = viewModel.firebaseApi.getSignInIntent()
             launcher.launch(intent)
         }
 
@@ -85,10 +85,10 @@ class SignInMethodsFragment :
         viewModel.signInState.observe(viewLifecycleOwner) { state ->
             state?.let {
                 when (it) {
-                    is SignInMethodsState.Successful -> findNavController().navigateUp()
+                    is SignInMethodsState.UserAuthorized -> findNavController().navigateUp()
                     is SignInMethodsState.Error -> showToast(it.message)
                 }
-                viewModel.resetState()
+                viewModel.nullifyState()
             }
         }
 

@@ -65,6 +65,14 @@ class DayRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun getSelectedDays(dayStart: Long, dayEnd: Long): Flow<List<Day>> {
+        return dayDataBaseRoom.dayDatabaseDao.getSelectedDays(dayStart, dayEnd).map {
+            it.map { dayEntity ->
+                dayEntityMapper.mapToDomainModel(dayEntity)
+            }
+        }
+    }
+
     override suspend fun getDay(): Day? = withContext(Dispatchers.IO) {
         val dayEntity = dayDataBaseRoom.dayDatabaseDao.getDay()
         dayEntity?.let(dayEntityMapper::mapToDomainModel)

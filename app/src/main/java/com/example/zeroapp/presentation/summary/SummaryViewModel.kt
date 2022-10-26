@@ -38,9 +38,9 @@ class SummaryViewModel @Inject constructor(
     val dayQuote: LiveData<Quote?>
         get() = _dayQuote
 
-    private val _hideAddButton = MutableLiveData<HideAddButtonState>(HideAddButtonState.Add)
-    val hideAddButton: LiveData<HideAddButtonState>
-        get() = _hideAddButton
+    private val _fabButtonState = MutableLiveData<FabButtonState>(FabButtonState.Add)
+    val fabButtonState: LiveData<FabButtonState>
+        get() = _fabButtonState
 
     private var _wishText = MutableLiveData<String>()
     val wishText: LiveData<String>
@@ -57,16 +57,15 @@ class SummaryViewModel @Inject constructor(
 
             _lastDay.value = updateLastDayUseCase.invoke(Unit)
 
-            if (TimeUtility.format(Date()) == (_lastDay.value?.dateString ?: "show")) {
+            if (TimeUtility.format(Date()) == (_lastDay.value?.dateString ?: "show add button")) {
 
-                _hideAddButton.value = HideAddButtonState.Smile(lastDay.value?.imageId!!)
-
+                _fabButtonState.value = FabButtonState.Smile(lastDay.value?.imageId!!)
                 _wishText.value = wishAnalyzer.getWishString(lastDay.value?.imageId!!)
 
             } else {
 
-                _hideAddButton.value = HideAddButtonState.Add
-                _wishText.value = wishAnalyzer.getWishString(-1)
+                _fabButtonState.value = FabButtonState.Add
+                _wishText.value = wishAnalyzer.getWishString(WishAnalyzer.DEFAULT)
 
             }
         }
