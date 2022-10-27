@@ -28,4 +28,10 @@ object TimeUtility {
         return calendar.get(Calendar.DAY_OF_MONTH).toString()
     }
 
+    fun getCurrentMonthTime() : Long {
+        val calendarTemp =  Calendar.getInstance()
+        calendarTemp.set(Calendar.DAY_OF_MONTH, 1)
+        return calendarTemp.timeInMillis
+    }
+
 }

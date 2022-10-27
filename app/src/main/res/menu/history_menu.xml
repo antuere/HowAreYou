@@ -3,8 +3,13 @@
         xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
             android:id="@+id/filter_item"
-            android:orderInCategory="1"
             android:title="@string/filter_title"
-            app:showAsAction= "collapseActionView" />
+            app:showAsAction= "never" />
+
+    <item
+            android:id="@+id/last_month_item"
+            android:title="@string/last_month_title"
+            app:showAsAction= "never" />
+
 
 </menu>

@@ -4,9 +4,8 @@ import android.view.View
 import androidx.lifecycle.*
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import antuere.domain.dto.Day
-import antuere.domain.usecases.DeleteDayUseCase
-import antuere.domain.usecases.GetAllDaysUseCase
-import antuere.domain.usecases.GetSelectedDaysUseCase
+import antuere.domain.usecases.*
+import antuere.domain.util.TimeUtility
 import com.example.zeroapp.R
 import com.example.zeroapp.presentation.base.ui_date_picker.IUIDatePickerAction
 import com.example.zeroapp.presentation.base.ui_date_picker.UIDatePicker
@@ -19,7 +18,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 
@@ -28,6 +29,7 @@ class HistoryViewModel @Inject constructor(
     getAllDaysUseCase: GetAllDaysUseCase,
     private val deleteDayUseCase: DeleteDayUseCase,
     private val getSelectedDaysUseCase: GetSelectedDaysUseCase,
+    private val getRequiresDaysUseCase: GetRequiresDaysUseCase,
     private val transitionName: String,
 ) :
     ViewModel(), IUIDialogAction, IUIDatePickerAction {
@@ -111,9 +113,8 @@ class HistoryViewModel @Inject constructor(
                 onClick = {
                     val kotlinPair: Pair<Long, Long> = Pair(it.first, it.second)
                     viewModelScope.launch {
-                        _listDays =
-                            getSelectedDaysUseCase.invoke(kotlinPair).asLiveData(Dispatchers.IO)
-                                .toMutableLiveData()
+                        _listDays.value =
+                            getSelectedDaysUseCase.invoke(kotlinPair).firstOrNull() ?: emptyList()
                     }
                     _uiDatePicker.value = null
                 }),
@@ -125,11 +126,11 @@ class HistoryViewModel @Inject constructor(
         )
     }
 
-    fun onClickFilterButtonTest(pair: Pair<Long, Long>) {
+    fun onClickLastMonthButton() {
         viewModelScope.launch {
-            _listDays =
-                getSelectedDaysUseCase.invoke(pair).asLiveData(Dispatchers.IO)
-                    .toMutableLiveData()
+            _listDays.value =
+                getRequiresDaysUseCase.invoke(TimeUtility.getCurrentMonthTime()).firstOrNull()
+                    ?: emptyList()
         }
     }
 

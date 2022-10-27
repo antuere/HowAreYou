@@ -11,6 +11,8 @@ interface DayRepository {
 
     suspend fun getSelectedDays(dayStart: Long, dayEnd: Long): Flow<List<Day>>
 
+    suspend fun getRequiresDays(dateLong: Long): Flow<List<Day>>
+
     suspend fun getDay(): Day?
 
     suspend fun getDayById(id: Long): Day?

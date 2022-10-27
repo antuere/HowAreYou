@@ -22,6 +22,7 @@ import com.google.android.material.transition.MaterialElevationScale
 import com.google.android.material.transition.MaterialFade
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
+import timber.log.Timber
 
 
 @AndroidEntryPoint
@@ -91,8 +92,6 @@ class HistoryFragment :
             }
         }
 
-
-
         return binding!!.root
     }
 
@@ -133,16 +132,11 @@ class HistoryFragment :
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 return when (menuItem.itemId) {
                     R.id.filter_item -> {
-                      val picker =  MaterialDatePicker.Builder.dateRangePicker()
-                          .setTitleText(R.string.date_picker_title)
-                          .build()
-
-                        picker.addOnPositiveButtonClickListener{
-                            val kotlinPair: Pair<Long, Long> = Pair(it.first, it.second)
-                            viewModel.onClickFilterButtonTest(kotlinPair)
-                        }
-
-                        picker.show(requireActivity().supportFragmentManager, "date_picker_test")
+                        viewModel.onClickFilterButton()
+                        true
+                    }
+                    R.id.last_month_item -> {
+                        viewModel.onClickLastMonthButton()
                         true
                     }
                     else -> false
@@ -151,5 +145,4 @@ class HistoryFragment :
 
         }, viewLifecycleOwner, Lifecycle.State.STARTED)
     }
-
 }
