@@ -31,20 +31,19 @@ object TimeUtility {
     }
 
     fun getCurrentMonthTime() : Long {
-        val calendarTemp =  Calendar.getInstance()
+        val calendarTemp = Calendar.getInstance(Locale.US)
         calendarTemp.set(Calendar.DAY_OF_MONTH, 1)
         return calendarTemp.timeInMillis
     }
 
     fun getCurrentWeekTime() : Long {
-        val calendarTemp =  Calendar.getInstance()
-        calendarTemp.set(Calendar.DAY_OF_WEEK, 1)
+        val calendarTemp = Calendar.getInstance(Locale.US)
+        calendarTemp.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY)
         return calendarTemp.timeInMillis
     }
 
-
     fun parseLongToCalendar(timeInMillis : Long) : Calendar {
-        val calendar = Calendar.getInstance()
+        val calendar = Calendar.getInstance(Locale.US)
         calendar.timeInMillis = timeInMillis
         return calendar
     }
