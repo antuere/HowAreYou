@@ -24,6 +24,8 @@
         <item name="circularProgressIndicatorStyle">@style/Widget.App.CircularProgressIndicator</item>
         <item name="materialButtonStyle">@style/Widget.App.Button.Default</item>
         <item name="materialButtonOutlinedStyle">@style/Widget.App.Button.Default.Outlined</item>
+        <item name="popupMenuBackground">@drawable/custom_popupmenu_background</item>
+        <item name="actionOverflowButtonStyle">@style/actionButtonOverflow</item>
     </style>
 
 
@@ -126,6 +128,11 @@
 
     <style name="ThemeOverlay.App.CircularProgressIndicator" parent="">
         <item name="colorPrimary">@color/white</item>
+    </style>
+
+    <!-- Popup overflow menu  button theme -->
+    <style name="actionButtonOverflow"   parent="Widget.AppCompat.Light.ActionButton.Overflow">
+        <item name="android:tint">@color/white</item>
     </style>
 
 </resources>

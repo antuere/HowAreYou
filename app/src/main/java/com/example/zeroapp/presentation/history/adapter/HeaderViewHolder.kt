@@ -4,9 +4,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.zeroapp.databinding.HeaderHistoryBinding
-import com.example.zeroapp.util.getMonthTitle
-import timber.log.Timber
-import java.util.*
 
 class HeaderViewHolder private constructor(private val binding: HeaderHistoryBinding) :
     RecyclerView.ViewHolder(binding.root) {
@@ -20,10 +17,8 @@ class HeaderViewHolder private constructor(private val binding: HeaderHistoryBin
         }
     }
 
-    fun bind(calendar: Calendar) {
-        Timber.i("my log bind item header")
-        val month = calendar.get(Calendar.MONTH)
-        binding.header.text = getMonthTitle(itemView.context!!, month)
+    fun bind(dateString: String) {
+        binding.header.text = dateString
     }
 
 }

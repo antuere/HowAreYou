@@ -11,10 +11,10 @@
             android:id="@+id/header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/textSize_big"
+            android:textSize="@dimen/textSize_small_one"
             tools:text="Month"
             android:gravity="center"
-            android:padding="@dimen/padding_small">
+            android:padding="@dimen/padding_small_two">
 
     </TextView>
 </FrameLayout>

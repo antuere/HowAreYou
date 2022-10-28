@@ -65,8 +65,8 @@ class DomainModule {
     }
 
     @Provides
-    fun provideGetRequiresDaysUseCase(dayRepository: DayRepository): GetRequiresDaysUseCase {
-        return GetRequiresDaysUseCase(dayRepository)
+    fun provideGetCertainDaysUseCase(dayRepository: DayRepository): GetCertainDaysUseCase {
+        return GetCertainDaysUseCase(dayRepository)
     }
 
 }

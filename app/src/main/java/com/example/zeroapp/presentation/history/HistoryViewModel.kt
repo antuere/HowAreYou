@@ -1,5 +1,6 @@
 package com.example.zeroapp.presentation.history
 
+import android.content.SharedPreferences
 import android.view.View
 import androidx.lifecycle.*
 import androidx.navigation.fragment.FragmentNavigatorExtras
@@ -12,27 +13,32 @@ import com.example.zeroapp.presentation.base.ui_date_picker.UIDatePicker
 import com.example.zeroapp.presentation.base.ui_dialog.IUIDialogAction
 import com.example.zeroapp.presentation.base.ui_dialog.UIDialog
 import com.example.zeroapp.presentation.history.adapter.DayClickListener
-import com.example.zeroapp.util.toMutableLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 
 @HiltViewModel
 class HistoryViewModel @Inject constructor(
-    getAllDaysUseCase: GetAllDaysUseCase,
+    private val getAllDaysUseCase: GetAllDaysUseCase,
     private val deleteDayUseCase: DeleteDayUseCase,
     private val getSelectedDaysUseCase: GetSelectedDaysUseCase,
-    private val getRequiresDaysUseCase: GetRequiresDaysUseCase,
+    private val getCertainDaysUseCase: GetCertainDaysUseCase,
+    private val sharedPreferences: SharedPreferences,
     private val transitionName: String,
 ) :
     ViewModel(), IUIDialogAction, IUIDatePickerAction {
+
+    companion object {
+        private const val CHECKED_BUTTON_HISTORY_PREF = "checked button in history"
+
+        const val CHECKED_ALL_DAYS = 1
+        const val CHECKED_CURRENT_MONTH = 2
+        const val CHECKED_LAST_WEEK = 3
+    }
+
+    private var _dayId = 0L
 
     private var _uiDialog = MutableStateFlow<UIDialog?>(null)
     override val uiDialog: StateFlow<UIDialog?>
@@ -46,17 +52,16 @@ class HistoryViewModel @Inject constructor(
     val listDays: LiveData<List<Day>>
         get() = _listDays
 
-    private var _dayId = 0L
-
     private var _navigateToDetailState = MutableLiveData<NavigateToDetailState>()
     val navigateToDetailState: LiveData<NavigateToDetailState>
         get() = _navigateToDetailState
 
+    private var _checkedButtonState = MutableLiveData<CheckedButtonState>()
+    val checkedButtonState: LiveData<CheckedButtonState>
+        get() = _checkedButtonState
+
     init {
-        viewModelScope.launch {
-            _listDays =
-                getAllDaysUseCase.invoke(Unit).asLiveData(Dispatchers.IO).toMutableLiveData()
-        }
+        getCheckedButtonState()
     }
 
     val dayClickListener = object : DayClickListener {
@@ -112,28 +117,69 @@ class HistoryViewModel @Inject constructor(
             positiveButton = UIDatePicker.UiButtonPositive(
                 onClick = {
                     val kotlinPair: Pair<Long, Long> = Pair(it.first, it.second)
-                    viewModelScope.launch {
-                        _listDays.value =
-                            getSelectedDaysUseCase.invoke(kotlinPair).firstOrNull() ?: emptyList()
-                    }
+                    _checkedButtonState.value = CheckedButtonState.Filter(kotlinPair)
                     _uiDatePicker.value = null
                 }),
             negativeButton = UIDatePicker.UiButtonNegative(
                 onClick = {
                     _uiDatePicker.value = null
                 })
-
         )
     }
 
-    fun onClickLastMonthButton() {
+    fun checkedFilterButton(pair: Pair<Long, Long>) {
         viewModelScope.launch {
-            _listDays.value =
-                getRequiresDaysUseCase.invoke(TimeUtility.getCurrentMonthTime()).firstOrNull()
-                    ?: emptyList()
+            getSelectedDaysUseCase.invoke(pair).collectLatest {
+                _listDays.postValue(it)
+            }
         }
     }
 
+    fun checkedCurrentMonthButton() {
+        viewModelScope.launch {
+            getCertainDaysUseCase.invoke(TimeUtility.getCurrentMonthTime()).collectLatest {
+                _listDays.postValue(it)
+            }
+        }
+    }
+
+    fun checkedLastWeekButton() {
+        viewModelScope.launch {
+                getCertainDaysUseCase.invoke(TimeUtility.getCurrentWeekTime()).collectLatest {
+                _listDays.postValue(it)
+            }
+        }
+    }
+
+    fun checkedAllDaysButton() {
+        viewModelScope.launch {
+            getAllDaysUseCase.invoke(Unit).collectLatest {
+                _listDays.postValue(it)
+            }
+        }
+    }
+
+    fun onClickCheckedItem(state: Int) {
+        saveCheckedButtonState(state)
+        getCheckedButtonState()
+    }
+
+    private fun saveCheckedButtonState(state: Int) {
+        sharedPreferences.edit().apply {
+            putInt(CHECKED_BUTTON_HISTORY_PREF, state)
+            apply()
+        }
+    }
+
+    fun getCheckedButtonState() {
+        val sharedCheckedButtonState = sharedPreferences.getInt(CHECKED_BUTTON_HISTORY_PREF, -1)
+        when (sharedCheckedButtonState) {
+            CHECKED_ALL_DAYS -> _checkedButtonState.value = CheckedButtonState.AllDays
+            CHECKED_CURRENT_MONTH -> _checkedButtonState.value = CheckedButtonState.CurrentMonth
+            CHECKED_LAST_WEEK -> _checkedButtonState.value = CheckedButtonState.LastWeek
+            -1 -> _checkedButtonState.value = CheckedButtonState.AllDays
+        }
+    }
 }
 
 

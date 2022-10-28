@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.recyclerview.widget.GridLayoutManager
 import com.example.zeroapp.MainActivity
 import com.example.zeroapp.R
 import com.google.android.material.transition.MaterialContainerTransform
@@ -47,5 +48,17 @@ fun Context.themeColor(
         intArrayOf(themeAttrId)
     ).use {
         it.getColor(0, Color.MAGENTA)
+    }
+}
+
+fun GridLayoutManager.setManagerSpanCount(value: Int) {
+    this.spanCount = value
+    this.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+        override fun getSpanSize(position: Int): Int {
+            return when (position) {
+                0 -> value
+                else -> 1
+            }
+        }
     }
 }

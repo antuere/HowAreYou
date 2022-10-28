@@ -12,7 +12,6 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.tasks.await
-import timber.log.Timber
 import javax.inject.Inject
 
 
@@ -76,9 +75,9 @@ class DayRepositoryImpl @Inject constructor(
                 }
         }
 
-    override suspend fun getRequiresDays(dateLong: Long): Flow<List<Day>> =
+    override suspend fun getCertainDays(dayStart: Long): Flow<List<Day>> =
         withContext(Dispatchers.IO) {
-            dayDataBaseRoom.dayDatabaseDao.getRequiresDays(dateLong)
+            dayDataBaseRoom.dayDatabaseDao.getCertainDays(dayStart)
                 .map {
                     it.map { dayEntity ->
                         dayEntityMapper.mapToDomainModel(dayEntity)

@@ -8,7 +8,8 @@ import com.bumptech.glide.RequestManager
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.example.zeroapp.R
-import com.example.zeroapp.util.WishAnalyzer
+import com.example.zeroapp.util.ResourcesProvider
+import com.example.zeroapp.util.MyAnalyst
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -31,8 +32,13 @@ object AppModule {
     }
 
     @Provides
-    fun provideWishAnalyzer(@ApplicationContext context: Context): WishAnalyzer {
-        return WishAnalyzer(context)
+    fun provideMyAnalyst(@ApplicationContext context: Context): MyAnalyst {
+        return MyAnalyst(context)
+    }
+
+    @Provides
+    fun provideResourcesProvider(@ApplicationContext context: Context): ResourcesProvider {
+        return ResourcesProvider(context)
     }
 
     @Provides

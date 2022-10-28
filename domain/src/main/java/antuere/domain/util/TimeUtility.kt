@@ -5,8 +5,10 @@ import java.util.*
 
 object TimeUtility {
     private const val DEFAULT_FORMAT = "dd/MM/yy"
+
     val calendar: Calendar
         get() = Calendar.getInstance()
+
     private val currentDate: Date
         get() = calendar.time
 
@@ -32,6 +34,19 @@ object TimeUtility {
         val calendarTemp =  Calendar.getInstance()
         calendarTemp.set(Calendar.DAY_OF_MONTH, 1)
         return calendarTemp.timeInMillis
+    }
+
+    fun getCurrentWeekTime() : Long {
+        val calendarTemp =  Calendar.getInstance()
+        calendarTemp.set(Calendar.DAY_OF_WEEK, 1)
+        return calendarTemp.timeInMillis
+    }
+
+
+    fun parseLongToCalendar(timeInMillis : Long) : Calendar {
+        val calendar = Calendar.getInstance()
+        calendar.timeInMillis = timeInMillis
+        return calendar
     }
 
 }

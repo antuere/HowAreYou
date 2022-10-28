@@ -1,7 +1,6 @@
 package com.example.zeroapp.presentation.history.adapter
 
 import antuere.domain.dto.Day
-import java.util.*
 
 sealed class DataItem {
 
@@ -10,7 +9,7 @@ sealed class DataItem {
 
     }
 
-    data class Header(val calendar: Calendar) : DataItem() {
+    data class Header(val dateString: String) : DataItem() {
         override val id = Long.MIN_VALUE
     }
 

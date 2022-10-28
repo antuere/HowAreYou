@@ -17,24 +17,27 @@ import com.example.zeroapp.presentation.base.BaseBindingFragment
 import com.example.zeroapp.presentation.base.ui_date_picker.UIDatePickerListener
 import com.example.zeroapp.presentation.base.ui_dialog.UIDialogListener
 import com.example.zeroapp.presentation.history.adapter.DayAdapter
-import com.google.android.material.datepicker.MaterialDatePicker
+import com.example.zeroapp.util.MyAnalyst
+import com.example.zeroapp.util.setManagerSpanCount
 import com.google.android.material.transition.MaterialElevationScale
 import com.google.android.material.transition.MaterialFade
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.delay
-import timber.log.Timber
+import javax.inject.Inject
 
 
 @AndroidEntryPoint
 class HistoryFragment :
     BaseBindingFragment<FragmentHistoryBinding>(FragmentHistoryBinding::inflate) {
 
+    @Inject
+    lateinit var myAnalyst: MyAnalyst
+
     private val mainActivity: MainActivity by lazy {
         requireActivity() as MainActivity
     }
 
     private val adapter: DayAdapter by lazy {
-        DayAdapter(viewModel.dayClickListener)
+        DayAdapter(viewModel.dayClickListener, myAnalyst)
     }
 
     private val viewModel by viewModels<HistoryViewModel>()
@@ -63,19 +66,21 @@ class HistoryFragment :
         binding = FragmentHistoryBinding.inflate(inflater, container, false)
 
         val manager = GridLayoutManager(mainActivity, 4)
-        manager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
-            override fun getSpanSize(position: Int): Int {
-                return when (position) {
-                    0 -> 4
-                    else -> 1
-                }
-            }
 
-        }
         binding!!.dayList.layoutManager = manager
 
         binding!!.dayList.adapter = adapter
 
+        viewModel.getCheckedButtonState()
+
+        binding!!.toggleButton.addOnButtonCheckedListener { group, _, _ ->
+            when (group.checkedButtonId) {
+                R.id.button_all_days -> viewModel.onClickCheckedItem(HistoryViewModel.CHECKED_ALL_DAYS)
+                R.id.button_current_month -> viewModel.onClickCheckedItem(HistoryViewModel.CHECKED_CURRENT_MONTH)
+                R.id.button_last_week -> viewModel.onClickCheckedItem(HistoryViewModel.CHECKED_LAST_WEEK)
+            }
+
+        }
         viewModel.listDays.observe(viewLifecycleOwner) {
             it?.let {
                 if (it.isEmpty()) {
@@ -88,7 +93,39 @@ class HistoryFragment :
                 } else {
                     binding!!.historyHint.visibility = View.GONE
                 }
+
                 adapter.addHeaderAndSubmitList(it)
+            }
+        }
+
+        viewModel.checkedButtonState.observe(viewLifecycleOwner) {
+            it?.let { state ->
+                when (state) {
+                    is CheckedButtonState.Filter -> {
+                        viewModel.checkedFilterButton(state.pair)
+
+                        manager.setManagerSpanCount(3)
+                        binding!!.toggleButton.clearChecked()
+                    }
+                    is CheckedButtonState.AllDays -> {
+                        viewModel.checkedAllDaysButton()
+
+                        manager.setManagerSpanCount(4)
+                        binding!!.toggleButton.check(R.id.button_all_days)
+                    }
+                    is CheckedButtonState.LastWeek -> {
+                        viewModel.checkedLastWeekButton()
+
+                        manager.setManagerSpanCount(2)
+                        binding!!.toggleButton.check(R.id.button_last_week)
+                    }
+                    is CheckedButtonState.CurrentMonth -> {
+                        viewModel.checkedCurrentMonthButton()
+
+                        manager.setManagerSpanCount(3)
+                        binding!!.toggleButton.check(R.id.button_current_month)
+                    }
+                }
             }
         }
 
@@ -97,6 +134,10 @@ class HistoryFragment :
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        postponeEnterTransition()
+        view.doOnPreDraw {
+            startPostponedEnterTransition()
+        }
 
         dialogListener.collect(this)
         datePickerListener.collect(this)
@@ -114,10 +155,6 @@ class HistoryFragment :
             }
         }
 
-        postponeEnterTransition()
-        view.doOnPreDraw {
-            startPostponedEnterTransition()
-        }
         buildMenu()
     }
 
@@ -133,10 +170,6 @@ class HistoryFragment :
                 return when (menuItem.itemId) {
                     R.id.filter_item -> {
                         viewModel.onClickFilterButton()
-                        true
-                    }
-                    R.id.last_month_item -> {
-                        viewModel.onClickLastMonthButton()
                         true
                     }
                     else -> false

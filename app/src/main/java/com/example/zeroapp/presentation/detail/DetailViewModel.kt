@@ -26,11 +26,11 @@ class DetailViewModel @Inject constructor(
     state: SavedStateHandle,
 ) : ViewModel(), IUIDialogAction {
 
+    private val dayId = state.get<Long>("dayId")
+
     private var _uiDialog = MutableStateFlow<UIDialog?>(null)
     override val uiDialog: StateFlow<UIDialog?>
         get() = _uiDialog
-
-    private val dayId = state.get<Long>("dayId")
 
     private val _currentDay = MutableLiveData<Day?>()
     val currentDay: LiveData<Day?>

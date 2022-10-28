@@ -5,14 +5,13 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import antuere.domain.dto.Day
 import antuere.domain.util.TimeUtility
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import com.example.zeroapp.util.MyAnalyst
 import java.lang.ClassCastException
-import java.util.*
 
-class DayAdapter(private val clickListener: DayClickListener) :
+class DayAdapter(
+    private val clickListener: DayClickListener,
+    private val myAnalyst: MyAnalyst
+) :
     ListAdapter<DataItem, RecyclerView.ViewHolder>(DayDiffCallback) {
 
 //    private val adapterScope = CoroutineScope(Dispatchers.Default)
@@ -28,9 +27,16 @@ class DayAdapter(private val clickListener: DayClickListener) :
     fun addHeaderAndSubmitList(list: List<Day>?) {
 //        adapterScope.launch {
         val items = when (list?.isEmpty()) {
-            true, null -> listOf(DataItem.Header(TimeUtility.calendar))
-            false -> listOf(DataItem.Header(TimeUtility.calendar)) + list.map {
-                DataItem.DayItem(it)
+            true, null -> emptyList()
+            false -> {
+                val firstDate = TimeUtility.parseLongToCalendar(list.first().dayId)
+                val lastDate = TimeUtility.parseLongToCalendar(list.last().dayId)
+
+                val title = myAnalyst.getHeaderForHistory(firstDate, lastDate)
+
+                listOf(DataItem.Header(title)) + list.map {
+                    DataItem.DayItem(it)
+                }
             }
         }
 //            withContext(Dispatchers.Main) {
@@ -49,7 +55,7 @@ class DayAdapter(private val clickListener: DayClickListener) :
             }
             is HeaderViewHolder -> {
                 val item = getItem(position) as DataItem.Header
-                holder.bind(item.calendar)
+                holder.bind(item.dateString)
             }
         }
     }

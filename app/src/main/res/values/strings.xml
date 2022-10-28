@@ -36,8 +36,9 @@
     <string name="login_google_title">Login with Google</string>
     <string name="quotes_title">Quote of the day</string>
     <string name="filter_title">Filter</string>
-    <string name="last_month_title">Last month</string>
-    <string name="last_week_title">Last week</string>
+    <string name="current_month_title">Month</string>
+    <string name="last_week_title">Week</string>
+    <string name="all_days_title">All days</string>
 
     <!-- Login/register -->
     <string name="email">Email</string>

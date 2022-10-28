@@ -35,7 +35,6 @@ interface DayDatabaseDao {
     fun getSelectedDays(dayStart: Long, dayEnd: Long): Flow<List<DayEntity>>
 
     @Query("SELECT * FROM day_table WHERE dayId > :dateLong ORDER BY dayId DESC ")
-    fun getRequiresDays(dateLong: Long): Flow<List<DayEntity>>
-
+    fun getCertainDays(dateLong: Long): Flow<List<DayEntity>>
 
 }

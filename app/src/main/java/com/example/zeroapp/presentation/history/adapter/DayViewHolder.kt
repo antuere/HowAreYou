@@ -6,7 +6,6 @@ import androidx.recyclerview.widget.RecyclerView
 import antuere.domain.dto.Day
 import com.example.zeroapp.R
 import com.example.zeroapp.databinding.DayItemBinding
-import timber.log.Timber
 
 class DayViewHolder private constructor(private val binding: DayItemBinding) :
     RecyclerView.ViewHolder(binding.root) {
@@ -21,7 +20,6 @@ class DayViewHolder private constructor(private val binding: DayItemBinding) :
     }
 
     fun bind(item: Day, clickListener: DayClickListener) {
-        Timber.i("my log bind item day")
         with(binding) {
             imageView.setImageResource(item.imageId)
             dateText.text = item.dateString
@@ -36,8 +34,6 @@ class DayViewHolder private constructor(private val binding: DayItemBinding) :
                 clickListener.onClickLong(item)
                 true
             }
-            Timber.i("my log itemView transName = ${itemView.transitionName}")
-            Timber.i("my log root transName = ${root.transitionName}")
 
         }
     }

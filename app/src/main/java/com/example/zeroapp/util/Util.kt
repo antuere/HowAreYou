@@ -1,10 +1,6 @@
 package com.example.zeroapp.util
 
-import android.content.Context
 import com.example.zeroapp.R
-
-
-
 
 // Converter buttonId to drawable SmileId
 fun getSmileImage(id: Int): Int {
@@ -15,25 +11,6 @@ fun getSmileImage(id: Int): Int {
         R.id.b_smile_low -> R.drawable.smile_low
         R.id.b_sad -> R.drawable.smile_sad
         else -> R.drawable.smile_none
-    }
-}
-
-
-fun getMonthTitle(context: Context, num : Int) : String{
-    return when (num){
-        0 -> context.resources.getString(R.string.january)
-        1 -> context.resources.getString(R.string.february)
-        2 -> context.resources.getString(R.string.march)
-        3 -> context.resources.getString(R.string.april)
-        4 -> context.resources.getString(R.string.may)
-        5 -> context.resources.getString(R.string.june)
-        6 -> context.resources.getString(R.string.july)
-        7 -> context.resources.getString(R.string.august)
-        8 -> context.resources.getString(R.string.september)
-        9 -> context.resources.getString(R.string.october)
-        10 -> context.resources.getString(R.string.november)
-        11 -> context.resources.getString(R.string.december)
-        else -> throw IllegalArgumentException("Invalid number of month")
     }
 }
 

@@ -10,7 +10,7 @@ import antuere.domain.dto.Quote
 import antuere.domain.usecases.GetDayQuoteUseCase
 import antuere.domain.usecases.UpdateLastDayUseCase
 import antuere.domain.util.TimeUtility
-import com.example.zeroapp.util.WishAnalyzer
+import com.example.zeroapp.util.MyAnalyst
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import java.util.*
@@ -21,7 +21,7 @@ class SummaryViewModel @Inject constructor(
     private val updateLastDayUseCase: UpdateLastDayUseCase,
     private val getDayQuoteUseCase: GetDayQuoteUseCase,
     private val sharedPreferences: SharedPreferences,
-    private val wishAnalyzer: WishAnalyzer
+    private val myAnalyst: MyAnalyst
 ) :
     ViewModel() {
 
@@ -60,12 +60,12 @@ class SummaryViewModel @Inject constructor(
             if (TimeUtility.format(Date()) == (_lastDay.value?.dateString ?: "show add button")) {
 
                 _fabButtonState.value = FabButtonState.Smile(lastDay.value?.imageId!!)
-                _wishText.value = wishAnalyzer.getWishString(lastDay.value?.imageId!!)
+                _wishText.value = myAnalyst.getWishStringForSummary(lastDay.value?.imageId!!)
 
             } else {
 
                 _fabButtonState.value = FabButtonState.Add
-                _wishText.value = wishAnalyzer.getWishString(WishAnalyzer.DEFAULT)
+                _wishText.value = myAnalyst.getWishStringForSummary(MyAnalyst.DEFAULT_WISH)
 
             }
         }

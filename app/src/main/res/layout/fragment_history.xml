@@ -1,18 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".presentation.history.HistoryFragment"
-        >
+        tools:context=".presentation.history.HistoryFragment">
 
+    <com.google.android.material.button.MaterialButtonToggleGroup
+            android:id="@+id/toggle_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_small"
+            app:singleSelection="true"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+        <Button
+                style="@style/Widget.App.Button.Default.Outlined"
+                android:id="@+id/button_all_days"
+                android:text="@string/all_days_title"
+                android:layout_width="@dimen/checked_button_width"
+                android:layout_height="wrap_content">
+
+        </Button>
+
+        <Button
+                style="@style/Widget.App.Button.Default.Outlined"
+                android:id="@+id/button_current_month"
+                android:text="@string/current_month_title"
+                android:layout_width="@dimen/checked_button_width"
+                android:layout_height="wrap_content">
+
+        </Button>
+
+        <Button
+                style="@style/Widget.App.Button.Default.Outlined"
+                android:id="@+id/button_last_week"
+                android:text="@string/last_week_title"
+                android:layout_width="@dimen/checked_button_width"
+                android:layout_height="wrap_content">
+
+        </Button>
+
+
+    </com.google.android.material.button.MaterialButtonToggleGroup>
 
     <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/day_list"
             android:transitionGroup="true"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toggle_button"
+            app:layout_constraintStart_toStartOf="parent">
 
     </androidx.recyclerview.widget.RecyclerView>
 
@@ -23,6 +66,11 @@
             android:layout_height="wrap_content"
             android:text="@string/history_hint"
             android:textSize="@dimen/textSize_big"
-            android:layout_marginTop="@dimen/margin_high" />
+            android:layout_margin="@dimen/margin_normal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintVertical_bias="0.25" />
 
-</FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
