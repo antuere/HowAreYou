@@ -5,12 +5,12 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import antuere.domain.dto.Day
 import antuere.domain.util.TimeUtility
-import com.example.zeroapp.util.MyAnalyst
+import com.example.zeroapp.util.MyAnalystForHistory
 import java.lang.ClassCastException
 
 class DayAdapter(
     private val clickListener: DayClickListener,
-    private val myAnalyst: MyAnalyst
+    private val myAnalyst: MyAnalystForHistory
 ) :
     ListAdapter<DataItem, RecyclerView.ViewHolder>(DayDiffCallback) {
 

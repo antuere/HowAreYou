@@ -17,7 +17,7 @@ import com.example.zeroapp.presentation.base.BaseBindingFragment
 import com.example.zeroapp.presentation.base.ui_date_picker.UIDatePickerListener
 import com.example.zeroapp.presentation.base.ui_dialog.UIDialogListener
 import com.example.zeroapp.presentation.history.adapter.DayAdapter
-import com.example.zeroapp.util.MyAnalyst
+import com.example.zeroapp.util.MyAnalystForHistory
 import com.example.zeroapp.util.setManagerSpanCount
 import com.google.android.material.transition.MaterialElevationScale
 import com.google.android.material.transition.MaterialFade
@@ -30,14 +30,14 @@ class HistoryFragment :
     BaseBindingFragment<FragmentHistoryBinding>(FragmentHistoryBinding::inflate) {
 
     @Inject
-    lateinit var myAnalyst: MyAnalyst
+    lateinit var myAnalystForHistory: MyAnalystForHistory
+
+    private val adapter: DayAdapter by lazy {
+        DayAdapter(viewModel.dayClickListener, myAnalystForHistory)
+    }
 
     private val mainActivity: MainActivity by lazy {
         requireActivity() as MainActivity
-    }
-
-    private val adapter: DayAdapter by lazy {
-        DayAdapter(viewModel.dayClickListener, myAnalyst)
     }
 
     private val viewModel by viewModels<HistoryViewModel>()

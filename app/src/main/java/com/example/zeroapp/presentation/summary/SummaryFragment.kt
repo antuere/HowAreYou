@@ -11,6 +11,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.zeroapp.*
 import com.example.zeroapp.databinding.FragmentSummaryBinding
 import com.example.zeroapp.presentation.base.BaseBindingFragment
+import com.example.zeroapp.presentation.base.ui_dialog.UIDialogListener
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.transition.MaterialElevationScale
 import dagger.hilt.android.AndroidEntryPoint
@@ -22,6 +23,10 @@ class SummaryFragment :
 
     private val viewModel by viewModels<SummaryViewModel>()
     private lateinit var fabButton: FloatingActionButton
+
+    private val dialogListener: UIDialogListener by lazy {
+        UIDialogListener(requireContext(), viewModel)
+    }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -107,6 +112,7 @@ class SummaryFragment :
             )
         }
 
+        dialogListener.collect(this)
     }
 
     override fun onStart() {

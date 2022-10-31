@@ -19,12 +19,6 @@ class UIDatePickerListener(
     private fun buildDatePicker(uiDatePicker: UIDatePicker): MaterialDatePicker<Pair<Long, Long>> {
         val picker = MaterialDatePicker.Builder.dateRangePicker()
             .setTitleText(uiDatePicker.title)
-            .setSelection(
-                Pair(
-                    MaterialDatePicker.thisMonthInUtcMilliseconds(),
-                    MaterialDatePicker.todayInUtcMilliseconds()
-                )
-            )
             .build()
 
         picker.addOnCancelListener {

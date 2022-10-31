@@ -4,22 +4,8 @@ import android.content.Context
 import com.example.zeroapp.R
 import java.util.Calendar
 
-class MyAnalyst(private val context: Context) {
+class MyAnalystForHistory(private val context: Context) {
 
-    companion object {
-        const val DEFAULT_WISH = -1
-    }
-
-    fun getWishStringForSummary(id: Int): String {
-        return when (id) {
-            R.drawable.smile_very_happy -> context.getString(R.string.wish_for_users_very_happy)
-            R.drawable.smile_happy -> context.getString(R.string.wish_for_users_happy)
-            R.drawable.smile_none -> context.getString(R.string.wish_for_users_none)
-            R.drawable.smile_low -> context.getString(R.string.wish_for_users_low)
-            R.drawable.smile_sad -> context.getString(R.string.wish_for_users_sad)
-            else -> context.getString(R.string.wish_for_users_plug)
-        }
-    }
 
     private fun getMonthTitle(num: Int): String {
         return when (num) {

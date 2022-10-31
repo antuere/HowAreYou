@@ -20,11 +20,14 @@ object TimeUtility {
         return SimpleDateFormat(format, Locale.US).format(date)
     }
 
-    fun parseFormat(format: String = DEFAULT_FORMAT): Date {
-        val currentDateFormat = formatCurrentTime()
-        return SimpleDateFormat(format, Locale.US).parse(currentDateFormat)
+    fun parseCurrentTime(format: String = DEFAULT_FORMAT): Date {
+        return SimpleDateFormat(format, Locale.US).parse(formatCurrentTime())
     }
 
+    fun parse(date : Date, format: String = DEFAULT_FORMAT) : Date {
+        val currentFormat = format(date)
+        return SimpleDateFormat(format, Locale.US).parse(currentFormat)
+    }
 
     fun getDayOfMonth(): String {
         return calendar.get(Calendar.DAY_OF_MONTH).toString()
@@ -33,13 +36,17 @@ object TimeUtility {
     fun getCurrentMonthTime() : Long {
         val calendarTemp = Calendar.getInstance(Locale.US)
         calendarTemp.set(Calendar.DAY_OF_MONTH, 1)
-        return calendarTemp.timeInMillis
+
+        val resultDate = parse(calendarTemp.time)
+        return resultDate.time
     }
 
     fun getCurrentWeekTime() : Long {
         val calendarTemp = Calendar.getInstance(Locale.US)
         calendarTemp.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY)
-        return calendarTemp.timeInMillis
+
+        val resultDate = parse(calendarTemp.time)
+        return resultDate.time
     }
 
     fun parseLongToCalendar(timeInMillis : Long) : Calendar {

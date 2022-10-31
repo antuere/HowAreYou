@@ -7,13 +7,11 @@ import antuere.data.remote_day_database.entities.DayEntityRemote
 import antuere.data.remote_day_database.mapping.DayEntityMapperRemote
 import antuere.domain.dto.Day
 import antuere.domain.repository.DayRepository
-import antuere.domain.util.TimeUtility
 import com.google.firebase.database.DatabaseReference
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.tasks.await
-import timber.log.Timber
 import javax.inject.Inject
 
 
@@ -79,8 +77,6 @@ class DayRepositoryImpl @Inject constructor(
 
     override suspend fun getCertainDays(dayStart: Long): Flow<List<Day>> =
         withContext(Dispatchers.IO) {
-            Timber.i("again my log: dateStart is $dayStart")
-            Timber.i("again my log: currentDate is ${TimeUtility.calendar.timeInMillis}")
             dayDataBaseRoom.dayDatabaseDao.getCertainDays(dayStart)
                 .map {
                     it.map { dayEntity ->
@@ -88,6 +84,15 @@ class DayRepositoryImpl @Inject constructor(
                     }
                 }
         }
+
+    override suspend fun getDaysByLimit(limit: Int): Flow<List<Day>> = withContext(Dispatchers.IO) {
+        dayDataBaseRoom.dayDatabaseDao.getDaysByLimit(limit)
+            .map {
+                it.map { dayEntity ->
+                    dayEntityMapper.mapToDomainModel(dayEntity)
+                }
+            }
+    }
 
     override suspend fun getDay(): Day? = withContext(Dispatchers.IO) {
         val dayEntity = dayDataBaseRoom.dayDatabaseDao.getDay()

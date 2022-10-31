@@ -52,6 +52,10 @@
     <string name="about_day">About past day</string>
     <string name="dialog_delete_title">Delete day</string>
     <string name="dialog_delete_message">Deleting permanently this day?</string>
+    <string name="dialog_warning_title">Are you OK?</string>
+    <string name="dialog_warning_message">We have noticed a drop in your mood in the last 5 days, are you all right? Pay attention to the cards, we hope this will help you at least a little</string>
+    <string name="dialog_warning_positive">Yes, I\'m fine</string>
+    <string name="dialog_warning_negative">No, not really</string>
     <string name="date_picker_title">Select days</string>
     <string name="yes">Delete</string>
     <string name="no">Cancel</string>

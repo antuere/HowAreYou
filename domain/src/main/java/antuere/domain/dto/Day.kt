@@ -4,7 +4,7 @@ import antuere.domain.util.TimeUtility
 
 data class Day(
 
-    var dayId: Long = TimeUtility.parseFormat().time,
+    var dayId: Long = TimeUtility.parseCurrentTime().time,
 
     val imageId: Int,
 

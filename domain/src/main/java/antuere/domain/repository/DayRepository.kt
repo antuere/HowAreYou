@@ -13,6 +13,8 @@ interface DayRepository {
 
     suspend fun getCertainDays(dayStart: Long): Flow<List<Day>>
 
+    suspend fun getDaysByLimit(limit: Int): Flow<List<Day>>
+
     suspend fun getDay(): Day?
 
     suspend fun getDayById(id: Long): Day?

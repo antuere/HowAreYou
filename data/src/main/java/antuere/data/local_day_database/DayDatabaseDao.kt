@@ -34,7 +34,10 @@ interface DayDatabaseDao {
     @Query("SELECT * FROM day_table WHERE dayId BETWEEN :dayStart AND :dayEnd ORDER BY dayId DESC ")
     fun getSelectedDays(dayStart: Long, dayEnd: Long): Flow<List<DayEntity>>
 
-    @Query("SELECT * FROM day_table WHERE dayId > :dateLong ORDER BY dayId DESC ")
+    @Query("SELECT * FROM day_table WHERE dayId >= :dateLong ORDER BY dayId DESC ")
     fun getCertainDays(dateLong: Long): Flow<List<DayEntity>>
+
+    @Query("SELECT * FROM day_table ORDER BY dayId DESC LIMIT :limit ")
+    fun getDaysByLimit(limit: Int): Flow<List<DayEntity>>
 
 }

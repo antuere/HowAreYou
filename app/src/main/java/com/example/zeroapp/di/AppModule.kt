@@ -9,7 +9,8 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.example.zeroapp.R
 import com.example.zeroapp.util.ResourcesProvider
-import com.example.zeroapp.util.MyAnalyst
+import com.example.zeroapp.util.MyAnalystForHistory
+import com.example.zeroapp.util.MyAnalystForSummary
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -32,8 +33,13 @@ object AppModule {
     }
 
     @Provides
-    fun provideMyAnalyst(@ApplicationContext context: Context): MyAnalyst {
-        return MyAnalyst(context)
+    fun provideMyAnalystForHistory(@ApplicationContext context: Context): MyAnalystForHistory {
+        return MyAnalystForHistory(context)
+    }
+
+    @Provides
+    fun provideMyAnalystForSummary(@ApplicationContext context: Context): MyAnalystForSummary {
+        return MyAnalystForSummary(context)
     }
 
     @Provides

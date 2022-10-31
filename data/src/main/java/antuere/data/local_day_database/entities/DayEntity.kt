@@ -10,7 +10,7 @@ import antuere.domain.util.TimeUtility
 data class DayEntity(
 
     @PrimaryKey(autoGenerate = false)
-    var dayId: Long = TimeUtility.parseFormat().time,
+    var dayId: Long = TimeUtility.parseCurrentTime().time,
 
     @ColumnInfo(name = "image_id")
     val imageId: Int,
