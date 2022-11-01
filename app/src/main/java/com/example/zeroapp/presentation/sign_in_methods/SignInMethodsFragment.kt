@@ -52,10 +52,9 @@ class SignInMethodsFragment :
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        setToolbarIcon(R.drawable.ic_back)
 
         binding = this.inflater(inflater, container, false)
-
-        setToolbarIcon(R.drawable.ic_back)
 
         binding!!.buttonEmailMethod.setOnClickListener {
             val transitionName = getString(R.string.transition_name_for_sign_in)

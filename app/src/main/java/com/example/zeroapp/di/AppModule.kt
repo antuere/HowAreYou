@@ -8,9 +8,10 @@ import com.bumptech.glide.RequestManager
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.example.zeroapp.R
+import com.example.zeroapp.presentation.summary.QuoteDataStore
 import com.example.zeroapp.util.ResourcesProvider
-import com.example.zeroapp.util.MyAnalystForHistory
-import com.example.zeroapp.util.MyAnalystForSummary
+import com.example.zeroapp.presentation.history.MyAnalystForHistory
+import com.example.zeroapp.presentation.summary.MyAnalystForSummary
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -92,6 +93,12 @@ object AppModule {
     @Singleton
     fun provideSharedPreferences(@ApplicationContext context: Context): SharedPreferences {
         return context.getSharedPreferences("myPref", Context.MODE_PRIVATE)
+    }
+
+    @Provides
+    @Singleton
+    fun provideQuoteDataStore(@ApplicationContext context: Context) : QuoteDataStore {
+        return QuoteDataStore(context, "quote_data_store")
     }
 
 

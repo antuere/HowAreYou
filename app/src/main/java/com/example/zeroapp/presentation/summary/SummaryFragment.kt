@@ -13,6 +13,7 @@ import com.example.zeroapp.databinding.FragmentSummaryBinding
 import com.example.zeroapp.presentation.base.BaseBindingFragment
 import com.example.zeroapp.presentation.base.ui_dialog.UIDialogListener
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.transition.MaterialElevationScale
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -45,7 +46,6 @@ class SummaryFragment :
     ): View? {
         binding = this.inflater(inflater, container, false)
 
-
         viewModel.dayQuote.observe(viewLifecycleOwner) { quote ->
             quote?.let {
                 binding!!.quotesText.text = it.text
@@ -53,7 +53,6 @@ class SummaryFragment :
                 binding!!.quotesAuthor.text = author
 
                 viewModel.saveQuote(it.text, author)
-
             }
         }
 
@@ -70,6 +69,21 @@ class SummaryFragment :
             startPostponedEnterTransition()
         }
 
+        viewModel.wishText.observe(viewLifecycleOwner) {
+            it?.let { wishString ->
+                binding!!.wishText.text = wishString
+            }
+        }
+
+        viewModel.isShowSnackBar.observe(viewLifecycleOwner) {
+            if(it) {
+                Snackbar.make(binding!!.root, R.string.snack_bar_warning_negative, 3000)
+                    .setAnchorView(binding!!.fabAddButton)
+                    .show()
+
+                viewModel.resetSnackBar()
+            }
+        }
         fabButton = binding!!.fabAddButton
         fabButton.setOnClickListener {
 
@@ -90,11 +104,6 @@ class SummaryFragment :
             }
         }
 
-        viewModel.wishText.observe(viewLifecycleOwner) {
-            it?.let { wishString ->
-                binding!!.wishText.text = wishString
-            }
-        }
 
         binding!!.favorites.setOnClickListener {
             val transitionName = getString(R.string.transition_name_for_fav)

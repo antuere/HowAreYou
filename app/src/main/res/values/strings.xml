@@ -46,19 +46,22 @@
     <string name="confirm_password">Confirm password</string>
     <string name="nickname">Nickname</string>
 
+    <!-- Dialogs/SnackBars -->
+    <string name="dialog_delete_title">Delete day</string>
+    <string name="dialog_delete_message">Deleting permanently this day?</string>
+    <string name="dialog_warning_title">Are you fine?</string>
+    <string name="dialog_warning_message">We have noticed a drop in your mood in the last 5 days, are you all right?</string>
+    <string name="dialog_warning_positive">Yes, I\'m fine</string>
+    <string name="dialog_warning_negative">No, not really</string>
+    <string name="snack_bar_warning_negative">Pay attention to the cards above, we hope this will help you at least a little.</string>
+    <string name="yes">Delete</string>
+    <string name="no">Cancel</string>
+
     <!-- Label and descriptions -->
     <string name="how_are_you_today">How are you today?</string>
     <string name="desc_you_day">Describe your day in a nutshell</string>
     <string name="about_day">About past day</string>
-    <string name="dialog_delete_title">Delete day</string>
-    <string name="dialog_delete_message">Deleting permanently this day?</string>
-    <string name="dialog_warning_title">Are you OK?</string>
-    <string name="dialog_warning_message">We have noticed a drop in your mood in the last 5 days, are you all right? Pay attention to the cards, we hope this will help you at least a little</string>
-    <string name="dialog_warning_positive">Yes, I\'m fine</string>
-    <string name="dialog_warning_negative">No, not really</string>
     <string name="date_picker_title">Select days</string>
-    <string name="yes">Delete</string>
-    <string name="no">Cancel</string>
     <string name="getCats">Update cute cats!</string>
     <string name="title_cats">What could be better than cats?</string>
     <string name="history_hint">Add your first day and come back!</string>
@@ -74,6 +77,10 @@
     <string name="empty_fields">Please fill the fields</string>
     <string name="passwords_error">Passwords don\'t match</string>
     <string name="hello_user">Hello, dear</string>
+    <string name="all_days_desc">Show all days</string>
+    <string name="month_days_desc">Show days of this current month</string>
+    <string name="week_days_desc">Show days of this current week</string>
+
 
     <!-- Methods for login -->
     <string name="login_email">Sign in with email</string>
@@ -102,6 +109,5 @@
     <string name="october">October</string>
     <string name="november">November</string>
     <string name="december">December</string>
-
 
 </resources>

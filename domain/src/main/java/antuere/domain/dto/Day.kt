@@ -6,7 +6,7 @@ data class Day(
 
     var dayId: Long = TimeUtility.parseCurrentTime().time,
 
-    val imageId: Int,
+    val imageName: String,
 
     var dayText: String,
 

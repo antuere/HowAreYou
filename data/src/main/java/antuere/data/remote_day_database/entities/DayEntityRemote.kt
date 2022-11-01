@@ -6,7 +6,7 @@ data class DayEntityRemote(
 
         var dayId: Long= 0L,
 
-        val imageId: Int = 0,
+        val imageName: String = "",
 
         var dayText: String = "",
 

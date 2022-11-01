@@ -23,6 +23,7 @@
                 style="@style/Widget.App.Button.Default.ToggleGroup"
                 android:id="@+id/button_all_days"
                 android:text="@string/all_days_title"
+                android:contentDescription="@string/all_days_desc"
                 android:layout_width="@dimen/checked_button_width"
                 android:layout_height="wrap_content">
 
@@ -32,6 +33,7 @@
                 style="@style/Widget.App.Button.Default.ToggleGroup"
                 android:id="@+id/button_current_month"
                 android:text="@string/current_month_title"
+                android:contentDescription="@string/month_days_desc"
                 android:layout_width="@dimen/checked_button_width"
                 android:layout_height="wrap_content">
 
@@ -41,6 +43,7 @@
                 style="@style/Widget.App.Button.Default.ToggleGroup"
                 android:id="@+id/button_last_week"
                 android:text="@string/last_week_title"
+                android:contentDescription="@string/week_days_desc"
                 android:layout_width="@dimen/checked_button_width"
                 android:layout_height="wrap_content">
 

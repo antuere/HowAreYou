@@ -33,8 +33,9 @@ class RegisterEmailFragment :
         savedInstanceState: Bundle?
     ): View {
 
-        binding = this.inflater(inflater, container, false)
         setToolbarIcon(R.drawable.ic_back)
+
+        binding = this.inflater(inflater, container, false)
 
         binding!!.apply {
             setupBinding(this)

@@ -54,11 +54,10 @@ class CatsFragment : BaseBindingFragment<FragmentCatsBinding>(FragmentCatsBindin
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentCatsBinding.inflate(inflater, container, false)
-
-        getCatsImage()
-
         setToolbarIcon(R.drawable.ic_back)
+
+        binding = FragmentCatsBinding.inflate(inflater, container, false)
+        getCatsImage()
 
         return binding!!.root
     }

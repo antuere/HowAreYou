@@ -43,18 +43,24 @@ android {
 dependencies {
 
     implementation "androidx.core:core-ktx:$version_core"
-    implementation 'androidx.annotation:annotation:1.5.0'
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     runtimeOnly "androidx.appcompat:appcompat:$version_appcompat"
     runtimeOnly "com.google.android.material:material:$version_material"
     runtimeOnly "androidx.constraintlayout:constraintlayout:$version_constraint_layout"
-    implementation "androidx.navigation:navigation-fragment-ktx:$version_navigation"
-    implementation "androidx.navigation:navigation-ui-ktx:$version_navigation"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$version_lifecycle"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$version_lifecycle"
     implementation "androidx.lifecycle:lifecycle-extensions:$version_lifecycle_extensions"
     implementation "androidx.compose.ui:ui-graphics:$version_compose"
 
+    // Navigation
+    implementation "androidx.navigation:navigation-fragment-ktx:$version_navigation"
+    implementation "androidx.navigation:navigation-ui-ktx:$version_navigation"
+
+    // Preferences DataStore
+    implementation "androidx.datastore:datastore-preferences:$version_data_store"
+
+    // Coroutines
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version_coroutine"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$version_coroutine_android"
 
     //FireBase
     implementation "com.google.firebase:firebase-storage-ktx:$version_firebase"

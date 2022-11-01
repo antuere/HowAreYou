@@ -32,15 +32,14 @@ class ResetPasswordFragment :
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        setToolbarIcon(R.drawable.ic_back)
 
         binding = this.inflater(inflater, container, false)
-        setToolbarIcon(R.drawable.ic_back)
 
         binding!!.apply {
             setupBinding(this)
             return root
         }
-
     }
 
 

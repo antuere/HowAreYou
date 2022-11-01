@@ -39,12 +39,12 @@ class FavoritesFragment :
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        setToolbarIcon(R.drawable.ic_back)
+
         binding = FragmentFavoritesBinding.inflate(inflater, container, false)
 
         val manager = GridLayoutManager(activity, 2)
         binding!!.favoritesList.layoutManager = manager
-
-        setToolbarIcon(R.drawable.ic_back)
 
         val adapter = FavoritesAdapter(viewModel.dayClickListener)
         binding!!.favoritesList.adapter = adapter

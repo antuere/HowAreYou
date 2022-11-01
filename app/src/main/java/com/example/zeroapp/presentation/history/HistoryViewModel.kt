@@ -56,12 +56,12 @@ class HistoryViewModel @Inject constructor(
     val navigateToDetailState: LiveData<NavigateToDetailState>
         get() = _navigateToDetailState
 
-    private var _checkedButtonState = MutableLiveData<CheckedButtonState>()
-    val checkedButtonState: LiveData<CheckedButtonState>
-        get() = _checkedButtonState
+    private var _toggleButtonState = MutableLiveData<ToggleButtonState>()
+    val toggleButtonState: LiveData<ToggleButtonState>
+        get() = _toggleButtonState
 
     init {
-        getCheckedButtonState()
+        getToggleButtonState()
     }
 
     val dayClickListener = object : DayClickListener {
@@ -117,7 +117,7 @@ class HistoryViewModel @Inject constructor(
             positiveButton = UIDatePicker.UiButtonPositive(
                 onClick = {
                     val kotlinPair: Pair<Long, Long> = Pair(it.first, it.second)
-                    _checkedButtonState.value = CheckedButtonState.Filter(kotlinPair)
+                    _toggleButtonState.value = ToggleButtonState.Filter(kotlinPair)
                     _uiDatePicker.value = null
                 }),
             negativeButton = UIDatePicker.UiButtonNegative(
@@ -161,7 +161,7 @@ class HistoryViewModel @Inject constructor(
 
     fun onClickCheckedItem(state: Int) {
         saveCheckedButtonState(state)
-        getCheckedButtonState()
+        getToggleButtonState()
     }
 
     private fun saveCheckedButtonState(state: Int) {
@@ -171,13 +171,13 @@ class HistoryViewModel @Inject constructor(
         }
     }
 
-    fun getCheckedButtonState() {
+    fun getToggleButtonState() {
         val sharedCheckedButtonState = sharedPreferences.getInt(CHECKED_BUTTON_HISTORY_PREF, -1)
         when (sharedCheckedButtonState) {
-            CHECKED_ALL_DAYS -> _checkedButtonState.value = CheckedButtonState.AllDays
-            CHECKED_CURRENT_MONTH -> _checkedButtonState.value = CheckedButtonState.CurrentMonth
-            CHECKED_LAST_WEEK -> _checkedButtonState.value = CheckedButtonState.LastWeek
-            -1 -> _checkedButtonState.value = CheckedButtonState.AllDays
+            CHECKED_ALL_DAYS -> _toggleButtonState.value = ToggleButtonState.AllDays
+            CHECKED_CURRENT_MONTH -> _toggleButtonState.value = ToggleButtonState.CurrentMonth
+            CHECKED_LAST_WEEK -> _toggleButtonState.value = ToggleButtonState.LastWeek
+            -1 -> _toggleButtonState.value = ToggleButtonState.AllDays
         }
     }
 }

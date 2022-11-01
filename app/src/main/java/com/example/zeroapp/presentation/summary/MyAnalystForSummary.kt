@@ -1,8 +1,9 @@
-package com.example.zeroapp.util
+package com.example.zeroapp.presentation.summary
 
 import android.content.Context
 import antuere.domain.dto.Day
 import com.example.zeroapp.R
+import com.example.zeroapp.util.SmileProvider
 
 class MyAnalystForSummary(private val context: Context) {
 
@@ -23,10 +24,14 @@ class MyAnalystForSummary(private val context: Context) {
 
 
     fun isShowWarningForSummary(days: List<Day>): Boolean {
+
+        if (days.isEmpty()) return false
+
         var result = true
 
         days.forEach { day ->
-            if (day.imageId != R.drawable.smile_none && day.imageId != R.drawable.smile_sad) {
+            val resId = SmileProvider.getSmileImageByName(day.imageName)
+            if (resId != R.drawable.smile_none && resId != R.drawable.smile_sad) {
                 result = false
             }
         }

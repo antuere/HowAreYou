@@ -12,8 +12,8 @@ data class DayEntity(
     @PrimaryKey(autoGenerate = false)
     var dayId: Long = TimeUtility.parseCurrentTime().time,
 
-    @ColumnInfo(name = "image_id")
-    val imageId: Int,
+    @ColumnInfo(name = "image_name")
+    val imageName: String,
 
     @ColumnInfo(name = "day_text")
     var dayText: String,

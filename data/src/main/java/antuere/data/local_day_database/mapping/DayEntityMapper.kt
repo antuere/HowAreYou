@@ -9,7 +9,7 @@ class DayEntityMapper : DomainMapper<DayEntity, Day> {
     override fun mapToDomainModel(model: DayEntity): Day {
         return Day(
             dayId = model.dayId,
-            imageId = model.imageId,
+            imageName = model.imageName,
             dayText = model.dayText,
             dateString = model.dateString,
             isFavorite = model.isFavorite
@@ -19,7 +19,7 @@ class DayEntityMapper : DomainMapper<DayEntity, Day> {
     override fun mapFromDomainModel(domainModel: Day): DayEntity {
         return DayEntity(
             dayId = domainModel.dayId,
-            imageId = domainModel.imageId,
+            imageName = domainModel.imageName,
             dayText = domainModel.dayText,
             dateString = domainModel.dateString,
             isFavorite = domainModel.isFavorite

@@ -10,7 +10,7 @@ class DayEntityMapperRemote : DomainMapper<DayEntityRemote, Day> {
     override fun mapToDomainModel(model: DayEntityRemote): Day {
         return Day(
             dayId = model.dayId,
-            imageId = model.imageId,
+            imageName = model.imageName,
             dayText = model.dayText,
             dateString = model.dateString,
             isFavorite = model.isFavorite
@@ -20,7 +20,7 @@ class DayEntityMapperRemote : DomainMapper<DayEntityRemote, Day> {
     override fun mapFromDomainModel(domainModel: Day): DayEntityRemote {
         return DayEntityRemote(
             dayId = domainModel.dayId,
-            imageId = domainModel.imageId,
+            imageName = domainModel.imageName,
             dayText = domainModel.dayText,
             dateString = domainModel.dateString,
             isFavorite = domainModel.isFavorite

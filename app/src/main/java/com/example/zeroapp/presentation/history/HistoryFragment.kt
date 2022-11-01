@@ -17,7 +17,6 @@ import com.example.zeroapp.presentation.base.BaseBindingFragment
 import com.example.zeroapp.presentation.base.ui_date_picker.UIDatePickerListener
 import com.example.zeroapp.presentation.base.ui_dialog.UIDialogListener
 import com.example.zeroapp.presentation.history.adapter.DayAdapter
-import com.example.zeroapp.util.MyAnalystForHistory
 import com.example.zeroapp.util.setManagerSpanCount
 import com.google.android.material.transition.MaterialElevationScale
 import com.google.android.material.transition.MaterialFade
@@ -68,10 +67,9 @@ class HistoryFragment :
         val manager = GridLayoutManager(mainActivity, 4)
 
         binding!!.dayList.layoutManager = manager
-
         binding!!.dayList.adapter = adapter
 
-        viewModel.getCheckedButtonState()
+        viewModel.getToggleButtonState()
 
         binding!!.toggleButton.addOnButtonCheckedListener { group, _, _ ->
             when (group.checkedButtonId) {
@@ -98,28 +96,28 @@ class HistoryFragment :
             }
         }
 
-        viewModel.checkedButtonState.observe(viewLifecycleOwner) {
+        viewModel.toggleButtonState.observe(viewLifecycleOwner) {
             it?.let { state ->
                 when (state) {
-                    is CheckedButtonState.Filter -> {
+                    is ToggleButtonState.Filter -> {
                         viewModel.checkedFilterButton(state.pair)
 
                         manager.setManagerSpanCount(3)
                         binding!!.toggleButton.clearChecked()
                     }
-                    is CheckedButtonState.AllDays -> {
+                    is ToggleButtonState.AllDays -> {
                         viewModel.checkedAllDaysButton()
 
                         manager.setManagerSpanCount(4)
                         binding!!.toggleButton.check(R.id.button_all_days)
                     }
-                    is CheckedButtonState.LastWeek -> {
+                    is ToggleButtonState.LastWeek -> {
                         viewModel.checkedLastWeekButton()
 
                         manager.setManagerSpanCount(2)
                         binding!!.toggleButton.check(R.id.button_last_week)
                     }
-                    is CheckedButtonState.CurrentMonth -> {
+                    is ToggleButtonState.CurrentMonth -> {
                         viewModel.checkedCurrentMonthButton()
 
                         manager.setManagerSpanCount(3)

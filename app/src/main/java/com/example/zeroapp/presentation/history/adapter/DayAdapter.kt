@@ -5,7 +5,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import antuere.domain.dto.Day
 import antuere.domain.util.TimeUtility
-import com.example.zeroapp.util.MyAnalystForHistory
+import com.example.zeroapp.presentation.history.MyAnalystForHistory
 import java.lang.ClassCastException
 
 class DayAdapter(
