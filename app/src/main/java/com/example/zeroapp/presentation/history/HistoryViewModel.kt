@@ -1,6 +1,5 @@
 package com.example.zeroapp.presentation.history
 
-import android.content.SharedPreferences
 import android.view.View
 import androidx.lifecycle.*
 import androidx.navigation.fragment.FragmentNavigatorExtras
@@ -14,6 +13,7 @@ import com.example.zeroapp.presentation.base.ui_dialog.IUIDialogAction
 import com.example.zeroapp.presentation.base.ui_dialog.UIDialog
 import com.example.zeroapp.presentation.history.adapter.DayClickListener
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -25,18 +25,10 @@ class HistoryViewModel @Inject constructor(
     private val deleteDayUseCase: DeleteDayUseCase,
     private val getSelectedDaysUseCase: GetSelectedDaysUseCase,
     private val getCertainDaysUseCase: GetCertainDaysUseCase,
-    private val sharedPreferences: SharedPreferences,
+    private val toggleButtonDataStore: ToggleButtonDataStore,
     private val transitionName: String,
 ) :
     ViewModel(), IUIDialogAction, IUIDatePickerAction {
-
-    companion object {
-        private const val CHECKED_BUTTON_HISTORY_PREF = "checked button in history"
-
-        const val CHECKED_ALL_DAYS = 1
-        const val CHECKED_CURRENT_MONTH = 2
-        const val CHECKED_LAST_WEEK = 3
-    }
 
     private var _dayId = 0L
 
@@ -145,7 +137,7 @@ class HistoryViewModel @Inject constructor(
 
     fun checkedLastWeekButton() {
         viewModelScope.launch {
-                getCertainDaysUseCase.invoke(TimeUtility.getCurrentWeekTime()).collectLatest {
+            getCertainDaysUseCase.invoke(TimeUtility.getCurrentWeekTime()).collectLatest {
                 _listDays.postValue(it)
             }
         }
@@ -160,24 +152,22 @@ class HistoryViewModel @Inject constructor(
     }
 
     fun onClickCheckedItem(state: Int) {
-        saveCheckedButtonState(state)
-        getToggleButtonState()
+        viewModelScope.launch {
+            saveCheckedButtonState(state).join()
+            getToggleButtonState()
+        }
     }
 
-    private fun saveCheckedButtonState(state: Int) {
-        sharedPreferences.edit().apply {
-            putInt(CHECKED_BUTTON_HISTORY_PREF, state)
-            apply()
+    private fun saveCheckedButtonState(state: Int): Job {
+        return viewModelScope.launch {
+            toggleButtonDataStore.saveToggleButtonState(state)
         }
     }
 
     fun getToggleButtonState() {
-        val sharedCheckedButtonState = sharedPreferences.getInt(CHECKED_BUTTON_HISTORY_PREF, -1)
-        when (sharedCheckedButtonState) {
-            CHECKED_ALL_DAYS -> _toggleButtonState.value = ToggleButtonState.AllDays
-            CHECKED_CURRENT_MONTH -> _toggleButtonState.value = ToggleButtonState.CurrentMonth
-            CHECKED_LAST_WEEK -> _toggleButtonState.value = ToggleButtonState.LastWeek
-            -1 -> _toggleButtonState.value = ToggleButtonState.AllDays
+        viewModelScope.launch {
+            val savedCheckedButtonState = toggleButtonDataStore.getToggleButtonState()
+            _toggleButtonState.value = savedCheckedButtonState
         }
     }
 }

@@ -73,11 +73,10 @@ class HistoryFragment :
 
         binding!!.toggleButton.addOnButtonCheckedListener { group, _, _ ->
             when (group.checkedButtonId) {
-                R.id.button_all_days -> viewModel.onClickCheckedItem(HistoryViewModel.CHECKED_ALL_DAYS)
-                R.id.button_current_month -> viewModel.onClickCheckedItem(HistoryViewModel.CHECKED_CURRENT_MONTH)
-                R.id.button_last_week -> viewModel.onClickCheckedItem(HistoryViewModel.CHECKED_LAST_WEEK)
+                R.id.button_all_days -> viewModel.onClickCheckedItem(ToggleButtonDataStore.CHECKED_ALL_DAYS)
+                R.id.button_current_month -> viewModel.onClickCheckedItem(ToggleButtonDataStore.CHECKED_CURRENT_MONTH)
+                R.id.button_last_week -> viewModel.onClickCheckedItem(ToggleButtonDataStore.CHECKED_LAST_WEEK)
             }
-
         }
         viewModel.listDays.observe(viewLifecycleOwner) {
             it?.let {

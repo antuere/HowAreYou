@@ -11,6 +11,7 @@ import com.example.zeroapp.R
 import com.example.zeroapp.presentation.summary.QuoteDataStore
 import com.example.zeroapp.util.ResourcesProvider
 import com.example.zeroapp.presentation.history.MyAnalystForHistory
+import com.example.zeroapp.presentation.history.ToggleButtonDataStore
 import com.example.zeroapp.presentation.summary.MyAnalystForSummary
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -99,6 +100,12 @@ object AppModule {
     @Singleton
     fun provideQuoteDataStore(@ApplicationContext context: Context) : QuoteDataStore {
         return QuoteDataStore(context, "quote_data_store")
+    }
+
+    @Provides
+    @Singleton
+    fun provideToggleButtonDataStore(@ApplicationContext context: Context) : ToggleButtonDataStore {
+        return ToggleButtonDataStore(context, "toggle_button_data_store")
     }
 
 
