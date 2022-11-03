@@ -4,7 +4,7 @@ import antuere.data.local_day_database.DayDatabase
 import antuere.data.local_day_database.mapping.DayEntityMapper
 import antuere.data.remote_day_database.FirebaseApi
 import antuere.data.remote_day_database.entities.DayEntityRemote
-import antuere.data.remote_day_database.mapping.DayEntityMapperRemote
+import antuere.data.remote_day_database.mapping.DayEntityRemoteMapper
 import antuere.domain.dto.Day
 import antuere.domain.repository.DayRepository
 import com.google.firebase.database.DatabaseReference
@@ -18,7 +18,7 @@ import javax.inject.Inject
 class DayRepositoryImpl @Inject constructor(
     private val dayDataBaseRoom: DayDatabase,
     private val firebaseApi: FirebaseApi,
-    private val dayEntityMapperRemote: DayEntityMapperRemote,
+    private val dayEntityMapperRemote: DayEntityRemoteMapper,
     private val dayEntityMapper: DayEntityMapper,
 ) : DayRepository {
 

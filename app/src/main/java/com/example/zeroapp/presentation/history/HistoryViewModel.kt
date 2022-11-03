@@ -4,6 +4,7 @@ import android.view.View
 import androidx.lifecycle.*
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import antuere.domain.dto.Day
+import antuere.domain.dto.ToggleBtnState
 import antuere.domain.usecases.*
 import antuere.domain.util.TimeUtility
 import com.example.zeroapp.R
@@ -13,7 +14,6 @@ import com.example.zeroapp.presentation.base.ui_dialog.IUIDialogAction
 import com.example.zeroapp.presentation.base.ui_dialog.UIDialog
 import com.example.zeroapp.presentation.history.adapter.DayClickListener
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -25,7 +25,8 @@ class HistoryViewModel @Inject constructor(
     private val deleteDayUseCase: DeleteDayUseCase,
     private val getSelectedDaysUseCase: GetSelectedDaysUseCase,
     private val getCertainDaysUseCase: GetCertainDaysUseCase,
-    private val toggleButtonDataStore: ToggleButtonDataStore,
+    private val getToggleBtnStateUseCase: GetToggleBtnStateUseCase,
+    private val saveToggleBtnUseCase: SaveToggleBtnUseCase,
     private val transitionName: String,
 ) :
     ViewModel(), IUIDialogAction, IUIDatePickerAction {
@@ -48,9 +49,13 @@ class HistoryViewModel @Inject constructor(
     val navigateToDetailState: LiveData<NavigateToDetailState>
         get() = _navigateToDetailState
 
-    private var _toggleButtonState = MutableLiveData<ToggleButtonState>()
-    val toggleButtonState: LiveData<ToggleButtonState>
-        get() = _toggleButtonState
+    private var _toggleBtnState = MutableLiveData<ToggleBtnState>()
+    val toggleBtnState: LiveData<ToggleBtnState>
+        get() = _toggleBtnState
+
+    private var _isFilterSelected = MutableLiveData<Boolean>()
+    val isFilterSelected: LiveData<Boolean>
+        get() = _isFilterSelected
 
     init {
         getToggleButtonState()
@@ -80,7 +85,7 @@ class HistoryViewModel @Inject constructor(
 
     private fun deleteDay() {
         viewModelScope.launch {
-            deleteDayUseCase.invoke(_dayId)
+            deleteDayUseCase(_dayId)
         }
     }
 
@@ -109,7 +114,8 @@ class HistoryViewModel @Inject constructor(
             positiveButton = UIDatePicker.UiButtonPositive(
                 onClick = {
                     val kotlinPair: Pair<Long, Long> = Pair(it.first, it.second)
-                    _toggleButtonState.value = ToggleButtonState.Filter(kotlinPair)
+                    checkedFilterButton(kotlinPair)
+                    _isFilterSelected.value = true
                     _uiDatePicker.value = null
                 }),
             negativeButton = UIDatePicker.UiButtonNegative(
@@ -119,9 +125,9 @@ class HistoryViewModel @Inject constructor(
         )
     }
 
-    fun checkedFilterButton(pair: Pair<Long, Long>) {
+    private fun checkedFilterButton(pair: Pair<Long, Long>) {
         viewModelScope.launch {
-            getSelectedDaysUseCase.invoke(pair).collectLatest {
+            getSelectedDaysUseCase(pair).collectLatest {
                 _listDays.postValue(it)
             }
         }
@@ -129,7 +135,7 @@ class HistoryViewModel @Inject constructor(
 
     fun checkedCurrentMonthButton() {
         viewModelScope.launch {
-            getCertainDaysUseCase.invoke(TimeUtility.getCurrentMonthTime()).collectLatest {
+            getCertainDaysUseCase(TimeUtility.getCurrentMonthTime()).collectLatest {
                 _listDays.postValue(it)
             }
         }
@@ -137,7 +143,7 @@ class HistoryViewModel @Inject constructor(
 
     fun checkedLastWeekButton() {
         viewModelScope.launch {
-            getCertainDaysUseCase.invoke(TimeUtility.getCurrentWeekTime()).collectLatest {
+            getCertainDaysUseCase(TimeUtility.getCurrentWeekTime()).collectLatest {
                 _listDays.postValue(it)
             }
         }
@@ -145,30 +151,28 @@ class HistoryViewModel @Inject constructor(
 
     fun checkedAllDaysButton() {
         viewModelScope.launch {
-            getAllDaysUseCase.invoke(Unit).collectLatest {
+            getAllDaysUseCase(Unit).collectLatest {
                 _listDays.postValue(it)
             }
         }
     }
 
-    fun onClickCheckedItem(state: Int) {
+    fun onClickCheckedItem(state: ToggleBtnState) {
         viewModelScope.launch {
-            saveCheckedButtonState(state).join()
-            getToggleButtonState()
+            saveToggleBtnUseCase(state)
         }
     }
 
-    private fun saveCheckedButtonState(state: Int): Job {
-        return viewModelScope.launch {
-            toggleButtonDataStore.saveToggleButtonState(state)
+    private fun getToggleButtonState() {
+        viewModelScope.launch {
+            getToggleBtnStateUseCase(Unit).collectLatest {
+                _toggleBtnState.postValue(it)
+            }
         }
     }
 
-    fun getToggleButtonState() {
-        viewModelScope.launch {
-            val savedCheckedButtonState = toggleButtonDataStore.getToggleButtonState()
-            _toggleButtonState.value = savedCheckedButtonState
-        }
+    fun resetIsFilterSelected() {
+        _isFilterSelected.value = false
     }
 }
 

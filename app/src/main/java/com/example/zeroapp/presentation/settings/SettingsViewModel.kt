@@ -20,15 +20,10 @@ class SettingsViewModel @Inject constructor(
     val userNickname: LiveData<String?>
         get() = _userNickname
 
-    private var _isHasUser = MutableLiveData<Boolean>()
-    val isHasUser: LiveData<Boolean>
-        get() = _isHasUser
 
     init {
         updateUserNickname()
-        checkCurrentUser()
     }
-
 
     fun updateUserNickname() {
         viewModelScope.launch {
@@ -37,16 +32,12 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
-    fun checkCurrentUser() {
-        _isHasUser.value = firebaseApi.isHasUser()
-    }
-
     fun onSignOutClicked() {
         firebaseApi.auth.signOut()
 
         updateUserNickname()
         viewModelScope.launch {
-            refreshRemoteDataUseCase.invoke(Unit)
+            refreshRemoteDataUseCase(Unit)
         }
     }
 

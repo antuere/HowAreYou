@@ -4,14 +4,14 @@ import com.example.zeroapp.R
 
 object SmileProvider {
 
-    const val SMILE_VERY_HAPPY = "very happy"
-    const val SMILE_HAPPY = "happy"
-    const val SMILE_NONE = "none"
-    const val SMILE_LOW = "low"
-    const val SMILE_SAD = "sad"
+    private const val SMILE_VERY_HAPPY = "very happy"
+    private const val SMILE_HAPPY = "happy"
+    private const val SMILE_NONE = "none"
+    private const val SMILE_LOW = "low"
+    private const val SMILE_SAD = "sad"
 
 
-    // Converter buttonId to drawable SmileId
+    // Converter buttonId to image id
     private fun getSmileImage(id: Int): Int {
         return when (id) {
             R.id.b_very_happy -> R.drawable.smile_very_happy
@@ -23,6 +23,7 @@ object SmileProvider {
         }
     }
 
+    // Converter image id to string
     private fun getSmileNameById(id: Int): String {
         return when (id) {
             R.drawable.smile_very_happy -> SMILE_VERY_HAPPY
@@ -34,11 +35,13 @@ object SmileProvider {
         }
     }
 
+    // Converter button id to string
     fun getSmileNameFromBtnId(id: Int): String {
         val resId = getSmileImage(id)
         return getSmileNameById(resId)
     }
 
+    // Converter string to image id
     fun getSmileImageByName(name: String): Int {
         return when (name) {
             SMILE_VERY_HAPPY -> R.drawable.smile_very_happy

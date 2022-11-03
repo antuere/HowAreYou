@@ -5,7 +5,7 @@ import antuere.domain.dto.Day
 import antuere.domain.mapping.DomainMapper
 
 
-class DayEntityMapperRemote : DomainMapper<DayEntityRemote, Day> {
+class DayEntityRemoteMapper : DomainMapper<DayEntityRemote, Day> {
 
     override fun mapToDomainModel(model: DayEntityRemote): Day {
         return Day(

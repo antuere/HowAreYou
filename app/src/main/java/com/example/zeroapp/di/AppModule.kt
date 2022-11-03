@@ -8,10 +8,10 @@ import com.bumptech.glide.RequestManager
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.example.zeroapp.R
-import com.example.zeroapp.presentation.summary.QuoteDataStore
+import antuere.data.preferences_data_store.QuoteDataStore
 import com.example.zeroapp.util.ResourcesProvider
 import com.example.zeroapp.presentation.history.MyAnalystForHistory
-import com.example.zeroapp.presentation.history.ToggleButtonDataStore
+import antuere.data.preferences_data_store.ToggleBtnDataStore
 import com.example.zeroapp.presentation.summary.MyAnalystForSummary
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -104,8 +104,8 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideToggleButtonDataStore(@ApplicationContext context: Context) : ToggleButtonDataStore {
-        return ToggleButtonDataStore(context, "toggle_button_data_store")
+    fun provideToggleButtonDataStore(@ApplicationContext context: Context) : ToggleBtnDataStore {
+        return ToggleBtnDataStore(context, "toggle_button_data_store")
     }
 
 

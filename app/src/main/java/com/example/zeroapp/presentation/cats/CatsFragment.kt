@@ -23,7 +23,7 @@ class CatsFragment : BaseBindingFragment<FragmentCatsBinding>(FragmentCatsBindin
 
     companion object {
         private const val CATS_URL_1 = "https://source.unsplash.com/random/?cutecats"
-        private const val CATS_URL_2 = "https://source.unsplash.com/random/?cats"
+        private const val CATS_URL_2 = "https://source.unsplash.com/random/?feline"
         private const val CATS_URL_3 = "https://source.unsplash.com/random/?cat"
         private const val CATS_URL_4 = "https://source.unsplash.com/random/?kitty"
     }

@@ -12,15 +12,20 @@ import com.example.zeroapp.*
 import com.example.zeroapp.databinding.FragmentSummaryBinding
 import com.example.zeroapp.presentation.base.BaseBindingFragment
 import com.example.zeroapp.presentation.base.ui_dialog.UIDialogListener
+import com.example.zeroapp.util.MyBiometricManager
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
-import com.google.android.material.transition.MaterialElevationScale
+import com.google.android.material.transition.MaterialFadeThrough
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class SummaryFragment :
     BaseBindingFragment<FragmentSummaryBinding>(FragmentSummaryBinding::inflate) {
 
+
+    @Inject
+    lateinit var myBiometricManager: MyBiometricManager
 
     private val viewModel by viewModels<SummaryViewModel>()
     private lateinit var fabButton: FloatingActionButton
@@ -33,7 +38,11 @@ class SummaryFragment :
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        reenterTransition = MaterialElevationScale(true).apply {
+        exitTransition = MaterialFadeThrough().apply {
+            duration = resources.getInteger(R.integer.duration_normal).toLong()
+        }
+
+        enterTransition = MaterialFadeThrough().apply {
             duration = resources.getInteger(R.integer.duration_normal).toLong()
         }
 
@@ -60,14 +69,15 @@ class SummaryFragment :
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
 
-        viewModel.updateInfo()
+        myBiometricManager.setAuth()
 
         postponeEnterTransition()
         view.doOnPreDraw {
             startPostponedEnterTransition()
         }
+
+        viewModel.updateInfo()
 
         viewModel.wishText.observe(viewLifecycleOwner) {
             it?.let { wishString ->

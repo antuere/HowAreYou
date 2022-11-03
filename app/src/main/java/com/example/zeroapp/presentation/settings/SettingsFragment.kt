@@ -4,7 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.doOnPreDraw
+import androidx.core.view.updateLayoutParams
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
@@ -12,8 +14,8 @@ import androidx.transition.TransitionManager
 import com.example.zeroapp.R
 import com.example.zeroapp.databinding.FragmentSettingsBinding
 import com.example.zeroapp.presentation.base.BaseBindingFragment
-import com.google.android.material.transition.MaterialElevationScale
 import com.google.android.material.transition.MaterialFade
+import com.google.android.material.transition.MaterialFadeThrough
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -25,7 +27,11 @@ class SettingsFragment :
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        enterTransition = MaterialElevationScale(true).apply {
+        exitTransition = MaterialFadeThrough().apply {
+            duration = resources.getInteger(R.integer.duration_normal).toLong()
+        }
+
+        enterTransition = MaterialFadeThrough().apply {
             duration = resources.getInteger(R.integer.duration_normal).toLong()
         }
     }
@@ -36,21 +42,14 @@ class SettingsFragment :
         savedInstanceState: Bundle?
     ): View? {
         binding = this.inflater(inflater, container, false)
-
         viewModel.updateUserNickname()
-        viewModel.checkCurrentUser()
 
         viewModel.userNickname.observe(viewLifecycleOwner) {
             it?.let {
-                val welcomeText = " ${getString(R.string.hello_user)} $it "
-                binding!!.welcomeUser.text = welcomeText
-            }
-        }
+                val welcomeText = "${getString(R.string.hello_user)} $it "
+                binding!!.userNickname.text = welcomeText
 
-        viewModel.isHasUser.observe(viewLifecycleOwner){
-            if(it){
-                binding!!.buttonSignIn.visibility = View.INVISIBLE
-                binding!!.buttonSignOut.visibility = View.VISIBLE
+                changeUiWhenUserSignIn()
             }
         }
 
@@ -61,21 +60,16 @@ class SettingsFragment :
                 SettingsFragmentDirections.actionSettingsFragmentToSignInMethodsFragment(),
                 extras
             )
-
         }
 
         binding!!.buttonSignOut.setOnClickListener {
             viewModel.onSignOutClicked()
 
             val materialFade = MaterialFade().apply {
-                duration = 150L
+                duration = 350L
             }
             TransitionManager.beginDelayedTransition(container!!, materialFade)
-
-            binding!!.buttonSignOut.visibility = View.INVISIBLE
-            binding!!.buttonSignIn.visibility = View.VISIBLE
-            binding!!.welcomeUser.text = ""
-
+            changeUiWhenUserSignOut()
         }
 
         return binding?.root
@@ -83,13 +77,39 @@ class SettingsFragment :
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
-        super.onViewCreated(view, savedInstanceState)
-
         postponeEnterTransition()
         view.doOnPreDraw {
             startPostponedEnterTransition()
         }
+    }
 
+    private fun changeUiWhenUserSignIn() {
+        binding!!.signInAdviceText.visibility = View.GONE
+
+        binding!!.buttonSignIn.updateLayoutParams<ConstraintLayout.LayoutParams> {
+            topToBottom = binding!!.howAreYouText.id
+        }
+
+        binding!!.buttonSignOut.updateLayoutParams<ConstraintLayout.LayoutParams> {
+            topToBottom = binding!!.howAreYouText.id
+        }
+
+        binding!!.buttonSignIn.visibility = View.INVISIBLE
+        binding!!.buttonSignOut.visibility = View.VISIBLE
+    }
+
+    private fun changeUiWhenUserSignOut() {
+        binding!!.buttonSignIn.visibility = View.VISIBLE
+        binding!!.signInAdviceText.visibility = View.VISIBLE
+        binding!!.buttonSignOut.visibility = View.INVISIBLE
+
+        binding!!.buttonSignIn.updateLayoutParams<ConstraintLayout.LayoutParams> {
+            topToBottom = binding!!.signInAdviceText.id
+        }
+
+        binding!!.buttonSignOut.updateLayoutParams<ConstraintLayout.LayoutParams> {
+            topToBottom = binding!!.signInAdviceText.id
+        }
+        binding!!.userNickname.text = getString(R.string.hello_user_plug)
     }
 }

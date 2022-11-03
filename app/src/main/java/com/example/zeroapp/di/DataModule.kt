@@ -4,7 +4,9 @@ import android.content.Context
 import androidx.room.Room
 import antuere.data.local_day_database.DayDatabase
 import antuere.data.local_day_database.mapping.DayEntityMapper
-import antuere.data.remote_day_database.mapping.DayEntityMapperRemote
+import antuere.data.preferences_data_store.mapping.QuoteEntityMapper
+import antuere.data.preferences_data_store.mapping.ToggleBtnStateEntityMapper
+import antuere.data.remote_day_database.mapping.DayEntityRemoteMapper
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
@@ -37,8 +39,20 @@ class DataModule {
 
     @Provides
     @Singleton
-    fun provideDayEntityMapperRemote(): DayEntityMapperRemote {
-        return DayEntityMapperRemote()
+    fun provideDayEntityMapperRemote(): DayEntityRemoteMapper {
+        return DayEntityRemoteMapper()
+    }
+
+    @Provides
+    @Singleton
+    fun provideToggleBtnStateEntityMapper(): ToggleBtnStateEntityMapper {
+        return ToggleBtnStateEntityMapper()
+    }
+
+    @Provides
+    @Singleton
+    fun provideQuotEntityMapper(): QuoteEntityMapper {
+        return QuoteEntityMapper()
     }
 
     @Provides

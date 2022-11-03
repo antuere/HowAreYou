@@ -1,5 +1,8 @@
 package antuere.data.repository
 
+import antuere.data.preferences_data_store.QuoteDataStore
+import antuere.data.preferences_data_store.entities.QuoteEntity
+import antuere.data.preferences_data_store.mapping.QuoteEntityMapper
 import antuere.data.remote_day_database.FirebaseApi
 import antuere.domain.dto.Quote
 import antuere.domain.repository.QuoteRepository
@@ -8,16 +11,29 @@ import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
 class QuoteRepositoryImpl @Inject constructor(
-    private val firebaseApi: FirebaseApi
+    private val firebaseApi: FirebaseApi,
+    private val quoteDataStore: QuoteDataStore,
+    private val quoteMapper: QuoteEntityMapper
 ) : QuoteRepository {
 
-    override suspend fun getDayQuote(): Quote? {
+    override suspend fun getDayQuoteRemote(): Quote {
         val currentDayOfMonth = TimeUtility.getDayOfMonth()
         val quotesNode = firebaseApi.getQuotesNode()
 
-        return quotesNode
+        val remoteQuote = quotesNode
             .child(currentDayOfMonth)
-            .get().await().getValue(Quote::class.java)
+            .get().await().getValue(QuoteEntity::class.java)
 
+        val defaultQuote = QuoteEntity("default quote", "default author")
+
+        return quoteMapper.mapToDomainModel(remoteQuote ?: defaultQuote)
+    }
+
+    override suspend fun getDayQuoteLocal(): Quote {
+        return quoteDataStore.getSavedQuote()
+    }
+
+    override suspend fun saveDayQuoteLocal(quote: Quote) {
+        quoteDataStore.saveQuote(quote.text, quote.author)
     }
 }

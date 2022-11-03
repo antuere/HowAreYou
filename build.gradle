@@ -5,6 +5,7 @@ buildscript {
 
     ext {
         version_appcompat = "1.5.1"
+        version_biometric = "1.2.0-alpha05"
         version_compose = "1.2.1"
         version_constraint_layout = "2.1.4"
         version_core = "1.9.0"

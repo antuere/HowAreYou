@@ -16,7 +16,7 @@ class AddDayFragmentViewModel @Inject constructor(private val addDayUseCase: Add
         val day = Day(imageName = imageName, dayText = descDay)
 
         viewModelScope.launch {
-            addDayUseCase.invoke(day)
+            addDayUseCase(day)
         }
     }
 

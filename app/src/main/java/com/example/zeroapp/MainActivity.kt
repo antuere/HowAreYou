@@ -27,7 +27,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Timber.i("fix! activityMain: onCrete")
         binding = ActivityMainBinding.inflate(layoutInflater).also {
             setContentView(it.root)
             setupBinding(it)

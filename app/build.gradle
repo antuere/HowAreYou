@@ -51,6 +51,9 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-extensions:$version_lifecycle_extensions"
     implementation "androidx.compose.ui:ui-graphics:$version_compose"
 
+    // Biometric
+    implementation "androidx.biometric:biometric-ktx:$version_biometric"
+
     // Navigation
     implementation "androidx.navigation:navigation-fragment-ktx:$version_navigation"
     implementation "androidx.navigation:navigation-ui-ktx:$version_navigation"

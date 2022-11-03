@@ -77,6 +77,9 @@
     <string name="empty_fields">Please fill the fields</string>
     <string name="passwords_error">Passwords don\'t match</string>
     <string name="hello_user">Hello, dear</string>
+    <string name="hello_user_plug">Hello, dear user</string>
+    <string name="how_are_you_text">How are you? We hope you all right.</string>
+    <string name="sign_in_advice">For a better experience sign in.</string>
     <string name="all_days_desc">Show all days</string>
     <string name="month_days_desc">Show days of this current month</string>
     <string name="week_days_desc">Show days of this current week</string>

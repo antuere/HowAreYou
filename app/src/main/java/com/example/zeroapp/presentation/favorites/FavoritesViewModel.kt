@@ -44,7 +44,7 @@ class FavoritesViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             _listDays =
-                getFavoritesDaysUseCase.invoke(Unit).asLiveData(Dispatchers.Main)
+                getFavoritesDaysUseCase(Unit).asLiveData(Dispatchers.Main)
                     .toMutableLiveData()
         }
     }
@@ -92,7 +92,7 @@ class FavoritesViewModel @Inject constructor(
 
     private fun deleteDay() {
         viewModelScope.launch {
-            deleteDayUseCase.invoke(_dayId)
+            deleteDayUseCase(_dayId)
         }
     }
 }

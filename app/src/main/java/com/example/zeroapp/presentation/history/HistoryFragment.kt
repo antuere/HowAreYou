@@ -10,6 +10,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.transition.TransitionManager
+import antuere.domain.dto.ToggleBtnState
 import com.example.zeroapp.MainActivity
 import com.example.zeroapp.R
 import com.example.zeroapp.databinding.FragmentHistoryBinding
@@ -18,8 +19,8 @@ import com.example.zeroapp.presentation.base.ui_date_picker.UIDatePickerListener
 import com.example.zeroapp.presentation.base.ui_dialog.UIDialogListener
 import com.example.zeroapp.presentation.history.adapter.DayAdapter
 import com.example.zeroapp.util.setManagerSpanCount
-import com.google.android.material.transition.MaterialElevationScale
 import com.google.android.material.transition.MaterialFade
+import com.google.android.material.transition.MaterialFadeThrough
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -53,7 +54,12 @@ class HistoryFragment :
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        reenterTransition = MaterialElevationScale(true).apply {
+
+        exitTransition = MaterialFadeThrough().apply {
+            duration = resources.getInteger(R.integer.duration_normal).toLong()
+        }
+
+        enterTransition = MaterialFadeThrough().apply {
             duration = resources.getInteger(R.integer.duration_normal).toLong()
         }
     }
@@ -69,13 +75,11 @@ class HistoryFragment :
         binding!!.dayList.layoutManager = manager
         binding!!.dayList.adapter = adapter
 
-        viewModel.getToggleButtonState()
-
         binding!!.toggleButton.addOnButtonCheckedListener { group, _, _ ->
             when (group.checkedButtonId) {
-                R.id.button_all_days -> viewModel.onClickCheckedItem(ToggleButtonDataStore.CHECKED_ALL_DAYS)
-                R.id.button_current_month -> viewModel.onClickCheckedItem(ToggleButtonDataStore.CHECKED_CURRENT_MONTH)
-                R.id.button_last_week -> viewModel.onClickCheckedItem(ToggleButtonDataStore.CHECKED_LAST_WEEK)
+                R.id.button_all_days -> viewModel.onClickCheckedItem(ToggleBtnState.AllDays(1))
+                R.id.button_current_month -> viewModel.onClickCheckedItem(ToggleBtnState.CurrentMonth(2))
+                R.id.button_last_week -> viewModel.onClickCheckedItem(ToggleBtnState.LastWeek(3))
             }
         }
         viewModel.listDays.observe(viewLifecycleOwner) {
@@ -95,28 +99,30 @@ class HistoryFragment :
             }
         }
 
-        viewModel.toggleButtonState.observe(viewLifecycleOwner) {
+        viewModel.isFilterSelected.observe(viewLifecycleOwner) {
+            if(it) {
+                manager.setManagerSpanCount(3)
+                binding!!.toggleButton.clearChecked()
+                viewModel.resetIsFilterSelected()
+            }
+        }
+
+        viewModel.toggleBtnState.observe(viewLifecycleOwner) {
             it?.let { state ->
                 when (state) {
-                    is ToggleButtonState.Filter -> {
-                        viewModel.checkedFilterButton(state.pair)
-
-                        manager.setManagerSpanCount(3)
-                        binding!!.toggleButton.clearChecked()
-                    }
-                    is ToggleButtonState.AllDays -> {
+                    is ToggleBtnState.AllDays -> {
                         viewModel.checkedAllDaysButton()
 
                         manager.setManagerSpanCount(4)
                         binding!!.toggleButton.check(R.id.button_all_days)
                     }
-                    is ToggleButtonState.LastWeek -> {
+                    is ToggleBtnState.LastWeek -> {
                         viewModel.checkedLastWeekButton()
 
                         manager.setManagerSpanCount(2)
                         binding!!.toggleButton.check(R.id.button_last_week)
                     }
-                    is ToggleButtonState.CurrentMonth -> {
+                    is ToggleBtnState.CurrentMonth -> {
                         viewModel.checkedCurrentMonthButton()
 
                         manager.setManagerSpanCount(3)

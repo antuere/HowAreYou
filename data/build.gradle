@@ -36,6 +36,12 @@ android {
 
 dependencies {
 
+    // Preferences DataStore
+    implementation "androidx.datastore:datastore-preferences:$version_data_store"
+
+    // Coroutines
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version_coroutine"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$version_coroutine_android"
 
     //FireBase
     implementation "com.google.firebase:firebase-storage-ktx:$version_firebase"
@@ -63,6 +69,5 @@ dependencies {
 
     //Domain
     implementation project(path: ":domain")
-
 
 }

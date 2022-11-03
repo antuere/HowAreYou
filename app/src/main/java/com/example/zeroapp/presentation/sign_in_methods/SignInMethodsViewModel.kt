@@ -36,7 +36,7 @@ class SignInMethodsViewModel @Inject constructor(
 
     private fun loginSuccessful() {
         viewModelScope.launch {
-            refreshRemoteDataUseCase.invoke(Unit)
+            refreshRemoteDataUseCase(Unit)
         }
     }
 

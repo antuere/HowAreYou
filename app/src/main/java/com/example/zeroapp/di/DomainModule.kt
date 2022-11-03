@@ -2,6 +2,7 @@ package com.example.zeroapp.di
 
 import antuere.domain.repository.DayRepository
 import antuere.domain.repository.QuoteRepository
+import antuere.domain.repository.ToggleBtnRepository
 import antuere.domain.usecases.*
 import dagger.Module
 import dagger.Provides
@@ -55,8 +56,18 @@ class DomainModule {
     }
 
     @Provides
-    fun provideGetDayQuoteUseCase(quoteRepository: QuoteRepository): GetDayQuoteUseCase {
-        return GetDayQuoteUseCase(quoteRepository)
+    fun provideGetDayQuoteRemoteUseCase(quoteRepository: QuoteRepository): GetDayQuoteRemoteUseCase {
+        return GetDayQuoteRemoteUseCase(quoteRepository)
+    }
+
+    @Provides
+    fun provideGetQuoteLocalUseCase(quoteRepository: QuoteRepository): GetDayQuoteLocalUseCase {
+        return GetDayQuoteLocalUseCase(quoteRepository)
+    }
+
+    @Provides
+    fun provideSaveQuoteLocalUseCase(quoteRepository: QuoteRepository): SaveDayQuoteLocalUseCase {
+        return SaveDayQuoteLocalUseCase(quoteRepository)
     }
 
     @Provides
@@ -73,5 +84,16 @@ class DomainModule {
     fun provideGetDaysByLimitUseCase(dayRepository: DayRepository): GetDaysByLimitUseCase {
         return GetDaysByLimitUseCase(dayRepository)
     }
+
+    @Provides
+    fun provideGetToggleBtnStateUseCase(toggleBtnRepository: ToggleBtnRepository): GetToggleBtnStateUseCase {
+        return GetToggleBtnStateUseCase(toggleBtnRepository)
+    }
+
+    @Provides
+    fun provideSaveToggleBtnStateUseCase(toggleBtnRepository: ToggleBtnRepository): SaveToggleBtnUseCase {
+        return SaveToggleBtnUseCase(toggleBtnRepository)
+    }
+
 
 }

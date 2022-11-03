@@ -46,7 +46,7 @@ class DetailViewModel @Inject constructor(
 
     private fun getDay() {
         viewModelScope.launch {
-            _currentDay.value = getDayByIdUseCase.invoke(dayId!!)
+            _currentDay.value = getDayByIdUseCase(dayId!!)
         }
     }
 
@@ -56,7 +56,7 @@ class DetailViewModel @Inject constructor(
 
     private fun deleteDay() {
         viewModelScope.launch {
-            deleteDayUseCase.invoke(dayId!!)
+            deleteDayUseCase(dayId!!)
         }
         _navigateToHistory.value = true
     }
@@ -84,7 +84,7 @@ class DetailViewModel @Inject constructor(
     fun onClickFavoriteButton() {
         viewModelScope.launch {
             _currentDay.value!!.isFavorite = _currentDay.value!!.isFavorite.not()
-            updateDayUseCase.invoke(_currentDay.value!!)
+            updateDayUseCase(_currentDay.value!!)
         }
     }
 }

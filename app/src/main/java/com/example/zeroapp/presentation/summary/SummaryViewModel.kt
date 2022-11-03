@@ -6,9 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import antuere.domain.dto.Day
 import antuere.domain.dto.Quote
-import antuere.domain.usecases.GetDayQuoteUseCase
-import antuere.domain.usecases.GetDaysByLimitUseCase
-import antuere.domain.usecases.UpdateLastDayUseCase
+import antuere.domain.usecases.*
 import antuere.domain.util.TimeUtility
 import com.example.zeroapp.R
 import com.example.zeroapp.presentation.base.ui_dialog.IUIDialogAction
@@ -26,9 +24,10 @@ import javax.inject.Inject
 @HiltViewModel
 class SummaryViewModel @Inject constructor(
     private val updateLastDayUseCase: UpdateLastDayUseCase,
-    private val getDayQuoteUseCase: GetDayQuoteUseCase,
+    private val getDayQuoteRemoteUseCase: GetDayQuoteRemoteUseCase,
+    private val getDayQuoteLocalUseCase: GetDayQuoteLocalUseCase,
+    private val saveDayQuoteLocalUseCase: SaveDayQuoteLocalUseCase,
     private val getDaysByLimitUseCase: GetDaysByLimitUseCase,
-    private val dataStoreManager: QuoteDataStore,
     private val myAnalystForSummary: MyAnalystForSummary
 ) :
     ViewModel(), IUIDialogAction {
@@ -69,7 +68,7 @@ class SummaryViewModel @Inject constructor(
     fun updateInfo() {
         viewModelScope.launch {
 
-            _lastDay.value = updateLastDayUseCase.invoke(Unit)
+            _lastDay.value = updateLastDayUseCase(Unit)
 
             if (TimeUtility.format(Date()) == (_lastDay.value?.dateString ?: "show add button")) {
 
@@ -91,27 +90,27 @@ class SummaryViewModel @Inject constructor(
 
     private fun getDayQuoteByFireBase() {
         viewModelScope.launch {
-            _dayQuote.value = getDayQuoteUseCase.invoke(Unit)
+            _dayQuote.value = getDayQuoteRemoteUseCase(Unit)
         }
     }
 
     private fun getSavedDayQuote() {
         viewModelScope.launch {
-            val savedQuote = dataStoreManager.getSavedQuote()
-            _dayQuote.value = savedQuote
+            _dayQuote.value = getDayQuoteLocalUseCase(Unit)
         }
     }
 
     fun saveQuote(text: String, author: String) {
         viewModelScope.launch {
-            dataStoreManager.saveQuote(text, author)
+            val quote = Quote(text, author)
+            saveDayQuoteLocalUseCase(quote)
         }
     }
 
 
     private fun getLastFiveDays() {
         viewModelScope.launch {
-            getDaysByLimitUseCase.invoke(5).collectLatest {
+            getDaysByLimitUseCase(5).collectLatest {
                 _daysForCheck.postValue(it)
             }
         }
