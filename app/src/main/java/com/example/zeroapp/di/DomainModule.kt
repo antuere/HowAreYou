@@ -57,8 +57,8 @@ class DomainModule {
     }
 
     @Provides
-    fun provideGetDayQuoteRemoteUseCase(quoteRepository: QuoteRepository): GetDayQuoteRemoteUseCase {
-        return GetDayQuoteRemoteUseCase(quoteRepository)
+    fun provideUpdDayQuoteRemoteUseCase(quoteRepository: QuoteRepository): UpdDayQuoteByRemoteUseCase {
+        return UpdDayQuoteByRemoteUseCase(quoteRepository)
     }
 
     @Provides

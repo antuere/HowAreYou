@@ -87,9 +87,10 @@ object AppModule {
     fun provideFireBaseApi(
         auth: FirebaseAuth,
         realtimeDb: DatabaseReference,
-        googleClient: GoogleSignInClient
+        googleClient: GoogleSignInClient,
+        @ApplicationContext context: Context
     ): FirebaseApi {
-        return FirebaseApi(auth, realtimeDb, googleClient)
+        return FirebaseApi(auth, realtimeDb, googleClient, context)
     }
 
     @Provides
@@ -100,19 +101,19 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideQuoteDataStore(@ApplicationContext context: Context) : QuoteDataStore {
+    fun provideQuoteDataStore(@ApplicationContext context: Context): QuoteDataStore {
         return QuoteDataStore(context, "quote_data_store")
     }
 
     @Provides
     @Singleton
-    fun provideToggleButtonDataStore(@ApplicationContext context: Context) : ToggleBtnDataStore {
+    fun provideToggleButtonDataStore(@ApplicationContext context: Context): ToggleBtnDataStore {
         return ToggleBtnDataStore(context, "toggle_button_data_store")
     }
 
     @Provides
     @Singleton
-    fun provideSettingsDataStore(@ApplicationContext context: Context) : SettingsDataStore {
+    fun provideSettingsDataStore(@ApplicationContext context: Context): SettingsDataStore {
         return SettingsDataStore(context, "settings_data_store")
     }
 

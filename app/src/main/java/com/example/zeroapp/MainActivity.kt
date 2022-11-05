@@ -3,12 +3,15 @@ package com.example.zeroapp
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import androidx.activity.viewModels
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.zeroapp.databinding.ActivityMainBinding
+import com.example.zeroapp.presentation.summary.SummaryViewModel
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
@@ -23,10 +26,18 @@ class MainActivity : AppCompatActivity() {
     private var bottomNavView: BottomNavigationView? = null
     private var navController: NavController? = null
 
+    private val viewModel by viewModels<SummaryViewModel>()
+
     var toolbar: MaterialToolbar? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        installSplashScreen().apply {
+            setKeepOnScreenCondition {
+               !viewModel.isLatestQuote.value!!
+            }
+        }
+
         binding = ActivityMainBinding.inflate(layoutInflater).also {
             setContentView(it.root)
             setupBinding(it)
@@ -85,9 +96,5 @@ class MainActivity : AppCompatActivity() {
 
     private fun showBottomBar() {
         bottomNavView?.visibility = View.VISIBLE
-    }
-
-    private fun goneBottomBar() {
-        bottomNavView?.visibility = View.GONE
     }
 }

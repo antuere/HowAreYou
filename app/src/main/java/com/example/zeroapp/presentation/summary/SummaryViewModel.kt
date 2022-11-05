@@ -26,9 +26,8 @@ import javax.inject.Inject
 @HiltViewModel
 class SummaryViewModel @Inject constructor(
     private val updateLastDayUseCase: UpdateLastDayUseCase,
-    private val getDayQuoteRemoteUseCase: GetDayQuoteRemoteUseCase,
+    private val updDayQuoteByRemoteUseCase: UpdDayQuoteByRemoteUseCase,
     private val getDayQuoteLocalUseCase: GetDayQuoteLocalUseCase,
-    private val saveDayQuoteLocalUseCase: SaveDayQuoteLocalUseCase,
     private val getDaysByLimitUseCase: GetDaysByLimitUseCase,
     private val getSettingsUseCase: GetSettingsUseCase,
     private val myAnalystForSummary: MyAnalystForSummary
@@ -69,15 +68,18 @@ class SummaryViewModel @Inject constructor(
     val biometricAuthState: LiveData<BiometricAuthState>
         get() = _biometricAuthState
 
+    private var _isLatestQuote = MutableLiveData(false)
+    val isLatestQuote: LiveData<Boolean>
+        get() = _isLatestQuote
+
     init {
+        updateDayQuoteByRemote()
         getSettings()
-        getSavedDayQuote()
-        getDayQuoteByFireBase()
-        updateInfo()
+        getLastDay()
         checkLastFiveDays()
     }
 
-    fun updateInfo() {
+    fun getLastDay() {
         viewModelScope.launch {
 
             _lastDay.value = updateLastDayUseCase(Unit)
@@ -99,26 +101,20 @@ class SummaryViewModel @Inject constructor(
         }
     }
 
-
-    private fun getDayQuoteByFireBase() {
-        viewModelScope.launch {
-            _dayQuote.value = getDayQuoteRemoteUseCase(Unit)
-        }
-    }
-
     private fun getSavedDayQuote() {
         viewModelScope.launch {
             _dayQuote.value = getDayQuoteLocalUseCase(Unit)
+
+            if (_isLatestQuote.value == false) _isLatestQuote.value = true
         }
     }
 
-    fun saveQuote(text: String, author: String) {
+    private fun updateDayQuoteByRemote() {
         viewModelScope.launch {
-            val quote = Quote(text, author)
-            saveDayQuoteLocalUseCase(quote)
+            _isLatestQuote.value = updDayQuoteByRemoteUseCase(Unit)
+            getSavedDayQuote()
         }
     }
-
 
     private fun getLastFiveDays() {
         viewModelScope.launch {

@@ -60,8 +60,6 @@ class SummaryFragment :
                 binding!!.quotesText.text = it.text
                 val author = "${it.author} "
                 binding!!.quotesAuthor.text = author
-
-                viewModel.saveQuote(it.text, author)
             }
         }
 
@@ -74,7 +72,7 @@ class SummaryFragment :
         view.doOnPreDraw {
             startPostponedEnterTransition()
         }
-        viewModel.updateInfo()
+        viewModel.getLastDay()
 
         viewModel.settings.observe(viewLifecycleOwner) {
             it?.let { settings ->

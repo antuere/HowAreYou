@@ -54,7 +54,11 @@ class SettingsFragment :
             it?.let {
                 val welcomeText = "${getString(R.string.hello_user)} $it "
                 binding!!.userNickname.text = welcomeText
+            }
+        }
 
+        viewModel.isHasUser.observe(viewLifecycleOwner) {
+            if (it) {
                 changeUiWhenUserSignIn()
             }
         }

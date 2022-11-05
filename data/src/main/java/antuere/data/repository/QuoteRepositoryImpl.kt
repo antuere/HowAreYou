@@ -16,17 +16,25 @@ class QuoteRepositoryImpl @Inject constructor(
     private val quoteMapper: QuoteEntityMapper
 ) : QuoteRepository {
 
-    override suspend fun getDayQuoteRemote(): Quote {
-        val currentDayOfMonth = TimeUtility.getDayOfMonth()
-        val quotesNode = firebaseApi.getQuotesNode()
+    override suspend fun updateQuoteRemote(): Boolean {
 
-        val remoteQuote = quotesNode
-            .child(currentDayOfMonth)
-            .get().await().getValue(QuoteEntity::class.java)
+        if (firebaseApi.isNetworkAvailable()) {
+            val currentDayOfMonth = TimeUtility.getDayOfMonth()
+            val quotesNode = firebaseApi.getQuotesNode()
 
-        val defaultQuote = QuoteEntity("default quote", "default author")
 
-        return quoteMapper.mapToDomainModel(remoteQuote ?: defaultQuote)
+            val remoteQuote = quotesNode
+                .child(currentDayOfMonth)
+                .get().await().getValue(QuoteEntity::class.java)
+
+
+            val defaultQuote = QuoteEntity("default quote", "default author")
+
+            val latestQuote = quoteMapper.mapToDomainModel(remoteQuote ?: defaultQuote)
+            saveDayQuoteLocal(latestQuote)
+            return true
+        }
+        return false
     }
 
     override suspend fun getDayQuoteLocal(): Quote {

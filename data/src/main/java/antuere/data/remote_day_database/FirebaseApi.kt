@@ -1,6 +1,9 @@
 package antuere.data.remote_day_database
 
+import android.content.Context
 import android.content.Intent
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
@@ -10,12 +13,33 @@ import kotlinx.coroutines.tasks.await
 data class FirebaseApi(
     val auth: FirebaseAuth,
     private val realTimeDb: DatabaseReference,
-    private val googleSignInClient: GoogleSignInClient
+    private val googleSignInClient: GoogleSignInClient,
+    private val context: Context
 ) {
     companion object {
         private const val DAYS_PATH = "days"
         private const val USERS_PATH = "users"
         private const val QUOTE_PATH = "quotes"
+    }
+
+    fun isNetworkAvailable(): Boolean {
+        val connectionManager =
+            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val capabilities = connectionManager.getNetworkCapabilities(connectionManager.activeNetwork)
+        if (capabilities != null) {
+            when {
+                capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> {
+                    return true
+                }
+                capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> {
+                    return true
+                }
+                capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> {
+                    return true
+                }
+            }
+        }
+        return false
     }
 
     fun isHasUser(): Boolean {
@@ -36,10 +60,9 @@ data class FirebaseApi(
         return realTimeDb.child(QUOTE_PATH)
     }
 
-    fun setUserNickname(name : String) {
+    fun setUserNickname(name: String) {
         getUserNode()?.child("nickName")?.setValue(name)
     }
-
 
     suspend fun getUserNicknameAsync(): Deferred<String?> {
         val scope = CoroutineScope(Dispatchers.IO)

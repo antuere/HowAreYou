@@ -36,9 +36,19 @@ class SettingsViewModel @Inject constructor(
     val biometricAuthState: LiveData<BiometricAuthState>
         get() = _biometricAuthState
 
+    private var _isHasUser = MutableLiveData<Boolean>()
+    val isHasUser: LiveData<Boolean>
+        get() = _isHasUser
+
     init {
+        checkCurrentUser()
         updateUserNickname()
         getSettings()
+    }
+
+
+    private fun checkCurrentUser() {
+        _isHasUser.value = firebaseApi.isHasUser()
     }
 
     fun updateUserNickname() {
