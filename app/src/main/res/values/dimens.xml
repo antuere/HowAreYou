@@ -35,8 +35,8 @@
     <dimen name="button_wight_detail">85dp</dimen>
     <dimen name="margin_for_FAB">26dp</dimen>
     <!-- Default screen margins, per the Android Design guidelines. -->
-    <dimen name="activity_horizontal_margin">16dp</dimen>
-    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="activity_horizontal_margin">0dp</dimen>
+    <dimen name="activity_vertical_margin">0dp</dimen>
     <dimen name="checked_button_width">120dp</dimen>
     <dimen name="divider_inset">30dp</dimen>
 

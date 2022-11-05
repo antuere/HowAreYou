@@ -14,15 +14,21 @@ import androidx.transition.TransitionManager
 import com.example.zeroapp.R
 import com.example.zeroapp.databinding.FragmentSettingsBinding
 import com.example.zeroapp.presentation.base.BaseBindingFragment
+import com.example.zeroapp.presentation.base.ui_biometric_dialog.UIBiometricDialog
+import com.example.zeroapp.presentation.summary.BiometricAuthState
 import com.google.android.material.transition.MaterialFade
 import com.google.android.material.transition.MaterialFadeThrough
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class SettingsFragment :
     BaseBindingFragment<FragmentSettingsBinding>(FragmentSettingsBinding::inflate) {
 
     private val viewModel by viewModels<SettingsViewModel>()
+
+    @Inject
+    lateinit var uiBiometricDialog: UIBiometricDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,6 +56,35 @@ class SettingsFragment :
                 binding!!.userNickname.text = welcomeText
 
                 changeUiWhenUserSignIn()
+            }
+        }
+
+        viewModel.settings.observe(viewLifecycleOwner) {
+            it?.let { settings ->
+                when (settings.isBiometricEnabled) {
+                    true -> binding!!.settingFingerPrintSwitch.isChecked = true
+                    false -> binding!!.settingFingerPrintSwitch.isChecked = false
+                }
+            }
+        }
+
+        viewModel.biometricAuthState.observe(viewLifecycleOwner) {
+            it?.let { state ->
+                when (state) {
+                    is BiometricAuthState.Successful -> {
+                        binding!!.settingFingerPrintSwitch.isChecked = true
+                        viewModel.saveSettings(true)
+                    }
+                    is BiometricAuthState.Error -> binding!!.settingFingerPrintSwitch.isChecked =
+                        false
+                }
+            }
+        }
+
+        binding!!.settingFingerPrintSwitch.setOnCheckedChangeListener { _, isChecked ->
+            when (isChecked) {
+                true -> startAuth()
+                false -> resetAuth()
             }
         }
 
@@ -111,5 +146,16 @@ class SettingsFragment :
             topToBottom = binding!!.signInAdviceText.id
         }
         binding!!.userNickname.text = getString(R.string.hello_user_plug)
+    }
+
+    private fun startAuth() {
+        if (!uiBiometricDialog.isUserAuth) {
+            uiBiometricDialog.startBiometricAuth(viewModel, this.requireActivity())
+        }
+    }
+
+    private fun resetAuth() {
+        uiBiometricDialog.resetAuthUser()
+        viewModel.saveSettings(false)
     }
 }

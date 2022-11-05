@@ -2,9 +2,11 @@ package com.example.zeroapp.di
 
 import antuere.data.repository.DayRepositoryImpl
 import antuere.data.repository.QuoteRepositoryImpl
+import antuere.data.repository.SettingsRepositoryImpl
 import antuere.data.repository.ToggleBtnRepositoryImpl
 import antuere.domain.repository.DayRepository
 import antuere.domain.repository.QuoteRepository
+import antuere.domain.repository.SettingsRepository
 import antuere.domain.repository.ToggleBtnRepository
 import dagger.Binds
 import dagger.Module
@@ -28,4 +30,8 @@ abstract class RepositoryModule {
     @Binds
     @Singleton
     abstract fun bindToggleBtnStateRepository(toggleBtnRepositoryImpl: ToggleBtnRepositoryImpl): ToggleBtnRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindSettingsRepository(settingsRepositoryImpl: SettingsRepositoryImpl): SettingsRepository
 }

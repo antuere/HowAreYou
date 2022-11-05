@@ -84,6 +84,10 @@
     <string name="month_days_desc">Show days of this current month</string>
     <string name="week_days_desc">Show days of this current week</string>
 
+    <!-- Biometric auth dialog-->
+    <string name="biometric_auth_title">Log in to the HowAreYou</string>
+    <string name="biometric_auth_desc">Lets verify you finger</string>
+    <string name="biometric_auth_negative_btn">Cancel</string>
 
     <!-- Methods for login -->
     <string name="login_email">Sign in with email</string>
@@ -112,5 +116,6 @@
     <string name="october">October</string>
     <string name="november">November</string>
     <string name="december">December</string>
+
 
 </resources>

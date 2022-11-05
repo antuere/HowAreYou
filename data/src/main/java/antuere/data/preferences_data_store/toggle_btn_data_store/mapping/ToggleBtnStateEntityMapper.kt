@@ -1,6 +1,6 @@
-package antuere.data.preferences_data_store.mapping
+package antuere.data.preferences_data_store.toggle_btn_data_store.mapping
 
-import antuere.data.preferences_data_store.entities.ToggleBtnStateEntity
+import antuere.data.preferences_data_store.toggle_btn_data_store.entities.ToggleBtnStateEntity
 import antuere.domain.dto.ToggleBtnState
 import antuere.domain.mapping.DomainMapper
 

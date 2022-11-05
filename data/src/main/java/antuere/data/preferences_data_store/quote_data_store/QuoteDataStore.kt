@@ -1,4 +1,4 @@
-package antuere.data.preferences_data_store
+package antuere.data.preferences_data_store.quote_data_store
 
 import android.content.Context
 import androidx.datastore.core.DataStore
@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.map
 class QuoteDataStore(context: Context, name: String) {
 
     private val Context.datastore: DataStore<Preferences> by preferencesDataStore(name)
-    private val myDataStore: DataStore<Preferences> = context.datastore
+    private val quoteDataStore: DataStore<Preferences> = context.datastore
 
     companion object {
         val QUOTE_AUTHOR_KEY = stringPreferencesKey("author_quote")
@@ -21,18 +21,18 @@ class QuoteDataStore(context: Context, name: String) {
     }
 
     suspend fun saveQuote(text: String, author: String) {
-        myDataStore.edit { preferences ->
+        quoteDataStore.edit { preferences ->
             preferences[QUOTE_TEXT_KEY] = text
             preferences[QUOTE_AUTHOR_KEY] = author
         }
     }
 
     suspend fun getSavedQuote(): Quote {
-        val author: String = myDataStore.data.map {
+        val author: String = quoteDataStore.data.map {
             it[QUOTE_AUTHOR_KEY] ?: ""
         }.first()
 
-        val text: String = myDataStore.data.map {
+        val text: String = quoteDataStore.data.map {
             it[QUOTE_TEXT_KEY] ?: ""
         }.first()
 

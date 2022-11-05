@@ -1,6 +1,6 @@
-package antuere.data.preferences_data_store.mapping
+package antuere.data.preferences_data_store.quote_data_store.mapping
 
-import antuere.data.preferences_data_store.entities.QuoteEntity
+import antuere.data.preferences_data_store.quote_data_store.entities.QuoteEntity
 import antuere.domain.dto.Quote
 import antuere.domain.mapping.DomainMapper
 

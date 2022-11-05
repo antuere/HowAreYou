@@ -1,7 +1,7 @@
 package antuere.data.repository
 
-import antuere.data.preferences_data_store.ToggleBtnDataStore
-import antuere.data.preferences_data_store.mapping.ToggleBtnStateEntityMapper
+import antuere.data.preferences_data_store.toggle_btn_data_store.ToggleBtnDataStore
+import antuere.data.preferences_data_store.toggle_btn_data_store.mapping.ToggleBtnStateEntityMapper
 import antuere.domain.dto.ToggleBtnState
 import antuere.domain.repository.ToggleBtnRepository
 import kotlinx.coroutines.flow.Flow

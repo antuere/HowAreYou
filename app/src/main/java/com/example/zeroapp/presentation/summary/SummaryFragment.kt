@@ -12,7 +12,7 @@ import com.example.zeroapp.*
 import com.example.zeroapp.databinding.FragmentSummaryBinding
 import com.example.zeroapp.presentation.base.BaseBindingFragment
 import com.example.zeroapp.presentation.base.ui_dialog.UIDialogListener
-import com.example.zeroapp.util.MyBiometricManager
+import com.example.zeroapp.presentation.base.ui_biometric_dialog.UIBiometricDialog
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.transition.MaterialFadeThrough
@@ -25,7 +25,7 @@ class SummaryFragment :
 
 
     @Inject
-    lateinit var myBiometricManager: MyBiometricManager
+    lateinit var uiBiometricDialog: UIBiometricDialog
 
     private val viewModel by viewModels<SummaryViewModel>()
     private lateinit var fabButton: FloatingActionButton
@@ -70,14 +70,28 @@ class SummaryFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        myBiometricManager.setAuth()
-
         postponeEnterTransition()
         view.doOnPreDraw {
             startPostponedEnterTransition()
         }
-
         viewModel.updateInfo()
+
+        viewModel.settings.observe(viewLifecycleOwner) {
+            it?.let { settings ->
+                if (settings.isBiometricEnabled && !uiBiometricDialog.isUserAuth) {
+                    uiBiometricDialog.startBiometricAuth(viewModel, this.requireActivity())
+                }
+            }
+        }
+
+        viewModel.biometricAuthState.observe(viewLifecycleOwner) {
+            it?.let { state ->
+                if (state is BiometricAuthState.Error) {
+                    this@SummaryFragment.requireActivity()
+                        .finishAndRemoveTask()
+                }
+            }
+        }
 
         viewModel.wishText.observe(viewLifecycleOwner) {
             it?.let { wishString ->
@@ -86,7 +100,7 @@ class SummaryFragment :
         }
 
         viewModel.isShowSnackBar.observe(viewLifecycleOwner) {
-            if(it) {
+            if (it) {
                 Snackbar.make(binding!!.root, R.string.snack_bar_warning_negative, 3000)
                     .setAnchorView(binding!!.fabAddButton)
                     .show()
@@ -153,4 +167,5 @@ class SummaryFragment :
             }
         }
     }
+
 }

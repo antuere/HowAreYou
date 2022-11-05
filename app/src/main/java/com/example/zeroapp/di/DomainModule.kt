@@ -2,6 +2,7 @@ package com.example.zeroapp.di
 
 import antuere.domain.repository.DayRepository
 import antuere.domain.repository.QuoteRepository
+import antuere.domain.repository.SettingsRepository
 import antuere.domain.repository.ToggleBtnRepository
 import antuere.domain.usecases.*
 import dagger.Module
@@ -95,5 +96,14 @@ class DomainModule {
         return SaveToggleBtnUseCase(toggleBtnRepository)
     }
 
+    @Provides
+    fun provideGetSettingsUseCase(settingsRepository: SettingsRepository): GetSettingsUseCase {
+        return GetSettingsUseCase(settingsRepository)
+    }
+
+    @Provides
+    fun provideSaveSettingsUseCase(settingsRepository: SettingsRepository): SaveSettingsUseCase {
+        return SaveSettingsUseCase(settingsRepository)
+    }
 
 }

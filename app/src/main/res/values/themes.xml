@@ -23,7 +23,6 @@
         <item name="materialCardViewStyle">@style/Widget.App.CardView</item>
         <item name="circularProgressIndicatorStyle">@style/Widget.App.CircularProgressIndicator</item>
         <item name="materialButtonStyle">@style/Widget.App.Button.Default</item>
-        <item name="materialButtonToggleGroupStyle">@style/Widget.App.Button.Default.ToggleGroup</item>
         <item name="materialButtonOutlinedStyle">@style/Widget.App.Button.Default.Outlined</item>
         <item name="popupMenuBackground">@drawable/custom_popupmenu_background</item>
         <item name="actionOverflowButtonStyle">@style/actionButtonOverflow</item>
@@ -123,8 +122,6 @@
     <style name="Widget.App.Button.Default.ToggleGroup" parent="Widget.Material3.Button.OutlinedButton">
         <item name="android:textAppearance">@style/TextAppearance.App.Button</item>
         <item name="backgroundTint">@color/toggle_button_color_selector</item>
-        <item name="iconGravity">textStart</item>
-        <item name="iconSize">20dp</item>
     </style>
 
     <!-- CircularProgressIndicator theme -->

@@ -54,7 +54,6 @@ class HistoryFragment :
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-
         exitTransition = MaterialFadeThrough().apply {
             duration = resources.getInteger(R.integer.duration_normal).toLong()
         }

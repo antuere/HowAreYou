@@ -8,11 +8,13 @@ import com.bumptech.glide.RequestManager
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.example.zeroapp.R
-import antuere.data.preferences_data_store.QuoteDataStore
+import antuere.data.preferences_data_store.quote_data_store.QuoteDataStore
+import antuere.data.preferences_data_store.settings_data_store.SettingsDataStore
 import com.example.zeroapp.util.ResourcesProvider
 import com.example.zeroapp.presentation.history.MyAnalystForHistory
-import antuere.data.preferences_data_store.ToggleBtnDataStore
+import antuere.data.preferences_data_store.toggle_btn_data_store.ToggleBtnDataStore
 import com.example.zeroapp.presentation.summary.MyAnalystForSummary
+import com.example.zeroapp.presentation.base.ui_biometric_dialog.UIBiometricDialog
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -108,5 +110,17 @@ object AppModule {
         return ToggleBtnDataStore(context, "toggle_button_data_store")
     }
 
+    @Provides
+    @Singleton
+    fun provideSettingsDataStore(@ApplicationContext context: Context) : SettingsDataStore {
+        return SettingsDataStore(context, "settings_data_store")
+    }
 
+    @Provides
+    @Singleton
+    fun provideMyBiometricManager(
+        @ApplicationContext context: Context,
+    ): UIBiometricDialog {
+        return UIBiometricDialog(context)
+    }
 }

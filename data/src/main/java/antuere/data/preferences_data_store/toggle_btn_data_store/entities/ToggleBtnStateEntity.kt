@@ -1,4 +1,4 @@
-package antuere.data.preferences_data_store.entities
+package antuere.data.preferences_data_store.toggle_btn_data_store.entities
 
 
 sealed class ToggleBtnStateEntity(val id: Int) {
