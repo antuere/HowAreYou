@@ -32,8 +32,8 @@ class SettingsViewModel @Inject constructor(
     val settings: LiveData<Settings?>
         get() = _settings
 
-    private var _biometricAuthState = MutableLiveData<BiometricAuthState>()
-    val biometricAuthState: LiveData<BiometricAuthState>
+    private var _biometricAuthState = MutableLiveData<BiometricAuthState?>()
+    val biometricAuthState: LiveData<BiometricAuthState?>
         get() = _biometricAuthState
 
     private var _isHasUser = MutableLiveData<Boolean>()
@@ -47,7 +47,7 @@ class SettingsViewModel @Inject constructor(
     }
 
 
-    private fun checkCurrentUser() {
+    fun checkCurrentUser() {
         _isHasUser.value = firebaseApi.isHasUser()
     }
 
@@ -60,8 +60,9 @@ class SettingsViewModel @Inject constructor(
 
     fun onSignOutClicked() {
         firebaseApi.auth.signOut()
-
+        _isHasUser.value = firebaseApi.isHasUser()
         updateUserNickname()
+
         viewModelScope.launch {
             refreshRemoteDataUseCase(Unit)
         }
@@ -75,11 +76,15 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
-    fun saveSettings(biometricEnabled: Boolean) {
+    fun saveSettings(isUseBiometric: Boolean, isUsePinCode: Boolean) {
         viewModelScope.launch {
-            val newSettings = Settings(biometricEnabled)
+            val newSettings = Settings(isUseBiometric, isUsePinCode)
             saveSettingsUseCase(newSettings)
         }
+    }
+
+    fun nullifyBiometricAuthState() {
+        _biometricAuthState.value = null
     }
 
     override fun onBiometricAuthFailed() {
@@ -89,6 +94,5 @@ class SettingsViewModel @Inject constructor(
     override fun onBiometricAuthSuccess() {
         _biometricAuthState.value = BiometricAuthState.Successful
     }
-
 
 }

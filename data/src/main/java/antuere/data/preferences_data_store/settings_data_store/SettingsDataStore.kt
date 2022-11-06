@@ -9,6 +9,7 @@ import androidx.datastore.preferences.preferencesDataStore
 import antuere.data.preferences_data_store.settings_data_store.entities.SettingsEntity
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import timber.log.Timber
 
 class SettingsDataStore(context: Context, name: String) {
 
@@ -17,17 +18,23 @@ class SettingsDataStore(context: Context, name: String) {
 
     companion object {
         val SETTINGS_BIOMETRIC_KEY = booleanPreferencesKey("biometric_auth")
+        val SETTINGS_PIN_CODE_KEY = booleanPreferencesKey("pin_code_auth")
     }
 
     val settings: Flow<SettingsEntity>
         get() = settingsDataStore.data.map { preferences ->
             val savedBiometricVal = preferences[SETTINGS_BIOMETRIC_KEY] ?: false
-            SettingsEntity(savedBiometricVal)
+            val savedPinCodeVal = preferences[SETTINGS_PIN_CODE_KEY] ?: false
+            SettingsEntity(savedBiometricVal, savedPinCodeVal)
         }
 
     suspend fun saveSettings(settings: SettingsEntity) {
         settingsDataStore.edit { preferences ->
+            Timber.i("pin code error: settings now saved = $settings")
+
             preferences[SETTINGS_BIOMETRIC_KEY] = settings.isBiometricEnabled
+            preferences[SETTINGS_PIN_CODE_KEY] = settings.isPinCodeEnabled
         }
     }
+
 }

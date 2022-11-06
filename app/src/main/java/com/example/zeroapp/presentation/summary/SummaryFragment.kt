@@ -11,6 +11,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.zeroapp.*
 import com.example.zeroapp.databinding.FragmentSummaryBinding
 import com.example.zeroapp.presentation.base.BaseBindingFragment
+import com.example.zeroapp.presentation.base.PrivacyManager
 import com.example.zeroapp.presentation.base.ui_dialog.UIDialogListener
 import com.example.zeroapp.presentation.base.ui_biometric_dialog.UIBiometricDialog
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -27,13 +28,15 @@ class SummaryFragment :
     @Inject
     lateinit var uiBiometricDialog: UIBiometricDialog
 
+    @Inject
+    lateinit var privacyManager: PrivacyManager
+
     private val viewModel by viewModels<SummaryViewModel>()
     private lateinit var fabButton: FloatingActionButton
 
     private val dialogListener: UIDialogListener by lazy {
         UIDialogListener(requireContext(), viewModel)
     }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -76,7 +79,7 @@ class SummaryFragment :
 
         viewModel.settings.observe(viewLifecycleOwner) {
             it?.let { settings ->
-                if (settings.isBiometricEnabled && !uiBiometricDialog.isUserAuth) {
+                if (settings.isBiometricEnabled && !privacyManager.isUserAuthByBiometric) {
                     uiBiometricDialog.startBiometricAuth(viewModel, this.requireActivity())
                 }
             }
@@ -84,9 +87,10 @@ class SummaryFragment :
 
         viewModel.biometricAuthState.observe(viewLifecycleOwner) {
             it?.let { state ->
-                if (state is BiometricAuthState.Error) {
-                    this@SummaryFragment.requireActivity()
+                when (state) {
+                    is BiometricAuthState.Error -> this@SummaryFragment.requireActivity()
                         .finishAndRemoveTask()
+                    is BiometricAuthState.Successful -> privacyManager.doneAuthUser()
                 }
             }
         }

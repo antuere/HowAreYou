@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:transitionGroup="true"
         android:transitionName="@string/transition_name_for_sign_in_methods"
-        xmlns:app="http://schemas.android.com/apk/res-auto">
+        tools:theme="@style/Theme.ZeroApp">
 
 
     <Button
@@ -17,7 +19,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             android:text="@string/login_email"
-            app:icon = "@drawable/ic_email"
+            app:icon="@drawable/ic_email"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -33,13 +35,12 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             android:text="@string/login_google"
-            app:icon = "@drawable/ic_google"
-            app:iconTint = "@color/black_low"
-            app:backgroundTint = "@color/white"
-            app:strokeColor = "@color/black_low"
-            app:strokeWidth = "1dp"
+            app:icon="@drawable/ic_google"
+            app:iconTint="@color/black_low"
+            app:backgroundTint="@color/white"
+            app:strokeColor="@color/black_low"
+            app:strokeWidth="1dp"
             android:textColor="@color/black_low"
-            app:layout_constraintTop_toBottomOf="@+id/button_email_method"
-             />
+            app:layout_constraintTop_toBottomOf="@+id/button_email_method" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

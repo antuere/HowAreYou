@@ -5,6 +5,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:transitionGroup="true"
+        tools:theme="@style/Theme.ZeroApp"
         tools:context=".presentation.summary.SummaryFragment">
 
     <com.google.android.material.card.MaterialCardView

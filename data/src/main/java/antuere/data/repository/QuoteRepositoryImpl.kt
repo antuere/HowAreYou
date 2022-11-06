@@ -7,6 +7,7 @@ import antuere.data.remote_day_database.FirebaseApi
 import antuere.domain.dto.Quote
 import antuere.domain.repository.QuoteRepository
 import antuere.domain.util.TimeUtility
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
@@ -22,16 +23,17 @@ class QuoteRepositoryImpl @Inject constructor(
             val currentDayOfMonth = TimeUtility.getDayOfMonth()
             val quotesNode = firebaseApi.getQuotesNode()
 
-
             val remoteQuote = quotesNode
                 .child(currentDayOfMonth)
                 .get().await().getValue(QuoteEntity::class.java)
-
 
             val defaultQuote = QuoteEntity("default quote", "default author")
 
             val latestQuote = quoteMapper.mapToDomainModel(remoteQuote ?: defaultQuote)
             saveDayQuoteLocal(latestQuote)
+
+            delay(100)
+
             return true
         }
         return false

@@ -14,11 +14,13 @@ import androidx.transition.TransitionManager
 import com.example.zeroapp.R
 import com.example.zeroapp.databinding.FragmentSettingsBinding
 import com.example.zeroapp.presentation.base.BaseBindingFragment
+import com.example.zeroapp.presentation.base.PrivacyManager
 import com.example.zeroapp.presentation.base.ui_biometric_dialog.UIBiometricDialog
 import com.example.zeroapp.presentation.summary.BiometricAuthState
 import com.google.android.material.transition.MaterialFade
 import com.google.android.material.transition.MaterialFadeThrough
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -29,6 +31,10 @@ class SettingsFragment :
 
     @Inject
     lateinit var uiBiometricDialog: UIBiometricDialog
+
+    @Inject
+    lateinit var privacyManager: PrivacyManager
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,7 +55,9 @@ class SettingsFragment :
     ): View? {
         binding = this.inflater(inflater, container, false)
         viewModel.updateUserNickname()
+        viewModel.checkCurrentUser()
 
+        Timber.i("biometric auth we in createView")
         viewModel.userNickname.observe(viewLifecycleOwner) {
             it?.let {
                 val welcomeText = "${getString(R.string.hello_user)} $it "
@@ -66,8 +74,14 @@ class SettingsFragment :
         viewModel.settings.observe(viewLifecycleOwner) {
             it?.let { settings ->
                 when (settings.isBiometricEnabled) {
-                    true -> binding!!.settingFingerPrintSwitch.isChecked = true
+                    true -> {
+                        binding!!.settingFingerPrintSwitch.isChecked = true
+                    }
                     false -> binding!!.settingFingerPrintSwitch.isChecked = false
+                }
+                when (settings.isPinCodeEnabled) {
+                    true -> binding!!.settingPinCodeSwitch.isChecked = true
+                    false -> binding!!.settingPinCodeSwitch.isChecked = false
                 }
             }
         }
@@ -77,7 +91,11 @@ class SettingsFragment :
                 when (state) {
                     is BiometricAuthState.Successful -> {
                         binding!!.settingFingerPrintSwitch.isChecked = true
-                        viewModel.saveSettings(true)
+                        viewModel.saveSettings(
+                            binding!!.settingFingerPrintSwitch.isChecked,
+                            binding!!.settingPinCodeSwitch.isChecked
+                        )
+                        privacyManager.doneAuthUserByBiometric()
                     }
                     is BiometricAuthState.Error -> binding!!.settingFingerPrintSwitch.isChecked =
                         false
@@ -86,9 +104,24 @@ class SettingsFragment :
         }
 
         binding!!.settingFingerPrintSwitch.setOnCheckedChangeListener { _, isChecked ->
+            Timber.i("fucking bug : biometric auth is change listener")
             when (isChecked) {
-                true -> startAuth()
-                false -> resetAuth()
+                true -> {
+                    Timber.i("fucking bug : biometric auth is true")
+                    setBiometricAuth()
+                }
+                false -> {
+                    Timber.i("fucking bug : biometric auth is false")
+                    resetBiometricAuth()
+                }
+            }
+        }
+
+        binding!!.settingPinCodeSwitch.setOnCheckedChangeListener { _, isChecked ->
+            Timber.i("fucking bug : pincode auth is change listener")
+            when (isChecked) {
+                true -> setPinCodeAuth()
+                false -> resetPinCodeAuth()
             }
         }
 
@@ -152,14 +185,33 @@ class SettingsFragment :
         binding!!.userNickname.text = getString(R.string.hello_user_plug)
     }
 
-    private fun startAuth() {
-        if (!uiBiometricDialog.isUserAuth) {
+    private fun setBiometricAuth() {
+        Timber.i("biometric auth is ${privacyManager.isUserAuthByBiometric}")
+        if (!privacyManager.isUserAuthByBiometric) {
             uiBiometricDialog.startBiometricAuth(viewModel, this.requireActivity())
         }
     }
 
-    private fun resetAuth() {
-        uiBiometricDialog.resetAuthUser()
-        viewModel.saveSettings(false)
+    private fun resetBiometricAuth() {
+        privacyManager.resetAuthUserByBiometric()
+        viewModel.nullifyBiometricAuthState()
+        viewModel.saveSettings(
+            binding!!.settingFingerPrintSwitch.isChecked,
+            binding!!.settingPinCodeSwitch.isChecked
+        )
+    }
+
+    private fun setPinCodeAuth() {
+        if (!privacyManager.isUserAuthByPinCode) {
+            findNavController().navigate(SettingsFragmentDirections.actionSettingsFragmentToPinCodeCreatingFragment())
+        }
+    }
+
+    private fun resetPinCodeAuth() {
+        privacyManager.resetAuthUserByPinCode()
+        viewModel.saveSettings(
+            binding!!.settingFingerPrintSwitch.isChecked,
+            binding!!.settingPinCodeSwitch.isChecked
+        )
     }
 }

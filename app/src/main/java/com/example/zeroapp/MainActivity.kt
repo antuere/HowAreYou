@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         installSplashScreen().apply {
             setKeepOnScreenCondition {
-               !viewModel.isLatestQuote.value!!
+               viewModel.isShowSplash.value!!
             }
         }
 
@@ -76,6 +76,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.registerFragment -> hideBottomBar()
                 R.id.resetPasswordFragment -> hideBottomBar()
                 R.id.signInMethodsFragment -> hideBottomBar()
+                R.id.pinCodeCreatingFragment -> hideBottomBar()
             }
 
         }

@@ -39,10 +39,15 @@
             android:id="@+id/settingsFragment"
             android:name="com.example.zeroapp.presentation.settings.SettingsFragment"
             android:label="@string/settings"
-            tools:layout="@layout/fragment_settings" >
+            tools:layout="@layout/fragment_settings">
         <action
                 android:id="@+id/action_settingsFragment_to_signInMethodsFragment"
                 app:destination="@id/signInMethodsFragment"
+                app:popUpTo="@id/settingsFragment"
+                app:popUpToInclusive="false" />
+        <action
+                android:id="@+id/action_settingsFragment_to_pinCodeCreatingFragment"
+                app:destination="@id/pinCodeCreatingFragment"
                 app:popUpTo="@id/settingsFragment"
                 app:popUpToInclusive="false" />
     </fragment>
@@ -93,26 +98,32 @@
                 android:id="@+id/action_loginFragment_to_resetPasswordFragment"
                 app:destination="@id/resetPasswordFragment"
                 app:popUpTo="@id/loginFragment"
-                app:popUpToInclusive="false"/>
+                app:popUpToInclusive="false" />
     </fragment>
     <fragment
             android:id="@+id/registerFragment"
             android:name="com.example.zeroapp.presentation.register_with_email.RegisterEmailFragment"
             android:label="@string/register"
-            tools:layout="@layout/fragment_register_email"/>
+            tools:layout="@layout/fragment_register_email" />
     <fragment
             android:id="@+id/resetPasswordFragment"
             android:name="com.example.zeroapp.presentation.reset_password.ResetPasswordFragment"
             android:label="@string/reset_password_button"
-            tools:layout="@layout/fragment_reset_password"/>
+            tools:layout="@layout/fragment_reset_password" />
     <fragment
             android:id="@+id/signInMethodsFragment"
             android:name="com.example.zeroapp.presentation.sign_in_methods.SignInMethodsFragment"
-            android:label="@string/login_methods" >
+            android:label="@string/login_methods"
+            tools:layout="@layout/fragment_sign_in_methods">
         <action
                 android:id="@+id/action_signInMethodsFragment_to_loginFragment"
                 app:destination="@id/loginFragment"
                 app:popUpTo="@id/signInMethodsFragment"
                 app:popUpToInclusive="false" />
     </fragment>
+    <fragment
+            android:id="@+id/pinCodeCreatingFragment"
+            android:name="com.example.zeroapp.presentation.pin_code_сreating.PinCodeCreatingFragment"
+            android:label="Pin Code Creating"
+            tools:layout="@layout/fragment_pin_code_creating"/>
 </navigation>

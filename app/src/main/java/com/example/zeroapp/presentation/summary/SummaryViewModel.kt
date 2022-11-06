@@ -68,9 +68,9 @@ class SummaryViewModel @Inject constructor(
     val biometricAuthState: LiveData<BiometricAuthState>
         get() = _biometricAuthState
 
-    private var _isLatestQuote = MutableLiveData(false)
-    val isLatestQuote: LiveData<Boolean>
-        get() = _isLatestQuote
+    private var _isShowSplash = MutableLiveData(true)
+    val isShowSplash: LiveData<Boolean>
+        get() = _isShowSplash
 
     init {
         updateDayQuoteByRemote()
@@ -105,13 +105,14 @@ class SummaryViewModel @Inject constructor(
         viewModelScope.launch {
             _dayQuote.value = getDayQuoteLocalUseCase(Unit)
 
-            if (_isLatestQuote.value == false) _isLatestQuote.value = true
+            if (_isShowSplash.value == true) _isShowSplash.value = false
         }
     }
 
     private fun updateDayQuoteByRemote() {
         viewModelScope.launch {
-            _isLatestQuote.value = updDayQuoteByRemoteUseCase(Unit)
+            _isShowSplash.value = !updDayQuoteByRemoteUseCase(Unit)
+
             getSavedDayQuote()
         }
     }

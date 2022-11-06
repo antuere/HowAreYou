@@ -22,11 +22,6 @@ class UIBiometricDialog(private val context: Context) {
     private var biometricPrompt: BiometricPrompt? = null
     private var promptInfo: BiometricPrompt.PromptInfo? = null
 
-    private var _isUserAuth = false
-    val isUserAuth: Boolean
-        get() = _isUserAuth
-
-
     private fun checkDeviceHasBiometric(): Boolean {
         val result =
             when (biometricManager.canAuthenticate(BIOMETRIC_STRONG or DEVICE_CREDENTIAL)) {
@@ -50,7 +45,6 @@ class UIBiometricDialog(private val context: Context) {
                     override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
                         super.onAuthenticationSucceeded(result)
                         biometricListener.onBiometricAuthSuccess()
-                        _isUserAuth = true
                     }
                 })
 
@@ -64,7 +58,4 @@ class UIBiometricDialog(private val context: Context) {
         }
     }
 
-    fun resetAuthUser() {
-        _isUserAuth = false
-    }
 }

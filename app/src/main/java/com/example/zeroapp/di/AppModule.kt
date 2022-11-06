@@ -13,6 +13,7 @@ import antuere.data.preferences_data_store.settings_data_store.SettingsDataStore
 import com.example.zeroapp.util.ResourcesProvider
 import com.example.zeroapp.presentation.history.MyAnalystForHistory
 import antuere.data.preferences_data_store.toggle_btn_data_store.ToggleBtnDataStore
+import com.example.zeroapp.presentation.base.PrivacyManager
 import com.example.zeroapp.presentation.summary.MyAnalystForSummary
 import com.example.zeroapp.presentation.base.ui_biometric_dialog.UIBiometricDialog
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -123,5 +124,11 @@ object AppModule {
         @ApplicationContext context: Context,
     ): UIBiometricDialog {
         return UIBiometricDialog(context)
+    }
+
+    @Provides
+    @Singleton
+    fun providePrivacyManager(): PrivacyManager {
+        return PrivacyManager()
     }
 }
