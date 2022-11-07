@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         installSplashScreen().apply {
             setKeepOnScreenCondition {
-               viewModel.isShowSplash.value!!
+                viewModel.isShowSplash.value!!
             }
         }
 
@@ -65,10 +65,17 @@ class MainActivity : AppCompatActivity() {
 
         navController?.addOnDestinationChangedListener { _, dest, _ ->
             when (dest.id) {
-                R.id.settingsFragment -> showBottomBar()
-                R.id.historyFragment -> showBottomBar()
+                R.id.settingsFragment -> {
+                    showBottomBar()
+//                    navController!!.popBackStack(dest.id, false)
+                }
+                R.id.historyFragment -> {
+                    showBottomBar()
+//                    navController!!.popBackStack(dest.id, false)
+                }
+
                 R.id.addDayFragment -> hideBottomBar()
-                R.id.summaryFragment -> showBottomBar()
+                R.id.summaryFragment -> showUiElements()
                 R.id.detailFragment -> hideBottomBar()
                 R.id.favoritesFragment -> hideBottomBar()
                 R.id.catsFragment -> hideBottomBar()
@@ -76,7 +83,10 @@ class MainActivity : AppCompatActivity() {
                 R.id.registerFragment -> hideBottomBar()
                 R.id.resetPasswordFragment -> hideBottomBar()
                 R.id.signInMethodsFragment -> hideBottomBar()
-                R.id.pinCodeCreatingFragment -> hideBottomBar()
+                R.id.secureEntryFragment -> {
+                    goneBottomBar()
+                    goneAppBar()
+                }
             }
 
         }
@@ -95,7 +105,20 @@ class MainActivity : AppCompatActivity() {
         bottomNavView?.visibility = View.INVISIBLE
     }
 
+    private fun goneBottomBar() {
+        bottomNavView?.visibility = View.GONE
+    }
+
     private fun showBottomBar() {
+        bottomNavView?.visibility = View.VISIBLE
+    }
+
+    private fun goneAppBar() {
+        toolbar!!.visibility = View.GONE
+    }
+
+    private fun showUiElements() {
+        toolbar!!.visibility = View.VISIBLE
         bottomNavView?.visibility = View.VISIBLE
     }
 }

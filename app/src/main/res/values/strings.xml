@@ -118,4 +118,8 @@
     <string name="december">December</string>
 
 
+    <string name="create_a_password">Create a password</string>
+    <string name="enter_a_password">Enter password</string>
+
+
 </resources>

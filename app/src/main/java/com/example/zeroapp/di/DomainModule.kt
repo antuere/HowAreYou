@@ -106,4 +106,19 @@ class DomainModule {
         return SaveSettingsUseCase(settingsRepository)
     }
 
+    @Provides
+    fun provideSavePinCodeUseCase(settingsRepository: SettingsRepository): SavePinCodeUseCase {
+        return SavePinCodeUseCase(settingsRepository)
+    }
+
+    @Provides
+    fun provideGetPinCodeUseCase(settingsRepository: SettingsRepository): GetSavedPinCodeUseCase {
+        return GetSavedPinCodeUseCase(settingsRepository)
+    }
+
+    @Provides
+    fun provideResetPinCodeUseCase(settingsRepository: SettingsRepository): ResetPinCodeUseCase {
+        return ResetPinCodeUseCase(settingsRepository)
+    }
+
 }

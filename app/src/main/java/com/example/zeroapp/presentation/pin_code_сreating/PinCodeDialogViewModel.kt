@@ -6,7 +6,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import antuere.domain.dto.Settings
 import antuere.domain.usecases.GetSettingsUseCase
+import antuere.domain.usecases.SavePinCodeUseCase
 import antuere.domain.usecases.SaveSettingsUseCase
+import com.example.zeroapp.presentation.base.PrivacyManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
@@ -14,14 +16,16 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class PinCodeCreatingViewModel @Inject constructor(
+class PinCodeDialogViewModel @Inject constructor(
     private val getSettingsUseCase: GetSettingsUseCase,
-    private val saveSettingsUseCase: SaveSettingsUseCase
+    private val saveSettingsUseCase: SaveSettingsUseCase,
+    private val savePinCodeUseCase: SavePinCodeUseCase,
+    private val privacyManager: PrivacyManager
 ) : ViewModel() {
 
-    private var _userPassword = MutableLiveData<String>()
-    val userPassword: LiveData<String>
-        get() = _userPassword
+    private var _userPinCode = MutableLiveData<String>()
+    val userPinCode: LiveData<String>
+        get() = _userPinCode
 
     private var _pinCodeCirclesState = MutableLiveData<PinCodeCirclesState>()
     val pinCodeCirclesState: LiveData<PinCodeCirclesState>
@@ -35,9 +39,20 @@ class PinCodeCreatingViewModel @Inject constructor(
     val isNavigateUp: LiveData<Boolean>
         get() = _isNavigateUp
 
+//    private var savedPassword = MutableLiveData<String>()
+
     init {
         getSettings()
+//        getSavedPinCode()
     }
+
+//    private fun getSavedPinCode() {
+//        viewModelScope.launch {
+//            getSavedPinCodeUseCase.invoke(Unit).collectLatest {
+//                savedPassword.postValue(it)
+//            }
+//        }
+//    }
 
     private lateinit var num1: String
     private lateinit var num2: String
@@ -45,7 +60,7 @@ class PinCodeCreatingViewModel @Inject constructor(
     private lateinit var num4: String
 
     private var currentNumbers = mutableListOf<String>()
-    private var savedPassword = String()
+
 
     fun onClickNumber(value: String) {
         when (value) {
@@ -111,7 +126,7 @@ class PinCodeCreatingViewModel @Inject constructor(
             4 -> {
                 num4 = list[3]
                 _pinCodeCirclesState.value = PinCodeCirclesState.IsShowFour
-                _userPassword.value = num1 + num2 + num3 + num4
+                _userPinCode.value = num1 + num2 + num3 + num4
             }
             else -> throw IllegalArgumentException("Too much list size")
         }
@@ -125,15 +140,33 @@ class PinCodeCreatingViewModel @Inject constructor(
         }
     }
 
-    fun saveSettings() {
+    fun pinCodeCreated() {
+        viewModelScope.launch {
+            privacyManager.doneAuthUserByPinCode()
+            saveSettings()
+            savePinCode(_userPinCode.value!!)
+            delay(100)
+
+            navigateUp()
+        }
+    }
+
+
+    private fun savePinCode(pinCode: String) {
+        viewModelScope.launch {
+            savePinCodeUseCase(pinCode)
+        }
+    }
+
+    private fun saveSettings() {
         viewModelScope.launch {
             _settings.value!!.isPinCodeEnabled = true
             saveSettingsUseCase(_settings.value!!)
-
-            delay(150)
-
-            _isNavigateUp.value = true
         }
+    }
+
+    private fun navigateUp() {
+        _isNavigateUp.value = true
     }
 
     fun doneNavigationUp() {

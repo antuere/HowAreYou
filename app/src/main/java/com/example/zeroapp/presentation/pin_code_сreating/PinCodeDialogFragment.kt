@@ -1,28 +1,36 @@
 package com.example.zeroapp.presentation.pin_code_сreating
 
+import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import com.example.zeroapp.R
 import com.example.zeroapp.databinding.FragmentPinCodeCreatingBinding
-import com.example.zeroapp.presentation.base.BaseBindingFragment
-import com.example.zeroapp.presentation.base.PrivacyManager
-import com.example.zeroapp.util.setToolbarIcon
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 @AndroidEntryPoint
-class PinCodeCreatingFragment :
-    BaseBindingFragment<FragmentPinCodeCreatingBinding>(FragmentPinCodeCreatingBinding::inflate) {
+class PinCodeDialogFragment : BottomSheetDialogFragment() {
 
-    private val viewModel by viewModels<PinCodeCreatingViewModel>()
+    companion object {
+        const val TAG = "PinCodeBottomSheet"
 
-    @Inject
-    lateinit var privacyManager: PrivacyManager
+        fun newInstance(iPinCodeCreatingListener: IPinCodeCreatingListener): PinCodeDialogFragment {
+            val result = PinCodeDialogFragment()
+            result.setPinCodeCreatingListener(iPinCodeCreatingListener)
+            return result
+        }
+    }
+
+    private var pinCodeCreatingListener: IPinCodeCreatingListener? = null
+    private var isCanceled = false
+
+    private val viewModel by viewModels<PinCodeDialogViewModel>()
+
+    private var binding: FragmentPinCodeCreatingBinding? = null
 
     private val numbersButtons: List<Button> by lazy {
         listOf(
@@ -39,17 +47,17 @@ class PinCodeCreatingFragment :
         )
     }
 
+    private fun setPinCodeCreatingListener(value: IPinCodeCreatingListener) {
+        pinCodeCreatingListener = value
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        setToolbarIcon(R.drawable.ic_back)
-
-        binding = this.inflater(inflater, container, false)
-
+        binding = FragmentPinCodeCreatingBinding.inflate(inflater, container, false)
         return binding!!.root
     }
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
@@ -62,18 +70,17 @@ class PinCodeCreatingFragment :
 
         viewModel.isNavigateUp.observe(viewLifecycleOwner) {
             it?.let {
-                if(it) {
-                    findNavController().navigateUp()
+                if (it) {
+                    this.dismiss()
                     viewModel.doneNavigationUp()
                 }
             }
         }
 
-        viewModel.userPassword.observe(viewLifecycleOwner) {
-            it?.let { password ->
-                if (password.length == 4) {
-                    privacyManager.doneAuthUserByPinCode()
-                    viewModel.saveSettings()
+        viewModel.userPinCode.observe(viewLifecycleOwner) {
+            it?.let { pinCode ->
+                if (pinCode.length == 4) {
+                    viewModel.pinCodeCreated()
                 }
             }
         }
@@ -81,6 +88,13 @@ class PinCodeCreatingFragment :
         viewModel.pinCodeCirclesState.observe(viewLifecycleOwner) {
             it?.let { state ->
                 when (state) {
+
+                    is PinCodeCirclesState.IsShowNone -> {
+                        binding!!.circle1.setImageResource(R.drawable.ic_outline_outlined)
+                        binding!!.circle2.setImageResource(R.drawable.ic_outline_outlined)
+                        binding!!.circle3.setImageResource(R.drawable.ic_outline_outlined)
+                        binding!!.circle4.setImageResource(R.drawable.ic_outline_outlined)
+                    }
                     is PinCodeCirclesState.IsShowOne -> {
                         binding!!.circle1.setImageResource(R.drawable.ic_circle_filled)
                     }
@@ -97,7 +111,21 @@ class PinCodeCreatingFragment :
 
             }
         }
-
     }
 
+    override fun onCancel(dialog: DialogInterface) {
+        super.onCancel(dialog)
+        isCanceled = true
+        pinCodeCreatingListener!!.pinCodeNotCreated()
+    }
+
+    override fun onDismiss(dialog: DialogInterface) {
+        super.onDismiss(dialog)
+        if (!isCanceled) pinCodeCreatingListener!!.pinCodeCreated()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        binding = null
+    }
 }

@@ -3,7 +3,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/navigation"
-        app:startDestination="@id/summaryFragment">
+        app:startDestination="@id/secureEntryFragment">
 
     <fragment
             android:id="@+id/addDayFragment"
@@ -43,11 +43,6 @@
         <action
                 android:id="@+id/action_settingsFragment_to_signInMethodsFragment"
                 app:destination="@id/signInMethodsFragment"
-                app:popUpTo="@id/settingsFragment"
-                app:popUpToInclusive="false" />
-        <action
-                android:id="@+id/action_settingsFragment_to_pinCodeCreatingFragment"
-                app:destination="@id/pinCodeCreatingFragment"
                 app:popUpTo="@id/settingsFragment"
                 app:popUpToInclusive="false" />
     </fragment>
@@ -122,8 +117,13 @@
                 app:popUpToInclusive="false" />
     </fragment>
     <fragment
-            android:id="@+id/pinCodeCreatingFragment"
-            android:name="com.example.zeroapp.presentation.pin_code_сreating.PinCodeCreatingFragment"
-            android:label="Pin Code Creating"
-            tools:layout="@layout/fragment_pin_code_creating"/>
+            android:id="@+id/secureEntryFragment"
+            android:name="com.example.zeroapp.presentation.secure_entry.SecureEntryFragment"
+            android:label="Secure Entry" >
+        <action
+                android:id="@+id/action_secureEntryFragment_to_summaryFragment"
+                app:destination="@id/summaryFragment"
+                app:popUpTo="@+id/navigation"
+                app:popUpToInclusive="true"/>
+    </fragment>
 </navigation>

@@ -6,7 +6,6 @@ import antuere.domain.dto.Settings
 import antuere.domain.repository.SettingsRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import timber.log.Timber
 import javax.inject.Inject
 
 class SettingsRepositoryImpl @Inject constructor(
@@ -22,8 +21,19 @@ class SettingsRepositoryImpl @Inject constructor(
     }
 
     override suspend fun saveSettings(settings: Settings) {
-        Timber.i("pin code error: settings in rep = $settings")
         val settingsEntity = settingsEntityMapper.mapFromDomainModel(settings)
         settingsDataStore.saveSettings(settingsEntity)
+    }
+
+    override suspend fun savePinCode(pinCode: String) {
+        settingsDataStore.savePinCode(pinCode)
+    }
+
+    override suspend fun resetPinCode() {
+        settingsDataStore.resetPinCode()
+    }
+
+    override suspend fun getPinCode(): Flow<String> {
+        return settingsDataStore.pinCode
     }
 }
