@@ -6,14 +6,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import antuere.domain.dto.Day
 import antuere.domain.dto.Quote
-import antuere.domain.dto.Settings
 import antuere.domain.usecases.*
 import antuere.domain.util.TimeUtility
 import com.example.zeroapp.R
 import com.example.zeroapp.presentation.base.ui_dialog.IUIDialogAction
 import com.example.zeroapp.presentation.base.ui_dialog.UIDialog
 import com.example.zeroapp.util.SmileProvider
-import com.example.zeroapp.presentation.base.ui_biometric_dialog.IUIBiometricListener
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -29,10 +27,9 @@ class SummaryViewModel @Inject constructor(
     private val updDayQuoteByRemoteUseCase: UpdDayQuoteByRemoteUseCase,
     private val getDayQuoteLocalUseCase: GetDayQuoteLocalUseCase,
     private val getDaysByLimitUseCase: GetDaysByLimitUseCase,
-    private val getSettingsUseCase: GetSettingsUseCase,
     private val myAnalystForSummary: MyAnalystForSummary
 ) :
-    ViewModel(), IUIDialogAction, IUIBiometricListener {
+    ViewModel(), IUIDialogAction {
 
     private var _uiDialog = MutableStateFlow<UIDialog?>(null)
     override val uiDialog: StateFlow<UIDialog?>
@@ -60,21 +57,12 @@ class SummaryViewModel @Inject constructor(
     val isShowSnackBar: LiveData<Boolean>
         get() = _isShowSnackBar
 
-    private var _settings = MutableLiveData<Settings?>()
-    val settings: LiveData<Settings?>
-        get() = _settings
-
-    private var _biometricAuthState = MutableLiveData<BiometricAuthState>()
-    val biometricAuthState: LiveData<BiometricAuthState>
-        get() = _biometricAuthState
-
     private var _isShowSplash = MutableLiveData(true)
     val isShowSplash: LiveData<Boolean>
         get() = _isShowSplash
 
     init {
         updateDayQuoteByRemote()
-        getSettings()
         getLastDay()
         checkLastFiveDays()
     }
@@ -154,23 +142,7 @@ class SummaryViewModel @Inject constructor(
         }
     }
 
-    private fun getSettings() {
-        viewModelScope.launch {
-            getSettingsUseCase(Unit).collectLatest {
-                _settings.postValue(it)
-            }
-        }
-    }
-
     fun resetSnackBar() {
         _isShowSnackBar.value = false
-    }
-
-    override fun onBiometricAuthFailed() {
-        _biometricAuthState.value = BiometricAuthState.Error
-    }
-
-    override fun onBiometricAuthSuccess() {
-        _biometricAuthState.value = BiometricAuthState.Successful
     }
 }

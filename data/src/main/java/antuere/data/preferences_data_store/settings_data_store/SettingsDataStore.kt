@@ -53,4 +53,11 @@ class SettingsDataStore(context: Context, name: String) {
         }
     }
 
+    suspend fun resetAllSettings() {
+        settingsDataStore.edit { preferences ->
+            preferences.remove(SETTINGS_PIN_CODE_SAVED_KEY)
+            preferences.remove(SETTINGS_BIOMETRIC_KEY)
+            preferences.remove(SETTINGS_PIN_CODE_KEY)
+        }
+    }
 }

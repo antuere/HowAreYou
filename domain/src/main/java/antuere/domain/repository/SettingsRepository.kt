@@ -13,6 +13,8 @@ interface SettingsRepository {
 
     suspend fun resetPinCode()
 
+    suspend fun resetAllSettings()
+
     suspend fun getPinCode(): Flow<String>
 
 }

@@ -8,7 +8,6 @@ import antuere.domain.dto.Settings
 import antuere.domain.usecases.GetSettingsUseCase
 import antuere.domain.usecases.SavePinCodeUseCase
 import antuere.domain.usecases.SaveSettingsUseCase
-import com.example.zeroapp.presentation.base.PrivacyManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
@@ -20,7 +19,6 @@ class PinCodeDialogViewModel @Inject constructor(
     private val getSettingsUseCase: GetSettingsUseCase,
     private val saveSettingsUseCase: SaveSettingsUseCase,
     private val savePinCodeUseCase: SavePinCodeUseCase,
-    private val privacyManager: PrivacyManager
 ) : ViewModel() {
 
     private var _userPinCode = MutableLiveData<String>()
@@ -39,20 +37,10 @@ class PinCodeDialogViewModel @Inject constructor(
     val isNavigateUp: LiveData<Boolean>
         get() = _isNavigateUp
 
-//    private var savedPassword = MutableLiveData<String>()
 
     init {
         getSettings()
-//        getSavedPinCode()
     }
-
-//    private fun getSavedPinCode() {
-//        viewModelScope.launch {
-//            getSavedPinCodeUseCase.invoke(Unit).collectLatest {
-//                savedPassword.postValue(it)
-//            }
-//        }
-//    }
 
     private lateinit var num1: String
     private lateinit var num2: String
@@ -113,19 +101,19 @@ class PinCodeDialogViewModel @Inject constructor(
         when (list.size) {
             1 -> {
                 num1 = list[0]
-                _pinCodeCirclesState.value = PinCodeCirclesState.IsShowOne
+                _pinCodeCirclesState.value = PinCodeCirclesState.IsShowFirst
             }
             2 -> {
                 num2 = list[1]
-                _pinCodeCirclesState.value = PinCodeCirclesState.IsShowTwo
+                _pinCodeCirclesState.value = PinCodeCirclesState.IsShowSecond
             }
             3 -> {
                 num3 = list[2]
-                _pinCodeCirclesState.value = PinCodeCirclesState.IsShowThree
+                _pinCodeCirclesState.value = PinCodeCirclesState.IsShowThird
             }
             4 -> {
                 num4 = list[3]
-                _pinCodeCirclesState.value = PinCodeCirclesState.IsShowFour
+                _pinCodeCirclesState.value = PinCodeCirclesState.IsShowFourth
                 _userPinCode.value = num1 + num2 + num3 + num4
             }
             else -> throw IllegalArgumentException("Too much list size")
@@ -142,7 +130,6 @@ class PinCodeDialogViewModel @Inject constructor(
 
     fun pinCodeCreated() {
         viewModelScope.launch {
-            privacyManager.doneAuthUserByPinCode()
             saveSettings()
             savePinCode(_userPinCode.value!!)
             delay(100)

@@ -24,8 +24,8 @@ class SettingsViewModel @Inject constructor(
     private val saveSettingsUseCase: SaveSettingsUseCase,
     private val getSettingsUseCase: GetSettingsUseCase,
     private val resetPinCodeUseCase: ResetPinCodeUseCase,
-    val privacyManager: PrivacyManager
-) : ViewModel(), IUIBiometricListener {
+    private val privacyManager: PrivacyManager
+) : ViewModel() {
 
     private var _userNickname = MutableLiveData<String?>()
     val userNickname: LiveData<String?>
@@ -47,6 +47,14 @@ class SettingsViewModel @Inject constructor(
     val isHasUser: LiveData<Boolean>
         get() = _isHasUser
 
+    private var _isStartSetBiometric = MutableLiveData(false)
+    val isStartSetBiometric: LiveData<Boolean>
+        get() = _isStartSetBiometric
+
+    private var _isStartSetPinCode = MutableLiveData(false)
+    val isStartSetPinCode: LiveData<Boolean>
+        get() = _isStartSetPinCode
+
     init {
         checkCurrentUser()
         updateUserNickname()
@@ -56,14 +64,27 @@ class SettingsViewModel @Inject constructor(
     val pinCodeCreatingListener = object : IPinCodeCreatingListener {
 
         override fun pinCodeCreated() {
+            privacyManager.doneAuthUserByPinCode()
             _isPinCodeCreated.value = true
         }
 
         override fun pinCodeNotCreated() {
             _isPinCodeCreated.value = false
         }
-
     }
+
+    val biometricAuthStateListener = object : IUIBiometricListener {
+
+        override fun onBiometricAuthFailed() {
+            _biometricAuthState.value = BiometricAuthState.Error
+        }
+
+        override fun onBiometricAuthSuccess() {
+            privacyManager.doneAuthUserByBiometric()
+            _biometricAuthState.value = BiometricAuthState.Successful
+        }
+    }
+
 
     fun checkCurrentUser() {
         _isHasUser.value = firebaseApi.isHasUser()
@@ -103,6 +124,19 @@ class SettingsViewModel @Inject constructor(
     }
 
 
+    fun setBiometricAuth() {
+        if (!privacyManager.isUserAuthByBiometric) {
+            _isStartSetBiometric.value = true
+        }
+    }
+
+    fun setPinCodeAuth() {
+        if (!privacyManager.isUserAuthByPinCode && !privacyManager.isUserAuthByBiometric) {
+            _isStartSetPinCode.value = true
+        }
+    }
+
+
     fun resetBiometricAuth() {
         privacyManager.resetAuthUserByBiometric()
         _biometricAuthState.value = null
@@ -118,13 +152,16 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
-
-    override fun onBiometricAuthFailed() {
-        _biometricAuthState.value = BiometricAuthState.Error
+    fun nullifyIsPinCodeCreated() {
+        _isPinCodeCreated.value = null
     }
 
-    override fun onBiometricAuthSuccess() {
-        _biometricAuthState.value = BiometricAuthState.Successful
+    fun resetIsStartSetBiometric() {
+        _isStartSetBiometric.value = false
+    }
+
+    fun resetIsStartSetPinCode() {
+        _isStartSetPinCode.value = false
     }
 
 }

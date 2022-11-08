@@ -118,9 +118,11 @@ class DayRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun deleteAllDays() = withContext(Dispatchers.IO) {
+    override suspend fun deleteAllDaysLocal() = withContext(Dispatchers.IO) {
         dayDataBaseRoom.dayDatabaseDao.clear()
+    }
 
+    override suspend fun deleteAllDaysRemote() = withContext(Dispatchers.IO) {
         val query = daysNode?.get()?.await()
         if (query?.exists() == true) {
             query.children.forEach {

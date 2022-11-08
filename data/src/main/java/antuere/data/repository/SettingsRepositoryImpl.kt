@@ -33,6 +33,10 @@ class SettingsRepositoryImpl @Inject constructor(
         settingsDataStore.resetPinCode()
     }
 
+    override suspend fun resetAllSettings() {
+        settingsDataStore.resetAllSettings()
+    }
+
     override suspend fun getPinCode(): Flow<String> {
         return settingsDataStore.pinCode
     }

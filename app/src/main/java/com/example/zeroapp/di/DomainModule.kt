@@ -121,4 +121,19 @@ class DomainModule {
         return ResetPinCodeUseCase(settingsRepository)
     }
 
+    @Provides
+    fun provideDeleteAllDaysLocalUseCase(dayRepository: DayRepository): DeleteAllDaysLocalUseCase {
+        return DeleteAllDaysLocalUseCase(dayRepository)
+    }
+
+    @Provides
+    fun provideDeleteAllDaysRemoteUseCase(dayRepository: DayRepository): DeleteAllDaysRemoteUseCase {
+        return DeleteAllDaysRemoteUseCase(dayRepository)
+    }
+
+    @Provides
+    fun provideDeleteAllSettingsUseCase(settingsRepository: SettingsRepository): DeleteAllSettingsUseCase {
+        return DeleteAllSettingsUseCase(settingsRepository)
+    }
+
 }

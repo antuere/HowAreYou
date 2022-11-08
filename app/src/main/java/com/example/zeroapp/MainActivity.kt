@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
@@ -15,6 +16,8 @@ import com.example.zeroapp.presentation.summary.SummaryViewModel
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import timber.log.Timber
 
 
@@ -67,15 +70,15 @@ class MainActivity : AppCompatActivity() {
             when (dest.id) {
                 R.id.settingsFragment -> {
                     showBottomBar()
-//                    navController!!.popBackStack(dest.id, false)
                 }
                 R.id.historyFragment -> {
                     showBottomBar()
-//                    navController!!.popBackStack(dest.id, false)
                 }
-
                 R.id.addDayFragment -> hideBottomBar()
-                R.id.summaryFragment -> showUiElements()
+                R.id.summaryFragment -> {
+                    showUiElements()
+                    navController!!.graph.setStartDestination(dest.id)
+                }
                 R.id.detailFragment -> hideBottomBar()
                 R.id.favoritesFragment -> hideBottomBar()
                 R.id.catsFragment -> hideBottomBar()
@@ -118,7 +121,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showUiElements() {
-        toolbar!!.visibility = View.VISIBLE
-        bottomNavView?.visibility = View.VISIBLE
+        lifecycleScope.launch {
+            delay(100)
+            toolbar!!.visibility = View.VISIBLE
+            bottomNavView?.visibility = View.VISIBLE
+        }
+
     }
 }

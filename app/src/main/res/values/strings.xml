@@ -40,34 +40,11 @@
     <string name="last_week_title">Week</string>
     <string name="all_days_title">All days</string>
 
-    <!-- Login/register -->
+    <!-- Login/register fragments -->
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="confirm_password">Confirm password</string>
     <string name="nickname">Nickname</string>
-
-    <!-- Dialogs/SnackBars -->
-    <string name="dialog_delete_title">Delete day</string>
-    <string name="dialog_delete_message">Deleting permanently this day?</string>
-    <string name="dialog_warning_title">Are you fine?</string>
-    <string name="dialog_warning_message">We have noticed a drop in your mood in the last 5 days, are you all right?</string>
-    <string name="dialog_warning_positive">Yes, I\'m fine</string>
-    <string name="dialog_warning_negative">No, not really</string>
-    <string name="snack_bar_warning_negative">Pay attention to the cards above, we hope this will help you at least a little.</string>
-    <string name="yes">Delete</string>
-    <string name="no">Cancel</string>
-
-    <!-- Label and descriptions -->
-    <string name="how_are_you_today">How are you today?</string>
-    <string name="desc_you_day">Describe your day in a nutshell</string>
-    <string name="about_day">About past day</string>
-    <string name="date_picker_title">Select days</string>
-    <string name="getCats">Update cute cats!</string>
-    <string name="title_cats">What could be better than cats?</string>
-    <string name="history_hint">Add your first day and come back!</string>
-    <string name="fav_hint">Add your first favorite day and come back!</string>
-    <string name="sign_in">Sign in</string>
-    <string name="sign_out">Sign out</string>
     <string name="sign_up">Sign up</string>
     <string name="don_have_acc">Don\'t have account? Sign Up</string>
     <string name="reset_password_hint">Forgot password?</string>
@@ -76,22 +53,68 @@
     <string name="email_reset_successful">Successful. Check your mail please</string>
     <string name="empty_fields">Please fill the fields</string>
     <string name="passwords_error">Passwords don\'t match</string>
-    <string name="hello_user">Hello, dear</string>
-    <string name="hello_user_plug">Hello, dear user</string>
-    <string name="how_are_you_text">How are you? We hope you all right.</string>
-    <string name="sign_in_advice">For a better experience sign in.</string>
-    <string name="all_days_desc">Show all days</string>
-    <string name="month_days_desc">Show days of this current month</string>
-    <string name="week_days_desc">Show days of this current week</string>
+
+    <!-- Dialogs/SnackBars -->
+    <string name="dialog_delete_title">Delete day</string>
+    <string name="dialog_delete_message">Deleting permanently this day?</string>
+    <string name="dialog_warning_title">Are you fine?</string>
+    <string name="dialog_warning_message">We have noticed a drop in your mood in the last 5 days, are you all right?</string>
+    <string name="dialog_warning_positive">Yes, I\'m fine</string>
+    <string name="dialog_warning_negative">No, not really</string>
+    <string name="dialog_sign_out_title">Sign out?</string>
+    <string name="dialog_sign_out_desc">All your data will be deleted on this device, to restore them, log in to your account.</string>
+    <string name="dialog_sign_out_positive">Sign out</string>
+    <string name="dialog_sign_out_negative">Cancel</string>
+    <string name="snack_bar_warning_negative">Pay attention to the cards above, we hope this will help you at least a little.</string>
+    <string name="yes">Delete</string>
+    <string name="no">Cancel</string>
 
     <!-- Biometric auth dialog-->
     <string name="biometric_auth_title">Log in to the HowAreYou</string>
     <string name="biometric_auth_desc">Lets verify you finger</string>
     <string name="biometric_auth_negative_btn">Cancel</string>
 
-    <!-- Methods for login -->
+    <!-- Methods for login fragment -->
     <string name="login_email">Sign in with email</string>
     <string name="login_google">Sign in with Google</string>
+
+    <!-- Add day fragment -->
+    <string name="how_are_you_today">How are you today?</string>
+    <string name="desc_you_day">Describe your day in a nutshell</string>
+
+    <!-- Cats fragment -->
+    <string name="getCats">Update cute cats!</string>
+    <string name="title_cats">What could be better than cats?</string>
+
+    <!-- Settings fragment -->
+    <string name="settings_privacy_text">Privacy</string>
+    <string name="sign_in_advice">For a better experience sign in.</string>
+    <string name="how_are_you_text">How are you? We hope you all right.</string>
+    <string name="hello_user">Hello, dear</string>
+    <string name="hello_user_plug">Hello, dear user</string>
+    <string name="sign_in">Sign in</string>
+    <string name="sign_out">Sign out</string>
+    <string name="create_a_password">Create a password</string>
+
+    <!-- Home fragment -->
+
+    <!-- Secure entry fragment -->
+    <string name="enter_a_password">Enter password</string>
+
+
+    <!-- Favorites fragment -->
+    <string name="fav_hint">Add your first favorite day and come back!</string>
+
+    <!-- Detail fragment -->
+    <string name="about_day">About past day</string>
+
+    <!-- History fragment -->
+    <string name="all_days_desc">Show all days</string>
+    <string name="month_days_desc">Show days of this current month</string>
+    <string name="week_days_desc">Show days of this current week</string>
+    <string name="history_hint">Add your first day and come back!</string>
+    <string name="date_picker_title">Select days</string>
+
 
     <!-- Wishes for users -->
     <string name="wish_for_users_test">We hope you had another great day, so enjoy! We are waiting for you tomorrow</string>
@@ -116,10 +139,7 @@
     <string name="october">October</string>
     <string name="november">November</string>
     <string name="december">December</string>
-
-
-    <string name="create_a_password">Create a password</string>
-    <string name="enter_a_password">Enter password</string>
-
+    <string name="enable_biometric_authentication">Enable biometric authentication</string>
+    <string name="enable_pin_code">Enable pin code</string>
 
 </resources>

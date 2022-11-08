@@ -5,12 +5,14 @@
     <dimen name="padding_small_two">16dp</dimen>
     <dimen name="padding_normal">32dp</dimen>
 
+    <dimen name="margin_very_small">6dp</dimen>
     <dimen name="margin_small">12dp</dimen>
     <dimen name="margin_small_two">20dp</dimen>
     <dimen name="margin_small_three">24dp</dimen>
     <dimen name="margin_normal_button">16dp</dimen>
     <dimen name="margin_normal_button_half">4dp</dimen>
     <dimen name="margin_normal">32dp</dimen>
+    <dimen name="margin_normal_one">42dp</dimen>
     <dimen name="margin_high">64dp</dimen>
     <dimen name="margin_high_one">72dp</dimen>
     <dimen name="margin_high_two">80dp</dimen>

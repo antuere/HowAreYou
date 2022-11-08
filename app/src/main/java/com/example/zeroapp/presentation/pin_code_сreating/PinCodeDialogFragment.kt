@@ -88,25 +88,19 @@ class PinCodeDialogFragment : BottomSheetDialogFragment() {
         viewModel.pinCodeCirclesState.observe(viewLifecycleOwner) {
             it?.let { state ->
                 when (state) {
-
-                    is PinCodeCirclesState.IsShowNone -> {
-                        binding!!.circle1.setImageResource(R.drawable.ic_outline_outlined)
-                        binding!!.circle2.setImageResource(R.drawable.ic_outline_outlined)
-                        binding!!.circle3.setImageResource(R.drawable.ic_outline_outlined)
-                        binding!!.circle4.setImageResource(R.drawable.ic_outline_outlined)
-                    }
-                    is PinCodeCirclesState.IsShowOne -> {
+                    is PinCodeCirclesState.IsShowFirst -> {
                         binding!!.circle1.setImageResource(R.drawable.ic_circle_filled)
                     }
-                    is PinCodeCirclesState.IsShowTwo -> {
+                    is PinCodeCirclesState.IsShowSecond -> {
                         binding!!.circle2.setImageResource(R.drawable.ic_circle_filled)
                     }
-                    is PinCodeCirclesState.IsShowThree -> {
+                    is PinCodeCirclesState.IsShowThird -> {
                         binding!!.circle3.setImageResource(R.drawable.ic_circle_filled)
                     }
-                    is PinCodeCirclesState.IsShowFour -> {
+                    is PinCodeCirclesState.IsShowFourth -> {
                         binding!!.circle4.setImageResource(R.drawable.ic_circle_filled)
                     }
+                    is PinCodeCirclesState.IsShowNone, PinCodeCirclesState.IsShowAll -> {}
                 }
 
             }

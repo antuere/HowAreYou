@@ -4,13 +4,20 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import antuere.data.remote_day_database.FirebaseApi
 import antuere.domain.dto.Settings
-import antuere.domain.usecases.GetSavedPinCodeUseCase
-import antuere.domain.usecases.GetSettingsUseCase
+import antuere.domain.usecases.*
+import com.example.zeroapp.R
 import com.example.zeroapp.presentation.base.PrivacyManager
+import com.example.zeroapp.presentation.base.ui_biometric_dialog.IUIBiometricListener
+import com.example.zeroapp.presentation.base.ui_dialog.IUIDialogAction
+import com.example.zeroapp.presentation.base.ui_dialog.UIDialog
 import com.example.zeroapp.presentation.pin_code_сreating.PinCodeCirclesState
+import com.example.zeroapp.presentation.summary.BiometricAuthState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -18,13 +25,35 @@ import javax.inject.Inject
 @HiltViewModel
 class SecureEntryViewModel @Inject constructor(
     private val getSettingsUseCase: GetSettingsUseCase,
+    private val saveSettingsUseCase: SaveSettingsUseCase,
     private val getSavedPinCodeUseCase: GetSavedPinCodeUseCase,
+    private val deleteAllSettingsUseCase: DeleteAllSettingsUseCase,
+    private val deleteAllDaysLocalUseCase: DeleteAllDaysLocalUseCase,
+    private val firebaseApi: FirebaseApi,
     private val privacyManager: PrivacyManager
-) : ViewModel() {
+) : ViewModel(), IUIDialogAction {
+
+    private lateinit var num1: String
+    private lateinit var num2: String
+    private lateinit var num3: String
+    private lateinit var num4: String
+    private var currentNumbers = mutableListOf<String>()
+
+    private var _uiDialog = MutableStateFlow<UIDialog?>(null)
+    override val uiDialog: StateFlow<UIDialog?>
+        get() = _uiDialog
 
     private var _userPinCode = MutableLiveData<String?>()
     val userPinCode: LiveData<String?>
         get() = _userPinCode
+
+    private var _biometricAuthState = MutableLiveData<BiometricAuthState?>()
+    val biometricAuthState: LiveData<BiometricAuthState?>
+        get() = _biometricAuthState
+
+    private var _isShowBiometricAuth = MutableLiveData(false)
+    val isShowBiometricAuth: LiveData<Boolean>
+        get() = _isShowBiometricAuth
 
     private var _pinCodeCirclesState = MutableLiveData<PinCodeCirclesState>()
     val pinCodeCirclesState: LiveData<PinCodeCirclesState>
@@ -34,35 +63,59 @@ class SecureEntryViewModel @Inject constructor(
     val settings: LiveData<Settings>
         get() = _settings
 
-
-    private var _savedPinCode = MutableLiveData<String>()
-    val savedPinCode: LiveData<String>
-        get() = _savedPinCode
-
     private var _isCorrectPinCode = MutableLiveData<Boolean>()
     val isCorrectPinCode: LiveData<Boolean>
         get() = _isCorrectPinCode
+
+    private var _isNavigateToHomeFragment = MutableLiveData(false)
+    val isNavigateToHomeFragment: LiveData<Boolean>
+        get() = _isNavigateToHomeFragment
+
+    private var isBiomAuthCanceled = false
+    private var savedPinCode = MutableLiveData<String>()
+
+    val biometricAuthStateListener = object : IUIBiometricListener {
+
+        override fun onBiometricAuthFailed() {
+            _biometricAuthState.value = BiometricAuthState.Error
+        }
+
+        override fun onBiometricAuthSuccess() {
+            _pinCodeCirclesState.value = PinCodeCirclesState.IsShowAll
+            privacyManager.doneAuthUser()
+            _biometricAuthState.value = BiometricAuthState.Successful
+        }
+    }
+
 
     init {
         getSettings()
         getSavedPinCode()
     }
 
-    private fun getSavedPinCode() {
+    private fun getSettings() {
         viewModelScope.launch {
-            getSavedPinCodeUseCase.invoke(Unit).collectLatest {
-                _savedPinCode.postValue(it)
+            getSettingsUseCase(Unit).collectLatest {
+                _settings.postValue(it)
             }
         }
     }
 
-    private lateinit var num1: String
-    private lateinit var num2: String
-    private lateinit var num3: String
-    private lateinit var num4: String
 
-    private var currentNumbers = mutableListOf<String>()
+    private fun saveSettings() {
+        viewModelScope.launch {
+            _settings.value!!.isBiometricEnabled = true
+            saveSettingsUseCase(_settings.value!!)
+        }
+    }
 
+    private fun getSavedPinCode() {
+        viewModelScope.launch {
+            getSavedPinCodeUseCase.invoke(Unit).collectLatest {
+                savedPinCode.postValue(it)
+            }
+        }
+    }
 
     fun onClickNumber(value: String) {
         when (value) {
@@ -115,19 +168,19 @@ class SecureEntryViewModel @Inject constructor(
         when (list.size) {
             1 -> {
                 num1 = list[0]
-                _pinCodeCirclesState.value = PinCodeCirclesState.IsShowOne
+                _pinCodeCirclesState.value = PinCodeCirclesState.IsShowFirst
             }
             2 -> {
                 num2 = list[1]
-                _pinCodeCirclesState.value = PinCodeCirclesState.IsShowTwo
+                _pinCodeCirclesState.value = PinCodeCirclesState.IsShowSecond
             }
             3 -> {
                 num3 = list[2]
-                _pinCodeCirclesState.value = PinCodeCirclesState.IsShowThree
+                _pinCodeCirclesState.value = PinCodeCirclesState.IsShowThird
             }
             4 -> {
                 num4 = list[3]
-                _pinCodeCirclesState.value = PinCodeCirclesState.IsShowFour
+                _pinCodeCirclesState.value = PinCodeCirclesState.IsShowFourth
                 _userPinCode.value = num1 + num2 + num3 + num4
             }
             else -> throw IllegalArgumentException("Too much list size")
@@ -136,7 +189,11 @@ class SecureEntryViewModel @Inject constructor(
 
     fun validateEnteredPinCode(pinCode: String) {
         if (pinCode == savedPinCode.value) {
-            privacyManager.doneAuthUserByPinCode()
+            if (isBiomAuthCanceled) {
+                privacyManager.doneAuthUser()
+            } else {
+                privacyManager.doneAuthUserByPinCode()
+            }
             _isCorrectPinCode.value = true
         } else {
             _isCorrectPinCode.value = false
@@ -154,11 +211,68 @@ class SecureEntryViewModel @Inject constructor(
 
     }
 
-    private fun getSettings() {
-        viewModelScope.launch {
-            getSettingsUseCase(Unit).collectLatest {
-                _settings.postValue(it)
+    fun onClickBiometricBtn() {
+        showBiometricAuth(false)
+        resetIsShowBiometricAuth()
+        saveSettings()
+    }
+
+    fun onClickSignOut() {
+        _uiDialog.value = UIDialog(
+            title = R.string.dialog_sign_out_title,
+            desc = R.string.dialog_sign_out_desc,
+            icon = R.drawable.ic_log_out,
+            positiveButton = UIDialog.UiButton(
+                text = R.string.dialog_sign_out_positive,
+                onClick = {
+                    resetAllUserData()
+                    _uiDialog.value = null
+                }),
+            negativeButton = UIDialog.UiButton(
+                text = R.string.dialog_sign_out_negative,
+                onClick = {
+                    _uiDialog.value = null
+                })
+
+        )
+    }
+
+    fun showBiometricAuth(withDelay: Boolean) {
+        if (withDelay) {
+            viewModelScope.launch {
+                delay(1000)
+                    _isShowBiometricAuth.value = true
+            }
+        } else {
+                _isShowBiometricAuth.value = true
             }
         }
+
+    fun biomAuthDialogCanceled() {
+        isBiomAuthCanceled = true
+    }
+
+    fun resetIsShowBiometricAuth() {
+        _isShowBiometricAuth.value = false
+    }
+
+    fun navigateToHomeFragment() {
+        _isNavigateToHomeFragment.value = true
+    }
+
+    fun doneNavigateToHomeFragment() {
+        _isNavigateToHomeFragment.value = false
+    }
+
+    private fun resetAllUserData() {
+        viewModelScope.launch {
+            firebaseApi.auth.signOut()
+            deleteAllSettingsUseCase(Unit)
+            deleteAllDaysLocalUseCase(Unit)
+
+            delay(150)
+            _isNavigateToHomeFragment.value = true
+        }
+
     }
 }

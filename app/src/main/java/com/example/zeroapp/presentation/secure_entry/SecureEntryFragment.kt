@@ -11,9 +11,14 @@ import androidx.navigation.fragment.findNavController
 import com.example.zeroapp.R
 import com.example.zeroapp.databinding.FragmentSecureEntryBinding
 import com.example.zeroapp.presentation.base.BaseBindingFragment
+import com.example.zeroapp.presentation.base.ui_biometric_dialog.UIBiometricDialog
+import com.example.zeroapp.presentation.base.ui_dialog.UIDialogListener
 import com.example.zeroapp.presentation.pin_code_сreating.PinCodeCirclesState
+import com.example.zeroapp.presentation.summary.BiometricAuthState
 import com.example.zeroapp.util.setToolbarIcon
+import com.google.android.material.transition.MaterialSharedAxis
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 
 @AndroidEntryPoint
@@ -22,6 +27,12 @@ class SecureEntryFragment :
 
     private val viewModel by viewModels<SecureEntryViewModel>()
 
+    @Inject
+    lateinit var uiBiometricDialog: UIBiometricDialog
+
+    private val dialogListener: UIDialogListener by lazy {
+        UIDialogListener(requireContext(), viewModel)
+    }
 
     private val numbersButtons: List<Button> by lazy {
         listOf(
@@ -36,6 +47,13 @@ class SecureEntryFragment :
             binding!!.entryBtnNumber8,
             binding!!.entryBtnNumber9
         )
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        exitTransition = MaterialSharedAxis(MaterialSharedAxis.X, true)
+        reenterTransition = MaterialSharedAxis(MaterialSharedAxis.X, false)
     }
 
     override fun onCreateView(
@@ -53,6 +71,8 @@ class SecureEntryFragment :
     }
 
     private fun setupBinding(binding: FragmentSecureEntryBinding) {
+        dialogListener.collect(this)
+
         numbersButtons.forEach { button ->
             button.setOnClickListener {
                 val value = button.text.toString()
@@ -60,23 +80,62 @@ class SecureEntryFragment :
             }
         }
 
-        viewModel.savedPinCode.observe(viewLifecycleOwner){
-            it?.let { savedPin ->
-                if (savedPin.length != 4) {
-                    findNavController().navigate(SecureEntryFragmentDirections.actionSecureEntryFragmentToSummaryFragment())
+        binding.biomAuthImage.setOnClickListener {
+            viewModel.onClickBiometricBtn()
+        }
+
+        binding.entryExitFromAccText.setOnClickListener {
+            viewModel.onClickSignOut()
+        }
+
+
+        viewModel.isNavigateToHomeFragment.observe(viewLifecycleOwner) {
+            if (it) {
+                findNavController().navigate(
+                    SecureEntryFragmentDirections.actionSecureEntryFragmentToSummaryFragment()
+                )
+                viewModel.doneNavigateToHomeFragment()
+            }
+        }
+
+        viewModel.biometricAuthState.observe(viewLifecycleOwner) {
+            it?.let { state ->
+                when (state) {
+                    is BiometricAuthState.Successful -> viewModel.navigateToHomeFragment()
+                    is BiometricAuthState.Error -> viewModel.biomAuthDialogCanceled()
                 }
+            }
+        }
+
+        viewModel.settings.observe(viewLifecycleOwner) {
+            it?.let { settings ->
+                if (!settings.isPinCodeEnabled && !settings.isBiometricEnabled) {
+                    viewModel.navigateToHomeFragment()
+                }
+                if (settings.isBiometricEnabled) {
+                    viewModel.showBiometricAuth(withDelay = true)
+                    viewModel.resetIsShowBiometricAuth()
+                }
+            }
+        }
+
+        viewModel.isShowBiometricAuth.observe(viewLifecycleOwner) {
+            if (it) {
+                uiBiometricDialog.startBiometricAuth(
+                    viewModel.biometricAuthStateListener,
+                    this.requireActivity()
+                )
             }
         }
 
         viewModel.isCorrectPinCode.observe(viewLifecycleOwner) {
             if (it) {
-                findNavController().navigate(SecureEntryFragmentDirections.actionSecureEntryFragmentToSummaryFragment())
+                viewModel.navigateToHomeFragment()
             } else {
                 viewModel.resetEnteredPinCode()
                 Toast.makeText(requireContext(), "Wrong pin-code", Toast.LENGTH_SHORT).show()
             }
         }
-
 
         viewModel.userPinCode.observe(viewLifecycleOwner) {
             it?.let { pinCode ->
@@ -89,26 +148,31 @@ class SecureEntryFragment :
         viewModel.pinCodeCirclesState.observe(viewLifecycleOwner) {
             it?.let { state ->
                 when (state) {
-
                     is PinCodeCirclesState.IsShowNone -> {
                         binding.entryCircle1.setImageResource(R.drawable.ic_outline_outlined)
                         binding.entryCircle2.setImageResource(R.drawable.ic_outline_outlined)
                         binding.entryCircle3.setImageResource(R.drawable.ic_outline_outlined)
                         binding.entryCircle4.setImageResource(R.drawable.ic_outline_outlined)
                     }
-
-                    is PinCodeCirclesState.IsShowOne -> {
+                    is PinCodeCirclesState.IsShowFirst -> {
                         binding.entryCircle1.setImageResource(R.drawable.ic_circle_filled)
                     }
-                    is PinCodeCirclesState.IsShowTwo -> {
+                    is PinCodeCirclesState.IsShowSecond -> {
                         binding.entryCircle2.setImageResource(R.drawable.ic_circle_filled)
                     }
-                    is PinCodeCirclesState.IsShowThree -> {
+                    is PinCodeCirclesState.IsShowThird -> {
                         binding.entryCircle3.setImageResource(R.drawable.ic_circle_filled)
                     }
-                    is PinCodeCirclesState.IsShowFour -> {
+                    is PinCodeCirclesState.IsShowFourth -> {
                         binding.entryCircle4.setImageResource(R.drawable.ic_circle_filled)
                     }
+                    is PinCodeCirclesState.IsShowAll -> {
+                        binding.entryCircle1.setImageResource(R.drawable.ic_circle_filled)
+                        binding.entryCircle2.setImageResource(R.drawable.ic_circle_filled)
+                        binding.entryCircle3.setImageResource(R.drawable.ic_circle_filled)
+                        binding.entryCircle4.setImageResource(R.drawable.ic_circle_filled)
+                    }
+
                 }
             }
         }

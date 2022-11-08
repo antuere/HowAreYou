@@ -21,13 +21,14 @@ interface DayRepository {
 
     suspend fun deleteDay(id: Long)
 
-    suspend fun deleteAllDays()
+    suspend fun deleteAllDaysLocal()
+
+    suspend fun deleteAllDaysRemote()
 
     suspend fun insert(day: Day)
 
     suspend fun update(day: Day)
 
     fun refreshRemoteData()
-
 
 }
