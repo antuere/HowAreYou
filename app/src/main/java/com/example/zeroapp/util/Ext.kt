@@ -3,6 +3,8 @@ package com.example.zeroapp.util
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
+import android.view.View
+import android.view.animation.AnimationUtils
 import androidx.annotation.AttrRes
 import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
@@ -24,12 +26,17 @@ fun Fragment.setToolbarIcon(@DrawableRes resId: Int) {
     mainActivity?.toolbar?.setNavigationIcon(resId)
 }
 
+fun Fragment.startOnClickAnimation(view: View) {
+    view.startAnimation(AnimationUtils.loadAnimation(requireContext(), R.anim.on_click_anim))
+}
+
 fun Fragment.createSharedElementEnterTransition() = MaterialContainerTransform().apply {
     drawingViewId = R.id.myNavHostFragment
     duration = resources.getInteger(R.integer.duration_normal).toLong()
     scrimColor = Color.TRANSPARENT
     setAllContainerColors(requireContext().themeColor(com.google.android.material.R.attr.colorOnPrimary))
 }
+
 
 fun <T> LiveData<T>.toMutableLiveData(): MutableLiveData<T> {
     val mediatorLiveData = MediatorLiveData<T>()

@@ -21,8 +21,8 @@ class PinCodeDialogViewModel @Inject constructor(
     private val savePinCodeUseCase: SavePinCodeUseCase,
 ) : ViewModel() {
 
-    private var _userPinCode = MutableLiveData<String>()
-    val userPinCode: LiveData<String>
+    private var _userPinCode = MutableLiveData<String?>()
+    val userPinCode: LiveData<String?>
         get() = _userPinCode
 
     private var _pinCodeCirclesState = MutableLiveData<PinCodeCirclesState>()
@@ -135,6 +135,16 @@ class PinCodeDialogViewModel @Inject constructor(
             delay(100)
 
             navigateUp()
+        }
+    }
+
+    fun resetEnteredPinCode() {
+        viewModelScope.launch {
+            delay(100)
+
+            _userPinCode.value = null
+            currentNumbers.clear()
+            _pinCodeCirclesState.value = PinCodeCirclesState.IsShowNone
         }
     }
 

@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -13,6 +12,7 @@ import com.example.zeroapp.databinding.FragmentLoginEmailBinding
 import com.example.zeroapp.presentation.base.BaseBindingFragment
 import com.example.zeroapp.util.createSharedElementEnterTransition
 import com.example.zeroapp.util.setToolbarIcon
+import com.example.zeroapp.util.startOnClickAnimation
 import com.google.android.material.transition.MaterialSharedAxis
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -58,10 +58,12 @@ class LoginEmailFragment : BaseBindingFragment<FragmentLoginEmailBinding>(Fragme
             }
 
             signUpHint.setOnClickListener {
+                startOnClickAnimation(it)
                 findNavController().navigate(LoginEmailFragmentDirections.actionLoginFragmentToRegisterFragment())
             }
 
             resetPasswordHint.setOnClickListener {
+                startOnClickAnimation(it)
                 findNavController().navigate(LoginEmailFragmentDirections.actionLoginFragmentToResetPasswordFragment())
             }
         }
@@ -70,8 +72,8 @@ class LoginEmailFragment : BaseBindingFragment<FragmentLoginEmailBinding>(Fragme
             state?.let {
                 when (it) {
                     is LoginState.Successful -> findNavController().navigateUp()
-                    is LoginState.EmptyFields -> showToast(getString(it.res))
-                    is LoginState.ErrorFromFireBase -> showToast(it.message)
+                    is LoginState.EmptyFields -> showSnackBar(stringResId = it.res)
+                    is LoginState.ErrorFromFireBase -> showSnackBarByString(string = it.message)
                 }
                 viewModel.nullifyState()
             }
@@ -79,19 +81,10 @@ class LoginEmailFragment : BaseBindingFragment<FragmentLoginEmailBinding>(Fragme
 
     }
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         postponeEnterTransition()
         view.doOnPreDraw {
             startPostponedEnterTransition()
         }
-    }
-
-    private fun showToast(message: String) {
-        Toast.makeText(
-            requireContext(),
-            message,
-            Toast.LENGTH_SHORT
-        ).show()
     }
 }

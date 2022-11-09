@@ -139,7 +139,7 @@ class SettingsViewModel @Inject constructor(
 
     fun resetBiometricAuth() {
         privacyManager.resetAuthUserByBiometric()
-        _biometricAuthState.value = null
+        nullifyBiometricAuthState()
     }
 
     fun resetPinCodeAuth() {
@@ -150,6 +150,10 @@ class SettingsViewModel @Inject constructor(
 
             resetPinCodeUseCase(Unit)
         }
+    }
+
+    fun nullifyBiometricAuthState() {
+        _biometricAuthState.value = null
     }
 
     fun nullifyIsPinCodeCreated() {

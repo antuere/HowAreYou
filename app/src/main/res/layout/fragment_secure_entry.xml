@@ -4,9 +4,20 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#BBDFF4"
+        android:background="@color/white"
         tools:theme="@style/Theme.ZeroApp">
 
+
+    <ImageView
+            android:id="@+id/entry_icon_app"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/icon_app"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            android:layout_marginTop="@dimen/margin_high" />
 
     <TextView
             android:id="@+id/entry_enter_pass_text"
@@ -14,12 +25,11 @@
             android:layout_height="wrap_content"
             android:text="@string/enter_a_password"
             android:textSize="@dimen/textSize_small"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/entry_icon_app"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintVertical_bias="0.15" />
+            android:layout_marginTop="@dimen/margin_small"
+            app:layout_constraintHorizontal_bias="0.5" />
 
     <TextView
             android:id="@+id/entry_exit_from_acc_text"
@@ -27,11 +37,22 @@
             android:layout_height="wrap_content"
             android:text="@string/sign_out"
             android:textSize="@dimen/textSize_small"
-            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="@dimen/margin_normal_one"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintVertical_bias="0.85" />
+            app:layout_constraintVertical_bias="0.85"
+            app:layout_constraintTop_toBottomOf="@+id/entry_btn_number_0" />
+
+    <TextView
+            android:id="@+id/entry_clear_pin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/clear_pin"
+            android:textSize="@dimen/textSize_small"
+            android:layout_marginTop="@dimen/margin_normal_one"
+            app:layout_constraintEnd_toEndOf="@+id/entry_btn_number_9"
+            app:layout_constraintTop_toBottomOf="@+id/entry_btn_number_9"
+            app:layout_constraintStart_toStartOf="@+id/entry_btn_number_9" />
 
     <ImageView
             android:id="@+id/entry_circle_1"

@@ -14,6 +14,7 @@ import com.example.zeroapp.presentation.base.BaseBindingFragment
 import com.example.zeroapp.presentation.base.ui_dialog.UIDialogListener
 import com.example.zeroapp.util.SmileProvider
 import com.example.zeroapp.util.createSharedElementEnterTransition
+import com.example.zeroapp.util.mainActivity
 import com.example.zeroapp.util.setToolbarIcon
 import com.google.android.material.appbar.MaterialToolbar
 import dagger.hilt.android.AndroidEntryPoint
@@ -23,16 +24,12 @@ class DetailFragment : BaseBindingFragment<FragmentDetailBinding>(FragmentDetail
 
     private val viewModel by viewModels<DetailViewModel>()
 
-    private val mainActivity: MainActivity by lazy {
-        requireActivity() as MainActivity
-    }
-
     private val dialogListener: UIDialogListener by lazy {
         UIDialogListener(requireContext(), viewModel)
     }
 
     private val toolbar: MaterialToolbar by lazy {
-        mainActivity.toolbar!!
+        mainActivity!!.toolbar!!
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,7 +41,6 @@ class DetailFragment : BaseBindingFragment<FragmentDetailBinding>(FragmentDetail
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         setToolbarIcon(R.drawable.ic_back)
         dialogListener.collect(this)
-
         toolbar.isTitleCentered = false
 
         viewModel.currentDay.observe(viewLifecycleOwner) {
@@ -69,7 +65,7 @@ class DetailFragment : BaseBindingFragment<FragmentDetailBinding>(FragmentDetail
     }
 
     private fun buildMenu() {
-        val menuHost: MenuHost = mainActivity
+        val menuHost: MenuHost = mainActivity!!
         menuHost.addMenuProvider(object : MenuProvider {
 
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
@@ -101,7 +97,7 @@ class DetailFragment : BaseBindingFragment<FragmentDetailBinding>(FragmentDetail
                     R.id.fav_item -> {
                         val anim =
                             AnimationUtils.loadAnimation(requireContext(), R.anim.scale_button)
-                        mainActivity.findViewById<View>(R.id.fav_item).startAnimation(anim)
+                        mainActivity!!.findViewById<View>(R.id.fav_item).startAnimation(anim)
                         viewModel.onClickFavoriteButton()
 
                         if (menuItem.isChecked) {

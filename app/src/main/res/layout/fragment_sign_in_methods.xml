@@ -9,6 +9,17 @@
         tools:theme="@style/Theme.ZeroApp">
 
 
+    <ImageView
+            android:id="@+id/entry_icon_app"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/icon_app"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            android:layout_marginTop="@dimen/margin_high" />
+
     <Button
             android:id="@+id/button_email_method"
             android:transitionName="@string/transition_name_for_sign_in"
@@ -16,14 +27,13 @@
             android:layout_marginEnd="@dimen/margin_high"
             android:layout_marginStart="@dimen/margin_high"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_high"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             android:text="@string/login_email"
             app:icon="@drawable/ic_email"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintVertical_bias="0.35" />
+            app:layout_constraintTop_toBottomOf="@+id/entry_icon_app" />
 
     <Button
             android:id="@+id/button_google_method"

@@ -9,6 +9,7 @@ import android.widget.Button
 import androidx.fragment.app.viewModels
 import com.example.zeroapp.R
 import com.example.zeroapp.databinding.FragmentPinCodeCreatingBinding
+import com.example.zeroapp.util.startOnClickAnimation
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -68,6 +69,11 @@ class PinCodeDialogFragment : BottomSheetDialogFragment() {
             }
         }
 
+        binding!!.createClearPin.setOnClickListener {
+            startOnClickAnimation(it)
+            viewModel.resetEnteredPinCode()
+        }
+
         viewModel.isNavigateUp.observe(viewLifecycleOwner) {
             it?.let {
                 if (it) {
@@ -100,7 +106,13 @@ class PinCodeDialogFragment : BottomSheetDialogFragment() {
                     is PinCodeCirclesState.IsShowFourth -> {
                         binding!!.circle4.setImageResource(R.drawable.ic_circle_filled)
                     }
-                    is PinCodeCirclesState.IsShowNone, PinCodeCirclesState.IsShowAll -> {}
+                    is PinCodeCirclesState.IsShowNone -> {
+                        binding!!.circle1.setImageResource(R.drawable.ic_outline_outlined)
+                        binding!!.circle2.setImageResource(R.drawable.ic_outline_outlined)
+                        binding!!.circle3.setImageResource(R.drawable.ic_outline_outlined)
+                        binding!!.circle4.setImageResource(R.drawable.ic_outline_outlined)
+                    }
+                    is PinCodeCirclesState.IsShowAll -> {}
                 }
 
             }

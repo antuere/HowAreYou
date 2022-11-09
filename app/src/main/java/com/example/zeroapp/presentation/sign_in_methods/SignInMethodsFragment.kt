@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.viewModels
@@ -52,9 +51,8 @@ class SignInMethodsFragment :
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        setToolbarIcon(R.drawable.ic_back)
-
         binding = this.inflater(inflater, container, false)
+        setToolbarIcon(R.drawable.ic_back)
 
         binding!!.buttonEmailMethod.setOnClickListener {
             val transitionName = getString(R.string.transition_name_for_sign_in)
@@ -74,7 +72,6 @@ class SignInMethodsFragment :
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
         postponeEnterTransition()
         view.doOnPreDraw {
             startPostponedEnterTransition()
@@ -85,21 +82,11 @@ class SignInMethodsFragment :
             state?.let {
                 when (it) {
                     is SignInMethodsState.UserAuthorized -> findNavController().navigateUp()
-                    is SignInMethodsState.Error -> showToast(it.message)
+                    is SignInMethodsState.Error -> showSnackBarByString(string = it.message)
                 }
                 viewModel.nullifyState()
             }
         }
 
     }
-
-    private fun showToast(message: String) {
-        Toast.makeText(
-            requireContext(),
-            message,
-            Toast.LENGTH_SHORT
-        ).show()
-    }
-
-
 }

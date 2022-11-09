@@ -11,6 +11,7 @@ import com.example.zeroapp.presentation.base.BaseBindingFragment
 import com.example.zeroapp.util.SmileProvider
 import com.example.zeroapp.util.createSharedElementEnterTransition
 import com.example.zeroapp.util.setToolbarIcon
+import com.example.zeroapp.util.startOnClickAnimation
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -42,6 +43,7 @@ class AddDayFragment : BaseBindingFragment<FragmentAddDayBinding>(FragmentAddDay
 
     private fun setSmileListeners(button: ImageButton) {
         button.setOnClickListener {
+            startOnClickAnimation(it)
             val dayText = binding?.textDescribeDay?.text.toString()
             val imageName = SmileProvider.getSmileNameFromBtnId(it.id)
 

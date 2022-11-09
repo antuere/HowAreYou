@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.doOnPreDraw
 import androidx.core.view.updateLayoutParams
@@ -48,9 +47,7 @@ class SettingsFragment :
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         binding = this.inflater(inflater, container, false)
 
@@ -91,6 +88,8 @@ class SettingsFragment :
                             binding!!.settingFingerPrintSwitch.isChecked,
                             binding!!.settingPinCodeSwitch.isChecked
                         )
+                        viewModel.nullifyBiometricAuthState()
+                        showSnackBar(stringResId = R.string.biom_auth_create_success)
                     }
                     is BiometricAuthState.Error -> binding!!.settingFingerPrintSwitch.isChecked =
                         false
@@ -103,7 +102,7 @@ class SettingsFragment :
                 binding!!.settingPinCodeSwitch.isChecked = value
                 if (value) {
                     changeUiWhenPinEnabled(container!!)
-                    Toast.makeText(requireContext(), "Pin code created", Toast.LENGTH_SHORT).show()
+                    showSnackBar(stringResId = R.string.pin_code_create_success)
                     viewModel.nullifyIsPinCodeCreated()
                 }
             }
@@ -112,8 +111,7 @@ class SettingsFragment :
         viewModel.isStartSetBiometric.observe(viewLifecycleOwner) {
             if (it) {
                 uiBiometricDialog.startBiometricAuth(
-                    viewModel.biometricAuthStateListener,
-                    this.requireActivity()
+                    viewModel.biometricAuthStateListener, this.requireActivity()
                 )
                 viewModel.resetIsStartSetBiometric()
             }
@@ -123,10 +121,8 @@ class SettingsFragment :
             if (it) {
                 val pinCodeBottomSheet =
                     PinCodeDialogFragment.newInstance(viewModel.pinCodeCreatingListener)
-
                 pinCodeBottomSheet.show(
-                    requireActivity().supportFragmentManager,
-                    PinCodeDialogFragment.TAG
+                    requireActivity().supportFragmentManager, PinCodeDialogFragment.TAG
                 )
 
                 viewModel.resetIsStartSetPinCode()
@@ -158,8 +154,7 @@ class SettingsFragment :
             val transitionName = getString(R.string.transition_name_for_sign_in_methods)
             val extras = FragmentNavigatorExtras(binding!!.buttonSignIn to transitionName)
             findNavController().navigate(
-                SettingsFragmentDirections.actionSettingsFragmentToSignInMethodsFragment(),
-                extras
+                SettingsFragmentDirections.actionSettingsFragmentToSignInMethodsFragment(), extras
             )
         }
 
@@ -250,8 +245,7 @@ class SettingsFragment :
     private fun resetBiometricAuth() {
         viewModel.resetBiometricAuth()
         viewModel.saveSettings(
-            binding!!.settingFingerPrintSwitch.isChecked,
-            binding!!.settingPinCodeSwitch.isChecked
+            binding!!.settingFingerPrintSwitch.isChecked, binding!!.settingPinCodeSwitch.isChecked
         )
     }
 
@@ -262,5 +256,4 @@ class SettingsFragment :
         viewModel.resetBiometricAuth()
         viewModel.resetPinCodeAuth()
     }
-
 }

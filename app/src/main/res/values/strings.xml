@@ -61,7 +61,7 @@
     <string name="dialog_warning_message">We have noticed a drop in your mood in the last 5 days, are you all right?</string>
     <string name="dialog_warning_positive">Yes, I\'m fine</string>
     <string name="dialog_warning_negative">No, not really</string>
-    <string name="dialog_sign_out_title">Sign out?</string>
+    <string name="dialog_sign_out_title">Sign out</string>
     <string name="dialog_sign_out_desc">All your data will be deleted on this device, to restore them, log in to your account.</string>
     <string name="dialog_sign_out_positive">Sign out</string>
     <string name="dialog_sign_out_negative">Cancel</string>
@@ -95,11 +95,17 @@
     <string name="sign_in">Sign in</string>
     <string name="sign_out">Sign out</string>
     <string name="create_a_password">Create a password</string>
+    <string name="enable_biometric_authentication">Enable biometric authentication</string>
+    <string name="enable_pin_code">Enable PIN code</string>
+    <string name="pin_code_create_success">PIN code set successfully</string>
+    <string name="biom_auth_create_success">Biometrics set successfully</string>
 
     <!-- Home fragment -->
 
     <!-- Secure entry fragment -->
     <string name="enter_a_password">Enter password</string>
+    <string name="clear_pin">Clear</string>
+    <string name="wrong_pin_code">Wrong PIN code</string>
 
 
     <!-- Favorites fragment -->
@@ -139,7 +145,5 @@
     <string name="october">October</string>
     <string name="november">November</string>
     <string name="december">December</string>
-    <string name="enable_biometric_authentication">Enable biometric authentication</string>
-    <string name="enable_pin_code">Enable pin code</string>
 
 </resources>

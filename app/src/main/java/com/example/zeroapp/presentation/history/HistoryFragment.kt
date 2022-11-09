@@ -11,13 +11,13 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.transition.TransitionManager
 import antuere.domain.dto.ToggleBtnState
-import com.example.zeroapp.MainActivity
 import com.example.zeroapp.R
 import com.example.zeroapp.databinding.FragmentHistoryBinding
 import com.example.zeroapp.presentation.base.BaseBindingFragment
 import com.example.zeroapp.presentation.base.ui_date_picker.UIDatePickerListener
 import com.example.zeroapp.presentation.base.ui_dialog.UIDialogListener
 import com.example.zeroapp.presentation.history.adapter.DayAdapter
+import com.example.zeroapp.util.mainActivity
 import com.example.zeroapp.util.setManagerSpanCount
 import com.google.android.material.transition.MaterialFade
 import com.google.android.material.transition.MaterialFadeThrough
@@ -34,10 +34,6 @@ class HistoryFragment :
 
     private val adapter: DayAdapter by lazy {
         DayAdapter(viewModel.dayClickListener, myAnalystForHistory)
-    }
-
-    private val mainActivity: MainActivity by lazy {
-        requireActivity() as MainActivity
     }
 
     private val viewModel by viewModels<HistoryViewModel>()
@@ -69,7 +65,7 @@ class HistoryFragment :
     ): View {
         binding = FragmentHistoryBinding.inflate(inflater, container, false)
 
-        val manager = GridLayoutManager(mainActivity, 4)
+        val manager = GridLayoutManager(mainActivity!!, 4)
 
         binding!!.dayList.layoutManager = manager
         binding!!.dayList.adapter = adapter
@@ -161,7 +157,7 @@ class HistoryFragment :
     }
 
     private fun buildMenu() {
-        val menuHost: MenuHost = mainActivity
+        val menuHost: MenuHost = mainActivity!!
         menuHost.addMenuProvider(object : MenuProvider {
 
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {

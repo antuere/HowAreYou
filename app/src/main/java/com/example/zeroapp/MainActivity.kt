@@ -26,7 +26,10 @@ import timber.log.Timber
 class MainActivity : AppCompatActivity() {
 
     private var binding: ActivityMainBinding? = null
-    private var bottomNavView: BottomNavigationView? = null
+    private var _bottomNavView: BottomNavigationView? = null
+    val bottomNavView: BottomNavigationView?
+        get() = _bottomNavView
+
     private var navController: NavController? = null
 
     private val viewModel by viewModels<SummaryViewModel>()
@@ -52,7 +55,7 @@ class MainActivity : AppCompatActivity() {
         toolbar = binding.toolBarApp
         setSupportActionBar(toolbar)
 
-        bottomNavView = binding.bottomView
+        _bottomNavView = binding.bottomView
 
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.myNavHostFragment) as NavHostFragment
@@ -95,7 +98,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         setupActionBarWithNavController(navController!!, appBarConfiguration)
-        bottomNavView?.setupWithNavController(navController!!)
+        _bottomNavView?.setupWithNavController(navController!!)
 
         Timber.plant(Timber.DebugTree())
     }
@@ -105,15 +108,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun hideBottomBar() {
-        bottomNavView?.visibility = View.INVISIBLE
+        _bottomNavView?.visibility = View.INVISIBLE
     }
 
     private fun goneBottomBar() {
-        bottomNavView?.visibility = View.GONE
+        _bottomNavView?.visibility = View.GONE
     }
 
     private fun showBottomBar() {
-        bottomNavView?.visibility = View.VISIBLE
+        _bottomNavView?.visibility = View.VISIBLE
     }
 
     private fun goneAppBar() {
@@ -124,7 +127,7 @@ class MainActivity : AppCompatActivity() {
         lifecycleScope.launch {
             delay(100)
             toolbar!!.visibility = View.VISIBLE
-            bottomNavView?.visibility = View.VISIBLE
+            _bottomNavView?.visibility = View.VISIBLE
         }
 
     }

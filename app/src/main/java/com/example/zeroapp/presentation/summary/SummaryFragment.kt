@@ -13,7 +13,6 @@ import com.example.zeroapp.databinding.FragmentSummaryBinding
 import com.example.zeroapp.presentation.base.BaseBindingFragment
 import com.example.zeroapp.presentation.base.ui_dialog.UIDialogListener
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.transition.MaterialFadeThrough
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -75,10 +74,11 @@ class SummaryFragment :
 
         viewModel.isShowSnackBar.observe(viewLifecycleOwner) {
             if (it) {
-                Snackbar.make(binding!!.root, R.string.snack_bar_warning_negative, 3000)
-                    .setAnchorView(binding!!.fabAddButton)
-                    .show()
-
+                showSnackBar(
+                    anchorView = binding!!.fabAddButton,
+                    stringResId = R.string.snack_bar_warning_negative,
+                    duration = 3000
+                )
                 viewModel.resetSnackBar()
             }
         }

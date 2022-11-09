@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.zeroapp.R
@@ -32,10 +31,8 @@ class RegisterEmailFragment :
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
-        setToolbarIcon(R.drawable.ic_back)
-
         binding = this.inflater(inflater, container, false)
+        setToolbarIcon(R.drawable.ic_back)
 
         binding!!.apply {
             setupBinding(this)
@@ -58,28 +55,16 @@ class RegisterEmailFragment :
             }
         }
 
-
-
         viewModel.registerState.observe(viewLifecycleOwner) { state ->
             state?.let {
                 when (it) {
                     is RegisterState.Successful -> findNavController().navigateUp()
-                    is RegisterState.EmptyFields -> showToast(getString(it.res))
-                    is RegisterState.PasswordsError -> showToast(getString(it.res))
-                    is RegisterState.ErrorFromFireBase -> showToast(it.message)
+                    is RegisterState.EmptyFields -> showSnackBar(stringResId = it.res)
+                    is RegisterState.PasswordsError -> showSnackBar(stringResId = it.res)
+                    is RegisterState.ErrorFromFireBase -> showSnackBarByString(string = it.message)
                 }
                 viewModel.nullifyState()
             }
-
         }
     }
-
-    private fun showToast(message: String) {
-        Toast.makeText(
-            requireContext(),
-            message,
-            Toast.LENGTH_SHORT
-        ).show()
-    }
-
 }

@@ -16,6 +16,7 @@ import com.example.zeroapp.presentation.base.ui_dialog.UIDialogListener
 import com.example.zeroapp.presentation.pin_code_сreating.PinCodeCirclesState
 import com.example.zeroapp.presentation.summary.BiometricAuthState
 import com.example.zeroapp.util.setToolbarIcon
+import com.example.zeroapp.util.startOnClickAnimation
 import com.google.android.material.transition.MaterialSharedAxis
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -80,11 +81,18 @@ class SecureEntryFragment :
             }
         }
 
+        binding.entryClearPin.setOnClickListener {
+            startOnClickAnimation(it)
+            viewModel.resetEnteredPinCode()
+        }
+
         binding.biomAuthImage.setOnClickListener {
+            startOnClickAnimation(it)
             viewModel.onClickBiometricBtn()
         }
 
         binding.entryExitFromAccText.setOnClickListener {
+            startOnClickAnimation(it)
             viewModel.onClickSignOut()
         }
 
@@ -133,7 +141,7 @@ class SecureEntryFragment :
                 viewModel.navigateToHomeFragment()
             } else {
                 viewModel.resetEnteredPinCode()
-                Toast.makeText(requireContext(), "Wrong pin-code", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), getString(R.string.wrong_pin_code), Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -172,7 +180,6 @@ class SecureEntryFragment :
                         binding.entryCircle3.setImageResource(R.drawable.ic_circle_filled)
                         binding.entryCircle4.setImageResource(R.drawable.ic_circle_filled)
                     }
-
                 }
             }
         }
