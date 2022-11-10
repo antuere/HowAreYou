@@ -2,37 +2,9 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <!--    <group-->
-    <!--            android:id="@+id/overflow_group_first"-->
-    <!--            android:checkableBehavior="single">-->
     <item
             android:id="@+id/filter_item"
             android:title="@string/filter_title"
             app:showAsAction="never" />
-
-    <!--    </group>-->
-
-    <!--    <group-->
-    <!--            android:id="@+id/overflow_group_second"-->
-    <!--            android:checkableBehavior="single">-->
-
-    <!--        <item-->
-    <!--                android:id="@+id/all_days_item"-->
-    <!--                android:orderInCategory="1"-->
-    <!--                android:title="@string/all_days_title"-->
-    <!--                app:showAsAction="never" />-->
-
-    <!--        <item-->
-    <!--                android:id="@+id/last_week_item"-->
-    <!--                android:orderInCategory="2"-->
-    <!--                android:title="@string/last_week_title"-->
-    <!--                app:showAsAction="never" />-->
-    <!--        <item-->
-    <!--                android:id="@+id/current_month_item"-->
-    <!--                android:orderInCategory="3"-->
-    <!--                android:title="@string/current_month_title"-->
-    <!--                app:showAsAction="never" />-->
-
-    <!--    </group>-->
 
 </menu>

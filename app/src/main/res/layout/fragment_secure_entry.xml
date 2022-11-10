@@ -17,7 +17,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            android:layout_marginTop="@dimen/margin_high" />
+            android:layout_marginTop="@dimen/margin_normal" />
 
     <TextView
             android:id="@+id/entry_enter_pass_text"
@@ -28,7 +28,6 @@
             app:layout_constraintTop_toBottomOf="@+id/entry_icon_app"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginTop="@dimen/margin_small"
             app:layout_constraintHorizontal_bias="0.5" />
 
     <TextView
@@ -42,6 +41,17 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintVertical_bias="0.85"
             app:layout_constraintTop_toBottomOf="@+id/entry_btn_number_0" />
+
+    <com.google.android.material.divider.MaterialDivider
+            android:id="@+id/entry_divider"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/entry_exit_from_acc_text"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
 
     <TextView
             android:id="@+id/entry_clear_pin"

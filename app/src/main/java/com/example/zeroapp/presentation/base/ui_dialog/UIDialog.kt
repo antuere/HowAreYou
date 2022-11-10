@@ -8,7 +8,8 @@ data class UIDialog(
     @StringRes val desc: Int,
     @DrawableRes val icon: Int,
     val positiveButton: UiButton,
-    val negativeButton: UiButton
+    val negativeButton: UiButton,
+    val neutralButton : UiButton? = null
 ) {
     data class UiButton(
         @StringRes val text: Int,

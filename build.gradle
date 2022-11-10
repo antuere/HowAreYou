@@ -28,6 +28,7 @@ buildscript {
         version_junit_ext = "1.1.3"
         version_kotlin = "1.7.10"
         version_kotlin_coroutines = "1.4.1"
+        version_leak_canary = "2.9.1"
         version_lifecycle = "2.5.1"
         version_lifecycle_extensions = "2.2.0"
         version_material = "1.7.0"

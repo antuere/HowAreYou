@@ -20,13 +20,15 @@ class SettingsDataStore(context: Context, name: String) {
         val SETTINGS_BIOMETRIC_KEY = booleanPreferencesKey("biometric_auth")
         val SETTINGS_PIN_CODE_KEY = booleanPreferencesKey("pin_code_auth")
         val SETTINGS_PIN_CODE_SAVED_KEY = stringPreferencesKey("password_pin_code")
+        val SETTINGS_WORRIED_DIALOG_KEY = booleanPreferencesKey("worried_dialog")
     }
 
     val settings: Flow<SettingsEntity>
         get() = settingsDataStore.data.map { preferences ->
             val savedBiometricVal = preferences[SETTINGS_BIOMETRIC_KEY] ?: false
             val savedPinCodeVal = preferences[SETTINGS_PIN_CODE_KEY] ?: false
-            SettingsEntity(savedBiometricVal, savedPinCodeVal)
+            val savedWorriedDialogVal = preferences[SETTINGS_WORRIED_DIALOG_KEY] ?: true
+            SettingsEntity(savedBiometricVal, savedPinCodeVal, savedWorriedDialogVal)
         }
 
     val pinCode: Flow<String>
@@ -38,6 +40,7 @@ class SettingsDataStore(context: Context, name: String) {
         settingsDataStore.edit { preferences ->
             preferences[SETTINGS_BIOMETRIC_KEY] = settings.isBiometricEnabled
             preferences[SETTINGS_PIN_CODE_KEY] = settings.isPinCodeEnabled
+            preferences[SETTINGS_WORRIED_DIALOG_KEY] = settings.isShowWorriedDialog
         }
     }
 
@@ -58,6 +61,7 @@ class SettingsDataStore(context: Context, name: String) {
             preferences.remove(SETTINGS_PIN_CODE_SAVED_KEY)
             preferences.remove(SETTINGS_BIOMETRIC_KEY)
             preferences.remove(SETTINGS_PIN_CODE_KEY)
+            preferences.remove(SETTINGS_WORRIED_DIALOG_KEY)
         }
     }
 }

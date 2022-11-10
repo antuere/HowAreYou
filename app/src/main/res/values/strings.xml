@@ -57,10 +57,11 @@
     <!-- Dialogs/SnackBars -->
     <string name="dialog_delete_title">Delete day</string>
     <string name="dialog_delete_message">Deleting permanently this day?</string>
-    <string name="dialog_warning_title">Are you fine?</string>
+    <string name="dialog_warning_title">How are you</string>
     <string name="dialog_warning_message">We have noticed a drop in your mood in the last 5 days, are you all right?</string>
-    <string name="dialog_warning_positive">Yes, I\'m fine</string>
-    <string name="dialog_warning_negative">No, not really</string>
+    <string name="dialog_warning_positive">Yes</string>
+    <string name="dialog_warning_neutral">Don\'t show again</string>
+    <string name="dialog_warning_negative">No</string>
     <string name="dialog_sign_out_title">Sign out</string>
     <string name="dialog_sign_out_desc">All your data will be deleted on this device, to restore them, log in to your account.</string>
     <string name="dialog_sign_out_positive">Sign out</string>
@@ -88,6 +89,7 @@
 
     <!-- Settings fragment -->
     <string name="settings_privacy_text">Privacy</string>
+    <string name="settings_general_text">General</string>
     <string name="sign_in_advice">For a better experience sign in.</string>
     <string name="how_are_you_text">How are you? We hope you all right.</string>
     <string name="hello_user">Hello, dear</string>
@@ -95,8 +97,12 @@
     <string name="sign_in">Sign in</string>
     <string name="sign_out">Sign out</string>
     <string name="create_a_password">Create a password</string>
+    <string name="show_worried_dialog_title">Show worried dialog</string>
+    <string name="show_worried_dialog_desc">Show dialog if mood drop have been noticed in the last 5 days</string>
     <string name="enable_biometric_authentication">Enable biometric authentication</string>
+    <string name="enable_biometric_authentication_desc">Use biometrics to login to the app</string>
     <string name="enable_pin_code">Enable PIN code</string>
+    <string name="enable_pin_code_desc">Use a pin to login to the app</string>
     <string name="pin_code_create_success">PIN code set successfully</string>
     <string name="biom_auth_create_success">Biometrics set successfully</string>
 
@@ -105,7 +111,7 @@
     <!-- Secure entry fragment -->
     <string name="enter_a_password">Enter password</string>
     <string name="clear_pin">Clear</string>
-    <string name="wrong_pin_code">Wrong PIN code</string>
+    <string name="wrong_pin_code">Wrong PIN</string>
 
 
     <!-- Favorites fragment -->
@@ -145,5 +151,8 @@
     <string name="october">October</string>
     <string name="november">November</string>
     <string name="december">December</string>
+
+
+    <string name="leak_canary_test_class_name">assertk.Assert</string>
 
 </resources>

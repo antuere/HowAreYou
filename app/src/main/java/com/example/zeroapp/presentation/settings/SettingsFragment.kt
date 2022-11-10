@@ -51,6 +51,43 @@ class SettingsFragment :
     ): View? {
         binding = this.inflater(inflater, container, false)
 
+        binding!!.settingWorriedDialogSwitch.setOnCheckedChangeListener { _, isChecked ->
+            viewModel.saveShowWorriedDialog(isChecked)
+        }
+
+        binding!!.settingBiomAuthSwitch.setOnCheckedChangeListener { _, isChecked ->
+            when (isChecked) {
+                true -> viewModel.setBiometricAuth()
+                false -> resetBiometricAuth()
+            }
+        }
+
+        binding!!.settingPinCodeSwitch.setOnCheckedChangeListener { _, isChecked ->
+            when (isChecked) {
+                true -> {
+                    viewModel.setPinCodeAuth()
+                }
+                false -> {
+                    binding!!.settingBiomAuthSwitch.isChecked = false
+                    resetPinCodeAuth()
+                    changeUiWhenUserPinDisable(container!!)
+                }
+            }
+        }
+
+        binding!!.buttonSignIn.setOnClickListener {
+            val transitionName = getString(R.string.transition_name_for_sign_in_methods)
+            val extras = FragmentNavigatorExtras(binding!!.buttonSignIn to transitionName)
+            findNavController().navigate(
+                SettingsFragmentDirections.actionSettingsFragmentToSignInMethodsFragment(), extras
+            )
+        }
+
+        binding!!.buttonSignOut.setOnClickListener {
+            viewModel.onSignOutClicked()
+            changeUiWhenUserSignOut(container!!)
+        }
+
         viewModel.updateUserNickname()
         viewModel.checkCurrentUser()
 
@@ -69,7 +106,8 @@ class SettingsFragment :
 
         viewModel.settings.observe(viewLifecycleOwner) {
             it?.let { settings ->
-                binding!!.settingFingerPrintSwitch.isChecked = settings.isBiometricEnabled
+                binding!!.settingBiomAuthSwitch.isChecked = settings.isBiometricEnabled
+                binding!!.settingWorriedDialogSwitch.isChecked = settings.isShowWorriedDialog
                 if (settings.isPinCodeEnabled) {
                     binding!!.settingPinCodeSwitch.isChecked = true
                     changeUiWhenPinEnabled(container!!, withAnimation = false)
@@ -83,15 +121,15 @@ class SettingsFragment :
             it?.let { state ->
                 when (state) {
                     is BiometricAuthState.Successful -> {
-                        binding!!.settingFingerPrintSwitch.isChecked = true
+                        binding!!.settingBiomAuthSwitch.isChecked = true
                         viewModel.saveSettings(
-                            binding!!.settingFingerPrintSwitch.isChecked,
+                            binding!!.settingBiomAuthSwitch.isChecked,
                             binding!!.settingPinCodeSwitch.isChecked
                         )
                         viewModel.nullifyBiometricAuthState()
                         showSnackBar(stringResId = R.string.biom_auth_create_success)
                     }
-                    is BiometricAuthState.Error -> binding!!.settingFingerPrintSwitch.isChecked =
+                    is BiometricAuthState.Error -> binding!!.settingBiomAuthSwitch.isChecked =
                         false
                 }
             }
@@ -127,40 +165,6 @@ class SettingsFragment :
 
                 viewModel.resetIsStartSetPinCode()
             }
-        }
-
-
-        binding!!.settingFingerPrintSwitch.setOnCheckedChangeListener { _, isChecked ->
-            when (isChecked) {
-                true -> viewModel.setBiometricAuth()
-                false -> resetBiometricAuth()
-            }
-        }
-
-        binding!!.settingPinCodeSwitch.setOnCheckedChangeListener { _, isChecked ->
-            when (isChecked) {
-                true -> {
-                    viewModel.setPinCodeAuth()
-                }
-                false -> {
-                    binding!!.settingFingerPrintSwitch.isChecked = false
-                    resetPinCodeAuth()
-                    changeUiWhenUserPinDisable(container!!)
-                }
-            }
-        }
-
-        binding!!.buttonSignIn.setOnClickListener {
-            val transitionName = getString(R.string.transition_name_for_sign_in_methods)
-            val extras = FragmentNavigatorExtras(binding!!.buttonSignIn to transitionName)
-            findNavController().navigate(
-                SettingsFragmentDirections.actionSettingsFragmentToSignInMethodsFragment(), extras
-            )
-        }
-
-        binding!!.buttonSignOut.setOnClickListener {
-            viewModel.onSignOutClicked()
-            changeUiWhenUserSignOut(container!!)
         }
 
         return binding?.root
@@ -217,11 +221,12 @@ class SettingsFragment :
             TransitionManager.beginDelayedTransition(viewGroup, materialFade)
         }
 
-        binding!!.settingFingerPrintSwitch.visibility = View.VISIBLE
-        binding!!.settingFingerPrintText.visibility = View.VISIBLE
+        binding!!.settingBiomAuthSwitch.visibility = View.VISIBLE
+        binding!!.settingBiomAuthTitle.visibility = View.VISIBLE
+        binding!!.settingBiomAuthDesc.visibility = View.VISIBLE
 
         binding!!.materialDividerUnderPrivacy.updateLayoutParams<ConstraintLayout.LayoutParams> {
-            topToBottom = binding!!.settingFingerPrintSwitch.id
+            topToBottom = binding!!.settingBiomAuthSwitch.id
         }
     }
 
@@ -231,8 +236,10 @@ class SettingsFragment :
         }
         TransitionManager.beginDelayedTransition(viewGroup, materialFade)
 
-        binding!!.settingFingerPrintSwitch.visibility = View.INVISIBLE
-        binding!!.settingFingerPrintText.visibility = View.INVISIBLE
+        binding!!.settingBiomAuthSwitch.visibility = View.INVISIBLE
+        binding!!.settingBiomAuthTitle.visibility = View.INVISIBLE
+        binding!!.settingBiomAuthDesc.visibility = View.INVISIBLE
+
         lifecycleScope.launch {
             delay(250L)
             binding!!.materialDividerUnderPrivacy.updateLayoutParams<ConstraintLayout.LayoutParams> {
@@ -245,7 +252,7 @@ class SettingsFragment :
     private fun resetBiometricAuth() {
         viewModel.resetBiometricAuth()
         viewModel.saveSettings(
-            binding!!.settingFingerPrintSwitch.isChecked, binding!!.settingPinCodeSwitch.isChecked
+            binding!!.settingBiomAuthSwitch.isChecked, binding!!.settingPinCodeSwitch.isChecked
         )
     }
 

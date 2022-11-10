@@ -30,14 +30,38 @@ class UIDialogListener(private val context: Context, private val action: IUIDial
             .create()
     }
 
-    fun collect(lifecycleOwner: LifecycleOwner) {
+    private fun buildDialogWithNeutralBtn(uiDialog: UIDialog): AlertDialog {
+        return MaterialAlertDialogBuilder(context)
+            .setTitle(uiDialog.title)
+            .setMessage(uiDialog.desc)
+            .setIcon(uiDialog.icon)
+            .setOnCancelListener {
+                uiDialog.negativeButton.onClick.invoke()
+            }
+            .setNeutralButton(uiDialog.neutralButton!!.text) { _, _ ->
+                uiDialog.neutralButton.onClick.invoke()
+            }
+            .setNegativeButton(uiDialog.negativeButton.text) { _, _ ->
+                uiDialog.negativeButton.onClick.invoke()
+            }
+            .setPositiveButton(uiDialog.positiveButton.text) { _, _ ->
+                uiDialog.positiveButton.onClick.invoke()
+            }
+            .create()
+    }
+
+    fun collect(lifecycleOwner: LifecycleOwner, withNeutralBtn: Boolean = false) {
         lifecycleOwner.lifecycleScope.launch(Dispatchers.Main) {
             action.uiDialog.collectLatest { uiDialog ->
                 if (uiDialog == null) {
                     dialog?.dismiss()
                     dialog = null
                 } else if (dialog == null) {
-                    dialog = buildDialog(uiDialog).also { it.show() }
+                    dialog = if (withNeutralBtn) {
+                        buildDialogWithNeutralBtn(uiDialog).also { it.show() }
+                    } else {
+                        buildDialog(uiDialog).also { it.show() }
+                    }
                 }
 
             }

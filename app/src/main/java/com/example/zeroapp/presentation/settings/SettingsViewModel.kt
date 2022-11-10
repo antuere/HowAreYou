@@ -118,11 +118,20 @@ class SettingsViewModel @Inject constructor(
 
     fun saveSettings(isUseBiometric: Boolean, isUsePinCode: Boolean) {
         viewModelScope.launch {
-            val newSettings = Settings(isUseBiometric, isUsePinCode)
-            saveSettingsUseCase(newSettings)
+            _settings.value!!.isBiometricEnabled = isUseBiometric
+            _settings.value!!.isPinCodeEnabled = isUsePinCode
+
+            saveSettingsUseCase(_settings.value!!)
         }
     }
 
+    fun saveShowWorriedDialog(isShowWorriedDialog : Boolean) {
+        viewModelScope.launch {
+            _settings.value!!.isShowWorriedDialog = isShowWorriedDialog
+
+            saveSettingsUseCase(_settings.value!!)
+        }
+    }
 
     fun setBiometricAuth() {
         if (!privacyManager.isUserAuthByBiometric) {

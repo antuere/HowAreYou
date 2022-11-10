@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.zeroapp.R
@@ -140,8 +139,11 @@ class SecureEntryFragment :
             if (it) {
                 viewModel.navigateToHomeFragment()
             } else {
+                showSnackBar(
+                    stringResId = R.string.wrong_pin_code,
+                    anchorView = binding.entryDivider
+                )
                 viewModel.resetEnteredPinCode()
-                Toast.makeText(requireContext(), getString(R.string.wrong_pin_code), Toast.LENGTH_SHORT).show()
             }
         }
 

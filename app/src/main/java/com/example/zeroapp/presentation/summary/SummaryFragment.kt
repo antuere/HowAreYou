@@ -22,7 +22,7 @@ class SummaryFragment :
 
     private val viewModel by viewModels<SummaryViewModel>()
 
-    private lateinit var fabButton: FloatingActionButton
+    private var fabButton: FloatingActionButton? = null
 
     private val dialogListener: UIDialogListener by lazy {
         UIDialogListener(requireContext(), viewModel)
@@ -83,7 +83,7 @@ class SummaryFragment :
             }
         }
         fabButton = binding!!.fabAddButton
-        fabButton.setOnClickListener {
+        fabButton!!.setOnClickListener {
 
             var transitionName = getString(R.string.transition_name_for_sum)
             if (it.tag == getString(R.string.add)) {
@@ -119,14 +119,14 @@ class SummaryFragment :
             )
         }
 
-        dialogListener.collect(this)
+        dialogListener.collect(this, withNeutralBtn = true)
     }
 
     override fun onStart() {
         super.onStart()
         viewModel.fabButtonState.observe(viewLifecycleOwner) {
-            fabButton.tag = getString(it.tag)
-            fabButton.setImageResource(it.image)
+            fabButton!!.tag = getString(it.tag)
+            fabButton!!.setImageResource(it.image)
             if (it.tag == R.string.smile) {
                 binding!!.fabAddButton.transitionName = getString(it.transitionName)
             }
@@ -142,4 +142,9 @@ class SummaryFragment :
         }
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        binding = null
+        fabButton = null
+    }
 }

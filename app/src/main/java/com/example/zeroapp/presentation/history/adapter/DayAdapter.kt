@@ -14,6 +14,7 @@ class DayAdapter(
 ) :
     ListAdapter<DataItem, RecyclerView.ViewHolder>(DayDiffCallback) {
 
+
 //    private val adapterScope = CoroutineScope(Dispatchers.Default)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {

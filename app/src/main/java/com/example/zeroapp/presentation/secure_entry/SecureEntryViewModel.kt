@@ -101,7 +101,6 @@ class SecureEntryViewModel @Inject constructor(
         }
     }
 
-
     private fun saveSettings() {
         viewModelScope.launch {
             _settings.value!!.isBiometricEnabled = true

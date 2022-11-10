@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import antuere.domain.dto.Day
 import antuere.domain.dto.Quote
+import antuere.domain.dto.Settings
 import antuere.domain.usecases.*
 import antuere.domain.util.TimeUtility
 import com.example.zeroapp.R
@@ -27,6 +28,8 @@ class SummaryViewModel @Inject constructor(
     private val updDayQuoteByRemoteUseCase: UpdDayQuoteByRemoteUseCase,
     private val getDayQuoteLocalUseCase: GetDayQuoteLocalUseCase,
     private val getDaysByLimitUseCase: GetDaysByLimitUseCase,
+    private val getSettingsUseCase: GetSettingsUseCase,
+    private val saveSettingsUseCase: SaveSettingsUseCase,
     private val myAnalystForSummary: MyAnalystForSummary
 ) :
     ViewModel(), IUIDialogAction {
@@ -61,8 +64,12 @@ class SummaryViewModel @Inject constructor(
     val isShowSplash: LiveData<Boolean>
         get() = _isShowSplash
 
+    private var settings = MutableLiveData<Settings?>()
+
+
     init {
         updateDayQuoteByRemote()
+        getSettings()
         getLastDay()
         checkLastFiveDays()
     }
@@ -85,6 +92,14 @@ class SummaryViewModel @Inject constructor(
                 _wishText.value =
                     myAnalystForSummary.getWishStringForSummary(MyAnalystForSummary.DEFAULT_WISH)
 
+            }
+        }
+    }
+
+    private fun getSettings() {
+        viewModelScope.launch {
+            getSettingsUseCase(Unit).collectLatest {
+                settings.postValue(it)
             }
         }
     }
@@ -121,7 +136,7 @@ class SummaryViewModel @Inject constructor(
             val result =
                 myAnalystForSummary.isShowWarningForSummary(_daysForCheck.value ?: emptyList())
 
-            if (result) {
+            if (result && settings.value!!.isShowWorriedDialog) {
                 _uiDialog.value = UIDialog(
                     title = R.string.dialog_warning_title,
                     desc = R.string.dialog_warning_message,
@@ -136,9 +151,23 @@ class SummaryViewModel @Inject constructor(
                         onClick = {
                             _isShowSnackBar.value = true
                             _uiDialog.value = null
-                        })
+                        }),
+                    neutralButton = UIDialog.UiButton(
+                        text = R.string.dialog_warning_neutral,
+                        onClick = {
+                            notShowWorriedDialog()
+                            _uiDialog.value = null
+                        }
+                    )
                 )
             }
+        }
+    }
+
+    private fun notShowWorriedDialog() {
+        viewModelScope.launch {
+            settings.value!!.isShowWorriedDialog = false
+            saveSettingsUseCase(settings.value!!)
         }
     }
 

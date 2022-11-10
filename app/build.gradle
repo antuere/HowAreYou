@@ -22,7 +22,8 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -51,6 +52,9 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-extensions:$version_lifecycle_extensions"
     implementation "androidx.compose.ui:ui-graphics:$version_compose"
 
+
+    // Leak canary
+    debugImplementation "com.squareup.leakcanary:leakcanary-android:$version_leak_canary"
 
     // Splash Screen API
     implementation "androidx.core:core-splashscreen:$version_splash_screen"

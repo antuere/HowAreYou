@@ -32,10 +32,6 @@ class HistoryFragment :
     @Inject
     lateinit var myAnalystForHistory: MyAnalystForHistory
 
-    private val adapter: DayAdapter by lazy {
-        DayAdapter(viewModel.dayClickListener, myAnalystForHistory)
-    }
-
     private val viewModel by viewModels<HistoryViewModel>()
 
     private val dialogListener: UIDialogListener by lazy {
@@ -45,7 +41,6 @@ class HistoryFragment :
     private val datePickerListener: UIDatePickerListener by lazy {
         UIDatePickerListener(requireActivity().supportFragmentManager, viewModel)
     }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,6 +60,7 @@ class HistoryFragment :
     ): View {
         binding = FragmentHistoryBinding.inflate(inflater, container, false)
 
+        val adapter =  DayAdapter(viewModel.dayClickListener, myAnalystForHistory)
         val manager = GridLayoutManager(mainActivity!!, 4)
 
         binding!!.dayList.layoutManager = manager
@@ -136,7 +132,6 @@ class HistoryFragment :
         view.doOnPreDraw {
             startPostponedEnterTransition()
         }
-
         dialogListener.collect(this)
         datePickerListener.collect(this)
 
@@ -175,5 +170,10 @@ class HistoryFragment :
             }
 
         }, viewLifecycleOwner, Lifecycle.State.STARTED)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        binding?.dayList?.adapter = null
     }
 }

@@ -28,9 +28,7 @@ class DetailFragment : BaseBindingFragment<FragmentDetailBinding>(FragmentDetail
         UIDialogListener(requireContext(), viewModel)
     }
 
-    private val toolbar: MaterialToolbar by lazy {
-        mainActivity!!.toolbar!!
-    }
+    private var toolbar: MaterialToolbar? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,7 +39,9 @@ class DetailFragment : BaseBindingFragment<FragmentDetailBinding>(FragmentDetail
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         setToolbarIcon(R.drawable.ic_back)
         dialogListener.collect(this)
-        toolbar.isTitleCentered = false
+        toolbar = mainActivity!!.toolbar!!
+
+        toolbar!!.isTitleCentered = false
 
         viewModel.currentDay.observe(viewLifecycleOwner) {
             it?.let {
@@ -117,6 +117,13 @@ class DetailFragment : BaseBindingFragment<FragmentDetailBinding>(FragmentDetail
 
     override fun onStop() {
         super.onStop()
-        toolbar.isTitleCentered = true
+        toolbar!!.isTitleCentered = true
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        toolbar = null
+        binding = null
+    }
+
 }

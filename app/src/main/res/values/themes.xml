@@ -26,6 +26,8 @@
         <item name="materialButtonOutlinedStyle">@style/Widget.App.Button.Default.Outlined</item>
         <item name="popupMenuBackground">@drawable/custom_popupmenu_background</item>
         <item name="actionOverflowButtonStyle">@style/actionButtonOverflow</item>
+        <item name="snackbarStyle">@style/Widget.App.Snackbar</item>
+        <item name="snackbarTextViewStyle">@style/Widget.App.Snackbar.TextView</item>
     </style>
 
 
@@ -138,6 +140,20 @@
     <!-- Popup overflow menu  button theme -->
     <style name="actionButtonOverflow"   parent="Widget.AppCompat.Light.ActionButton.Overflow">
         <item name="android:tint">@color/white</item>
+    </style>
+
+    <!-- Snackbar theme -->
+    <style name="Widget.App.Snackbar" parent="Widget.Material3.Snackbar">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.App.Snackbar</item>
+    </style>
+
+    <style name="Widget.App.Snackbar.TextView" parent="Widget.Material3.Snackbar.TextView">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textAlignment">center</item>
+    </style>
+
+    <style name="ThemeOverlay.App.Snackbar" parent="">
+        <item name="colorSurfaceInverse">@color/white_gray</item>
     </style>
 
 </resources>

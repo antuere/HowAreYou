@@ -1,157 +1,250 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:transitionGroup="true"
         tools:theme="@style/Theme.ZeroApp"
-        tools:context=".presentation.settings.SettingsFragment">
+        android:fillViewport="true">
 
-    <TextView
-            android:id="@+id/user_nickname"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/textSize_small_two"
-            tools:text="Hello, dear Antuere"
-            android:text="@string/hello_user_plug"
-            android:layout_marginStart="@dimen/margin_normal"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintVertical_bias="0.09"
-            app:layout_constraintHorizontal_bias="0.15" />
-
-
-    <TextView
-            android:id="@+id/how_are_you_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/textSize_small"
-            android:text="@string/how_are_you_text"
-            android:layout_marginTop="@dimen/margin_small"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/user_nickname"
-            app:layout_constraintStart_toStartOf="@id/user_nickname"
-            app:layout_constraintHorizontal_bias="0.0" />
-
-    <TextView
-            android:id="@+id/sign_in_advice_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/textSize_small"
-            android:text="@string/sign_in_advice"
-            android:layout_marginTop="@dimen/margin_small"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/how_are_you_text"
-            app:layout_constraintStart_toStartOf="@id/user_nickname"
-            app:layout_constraintHorizontal_bias="0.0" />
-
-
-    <Button
-            android:id="@+id/button_signIn"
-            android:transitionName="@string/transition_name_for_sign_in_methods"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_small_two"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            android:text="@string/sign_in"
-            app:layout_constraintTop_toBottomOf="@+id/sign_in_advice_text" />
-
-    <Button
-            android:id="@+id/button_signOut"
-            style="@style/Widget.App.Button.Default.Outlined"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/sign_out"
-            android:visibility="invisible"
-            tools:visibility="visible"
-            android:layout_marginTop="@dimen/margin_small_two"
-            app:layout_constraintStart_toEndOf="@+id/button_signIn"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/sign_in_advice_text" />
-
-    <com.google.android.material.divider.MaterialDivider
-            android:id="@+id/materialDivider"
+    <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_small_two"
-            app:dividerInsetStart="@dimen/divider_inset"
-            app:dividerInsetEnd="@dimen/divider_inset"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/button_signIn"
-            app:layout_constraintEnd_toEndOf="parent" />
+            android:transitionGroup="true"
+            tools:theme="@style/Theme.ZeroApp"
+            tools:context=".presentation.settings.SettingsFragment">
 
-    <TextView
-            android:id="@+id/settings_privacy_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/textSize_small_two"
-            android:text="@string/settings_privacy_text"
-            android:layout_marginTop="@dimen/margin_small_two"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/materialDivider"
-            app:layout_constraintStart_toStartOf="@id/user_nickname"
-            app:layout_constraintHorizontal_bias="0.0" />
-
-    <com.google.android.material.materialswitch.MaterialSwitch
-            android:id="@+id/setting_pin_code_switch"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/margin_normal"
-            android:layout_marginTop="@dimen/margin_small"
-            app:layout_constraintTop_toBottomOf="@+id/settings_privacy_text"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:contentDescription="@string/app_name" />
-
-    <TextView
-            android:id="@+id/setting_pin_code_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/textSize_small_one"
-            android:text="@string/enable_pin_code"
-            android:layout_marginStart="@dimen/margin_normal_one"
-            app:layout_constraintTop_toTopOf="@+id/setting_pin_code_switch"
-            app:layout_constraintBottom_toBottomOf="@+id/setting_pin_code_switch"
-            app:layout_constraintStart_toStartOf="parent" />
-
-    <com.google.android.material.materialswitch.MaterialSwitch
-            android:id="@+id/setting_finger_print_switch"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/margin_normal"
-            android:visibility="invisible"
-            tools:visibility="visible"
-            app:layout_constraintTop_toBottomOf="@+id/setting_pin_code_switch"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:contentDescription="@string/app_name" />
-
-    <TextView
-            android:id="@+id/setting_finger_print_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/textSize_small_one"
-            android:text="@string/enable_biometric_authentication"
-            android:layout_marginStart="@dimen/margin_normal_one"
-            android:visibility="invisible"
-            tools:visibility="visible"
-            app:layout_constraintTop_toTopOf="@+id/setting_finger_print_switch"
-            app:layout_constraintBottom_toBottomOf="@+id/setting_finger_print_switch"
-            app:layout_constraintStart_toStartOf="parent" />
+        <TextView
+                android:id="@+id/user_nickname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/textSize_small_two"
+                tools:text="Hello, dear Antuere"
+                android:text="@string/hello_user_plug"
+                android:layout_marginStart="@dimen/margin_normal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintVertical_bias="0.09"
+                app:layout_constraintHorizontal_bias="0.15" />
 
 
-    <com.google.android.material.divider.MaterialDivider
-            android:id="@+id/materialDivider_under_privacy"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_small_two"
-            app:dividerInsetStart="@dimen/divider_inset"
-            app:dividerInsetEnd="@dimen/divider_inset"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/setting_pin_code_switch"
-            tools:layout_constraintTop_toBottomOf="@+id/setting_finger_print_text"
-            app:layout_constraintEnd_toEndOf="parent" />
+        <TextView
+                android:id="@+id/how_are_you_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/textSize_small"
+                android:text="@string/how_are_you_text"
+                android:layout_marginTop="@dimen/margin_small"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/user_nickname"
+                app:layout_constraintStart_toStartOf="@id/user_nickname"
+                app:layout_constraintHorizontal_bias="0.0" />
+
+        <TextView
+                android:id="@+id/sign_in_advice_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/textSize_small"
+                android:text="@string/sign_in_advice"
+                android:layout_marginTop="@dimen/margin_small"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/how_are_you_text"
+                app:layout_constraintStart_toStartOf="@id/user_nickname"
+                app:layout_constraintHorizontal_bias="0.0" />
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <Button
+                android:id="@+id/button_signIn"
+                android:transitionName="@string/transition_name_for_sign_in_methods"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_small_two"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:text="@string/sign_in"
+                app:layout_constraintTop_toBottomOf="@+id/sign_in_advice_text" />
+
+        <Button
+                android:id="@+id/button_signOut"
+                style="@style/Widget.App.Button.Default.Outlined"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/sign_out"
+                android:visibility="invisible"
+                tools:visibility="visible"
+                android:layout_marginTop="@dimen/margin_small_two"
+                app:layout_constraintStart_toEndOf="@+id/button_signIn"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/sign_in_advice_text" />
+
+        <com.google.android.material.divider.MaterialDivider
+                android:id="@+id/materialDivider"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_small_two"
+                app:dividerInsetStart="@dimen/divider_inset"
+                app:dividerInsetEnd="@dimen/divider_inset"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/button_signIn"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+        <TextView
+                android:id="@+id/settings_general_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/textSize_small_two"
+                android:text="@string/settings_general_text"
+                android:layout_marginTop="@dimen/margin_small_two"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/materialDivider"
+                app:layout_constraintStart_toStartOf="@id/user_nickname"
+                app:layout_constraintHorizontal_bias="0.0" />
+
+        <com.google.android.material.materialswitch.MaterialSwitch
+                android:id="@+id/setting_worried_dialog_switch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:layout_marginEnd="@dimen/margin_normal"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:contentDescription="@string/app_name"
+                app:layout_constraintTop_toTopOf="@+id/setting_worried_dialog_title"
+                app:layout_constraintBottom_toBottomOf="@+id/setting_worried_dialog_desc" />
+
+        <TextView
+                android:id="@+id/setting_worried_dialog_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/textSize_small"
+                android:text="@string/show_worried_dialog_title"
+                android:layout_marginStart="@dimen/margin_normal_one"
+                android:layout_marginTop="@dimen/margin_small"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/settings_general_text" />
+
+        <TextView
+                android:id="@+id/setting_worried_dialog_desc"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/textSize_smallest"
+                android:textColor="@color/black_gray"
+                android:text="@string/show_worried_dialog_desc"
+                android:layout_marginStart="@dimen/margin_normal_one"
+                android:layout_marginEnd="@dimen/margin_small_two"
+                android:layout_marginTop="@dimen/margin_very_smallest"
+                app:layout_constraintTop_toBottomOf="@+id/setting_worried_dialog_title"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/setting_worried_dialog_switch"
+                app:layout_constraintHorizontal_bias="0.0" />
+
+        <com.google.android.material.divider.MaterialDivider
+                android:id="@+id/materialDivider_under_general"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:dividerInsetStart="@dimen/divider_inset"
+                app:dividerInsetEnd="@dimen/divider_inset"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginTop="@dimen/margin_small_two"
+                app:layout_constraintTop_toBottomOf="@+id/setting_worried_dialog_desc"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+        <TextView
+                android:id="@+id/settings_privacy_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/textSize_small_two"
+                android:text="@string/settings_privacy_text"
+                android:layout_marginTop="@dimen/margin_small_two"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/materialDivider_under_general"
+                app:layout_constraintStart_toStartOf="@id/user_nickname"
+                app:layout_constraintHorizontal_bias="0.0" />
+
+        <com.google.android.material.materialswitch.MaterialSwitch
+                android:id="@+id/setting_pin_code_switch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/margin_normal"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:contentDescription="@string/app_name"
+                app:layout_constraintTop_toTopOf="@+id/setting_pin_code_title" />
+
+        <TextView
+                android:id="@+id/setting_pin_code_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/textSize_small"
+                android:text="@string/enable_pin_code"
+                android:layout_marginStart="@dimen/margin_normal_one"
+                android:layout_marginTop="@dimen/margin_small"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/settings_privacy_text" />
+
+        <TextView
+                android:id="@+id/setting_pin_code_desc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/textSize_smallest"
+                android:textColor="@color/black_gray"
+                android:text="@string/enable_pin_code_desc"
+                android:layout_marginStart="@dimen/margin_normal_one"
+                android:layout_marginTop="@dimen/margin_very_smallest"
+                app:layout_constraintTop_toBottomOf="@+id/setting_pin_code_title"
+                app:layout_constraintStart_toStartOf="parent" />
+
+        <com.google.android.material.materialswitch.MaterialSwitch
+                android:id="@+id/setting_biom_auth_switch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/margin_normal"
+                android:visibility="invisible"
+                tools:visibility="visible"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:contentDescription="@string/app_name"
+                app:layout_constraintTop_toTopOf="@+id/setting_biom_auth_title" />
+
+        <TextView
+                android:id="@+id/setting_biom_auth_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/textSize_small"
+                android:text="@string/enable_biometric_authentication"
+                android:layout_marginStart="@dimen/margin_normal_one"
+                android:layout_marginTop="@dimen/margin_small"
+                android:visibility="invisible"
+                tools:visibility="visible"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/setting_pin_code_switch" />
+
+        <TextView
+                android:id="@+id/setting_biom_auth_desc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/textSize_smallest"
+                android:textColor="@color/black_gray"
+                android:text="@string/enable_biometric_authentication_desc"
+                android:layout_marginStart="@dimen/margin_normal_one"
+                android:layout_marginTop="@dimen/margin_very_smallest"
+                android:visibility="invisible"
+                tools:visibility="visible"
+                app:layout_constraintTop_toBottomOf="@+id/setting_biom_auth_title"
+                app:layout_constraintStart_toStartOf="parent"
+  />
+
+
+        <com.google.android.material.divider.MaterialDivider
+                android:id="@+id/materialDivider_under_privacy"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_small_two"
+                app:dividerInsetStart="@dimen/divider_inset"
+                app:dividerInsetEnd="@dimen/divider_inset"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/setting_pin_code_switch"
+                tools:layout_constraintTop_toBottomOf="@+id/setting_biom_auth_switch"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
