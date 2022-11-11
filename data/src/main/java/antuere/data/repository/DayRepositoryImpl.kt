@@ -30,9 +30,12 @@ class DayRepositoryImpl @Inject constructor(
 
     override fun refreshRemoteData() {
         daysNode = firebaseApi.getDaysNode()
-        if (daysNode != null) {
+        if (daysNode != null && firebaseApi.isNetworkAvailable()) {
             CoroutineScope(Dispatchers.IO).launch {
                 val query = daysNode!!.get().await()
+                deleteAllDaysLocal()
+                delay(100)
+
                 if (query.exists()) {
                     query.children.forEach {
                         val dayRemote = it.getValue(DayEntityRemote::class.java)
@@ -40,6 +43,7 @@ class DayRepositoryImpl @Inject constructor(
                         insertRoom(day)
                     }
                 }
+
 
                 getAllDays().collect { days ->
                     days.forEach { insertFirebase(it) }

@@ -31,6 +31,14 @@
           }
         },
         {
+          "client_id": "506067010164-7ts7t5n1cs4nn6mu50140ljd60kl8d4j.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.zeroapp",
+            "certificate_hash": "f041fe94a403537cda07f8f020ea96344e288718"
+          }
+        },
+        {
           "client_id": "506067010164-f76kue9b8s6nolvlcj1050rpk9k4eaes.apps.googleusercontent.com",
           "client_type": 3
         }

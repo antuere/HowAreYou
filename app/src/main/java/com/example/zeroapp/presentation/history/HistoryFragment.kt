@@ -172,8 +172,10 @@ class HistoryFragment :
         }, viewLifecycleOwner, Lifecycle.State.STARTED)
     }
 
-    override fun onStop() {
-        super.onStop()
-        binding?.dayList?.adapter = null
+    override fun onDestroyView() {
+        binding!!.dayList.adapter = null
+        binding = null
+
+        super.onDestroyView()
     }
 }

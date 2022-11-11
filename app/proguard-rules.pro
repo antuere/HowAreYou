@@ -19,3 +19,9 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+-keepattributes Signature
+-keep class antuere.data.remote_day_database.entities.DayEntityRemote.** { *; }
+-keep class antuere.data.remote_day_database.entities.QuoteEntity.** { *; }
+-keepclassmembers class antuere.data.remote_day_database.entities.QuoteEntity.** { *; }
+-keepclassmembers class antuere.data.remote_day_database.entities.DayEntityRemote.** { *; }

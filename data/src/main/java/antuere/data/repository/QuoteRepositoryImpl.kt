@@ -1,8 +1,8 @@
 package antuere.data.repository
 
 import antuere.data.preferences_data_store.quote_data_store.QuoteDataStore
-import antuere.data.preferences_data_store.quote_data_store.entities.QuoteEntity
-import antuere.data.preferences_data_store.quote_data_store.mapping.QuoteEntityMapper
+import antuere.data.remote_day_database.entities.QuoteEntity
+import antuere.data.remote_day_database.mapping.QuoteEntityMapper
 import antuere.data.remote_day_database.FirebaseApi
 import antuere.domain.dto.Quote
 import antuere.domain.repository.QuoteRepository

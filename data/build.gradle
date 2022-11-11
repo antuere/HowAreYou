@@ -8,6 +8,14 @@ plugins {
 }
 
 android {
+    signingConfigs {
+        release {
+            storeFile file('C:\\Users\\user\\AndroidStudioProjects\\ZeroApp\\keyStoreAppModule.jks')
+            storePassword 'anton1730'
+            keyAlias 'key0'
+            keyPassword 'anton1730'
+        }
+    }
     namespace 'antuere.data'
     compileSdk 33
 
@@ -17,11 +25,19 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
+        signingConfig signingConfigs.release
+
+        kapt {
+            arguments {
+                arg("room.schemaLocation", "$projectDir/schemas")
+            }
+        }
     }
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
+            shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -35,9 +51,10 @@ android {
 }
 
 dependencies {
-//
-//    // Leak canary
-//    debugImplementation "com.squareup.leakcanary:leakcanary-android:$version_leak_canary"
+
+
+    // Leak canary
+    debugImplementation "com.squareup.leakcanary:leakcanary-android:$version_leak_canary"
 
     // Preferences DataStore
     implementation "androidx.datastore:datastore-preferences:$version_data_store"
@@ -59,7 +76,7 @@ dependencies {
     // Dagger - Hilt
     implementation "com.google.dagger:hilt-android:$version_dagger_hilt"
     kapt "com.google.dagger:hilt-android-compiler:$version_dagger_hilt"
-    kapt "androidx.hilt:hilt-compiler:$version_dagger_hilt_compiler"
+//    kapt "androidx.hilt:hilt-compiler:$version_dagger_hilt_compiler"
 
     // Room
     annotationProcessor "androidx.room:room-compiler:$version_room"

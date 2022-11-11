@@ -1,4 +1,4 @@
-package com.example.zeroapp.presentation.summary
+package com.example.zeroapp.presentation.base.ui_biometric_dialog
 
 sealed class BiometricAuthState {
     object Successful : BiometricAuthState()

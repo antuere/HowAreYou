@@ -129,9 +129,4 @@ class PinCodeDialogFragment : BottomSheetDialogFragment() {
         super.onDismiss(dialog)
         if (!isCanceled) pinCodeCreatingListener!!.pinCodeCreated()
     }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        binding = null
-    }
 }

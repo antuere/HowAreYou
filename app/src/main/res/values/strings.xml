@@ -105,6 +105,9 @@
     <string name="enable_pin_code_desc">Use a pin to login to the app</string>
     <string name="pin_code_create_success">PIN code set successfully</string>
     <string name="biom_auth_create_success">Biometrics set successfully</string>
+    <string name="biometric_unknown_error">Unknown error</string>
+    <string name="biometric_none_enroll">First, set the biometrics in the device settings</string>
+
 
     <!-- Home fragment -->
 

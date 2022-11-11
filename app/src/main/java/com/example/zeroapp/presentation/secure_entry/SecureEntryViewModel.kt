@@ -13,7 +13,9 @@ import com.example.zeroapp.presentation.base.ui_biometric_dialog.IUIBiometricLis
 import com.example.zeroapp.presentation.base.ui_dialog.IUIDialogAction
 import com.example.zeroapp.presentation.base.ui_dialog.UIDialog
 import com.example.zeroapp.presentation.pin_code_сreating.PinCodeCirclesState
-import com.example.zeroapp.presentation.summary.BiometricAuthState
+import com.example.zeroapp.presentation.base.ui_biometric_dialog.BiometricAuthState
+import com.example.zeroapp.presentation.base.ui_biometric_dialog.BiometricsAvailableState
+import com.example.zeroapp.presentation.base.ui_biometric_dialog.UIBiometricDialog
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -30,7 +32,8 @@ class SecureEntryViewModel @Inject constructor(
     private val deleteAllSettingsUseCase: DeleteAllSettingsUseCase,
     private val deleteAllDaysLocalUseCase: DeleteAllDaysLocalUseCase,
     private val firebaseApi: FirebaseApi,
-    private val privacyManager: PrivacyManager
+    private val privacyManager: PrivacyManager,
+    private val uiBiometricDialog: UIBiometricDialog
 ) : ViewModel(), IUIDialogAction {
 
     private lateinit var num1: String
@@ -71,6 +74,10 @@ class SecureEntryViewModel @Inject constructor(
     val isNavigateToHomeFragment: LiveData<Boolean>
         get() = _isNavigateToHomeFragment
 
+    private var _biometricAvailableState = MutableLiveData<BiometricsAvailableState?>()
+    val biometricAvailableState: LiveData<BiometricsAvailableState?>
+        get() = _biometricAvailableState
+
     private var isBiomAuthCanceled = false
     private var savedPinCode = MutableLiveData<String>()
 
@@ -85,10 +92,15 @@ class SecureEntryViewModel @Inject constructor(
             privacyManager.doneAuthUser()
             _biometricAuthState.value = BiometricAuthState.Successful
         }
+
+        override fun noneEnrolled() {
+            _biometricAvailableState.value = BiometricsAvailableState.NoneEnrolled
+        }
     }
 
 
     init {
+        checkBiometricsAvailable()
         getSettings()
         getSavedPinCode()
     }
@@ -115,6 +127,12 @@ class SecureEntryViewModel @Inject constructor(
             }
         }
     }
+
+    private fun checkBiometricsAvailable() {
+        _biometricAvailableState.value =
+            uiBiometricDialog.deviceHasBiometricHardware
+    }
+
 
     fun onClickNumber(value: String) {
         when (value) {
@@ -186,6 +204,18 @@ class SecureEntryViewModel @Inject constructor(
         }
     }
 
+    private fun resetAllUserData() {
+        viewModelScope.launch {
+            firebaseApi.auth.signOut()
+            deleteAllSettingsUseCase(Unit)
+            deleteAllDaysLocalUseCase(Unit)
+
+            delay(150)
+            _isNavigateToHomeFragment.value = true
+        }
+
+    }
+
     fun validateEnteredPinCode(pinCode: String) {
         if (pinCode == savedPinCode.value) {
             if (isBiomAuthCanceled) {
@@ -240,12 +270,12 @@ class SecureEntryViewModel @Inject constructor(
         if (withDelay) {
             viewModelScope.launch {
                 delay(1000)
-                    _isShowBiometricAuth.value = true
-            }
-        } else {
                 _isShowBiometricAuth.value = true
             }
+        } else {
+            _isShowBiometricAuth.value = true
         }
+    }
 
     fun biomAuthDialogCanceled() {
         isBiomAuthCanceled = true
@@ -259,19 +289,12 @@ class SecureEntryViewModel @Inject constructor(
         _isNavigateToHomeFragment.value = true
     }
 
+    fun nullifyBiometricAvailableState() {
+        _biometricAvailableState.value = null
+    }
+
     fun doneNavigateToHomeFragment() {
         _isNavigateToHomeFragment.value = false
     }
 
-    private fun resetAllUserData() {
-        viewModelScope.launch {
-            firebaseApi.auth.signOut()
-            deleteAllSettingsUseCase(Unit)
-            deleteAllDaysLocalUseCase(Unit)
-
-            delay(150)
-            _isNavigateToHomeFragment.value = true
-        }
-
-    }
 }

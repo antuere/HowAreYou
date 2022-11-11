@@ -28,25 +28,52 @@ class UIBiometricDialog(private val context: Context) {
     private var biometricPrompt: BiometricPrompt? = null
     private var promptInfo: BiometricPrompt.PromptInfo? = null
 
+    val deviceHasBiometricHardware: BiometricsAvailableState
+        get() {
+            return when (biometricManager.canAuthenticate(BIOMETRIC_WEAK or DEVICE_CREDENTIAL)) {
+                BiometricManager.BIOMETRIC_SUCCESS -> {
+                    BiometricsAvailableState.Available
+                }
+                BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE -> {
+                    BiometricsAvailableState.NoHardware
+                }
+                BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED -> {
+//                    TODO разобраться с этим
+                    BiometricsAvailableState.NoHardware
+                }
+                else -> BiometricsAvailableState.SomeError(R.string.biometric_unknown_error)
+            }
+        }
 
-    private fun checkDeviceHasBiometric(): Boolean {
+
+    private fun checkIsEnrolledBiometric(): BiometricsAvailableState {
         val result =
             when (biometricManager.canAuthenticate(BIOMETRIC_WEAK or DEVICE_CREDENTIAL)) {
                 BiometricManager.BIOMETRIC_SUCCESS -> {
-                    true
+                    BiometricsAvailableState.NoHardware
                 }
-                else -> false
+                BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE -> {
+                    BiometricsAvailableState.NoHardware
+                }
+                BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED -> {
+                    BiometricsAvailableState.NoneEnrolled
+                }
+                else -> BiometricsAvailableState.SomeError(R.string.biometric_unknown_error)
 
             }
         return result
     }
 
+
     fun startBiometricAuth(
         biometricListener: IUIBiometricListener,
         activity: FragmentActivity
     ) {
-        if (checkDeviceHasBiometric()) {
+        if (checkIsEnrolledBiometric() is BiometricsAvailableState.NoneEnrolled) {
+            biometricListener.noneEnrolled()
+        }
 
+        if (checkIsEnrolledBiometric() is BiometricsAvailableState.Available) {
             biometricPrompt = BiometricPrompt(
                 activity,
                 executor,
@@ -63,12 +90,14 @@ class UIBiometricDialog(private val context: Context) {
                         super.onAuthenticationSucceeded(result)
                         biometricListener.onBiometricAuthSuccess()
                     }
+
                 })
 
             promptInfo = BiometricPrompt.PromptInfo.Builder()
                 .setTitle(context.getString(R.string.biometric_auth_title))
                 .setDescription(context.getString(R.string.biometric_auth_desc))
                 .setNegativeButtonText(context.getString(R.string.biometric_auth_negative_btn))
+                .setConfirmationRequired(false)
 //                .setAllowedAuthenticators(BIOMETRIC_WEAK or DEVICE_CREDENTIAL)
                 .build()
 
@@ -77,5 +106,4 @@ class UIBiometricDialog(private val context: Context) {
             }
         }
     }
-
 }

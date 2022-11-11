@@ -95,8 +95,9 @@ class FavoritesFragment :
     }
 
     override fun onDestroyView() {
-        super.onDestroyView()
-        binding?.favoritesList?.adapter = null
+        binding!!.favoritesList.adapter = null
         binding = null
+
+        super.onDestroyView()
     }
 }

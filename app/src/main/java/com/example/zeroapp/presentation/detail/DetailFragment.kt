@@ -123,7 +123,6 @@ class DetailFragment : BaseBindingFragment<FragmentDetailBinding>(FragmentDetail
     override fun onDestroyView() {
         super.onDestroyView()
         toolbar = null
-        binding = null
     }
 
 }

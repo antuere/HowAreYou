@@ -144,7 +144,7 @@ class SummaryFragment :
 
     override fun onDestroyView() {
         super.onDestroyView()
-        binding = null
         fabButton = null
+        binding = null
     }
 }

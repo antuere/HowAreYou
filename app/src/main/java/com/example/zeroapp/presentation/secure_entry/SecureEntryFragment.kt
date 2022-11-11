@@ -1,10 +1,13 @@
 package com.example.zeroapp.presentation.secure_entry
 
+import android.content.Intent
 import android.os.Bundle
+import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import androidx.biometric.BiometricManager
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.zeroapp.R
@@ -13,7 +16,8 @@ import com.example.zeroapp.presentation.base.BaseBindingFragment
 import com.example.zeroapp.presentation.base.ui_biometric_dialog.UIBiometricDialog
 import com.example.zeroapp.presentation.base.ui_dialog.UIDialogListener
 import com.example.zeroapp.presentation.pin_code_сreating.PinCodeCirclesState
-import com.example.zeroapp.presentation.summary.BiometricAuthState
+import com.example.zeroapp.presentation.base.ui_biometric_dialog.BiometricAuthState
+import com.example.zeroapp.presentation.base.ui_biometric_dialog.BiometricsAvailableState
 import com.example.zeroapp.util.setToolbarIcon
 import com.example.zeroapp.util.startOnClickAnimation
 import com.google.android.material.transition.MaterialSharedAxis
@@ -95,7 +99,6 @@ class SecureEntryFragment :
             viewModel.onClickSignOut()
         }
 
-
         viewModel.isNavigateToHomeFragment.observe(viewLifecycleOwner) {
             if (it) {
                 findNavController().navigate(
@@ -111,6 +114,37 @@ class SecureEntryFragment :
                     is BiometricAuthState.Successful -> viewModel.navigateToHomeFragment()
                     is BiometricAuthState.Error -> viewModel.biomAuthDialogCanceled()
                 }
+            }
+        }
+
+        viewModel.biometricAvailableState.observe(viewLifecycleOwner) {
+            it?.let { state ->
+                when (state) {
+                    is BiometricsAvailableState.Available -> {
+                        binding.biomAuthImage.visibility = View.VISIBLE
+                    }
+                    is BiometricsAvailableState.NoneEnrolled -> {
+                        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
+                            val enrollIntent = Intent(Settings.ACTION_BIOMETRIC_ENROLL).apply {
+                                putExtra(
+                                    Settings.EXTRA_BIOMETRIC_AUTHENTICATORS_ALLOWED,
+                                    BiometricManager.Authenticators.BIOMETRIC_STRONG or BiometricManager.Authenticators.DEVICE_CREDENTIAL
+                                )
+                            }
+                            startActivity(enrollIntent)
+                        } else {
+                            showSnackBar(stringResId = R.string.biometric_none_enroll)
+                        }
+                    }
+
+                    is BiometricsAvailableState.NoHardware -> binding.biomAuthImage.visibility =
+                        View.INVISIBLE
+                    is BiometricsAvailableState.SomeError -> {
+                        binding.biomAuthImage.visibility =
+                            View.INVISIBLE
+                    }
+                }
+                viewModel.nullifyBiometricAvailableState()
             }
         }
 

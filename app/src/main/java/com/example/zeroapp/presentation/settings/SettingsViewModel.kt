@@ -8,13 +8,16 @@ import antuere.data.remote_day_database.FirebaseApi
 import antuere.domain.dto.Settings
 import antuere.domain.usecases.*
 import com.example.zeroapp.presentation.base.PrivacyManager
+import com.example.zeroapp.presentation.base.ui_biometric_dialog.BiometricsAvailableState
 import com.example.zeroapp.presentation.base.ui_biometric_dialog.IUIBiometricListener
+import com.example.zeroapp.presentation.base.ui_biometric_dialog.UIBiometricDialog
 import com.example.zeroapp.presentation.pin_code_сreating.IPinCodeCreatingListener
-import com.example.zeroapp.presentation.summary.BiometricAuthState
+import com.example.zeroapp.presentation.base.ui_biometric_dialog.BiometricAuthState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -24,6 +27,7 @@ class SettingsViewModel @Inject constructor(
     private val saveSettingsUseCase: SaveSettingsUseCase,
     private val getSettingsUseCase: GetSettingsUseCase,
     private val resetPinCodeUseCase: ResetPinCodeUseCase,
+    private val uiBiometricDialog: UIBiometricDialog,
     private val privacyManager: PrivacyManager
 ) : ViewModel() {
 
@@ -55,10 +59,16 @@ class SettingsViewModel @Inject constructor(
     val isStartSetPinCode: LiveData<Boolean>
         get() = _isStartSetPinCode
 
+    private var _biometricAvailableState = MutableLiveData<BiometricsAvailableState?>()
+    val biometricAvailableState: LiveData<BiometricsAvailableState?>
+        get() = _biometricAvailableState
+
+
     init {
-        checkCurrentUser()
         updateUserNickname()
+        checkCurrentUser()
         getSettings()
+        checkBiometricsAvailable()
     }
 
     val pinCodeCreatingListener = object : IPinCodeCreatingListener {
@@ -83,8 +93,20 @@ class SettingsViewModel @Inject constructor(
             privacyManager.doneAuthUserByBiometric()
             _biometricAuthState.value = BiometricAuthState.Successful
         }
+
+        override fun noneEnrolled() {
+            _biometricAvailableState.value = BiometricsAvailableState.NoneEnrolled
+        }
     }
 
+
+    private fun checkBiometricsAvailable() {
+        Timber.i("available: start check state")
+        _biometricAvailableState.value =
+            uiBiometricDialog.deviceHasBiometricHardware
+
+        Timber.i("available state after check is ${biometricAvailableState.value}")
+    }
 
     fun checkCurrentUser() {
         _isHasUser.value = firebaseApi.isHasUser()
@@ -107,7 +129,6 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
-
     private fun getSettings() {
         viewModelScope.launch {
             getSettingsUseCase(Unit).collectLatest {
@@ -125,7 +146,7 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
-    fun saveShowWorriedDialog(isShowWorriedDialog : Boolean) {
+    fun saveShowWorriedDialog(isShowWorriedDialog: Boolean) {
         viewModelScope.launch {
             _settings.value!!.isShowWorriedDialog = isShowWorriedDialog
 
@@ -144,7 +165,6 @@ class SettingsViewModel @Inject constructor(
             _isStartSetPinCode.value = true
         }
     }
-
 
     fun resetBiometricAuth() {
         privacyManager.resetAuthUserByBiometric()
@@ -167,6 +187,10 @@ class SettingsViewModel @Inject constructor(
 
     fun nullifyIsPinCodeCreated() {
         _isPinCodeCreated.value = null
+    }
+
+    fun nullifyBiometricAvailableState() {
+        _biometricAvailableState.value = null
     }
 
     fun resetIsStartSetBiometric() {
