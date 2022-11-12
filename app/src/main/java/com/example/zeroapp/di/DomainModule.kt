@@ -136,4 +136,14 @@ class DomainModule {
         return DeleteAllSettingsUseCase(settingsRepository)
     }
 
+    @Provides
+    fun provideGetUserNicknameUseCase(settingsRepository: SettingsRepository): GetUserNicknameUseCase {
+        return GetUserNicknameUseCase(settingsRepository)
+    }
+
+    @Provides
+    fun provideSaveUserNicknameUseCase(settingsRepository: SettingsRepository): SaveUserNicknameUseCase {
+        return SaveUserNicknameUseCase(settingsRepository)
+    }
+
 }

@@ -7,7 +7,6 @@ import android.net.NetworkCapabilities
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
-import kotlinx.coroutines.*
 import kotlinx.coroutines.tasks.await
 
 data class FirebaseApi(
@@ -51,7 +50,7 @@ data class FirebaseApi(
             .child(DAYS_PATH) else null
     }
 
-    fun getUserNode(): DatabaseReference? {
+    private fun getUserNode(): DatabaseReference? {
         return if (isHasUser()) realTimeDb.child(USERS_PATH).child(auth.currentUser!!.uid)
         else null
     }
@@ -64,23 +63,19 @@ data class FirebaseApi(
         getUserNode()?.child("nickName")?.setValue(name)
     }
 
-    suspend fun getUserNicknameAsync(): Deferred<String?> {
-        val scope = CoroutineScope(Dispatchers.IO)
-        return scope.async {
-            if (isHasUser()) {
-                val query = getUserNode()!!.child("nickName").get().await()
-                if (query.exists()) {
-                    query.getValue(String::class.java)
-                } else {
-                    null
-                }
-            } else null
-        }
+    suspend fun getUserNickname(): String? {
+        return if (isHasUser() && isNetworkAvailable()) {
+            val query = getUserNode()!!.child("nickName").get().await()
+            if (query.exists()) {
+                query.getValue(String::class.java)
+            } else {
+                null
+            }
+        } else null
     }
 
     fun getSignInIntent(): Intent {
         return googleSignInClient.signInIntent
     }
-
 
 }

@@ -3,14 +3,18 @@ package com.example.zeroapp.presentation.register_with_email
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import antuere.data.remote_day_database.FirebaseApi
+import antuere.domain.usecases.SaveUserNicknameUseCase
 import com.example.zeroapp.R
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class RegisterEmailViewModel @Inject constructor(
-    private val firebaseApi: FirebaseApi
+    private val firebaseApi: FirebaseApi,
+    private val saveUserNicknameUseCase: SaveUserNicknameUseCase
 ) : ViewModel() {
 
     private var _registerState = MutableLiveData<RegisterState?>()
@@ -18,13 +22,21 @@ class RegisterEmailViewModel @Inject constructor(
         get() = _registerState
 
 
+    private fun registerSuccessful(name: String){
+        viewModelScope.launch {
+            saveUserNicknameUseCase(name)
+            firebaseApi.setUserNickname(name)
+            _registerState.value = RegisterState.Successful
+        }
+    }
+
+
     fun onClickSignUp(email: String, password: String, confirmPassword: String, name: String) {
         if (isValidateFields(email, password, confirmPassword, name)) {
             firebaseApi.auth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener { signUpTask ->
                     if (signUpTask.isSuccessful) {
-                        _registerState.value = RegisterState.Successful
-                        firebaseApi.setUserNickname(name)
+                      registerSuccessful(name)
                     }
                 }.addOnFailureListener {
                     _registerState.value = RegisterState.ErrorFromFireBase(it.message!!)
@@ -52,7 +64,7 @@ class RegisterEmailViewModel @Inject constructor(
     }
 
 
-    fun nullifyState () {
+    fun nullifyState() {
         _registerState.value = null
     }
 }

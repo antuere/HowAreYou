@@ -27,6 +27,7 @@ import com.google.android.material.transition.MaterialFadeThrough
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -62,7 +63,12 @@ class SettingsFragment :
         binding!!.settingBiomAuthSwitch.setOnCheckedChangeListener { _, isChecked ->
             when (isChecked) {
                 true -> viewModel.setBiometricAuth()
-                false -> resetBiometricAuth()
+                false -> {
+                    viewModel.resetBiometricAuthAndSaveSettings(
+                        binding!!.settingBiomAuthSwitch.isChecked,
+                        binding!!.settingPinCodeSwitch.isChecked
+                    )
+                }
             }
         }
 
@@ -73,7 +79,8 @@ class SettingsFragment :
                 }
                 false -> {
                     binding!!.settingBiomAuthSwitch.isChecked = false
-                    resetPinCodeAuth()
+                    viewModel.resetPinCodeAuth()
+                    viewModel.resetBiometricAuthAndSaveSettings(isUseBiometric = false, isUsePinCode = false)
                     hideBiometricsSetting(container!!)
                 }
             }
@@ -92,20 +99,15 @@ class SettingsFragment :
             showSignInButton(container!!)
         }
 
-//        TODO оптимизировать эти сетевые запросы
-        viewModel.updateUserNickname()
-        viewModel.checkCurrentUser()
-
         viewModel.userNickname.observe(viewLifecycleOwner) {
-            it?.let {
-                val welcomeText = "${getString(R.string.hello_user)} $it "
-                binding!!.userNickname.text = welcomeText
-            }
-        }
+            it?.let { userName ->
+                Timber.i("user error : nick saved  is $userName")
+                if(userName != "UserUnknownError175"){
+                    val welcomeText = "${getString(R.string.hello_user)} $userName"
+                    binding!!.userNickname.text = welcomeText
 
-        viewModel.isHasUser.observe(viewLifecycleOwner) {
-            if (it) {
-                showSignOutButton()
+                    showSignOutButton()
+                }
             }
         }
 
@@ -116,7 +118,7 @@ class SettingsFragment :
 
                 binding!!.settingPinCodeSwitch.isChecked = settings.isPinCodeEnabled
 
-                if(viewModel.biometricAvailableState.value is BiometricsAvailableState.Available){
+                if (settings.isPinCodeEnabled && viewModel.biometricAvailableState.value is BiometricsAvailableState.Available) {
                     showBiometricSetting(container!!)
                 }
             }
@@ -138,7 +140,6 @@ class SettingsFragment :
                             showSnackBar(stringResId = R.string.biometric_none_enroll)
                             binding!!.settingBiomAuthSwitch.isChecked = false
                         }
-                        viewModel.nullifyBiometricAvailableState()
 
                     }
                     is BiometricsAvailableState.NoHardware -> hideBiometricsSetting(container!!)
@@ -146,9 +147,7 @@ class SettingsFragment :
                         showSnackBar(stringResId = R.string.biometric_unknown_error)
                         binding!!.settingBiomAuthSwitch.isChecked = false
                     }
-                    is BiometricsAvailableState.Available -> {
-
-                    }
+                    is BiometricsAvailableState.Available -> {}
                 }
             }
         }
@@ -174,7 +173,7 @@ class SettingsFragment :
             it?.let { value ->
                 binding!!.settingPinCodeSwitch.isChecked = value
                 if (value) {
-                    if(viewModel.biometricAvailableState.value is BiometricsAvailableState.Available){
+                    if (viewModel.biometricAvailableState.value is BiometricsAvailableState.Available) {
                         showBiometricSetting(container!!)
                     }
                     showSnackBar(stringResId = R.string.pin_code_create_success)
@@ -284,20 +283,5 @@ class SettingsFragment :
             }
         }
 
-    }
-
-    private fun resetBiometricAuth() {
-        viewModel.resetBiometricAuth()
-        viewModel.saveSettings(
-            binding!!.settingBiomAuthSwitch.isChecked, binding!!.settingPinCodeSwitch.isChecked
-        )
-    }
-
-    private fun resetPinCodeAuth() {
-        viewModel.saveSettings(
-            isUseBiometric = false, isUsePinCode = false
-        )
-        viewModel.resetBiometricAuth()
-        viewModel.resetPinCodeAuth()
     }
 }

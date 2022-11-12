@@ -9,12 +9,16 @@ interface SettingsRepository {
 
     suspend fun saveSettings(settings: Settings)
 
+    suspend fun saveUserNickname(nickname: String)
+
+    suspend fun getUserNickname(): Flow<String>
+
     suspend fun savePinCode(pinCode: String)
+
+    suspend fun getPinCode(): Flow<String>
 
     suspend fun resetPinCode()
 
     suspend fun resetAllSettings()
-
-    suspend fun getPinCode(): Flow<String>
 
 }

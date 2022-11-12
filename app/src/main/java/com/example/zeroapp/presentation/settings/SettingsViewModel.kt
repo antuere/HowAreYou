@@ -17,7 +17,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -26,6 +25,7 @@ class SettingsViewModel @Inject constructor(
     private val refreshRemoteDataUseCase: RefreshRemoteDataUseCase,
     private val saveSettingsUseCase: SaveSettingsUseCase,
     private val getSettingsUseCase: GetSettingsUseCase,
+    private val getUserNicknameUseCase: GetUserNicknameUseCase,
     private val resetPinCodeUseCase: ResetPinCodeUseCase,
     private val uiBiometricDialog: UIBiometricDialog,
     private val privacyManager: PrivacyManager
@@ -47,10 +47,6 @@ class SettingsViewModel @Inject constructor(
     val isPinCodeCreated: LiveData<Boolean?>
         get() = _isPinCodeCreated
 
-    private var _isHasUser = MutableLiveData<Boolean>()
-    val isHasUser: LiveData<Boolean>
-        get() = _isHasUser
-
     private var _isStartSetBiometric = MutableLiveData(false)
     val isStartSetBiometric: LiveData<Boolean>
         get() = _isStartSetBiometric
@@ -66,7 +62,6 @@ class SettingsViewModel @Inject constructor(
 
     init {
         updateUserNickname()
-        checkCurrentUser()
         getSettings()
         checkBiometricsAvailable()
     }
@@ -101,27 +96,20 @@ class SettingsViewModel @Inject constructor(
 
 
     private fun checkBiometricsAvailable() {
-        Timber.i("available: start check state")
         _biometricAvailableState.value =
             uiBiometricDialog.deviceHasBiometricHardware
-
-        Timber.i("available state after check is ${biometricAvailableState.value}")
     }
 
-    fun checkCurrentUser() {
-        _isHasUser.value = firebaseApi.isHasUser()
-    }
-
-    fun updateUserNickname() {
+    private fun updateUserNickname() {
         viewModelScope.launch {
-            val result = firebaseApi.getUserNicknameAsync().await()
-            _userNickname.value = result
+            getUserNicknameUseCase(Unit).collectLatest {
+                _userNickname.postValue(it)
+            }
         }
     }
 
     fun onSignOutClicked() {
         firebaseApi.auth.signOut()
-        _isHasUser.value = firebaseApi.isHasUser()
         updateUserNickname()
 
         viewModelScope.launch {
@@ -166,9 +154,10 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
-    fun resetBiometricAuth() {
+    fun resetBiometricAuthAndSaveSettings(isUseBiometric: Boolean, isUsePinCode: Boolean) {
         privacyManager.resetAuthUserByBiometric()
         nullifyBiometricAuthState()
+        saveSettings(isUseBiometric, isUsePinCode)
     }
 
     fun resetPinCodeAuth() {
@@ -181,18 +170,6 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
-    fun nullifyBiometricAuthState() {
-        _biometricAuthState.value = null
-    }
-
-    fun nullifyIsPinCodeCreated() {
-        _isPinCodeCreated.value = null
-    }
-
-    fun nullifyBiometricAvailableState() {
-        _biometricAvailableState.value = null
-    }
-
     fun resetIsStartSetBiometric() {
         _isStartSetBiometric.value = false
     }
@@ -201,4 +178,11 @@ class SettingsViewModel @Inject constructor(
         _isStartSetPinCode.value = false
     }
 
+    fun nullifyBiometricAuthState() {
+        _biometricAuthState.value = null
+    }
+
+    fun nullifyIsPinCodeCreated() {
+        _isPinCodeCreated.value = null
+    }
 }

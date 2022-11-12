@@ -31,17 +31,10 @@ class UIBiometricDialog(private val context: Context) {
     val deviceHasBiometricHardware: BiometricsAvailableState
         get() {
             return when (biometricManager.canAuthenticate(BIOMETRIC_WEAK or DEVICE_CREDENTIAL)) {
-                BiometricManager.BIOMETRIC_SUCCESS -> {
+                BiometricManager.BIOMETRIC_SUCCESS, BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED -> {
                     BiometricsAvailableState.Available
                 }
-                BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE -> {
-                    BiometricsAvailableState.NoHardware
-                }
-                BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED -> {
-//                    TODO разобраться с этим
-                    BiometricsAvailableState.NoHardware
-                }
-                else -> BiometricsAvailableState.SomeError(R.string.biometric_unknown_error)
+                else -> BiometricsAvailableState.NoHardware
             }
         }
 
@@ -50,7 +43,7 @@ class UIBiometricDialog(private val context: Context) {
         val result =
             when (biometricManager.canAuthenticate(BIOMETRIC_WEAK or DEVICE_CREDENTIAL)) {
                 BiometricManager.BIOMETRIC_SUCCESS -> {
-                    BiometricsAvailableState.NoHardware
+                    BiometricsAvailableState.Available
                 }
                 BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE -> {
                     BiometricsAvailableState.NoHardware
@@ -69,11 +62,12 @@ class UIBiometricDialog(private val context: Context) {
         biometricListener: IUIBiometricListener,
         activity: FragmentActivity
     ) {
-        if (checkIsEnrolledBiometric() is BiometricsAvailableState.NoneEnrolled) {
+        val availableState = checkIsEnrolledBiometric()
+        if (availableState is BiometricsAvailableState.NoneEnrolled) {
             biometricListener.noneEnrolled()
         }
 
-        if (checkIsEnrolledBiometric() is BiometricsAvailableState.Available) {
+        if (availableState is BiometricsAvailableState.Available) {
             biometricPrompt = BiometricPrompt(
                 activity,
                 executor,

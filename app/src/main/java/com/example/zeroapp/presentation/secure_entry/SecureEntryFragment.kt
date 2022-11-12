@@ -104,7 +104,6 @@ class SecureEntryFragment :
                 findNavController().navigate(
                     SecureEntryFragmentDirections.actionSecureEntryFragmentToSummaryFragment()
                 )
-                viewModel.doneNavigateToHomeFragment()
             }
         }
 
@@ -136,15 +135,10 @@ class SecureEntryFragment :
                             showSnackBar(stringResId = R.string.biometric_none_enroll)
                         }
                     }
-
-                    is BiometricsAvailableState.NoHardware -> binding.biomAuthImage.visibility =
-                        View.INVISIBLE
-                    is BiometricsAvailableState.SomeError -> {
-                        binding.biomAuthImage.visibility =
-                            View.INVISIBLE
+                    is BiometricsAvailableState.SomeError, BiometricsAvailableState.NoHardware -> {
+                        binding.biomAuthImage.visibility = View.INVISIBLE
                     }
                 }
-                viewModel.nullifyBiometricAvailableState()
             }
         }
 
@@ -155,7 +149,6 @@ class SecureEntryFragment :
                 }
                 if (settings.isBiometricEnabled) {
                     viewModel.showBiometricAuth(withDelay = true)
-                    viewModel.resetIsShowBiometricAuth()
                 }
             }
         }

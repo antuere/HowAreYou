@@ -242,7 +242,7 @@ class SecureEntryViewModel @Inject constructor(
 
     fun onClickBiometricBtn() {
         showBiometricAuth(false)
-        resetIsShowBiometricAuth()
+        _isShowBiometricAuth.value = false
         saveSettings()
     }
 
@@ -281,20 +281,8 @@ class SecureEntryViewModel @Inject constructor(
         isBiomAuthCanceled = true
     }
 
-    fun resetIsShowBiometricAuth() {
-        _isShowBiometricAuth.value = false
-    }
-
     fun navigateToHomeFragment() {
         _isNavigateToHomeFragment.value = true
-    }
-
-    fun nullifyBiometricAvailableState() {
-        _biometricAvailableState.value = null
-    }
-
-    fun doneNavigateToHomeFragment() {
-        _isNavigateToHomeFragment.value = false
     }
 
 }

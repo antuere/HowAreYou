@@ -25,6 +25,14 @@ class SettingsRepositoryImpl @Inject constructor(
         settingsDataStore.saveSettings(settingsEntity)
     }
 
+    override suspend fun saveUserNickname(nickname: String) {
+        settingsDataStore.saveUserNickName(nickname)
+    }
+
+    override suspend fun getUserNickname(): Flow<String> {
+        return settingsDataStore.userNickname
+    }
+
     override suspend fun savePinCode(pinCode: String) {
         settingsDataStore.savePinCode(pinCode)
     }

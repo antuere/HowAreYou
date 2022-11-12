@@ -6,17 +6,20 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import antuere.data.remote_day_database.FirebaseApi
 import antuere.domain.usecases.RefreshRemoteDataUseCase
+import antuere.domain.usecases.SaveUserNicknameUseCase
 import com.example.zeroapp.R
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
 class LoginEmailViewModel @Inject constructor(
     private val refreshRemoteDataUseCase: RefreshRemoteDataUseCase,
+    private val saveUserNicknameUseCase: SaveUserNicknameUseCase,
     private val firebaseApi: FirebaseApi
 ) : ViewModel() {
-
 
     private var _loginState = MutableLiveData<LoginState?>()
     val loginState: LiveData<LoginState?>
@@ -25,6 +28,12 @@ class LoginEmailViewModel @Inject constructor(
     private fun loginSuccessful() {
         viewModelScope.launch {
             refreshRemoteDataUseCase(Unit)
+            val userNickname = firebaseApi.getUserNickname()
+            delay(200)
+            Timber.i("user error : nick from server is $userNickname")
+            saveUserNicknameUseCase(userNickname ?: "Unknown")
+
+            _loginState.value = LoginState.Successful
         }
     }
 
@@ -33,7 +42,6 @@ class LoginEmailViewModel @Inject constructor(
             firebaseApi.auth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener { signInTask ->
                     if (signInTask.isSuccessful) {
-                        _loginState.value = LoginState.Successful
                         loginSuccessful()
                     }
                 }.addOnFailureListener {
@@ -51,7 +59,10 @@ class LoginEmailViewModel @Inject constructor(
     fun checkCurrentAuth() {
         if (firebaseApi.isHasUser()) {
             _loginState.value = LoginState.Successful
-            loginSuccessful()
+
+            viewModelScope.launch {
+                refreshRemoteDataUseCase(Unit)
+            }
         }
     }
 }

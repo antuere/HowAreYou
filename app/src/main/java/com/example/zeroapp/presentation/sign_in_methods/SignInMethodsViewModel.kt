@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import antuere.data.remote_day_database.FirebaseApi
 import antuere.domain.usecases.RefreshRemoteDataUseCase
+import antuere.domain.usecases.SaveUserNicknameUseCase
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.GoogleAuthProvider
@@ -17,6 +18,7 @@ import javax.inject.Inject
 @HiltViewModel
 class SignInMethodsViewModel @Inject constructor(
     private val refreshRemoteDataUseCase: RefreshRemoteDataUseCase,
+    private val saveUserNicknameUseCase: SaveUserNicknameUseCase,
     val firebaseApi: FirebaseApi
 ) : ViewModel() {
 
@@ -34,9 +36,12 @@ class SignInMethodsViewModel @Inject constructor(
         }
     }
 
-    private fun loginSuccessful() {
+    private fun loginSuccessful(name: String) {
         viewModelScope.launch {
+            firebaseApi.setUserNickname(name)
+            saveUserNicknameUseCase(name)
             refreshRemoteDataUseCase(Unit)
+            _signInState.value = SignInMethodsState.UserAuthorized
         }
     }
 
@@ -56,10 +61,8 @@ class SignInMethodsViewModel @Inject constructor(
         firebaseApi.auth.signInWithCredential(credential)
             .addOnCompleteListener {
                 if (it.isSuccessful) {
-                    _signInState.value = SignInMethodsState.UserAuthorized
                     val name = account.displayName ?: account.givenName ?: "Google user"
-                    firebaseApi.setUserNickname(name)
-                    loginSuccessful()
+                    loginSuccessful(name)
                 }
             }
             .addOnFailureListener {
