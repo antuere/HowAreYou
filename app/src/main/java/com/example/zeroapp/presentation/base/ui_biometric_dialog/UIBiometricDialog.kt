@@ -30,7 +30,7 @@ class UIBiometricDialog(private val context: Context) {
 
     val deviceHasBiometricHardware: BiometricsAvailableState
         get() {
-            return when (biometricManager.canAuthenticate(BIOMETRIC_WEAK or DEVICE_CREDENTIAL)) {
+            return when (biometricManager.canAuthenticate(BIOMETRIC_WEAK or BIOMETRIC_STRONG)) {
                 BiometricManager.BIOMETRIC_SUCCESS, BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED -> {
                     BiometricsAvailableState.Available
                 }
@@ -41,7 +41,7 @@ class UIBiometricDialog(private val context: Context) {
 
     private fun checkIsEnrolledBiometric(): BiometricsAvailableState {
         val result =
-            when (biometricManager.canAuthenticate(BIOMETRIC_WEAK or DEVICE_CREDENTIAL)) {
+            when (biometricManager.canAuthenticate(BIOMETRIC_WEAK or BIOMETRIC_STRONG)) {
                 BiometricManager.BIOMETRIC_SUCCESS -> {
                     BiometricsAvailableState.Available
                 }

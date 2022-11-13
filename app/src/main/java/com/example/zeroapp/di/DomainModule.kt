@@ -146,4 +146,8 @@ class DomainModule {
         return SaveUserNicknameUseCase(settingsRepository)
     }
 
+    @Provides
+    fun provideResetUserNicknameUseCase(settingsRepository: SettingsRepository): ResetUserNicknameUseCase {
+        return ResetUserNicknameUseCase(settingsRepository)
+    }
 }

@@ -72,12 +72,19 @@ class SettingsDataStore(context: Context, name: String) {
         }
     }
 
+    suspend fun resetUserNickname() {
+        settingsDataStore.edit { preferences ->
+            preferences.remove(USER_NICKNAME)
+        }
+    }
+
     suspend fun resetAllSettings() {
         settingsDataStore.edit { preferences ->
             preferences.remove(SETTINGS_PIN_CODE_SAVED_KEY)
             preferences.remove(SETTINGS_BIOMETRIC_KEY)
             preferences.remove(SETTINGS_PIN_CODE_KEY)
             preferences.remove(SETTINGS_WORRIED_DIALOG_KEY)
+            preferences.remove(USER_NICKNAME)
         }
     }
 }

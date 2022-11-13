@@ -63,7 +63,7 @@
     <string name="dialog_warning_neutral">Don\'t show again</string>
     <string name="dialog_warning_negative">No</string>
     <string name="dialog_sign_out_title">Sign out</string>
-    <string name="dialog_sign_out_desc">All your data will be deleted on this device, to restore them, log in to your account.</string>
+    <string name="dialog_sign_out_desc">All your data will be deleted on this device, to restore them, log in to your account again.</string>
     <string name="dialog_sign_out_positive">Sign out</string>
     <string name="dialog_sign_out_negative">Cancel</string>
     <string name="snack_bar_warning_negative">Pay attention to the cards above, we hope this will help you at least a little.</string>

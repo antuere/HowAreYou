@@ -33,6 +33,10 @@ class SettingsRepositoryImpl @Inject constructor(
         return settingsDataStore.userNickname
     }
 
+    override suspend fun resetUserNickname() {
+        settingsDataStore.resetUserNickname()
+    }
+
     override suspend fun savePinCode(pinCode: String) {
         settingsDataStore.savePinCode(pinCode)
     }

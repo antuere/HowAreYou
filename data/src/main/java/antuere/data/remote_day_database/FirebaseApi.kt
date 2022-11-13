@@ -15,6 +15,7 @@ data class FirebaseApi(
     private val googleSignInClient: GoogleSignInClient,
     private val context: Context
 ) {
+
     companion object {
         private const val DAYS_PATH = "days"
         private const val USERS_PATH = "users"

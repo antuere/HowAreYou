@@ -13,6 +13,8 @@ interface SettingsRepository {
 
     suspend fun getUserNickname(): Flow<String>
 
+    suspend fun resetUserNickname()
+
     suspend fun savePinCode(pinCode: String)
 
     suspend fun getPinCode(): Flow<String>

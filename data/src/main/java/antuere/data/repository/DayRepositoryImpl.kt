@@ -53,7 +53,6 @@ class DayRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getAllDays(): Flow<List<Day>> {
-
         return dayDataBaseRoom.dayDatabaseDao.getAllDays().map {
             it.map { dayEntity ->
                 dayEntityMapper.mapToDomainModel(dayEntity)

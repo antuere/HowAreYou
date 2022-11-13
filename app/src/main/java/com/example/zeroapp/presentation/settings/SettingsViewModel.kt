@@ -27,6 +27,7 @@ class SettingsViewModel @Inject constructor(
     private val getSettingsUseCase: GetSettingsUseCase,
     private val getUserNicknameUseCase: GetUserNicknameUseCase,
     private val resetPinCodeUseCase: ResetPinCodeUseCase,
+    private val resetUserNicknameUseCase: ResetUserNicknameUseCase,
     private val uiBiometricDialog: UIBiometricDialog,
     private val privacyManager: PrivacyManager
 ) : ViewModel() {
@@ -110,9 +111,9 @@ class SettingsViewModel @Inject constructor(
 
     fun onSignOutClicked() {
         firebaseApi.auth.signOut()
-        updateUserNickname()
 
         viewModelScope.launch {
+            resetUserNicknameUseCase(Unit)
             refreshRemoteDataUseCase(Unit)
         }
     }
