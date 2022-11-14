@@ -4,10 +4,10 @@ import android.content.Context
 import androidx.room.Room
 import antuere.data.local_day_database.DayDatabase
 import antuere.data.local_day_database.mapping.DayEntityMapper
-import antuere.data.remote_day_database.mapping.QuoteEntityMapper
+import antuere.data.remote.remote_day_database.mapping.QuoteEntityMapper
 import antuere.data.preferences_data_store.settings_data_store.mapping.SettingsEntityMapper
 import antuere.data.preferences_data_store.toggle_btn_data_store.mapping.ToggleBtnStateEntityMapper
-import antuere.data.remote_day_database.mapping.DayEntityRemoteMapper
+import antuere.data.remote.remote_day_database.mapping.DayEntityRemoteMapper
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase

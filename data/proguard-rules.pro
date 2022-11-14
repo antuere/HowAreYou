@@ -20,5 +20,5 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 -keepattributes Signature
--keep class antuere.data.remote_day_database.entities.DayEntityRemote.** { *; }
--keep class antuere.data.remote_day_database.entities.QuoteEntity.** { *; }
+-keep class antuere.data.remote.remote_day_database.entities.DayEntityRemote.** { *; }
+-keep class antuere.data.remote.remote_day_database.entities.QuoteEntity.** { *; }

@@ -1,4 +1,4 @@
-package antuere.data.remote_day_database.entities
+package antuere.data.remote.remote_day_database.entities
 
 import androidx.annotation.Keep
 

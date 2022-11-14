@@ -2,51 +2,41 @@ package antuere.data.repository
 
 import antuere.data.local_day_database.DayDatabase
 import antuere.data.local_day_database.mapping.DayEntityMapper
-import antuere.data.remote_day_database.FirebaseApi
-import antuere.data.remote_day_database.entities.DayEntityRemote
-import antuere.data.remote_day_database.mapping.DayEntityRemoteMapper
+import antuere.data.remote.remote_day_database.FirebaseRealtimeDB
 import antuere.domain.dto.Day
 import antuere.domain.repository.DayRepository
-import com.google.firebase.database.DatabaseReference
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.tasks.await
+import timber.log.Timber
 import javax.inject.Inject
 
 
 class DayRepositoryImpl @Inject constructor(
     private val dayDataBaseRoom: DayDatabase,
-    private val firebaseApi: FirebaseApi,
-    private val dayEntityMapperRemote: DayEntityRemoteMapper,
+    private val firebaseRealtimeDB: FirebaseRealtimeDB,
     private val dayEntityMapper: DayEntityMapper,
 ) : DayRepository {
 
-    private var daysNode: DatabaseReference? = null
 
     init {
-        refreshRemoteData()
+        CoroutineScope(Dispatchers.IO).launch {
+            refreshRemoteData()
+        }
     }
 
-    override fun refreshRemoteData() {
-        daysNode = firebaseApi.getDaysNode()
-        if (daysNode != null && firebaseApi.isNetworkAvailable()) {
+    override suspend fun refreshRemoteData() {
+        val daysFromServer = firebaseRealtimeDB.getDays()
+        if (daysFromServer.isNotEmpty()) {
             CoroutineScope(Dispatchers.IO).launch {
-                val query = daysNode!!.get().await()
                 deleteAllDaysLocal()
-                delay(100)
-
-                if (query.exists()) {
-                    query.children.forEach {
-                        val dayRemote = it.getValue(DayEntityRemote::class.java)
-                        val day = dayEntityMapperRemote.mapToDomainModel(dayRemote!!)
-                        insertRoom(day)
-                    }
+                Timber.i("days not null")
+                daysFromServer.forEach { day ->
+                    insertLocal(day)
                 }
 
-
                 getAllDays().collect { days ->
-                    days.forEach { insertFirebase(it) }
+                    days.forEach { insertRemote(it) }
                 }
             }
         }
@@ -109,16 +99,7 @@ class DayRepositoryImpl @Inject constructor(
 
     override suspend fun deleteDay(id: Long): Unit = withContext(Dispatchers.IO) {
         dayDataBaseRoom.dayDatabaseDao.deleteDay(id)
-
-        val query = daysNode
-            ?.orderByChild("dayId")
-            ?.equalTo(id.toDouble())
-            ?.get()
-            ?.await()
-
-        query?.children?.forEach {
-            it.ref.removeValue()
-        }
+        firebaseRealtimeDB.deleteDay(id)
     }
 
     override suspend fun deleteAllDaysLocal() = withContext(Dispatchers.IO) {
@@ -126,35 +107,23 @@ class DayRepositoryImpl @Inject constructor(
     }
 
     override suspend fun deleteAllDaysRemote() = withContext(Dispatchers.IO) {
-        val query = daysNode?.get()?.await()
-        if (query?.exists() == true) {
-            query.children.forEach {
-                it.ref.removeValue()
-            }
-        }
+        firebaseRealtimeDB.deleteAllDays()
     }
 
-    override suspend fun insert(day: Day) = withContext(Dispatchers.IO) {
-        insertRoom(day)
-        insertFirebase(day)
+    override suspend fun insertLocal(day: Day) = withContext(Dispatchers.IO) {
+        val dayEntity = dayEntityMapper.mapFromDomainModel(day)
+        dayDataBaseRoom.dayDatabaseDao.insert(dayEntity)
+    }
+
+    override suspend fun insertRemote(day: Day) {
+        firebaseRealtimeDB.insert(day)
     }
 
     override suspend fun update(day: Day): Unit = withContext(Dispatchers.IO) {
         val dayEntity = dayEntityMapper.mapFromDomainModel(day)
         dayDataBaseRoom.dayDatabaseDao.update(dayEntity)
 
-        val dayRemote = dayEntityMapperRemote.mapFromDomainModel(day)
-        daysNode?.child(dayRemote.dayId.toString())?.setValue(dayRemote)?.await()
-    }
-
-    private suspend fun insertRoom(day: Day) = withContext(Dispatchers.IO) {
-        val dayEntity = dayEntityMapper.mapFromDomainModel(day)
-        dayDataBaseRoom.dayDatabaseDao.insert(dayEntity)
-    }
-
-    private suspend fun insertFirebase(day: Day) {
-        val dayRemote = dayEntityMapperRemote.mapFromDomainModel(day)
-        daysNode?.child(dayRemote.dayId.toString())?.setValue(dayRemote)?.await()
+        firebaseRealtimeDB.update(day)
     }
 }
 

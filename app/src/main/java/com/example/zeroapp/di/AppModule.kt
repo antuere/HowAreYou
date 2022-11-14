@@ -2,7 +2,6 @@ package com.example.zeroapp.di
 
 import android.content.Context
 import android.content.SharedPreferences
-import antuere.data.remote_day_database.FirebaseApi
 import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestManager
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -13,14 +12,14 @@ import antuere.data.preferences_data_store.settings_data_store.SettingsDataStore
 import com.example.zeroapp.util.ResourcesProvider
 import com.example.zeroapp.presentation.history.MyAnalystForHistory
 import antuere.data.preferences_data_store.toggle_btn_data_store.ToggleBtnDataStore
-import com.example.zeroapp.presentation.base.PrivacyManager
+import antuere.data.remote.NetworkInfo
+import antuere.data.privacy_manager.PrivacyManagerImpl
 import com.example.zeroapp.presentation.summary.MyAnalystForSummary
 import com.example.zeroapp.presentation.base.ui_biometric_dialog.UIBiometricDialog
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DatabaseReference
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -85,14 +84,10 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideFireBaseApi(
-        auth: FirebaseAuth,
-        realtimeDb: DatabaseReference,
-        googleClient: GoogleSignInClient,
-        @ApplicationContext context: Context
-    ): FirebaseApi {
-        return FirebaseApi(auth, realtimeDb, googleClient, context)
+    fun provideNetworkInfo(@ApplicationContext context: Context) : NetworkInfo {
+        return NetworkInfo(context)
     }
+
 
     @Provides
     @Singleton
@@ -128,7 +123,7 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun providePrivacyManager(): PrivacyManager {
-        return PrivacyManager()
+    fun providePrivacyManager(): PrivacyManagerImpl {
+        return PrivacyManagerImpl()
     }
 }

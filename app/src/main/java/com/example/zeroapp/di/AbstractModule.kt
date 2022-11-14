@@ -1,9 +1,15 @@
 package com.example.zeroapp.di
 
+import antuere.data.privacy_manager.PrivacyManagerImpl
+import antuere.data.remote.authentication_manager.AuthenticationManagerImpl
+import antuere.data.remote.remote_day_database.FirebaseRealtimeDB
 import antuere.data.repository.DayRepositoryImpl
 import antuere.data.repository.QuoteRepositoryImpl
 import antuere.data.repository.SettingsRepositoryImpl
 import antuere.data.repository.ToggleBtnRepositoryImpl
+import antuere.domain.authentication_manager.AuthenticationManager
+import antuere.domain.privacy_manager.PrivacyManager
+import antuere.domain.remote_db.RemoteDbApi
 import antuere.domain.repository.DayRepository
 import antuere.domain.repository.QuoteRepository
 import antuere.domain.repository.SettingsRepository
@@ -17,7 +23,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-abstract class RepositoryModule {
+abstract class AbstractModule {
 
     @Binds
     @Singleton
@@ -34,4 +40,16 @@ abstract class RepositoryModule {
     @Binds
     @Singleton
     abstract fun bindSettingsRepository(settingsRepositoryImpl: SettingsRepositoryImpl): SettingsRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindAuthManager(authenticationManagerImpl: AuthenticationManagerImpl) : AuthenticationManager
+
+    @Binds
+    @Singleton
+    abstract fun bindRemoteDbApi(firebaseRealtimeDB: FirebaseRealtimeDB) : RemoteDbApi
+
+    @Binds
+    @Singleton
+    abstract fun bindPrivacyManager(privacyManagerImpl: PrivacyManagerImpl) : PrivacyManager
 }

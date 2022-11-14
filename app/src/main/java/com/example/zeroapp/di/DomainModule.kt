@@ -1,10 +1,12 @@
 package com.example.zeroapp.di
 
+import antuere.domain.authentication_manager.AuthenticationManager
 import antuere.domain.repository.DayRepository
 import antuere.domain.repository.QuoteRepository
 import antuere.domain.repository.SettingsRepository
 import antuere.domain.repository.ToggleBtnRepository
 import antuere.domain.usecases.*
+import antuere.domain.usecases.authentication.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -149,5 +151,45 @@ class DomainModule {
     @Provides
     fun provideResetUserNicknameUseCase(settingsRepository: SettingsRepository): ResetUserNicknameUseCase {
         return ResetUserNicknameUseCase(settingsRepository)
+    }
+
+    @Provides
+    fun provideCheckCurrentAuthUseCase(authenticationManager: AuthenticationManager): CheckCurrentAuthUseCase {
+        return CheckCurrentAuthUseCase(authenticationManager)
+    }
+
+    @Provides
+    fun provideGetUserNameFromServerUseCase(authenticationManager: AuthenticationManager): GetUserNameFromServerUseCase {
+        return GetUserNameFromServerUseCase(authenticationManager)
+    }
+
+    @Provides
+    fun provideSetUserNicknameOnServerUseCase(authenticationManager: AuthenticationManager): SetUserNicknameOnServerUseCase {
+        return SetUserNicknameOnServerUseCase(authenticationManager)
+    }
+
+    @Provides
+    fun provideSignInUseCase(authenticationManager: AuthenticationManager): SignInUseCase {
+        return SignInUseCase(authenticationManager)
+    }
+
+    @Provides
+    fun provideSignUpUseCase(authenticationManager: AuthenticationManager): SignUpUseCase {
+        return SignUpUseCase(authenticationManager)
+    }
+
+    @Provides
+    fun provideSignOutUseCase(authenticationManager: AuthenticationManager): SignOutUseCase {
+        return SignOutUseCase(authenticationManager)
+    }
+
+    @Provides
+    fun provideResetPasswordUseCase(authenticationManager: AuthenticationManager): ResetPasswordUseCase {
+        return ResetPasswordUseCase(authenticationManager)
+    }
+
+    @Provides
+    fun provideSignInByGoogleUseCase(authenticationManager: AuthenticationManager): SignInByGoogleUseCase {
+        return SignInByGoogleUseCase(authenticationManager)
     }
 }

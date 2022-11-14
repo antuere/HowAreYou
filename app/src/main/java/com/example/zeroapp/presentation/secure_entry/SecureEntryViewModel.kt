@@ -4,11 +4,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import antuere.data.remote_day_database.FirebaseApi
 import antuere.domain.dto.Settings
 import antuere.domain.usecases.*
+import antuere.domain.usecases.authentication.SignOutUseCase
 import com.example.zeroapp.R
-import com.example.zeroapp.presentation.base.PrivacyManager
+import antuere.domain.usecases.privacy.DoneAuthByPinUseCase
+import antuere.domain.usecases.privacy.DoneAuthUseCase
 import com.example.zeroapp.presentation.base.ui_biometric_dialog.IUIBiometricListener
 import com.example.zeroapp.presentation.base.ui_dialog.IUIDialogAction
 import com.example.zeroapp.presentation.base.ui_dialog.UIDialog
@@ -31,8 +32,9 @@ class SecureEntryViewModel @Inject constructor(
     private val getSavedPinCodeUseCase: GetSavedPinCodeUseCase,
     private val deleteAllSettingsUseCase: DeleteAllSettingsUseCase,
     private val deleteAllDaysLocalUseCase: DeleteAllDaysLocalUseCase,
-    private val firebaseApi: FirebaseApi,
-    private val privacyManager: PrivacyManager,
+    private val signOutUseCase: SignOutUseCase,
+    private val doneAuthUseCase: DoneAuthUseCase,
+    private val doneAuthByPinUseCase: DoneAuthByPinUseCase,
     private val uiBiometricDialog: UIBiometricDialog
 ) : ViewModel(), IUIDialogAction {
 
@@ -89,7 +91,11 @@ class SecureEntryViewModel @Inject constructor(
 
         override fun onBiometricAuthSuccess() {
             _pinCodeCirclesState.value = PinCodeCirclesState.IsShowAll
-            privacyManager.doneAuthUser()
+
+            viewModelScope.launch {
+                doneAuthUseCase(Unit)
+            }
+
             _biometricAuthState.value = BiometricAuthState.Successful
         }
 
@@ -206,7 +212,7 @@ class SecureEntryViewModel @Inject constructor(
 
     private fun resetAllUserData() {
         viewModelScope.launch {
-            firebaseApi.auth.signOut()
+            signOutUseCase(Unit)
             deleteAllSettingsUseCase(Unit)
             deleteAllDaysLocalUseCase(Unit)
 
@@ -219,9 +225,13 @@ class SecureEntryViewModel @Inject constructor(
     fun validateEnteredPinCode(pinCode: String) {
         if (pinCode == savedPinCode.value) {
             if (isBiomAuthCanceled) {
-                privacyManager.doneAuthUser()
+                viewModelScope.launch {
+                    doneAuthUseCase(Unit)
+                }
             } else {
-                privacyManager.doneAuthUserByPinCode()
+                viewModelScope.launch {
+                    doneAuthByPinUseCase(Unit)
+                }
             }
             _isCorrectPinCode.value = true
         } else {

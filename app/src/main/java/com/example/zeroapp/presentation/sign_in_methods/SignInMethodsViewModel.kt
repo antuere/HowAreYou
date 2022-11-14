@@ -4,12 +4,14 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import antuere.data.remote_day_database.FirebaseApi
+import antuere.domain.authentication_manager.RegisterResultListener
+import antuere.domain.usecases.authentication.CheckCurrentAuthUseCase
 import antuere.domain.usecases.RefreshRemoteDataUseCase
 import antuere.domain.usecases.SaveUserNicknameUseCase
+import antuere.domain.usecases.authentication.SetUserNicknameOnServerUseCase
+import antuere.domain.usecases.authentication.SignInByGoogleUseCase
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.tasks.Task
-import com.google.firebase.auth.GoogleAuthProvider
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -19,26 +21,43 @@ import javax.inject.Inject
 class SignInMethodsViewModel @Inject constructor(
     private val refreshRemoteDataUseCase: RefreshRemoteDataUseCase,
     private val saveUserNicknameUseCase: SaveUserNicknameUseCase,
-    val firebaseApi: FirebaseApi
+    private val checkCurrentAuthUseCase: CheckCurrentAuthUseCase,
+    private val setUserNicknameOnServer: SetUserNicknameOnServerUseCase,
+    private val signInByGoogleUseCase: SignInByGoogleUseCase
 ) : ViewModel() {
 
     private var _signInState = MutableLiveData<SignInMethodsState?>()
     val signInState: LiveData<SignInMethodsState?>
         get() = _signInState
 
+
+    private val googleSignInListener = object : RegisterResultListener {
+
+        override fun registerSuccess(name: String) {
+            loginSuccessful(name)
+        }
+
+        override fun registerFailed(message: String) {
+            _signInState.value = SignInMethodsState.Error(message)
+        }
+    }
+
+
     init {
         checkCurrentAuth()
     }
 
     fun checkCurrentAuth() {
-        if (firebaseApi.isHasUser()) {
-            _signInState.value = SignInMethodsState.UserAuthorized
+        viewModelScope.launch {
+            if (checkCurrentAuthUseCase(Unit)) {
+                _signInState.value = SignInMethodsState.UserAuthorized
+            }
         }
     }
 
     private fun loginSuccessful(name: String) {
         viewModelScope.launch {
-            firebaseApi.setUserNickname(name)
+            setUserNicknameOnServer(name)
             saveUserNicknameUseCase(name)
             refreshRemoteDataUseCase(Unit)
             _signInState.value = SignInMethodsState.UserAuthorized
@@ -57,17 +76,10 @@ class SignInMethodsViewModel @Inject constructor(
     }
 
     private fun signInWithGoogle(account: GoogleSignInAccount) {
-        val credential = GoogleAuthProvider.getCredential(account.idToken, null)
-        firebaseApi.auth.signInWithCredential(credential)
-            .addOnCompleteListener {
-                if (it.isSuccessful) {
-                    val name = account.displayName ?: account.givenName ?: "Google user"
-                    loginSuccessful(name)
-                }
-            }
-            .addOnFailureListener {
-                _signInState.value = SignInMethodsState.Error(it.message ?: "Error")
-            }
+        val name = account.displayName ?: account.givenName ?: "Google user"
+        viewModelScope.launch {
+            signInByGoogleUseCase(googleSignInListener, name)
+        }
     }
 
     fun nullifyState() {

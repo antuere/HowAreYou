@@ -4,10 +4,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import antuere.data.remote_day_database.FirebaseApi
 import antuere.domain.dto.Settings
 import antuere.domain.usecases.*
-import com.example.zeroapp.presentation.base.PrivacyManager
+import antuere.domain.usecases.authentication.SignOutUseCase
+import antuere.domain.usecases.privacy.DoneAuthByBiometricUseCase
+import antuere.domain.usecases.privacy.DoneAuthByPinUseCase
+import antuere.domain.usecases.privacy.ResetAuthByBiometricUseCase
+import antuere.domain.usecases.privacy.ResetAuthByPinUseCase
 import com.example.zeroapp.presentation.base.ui_biometric_dialog.BiometricsAvailableState
 import com.example.zeroapp.presentation.base.ui_biometric_dialog.IUIBiometricListener
 import com.example.zeroapp.presentation.base.ui_biometric_dialog.UIBiometricDialog
@@ -21,15 +24,18 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
-    private val firebaseApi: FirebaseApi,
     private val refreshRemoteDataUseCase: RefreshRemoteDataUseCase,
     private val saveSettingsUseCase: SaveSettingsUseCase,
     private val getSettingsUseCase: GetSettingsUseCase,
     private val getUserNicknameUseCase: GetUserNicknameUseCase,
     private val resetPinCodeUseCase: ResetPinCodeUseCase,
     private val resetUserNicknameUseCase: ResetUserNicknameUseCase,
-    private val uiBiometricDialog: UIBiometricDialog,
-    private val privacyManager: PrivacyManager
+    private val signOutUseCase: SignOutUseCase,
+    private val doneAuthByPinUseCase: DoneAuthByPinUseCase,
+    private val doneAuthByBiometricUseCase: DoneAuthByBiometricUseCase,
+    private val resetAuthByBiometricUseCase: ResetAuthByBiometricUseCase,
+    private val resetAuthByPinUseCase: ResetAuthByPinUseCase,
+    private val uiBiometricDialog: UIBiometricDialog
 ) : ViewModel() {
 
     private var _userNickname = MutableLiveData<String?>()
@@ -62,7 +68,7 @@ class SettingsViewModel @Inject constructor(
 
 
     init {
-        updateUserNickname()
+        getUserNickname()
         getSettings()
         checkBiometricsAvailable()
     }
@@ -70,7 +76,9 @@ class SettingsViewModel @Inject constructor(
     val pinCodeCreatingListener = object : IPinCodeCreatingListener {
 
         override fun pinCodeCreated() {
-            privacyManager.doneAuthUserByPinCode()
+            viewModelScope.launch {
+                doneAuthByPinUseCase(Unit)
+            }
             _isPinCodeCreated.value = true
         }
 
@@ -86,7 +94,9 @@ class SettingsViewModel @Inject constructor(
         }
 
         override fun onBiometricAuthSuccess() {
-            privacyManager.doneAuthUserByBiometric()
+            viewModelScope.launch {
+                doneAuthByBiometricUseCase(Unit)
+            }
             _biometricAuthState.value = BiometricAuthState.Successful
         }
 
@@ -101,7 +111,7 @@ class SettingsViewModel @Inject constructor(
             uiBiometricDialog.deviceHasBiometricHardware
     }
 
-    private fun updateUserNickname() {
+    private fun getUserNickname() {
         viewModelScope.launch {
             getUserNicknameUseCase(Unit).collectLatest {
                 _userNickname.postValue(it)
@@ -110,9 +120,8 @@ class SettingsViewModel @Inject constructor(
     }
 
     fun onSignOutClicked() {
-        firebaseApi.auth.signOut()
-
         viewModelScope.launch {
+            signOutUseCase(Unit)
             resetUserNicknameUseCase(Unit)
             refreshRemoteDataUseCase(Unit)
         }
@@ -156,14 +165,16 @@ class SettingsViewModel @Inject constructor(
     }
 
     fun resetBiometricAuthAndSaveSettings(isUseBiometric: Boolean, isUsePinCode: Boolean) {
-        privacyManager.resetAuthUserByBiometric()
-        nullifyBiometricAuthState()
-        saveSettings(isUseBiometric, isUsePinCode)
+        viewModelScope.launch {
+            resetAuthByBiometricUseCase(Unit)
+            nullifyBiometricAuthState()
+            saveSettings(isUseBiometric, isUsePinCode)
+        }
     }
 
     fun resetPinCodeAuth() {
         viewModelScope.launch {
-            privacyManager.resetAuthUserByPinCode()
+            resetAuthByPinUseCase(Unit)
             _isPinCodeCreated.value = null
             delay(100)
 

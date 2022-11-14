@@ -5,7 +5,7 @@ import antuere.domain.repository.SettingsRepository
 import kotlinx.coroutines.flow.Flow
 
 class GetSettingsUseCase(private val settingsRepository: SettingsRepository) :
-    UseCase<Flow<Settings>, Unit> {
+    UseCaseDefault<Flow<Settings>, Unit> {
 
     override suspend fun invoke(param: Unit): Flow<Settings> {
         return settingsRepository.getSettings()

@@ -132,7 +132,10 @@ class SecureEntryFragment :
                             }
                             startActivity(enrollIntent)
                         } else {
-                            showSnackBar(stringResId = R.string.biometric_none_enroll)
+                            showSnackBar(
+                                stringResId = R.string.biometric_none_enroll,
+                                anchorView = binding.entryDivider
+                            )
                         }
                     }
                     is BiometricsAvailableState.SomeError, BiometricsAvailableState.NoHardware -> {

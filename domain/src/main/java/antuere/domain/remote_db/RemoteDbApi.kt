@@ -1,11 +1,16 @@
 package antuere.domain.remote_db
 
+import antuere.domain.dto.Day
+
 interface RemoteDbApi {
 
-    fun isHasUser() : Boolean
+    suspend fun getDays(): List<Day>
 
-    fun isNetworkAvailable() : Boolean
+    suspend fun deleteDay(id : Long)
 
-    fun getDaysNode()
+    suspend fun deleteAllDays()
 
+    suspend fun insert(day: Day)
+
+    suspend fun update(day: Day)
 }

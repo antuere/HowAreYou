@@ -4,7 +4,7 @@ import antuere.domain.repository.SettingsRepository
 import kotlinx.coroutines.flow.Flow
 
 class GetUserNicknameUseCase(private val settingsRepository: SettingsRepository) :
-    UseCase<Flow<String>, Unit> {
+    UseCaseDefault<Flow<String>, Unit> {
 
     override suspend fun invoke(param: Unit): Flow<String> {
         return settingsRepository.getUserNickname()

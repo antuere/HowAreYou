@@ -16,14 +16,19 @@ import com.example.zeroapp.presentation.base.BaseBindingFragment
 import com.example.zeroapp.util.createSharedElementEnterTransition
 import com.example.zeroapp.util.setToolbarIcon
 import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.material.transition.MaterialElevationScale
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class SignInMethodsFragment :
     BaseBindingFragment<FragmentSignInMethodsBinding>(FragmentSignInMethodsBinding::inflate) {
 
     private val viewModel by viewModels<SignInMethodsViewModel>()
+
+    @Inject
+    lateinit var signInClient: GoogleSignInClient
 
     private val launcher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -64,7 +69,7 @@ class SignInMethodsFragment :
         }
 
         binding!!.buttonGoogleMethod.setOnClickListener {
-            val intent = viewModel.firebaseApi.getSignInIntent()
+            val intent = signInClient.signInIntent
             launcher.launch(intent)
         }
 
