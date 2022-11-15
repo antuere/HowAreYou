@@ -27,9 +27,4 @@ class PrivacyManagerImpl : PrivacyManager {
     override fun doneAuthUserByPinCode() {
         _isUserAuthByPinCode = true
     }
-
-    override fun doneAuthUser() {
-        _isUserAuthByPinCode = true
-        _isUserAuthByBiometric = true
-    }
 }

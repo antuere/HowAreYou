@@ -9,13 +9,11 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.transition.TransitionManager
-import com.example.zeroapp.R
 import com.example.zeroapp.databinding.FragmentFavoritesBinding
 import com.example.zeroapp.presentation.base.BaseBindingFragment
 import com.example.zeroapp.presentation.base.ui_dialog.UIDialogListener
 import com.example.zeroapp.presentation.favorites.adapter.FavoritesAdapter
 import com.example.zeroapp.util.createSharedElementEnterTransition
-import com.example.zeroapp.util.setToolbarIcon
 import com.google.android.material.transition.MaterialFade
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -39,8 +37,6 @@ class FavoritesFragment :
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        setToolbarIcon(R.drawable.ic_back)
-
         binding = FragmentFavoritesBinding.inflate(inflater, container, false)
 
         val manager = GridLayoutManager(activity, 2)

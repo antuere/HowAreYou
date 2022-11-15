@@ -21,8 +21,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                android:layout_marginTop="@dimen/margin_normal" />
+                app:layout_constraintHorizontal_bias="0.5" />
 
         <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/nickname_layout"

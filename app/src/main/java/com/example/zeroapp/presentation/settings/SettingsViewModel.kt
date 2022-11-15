@@ -7,24 +7,25 @@ import androidx.lifecycle.viewModelScope
 import antuere.domain.dto.Settings
 import antuere.domain.usecases.*
 import antuere.domain.usecases.authentication.SignOutUseCase
-import antuere.domain.usecases.privacy.DoneAuthByBiometricUseCase
-import antuere.domain.usecases.privacy.DoneAuthByPinUseCase
-import antuere.domain.usecases.privacy.ResetAuthByBiometricUseCase
-import antuere.domain.usecases.privacy.ResetAuthByPinUseCase
+import antuere.domain.usecases.privacy.*
+import com.example.zeroapp.R
 import com.example.zeroapp.presentation.base.ui_biometric_dialog.BiometricsAvailableState
 import com.example.zeroapp.presentation.base.ui_biometric_dialog.IUIBiometricListener
 import com.example.zeroapp.presentation.base.ui_biometric_dialog.UIBiometricDialog
 import com.example.zeroapp.presentation.pin_code_сreating.IPinCodeCreatingListener
 import com.example.zeroapp.presentation.base.ui_biometric_dialog.BiometricAuthState
+import com.example.zeroapp.presentation.base.ui_dialog.IUIDialogAction
+import com.example.zeroapp.presentation.base.ui_dialog.UIDialog
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
-    private val refreshRemoteDataUseCase: RefreshRemoteDataUseCase,
     private val saveSettingsUseCase: SaveSettingsUseCase,
     private val getSettingsUseCase: GetSettingsUseCase,
     private val getUserNicknameUseCase: GetUserNicknameUseCase,
@@ -35,8 +36,15 @@ class SettingsViewModel @Inject constructor(
     private val doneAuthByBiometricUseCase: DoneAuthByBiometricUseCase,
     private val resetAuthByBiometricUseCase: ResetAuthByBiometricUseCase,
     private val resetAuthByPinUseCase: ResetAuthByPinUseCase,
+    private val checkAuthByBiometricUseCase: CheckAuthByBiometricUseCase,
+    private val checkAuthByPinUseCase: CheckAuthByPinUseCase,
+    private val deleteAllDaysLocalUseCase: DeleteAllDaysLocalUseCase,
     private val uiBiometricDialog: UIBiometricDialog
-) : ViewModel() {
+) : ViewModel(), IUIDialogAction {
+
+    private var _uiDialog = MutableStateFlow<UIDialog?>(null)
+    override val uiDialog: StateFlow<UIDialog?>
+        get() = _uiDialog
 
     private var _userNickname = MutableLiveData<String?>()
     val userNickname: LiveData<String?>
@@ -119,11 +127,39 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
-    fun onSignOutClicked() {
+    fun onClickSignOut() {
+        _uiDialog.value = UIDialog(
+            title = R.string.dialog_delete_local_data_title,
+            desc = R.string.dialog_delete_local_data_desc,
+            icon = R.drawable.ic_delete_black,
+            positiveButton = UIDialog.UiButton(
+                text = R.string.dialog_delete_local_data_positive,
+                onClick = {
+                    signOut(isSaveDayEntities = true)
+                    _uiDialog.value = null
+                }),
+            negativeButton = UIDialog.UiButton(
+                text = R.string.dialog_delete_local_data_negative,
+                onClick = {
+                    signOut(isSaveDayEntities = false)
+                    _uiDialog.value = null
+                }),
+            neutralButton = UIDialog.UiButton(
+                text = R.string.dialog_delete_local_data_neutral,
+                onClick = {
+                    _uiDialog.value = null
+                }
+            )
+        )
+    }
+
+    private fun signOut(isSaveDayEntities: Boolean) {
         viewModelScope.launch {
+            if (!isSaveDayEntities) {
+                deleteAllDaysLocalUseCase(Unit)
+            }
             signOutUseCase(Unit)
             resetUserNicknameUseCase(Unit)
-            refreshRemoteDataUseCase(Unit)
         }
     }
 
@@ -153,14 +189,18 @@ class SettingsViewModel @Inject constructor(
     }
 
     fun setBiometricAuth() {
-        if (!privacyManager.isUserAuthByBiometric) {
-            _isStartSetBiometric.value = true
+        viewModelScope.launch {
+            if (!checkAuthByBiometricUseCase(Unit)) {
+                _isStartSetBiometric.value = true
+            }
         }
     }
 
     fun setPinCodeAuth() {
-        if (!privacyManager.isUserAuthByPinCode && !privacyManager.isUserAuthByBiometric) {
-            _isStartSetPinCode.value = true
+        viewModelScope.launch {
+            if (!checkAuthByPinUseCase(Unit) && !checkAuthByBiometricUseCase(Unit)) {
+                _isStartSetPinCode.value = true
+            }
         }
     }
 

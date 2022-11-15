@@ -73,7 +73,7 @@ class FavoritesViewModel @Inject constructor(
     fun onClickLongSmile() {
         _uiDialog.value = UIDialog(
             title = R.string.dialog_delete_title,
-            desc = R.string.dialog_delete_message,
+            desc = R.string.dialog_delete_desc,
             icon = R.drawable.ic_delete_black,
             positiveButton = UIDialog.UiButton(
                 text = R.string.yes,

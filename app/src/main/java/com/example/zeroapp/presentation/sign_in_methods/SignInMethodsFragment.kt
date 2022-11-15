@@ -14,7 +14,6 @@ import com.example.zeroapp.R
 import com.example.zeroapp.databinding.FragmentSignInMethodsBinding
 import com.example.zeroapp.presentation.base.BaseBindingFragment
 import com.example.zeroapp.util.createSharedElementEnterTransition
-import com.example.zeroapp.util.setToolbarIcon
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.material.transition.MaterialElevationScale
@@ -57,8 +56,6 @@ class SignInMethodsFragment :
         savedInstanceState: Bundle?
     ): View {
         binding = this.inflater(inflater, container, false)
-        setToolbarIcon(R.drawable.ic_back)
-
         binding!!.buttonEmailMethod.setOnClickListener {
             val transitionName = getString(R.string.transition_name_for_sign_in)
             val extras = FragmentNavigatorExtras(binding!!.buttonEmailMethod to transitionName)

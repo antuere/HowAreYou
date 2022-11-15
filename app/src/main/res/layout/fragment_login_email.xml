@@ -7,7 +7,6 @@
         tools:theme="@style/Theme.ZeroApp"
         android:transitionName="@string/transition_name_for_sign_in">
 
-
     <ImageView
             android:id="@+id/entry_icon_app"
             android:layout_width="wrap_content"
@@ -17,7 +16,33 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            android:layout_marginTop="@dimen/margin_normal" />
+            />
+
+    <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:id="@+id/login_progress_indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/entry_icon_app"
+            app:layout_constraintBottom_toTopOf="@+id/password_layout" />
+
+
+    <TextView
+            android:id="@+id/login_progress_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/login_progress_name"
+            android:visibility="invisible"
+            tools:visibility="visible"
+            android:textSize="@dimen/textSize_small"
+            app:layout_constraintBottom_toTopOf="@+id/password_layout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/login_progress_indicator"
+           />
 
     <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"

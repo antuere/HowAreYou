@@ -18,7 +18,6 @@ import com.example.zeroapp.presentation.base.ui_dialog.UIDialogListener
 import com.example.zeroapp.presentation.pin_code_сreating.PinCodeCirclesState
 import com.example.zeroapp.presentation.base.ui_biometric_dialog.BiometricAuthState
 import com.example.zeroapp.presentation.base.ui_biometric_dialog.BiometricsAvailableState
-import com.example.zeroapp.util.setToolbarIcon
 import com.example.zeroapp.util.startOnClickAnimation
 import com.google.android.material.transition.MaterialSharedAxis
 import dagger.hilt.android.AndroidEntryPoint
@@ -55,7 +54,6 @@ class SecureEntryFragment :
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         exitTransition = MaterialSharedAxis(MaterialSharedAxis.X, true)
         reenterTransition = MaterialSharedAxis(MaterialSharedAxis.X, false)
     }
@@ -64,8 +62,6 @@ class SecureEntryFragment :
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        setToolbarIcon(R.drawable.ic_back)
-
         binding = this.inflater(inflater, container, false)
 
         binding!!.apply {

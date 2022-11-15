@@ -7,17 +7,16 @@ import android.view.ViewGroup
 import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.example.zeroapp.R
 import com.example.zeroapp.databinding.FragmentLoginEmailBinding
 import com.example.zeroapp.presentation.base.BaseBindingFragment
 import com.example.zeroapp.util.createSharedElementEnterTransition
-import com.example.zeroapp.util.setToolbarIcon
 import com.example.zeroapp.util.startOnClickAnimation
 import com.google.android.material.transition.MaterialSharedAxis
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class LoginEmailFragment : BaseBindingFragment<FragmentLoginEmailBinding>(FragmentLoginEmailBinding::inflate) {
+class LoginEmailFragment :
+    BaseBindingFragment<FragmentLoginEmailBinding>(FragmentLoginEmailBinding::inflate) {
 
     private val viewModel by viewModels<LoginEmailViewModel>()
 
@@ -28,7 +27,6 @@ class LoginEmailFragment : BaseBindingFragment<FragmentLoginEmailBinding>(Fragme
 
         exitTransition = MaterialSharedAxis(MaterialSharedAxis.X, true)
         reenterTransition = MaterialSharedAxis(MaterialSharedAxis.X, false)
-
     }
 
     override fun onCreateView(
@@ -36,10 +34,7 @@ class LoginEmailFragment : BaseBindingFragment<FragmentLoginEmailBinding>(Fragme
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        setToolbarIcon(R.drawable.ic_back)
-
         binding = this.inflater(inflater, container, false)
-
         binding!!.apply {
             setupBinding(this)
             return root
@@ -68,12 +63,26 @@ class LoginEmailFragment : BaseBindingFragment<FragmentLoginEmailBinding>(Fragme
             }
         }
 
+        viewModel.isShowLoginProgressIndicator.observe(viewLifecycleOwner) {
+            if (it) {
+                showProgressIndicator()
+            } else {
+                hideProgressIndicator()
+            }
+        }
+
         viewModel.loginState.observe(viewLifecycleOwner) { state ->
             state?.let {
                 when (it) {
-                    is LoginState.Successful -> findNavController().navigateUp()
+                    is LoginState.Successful -> {
+                        findNavController().navigateUp()
+                        viewModel.resetIsLoginProgressIndicator(withDelay = true)
+                    }
                     is LoginState.EmptyFields -> showSnackBar(stringResId = it.res)
-                    is LoginState.ErrorFromFireBase -> showSnackBarByString(string = it.message)
+                    is LoginState.ErrorFromFireBase -> {
+                        showSnackBarByString(string = it.message)
+                        viewModel.resetIsLoginProgressIndicator()
+                    }
                 }
                 viewModel.nullifyState()
             }
@@ -87,4 +96,30 @@ class LoginEmailFragment : BaseBindingFragment<FragmentLoginEmailBinding>(Fragme
             startPostponedEnterTransition()
         }
     }
+
+    private fun showProgressIndicator() {
+        binding!!.apply {
+            loginProgressIndicator.visibility = View.VISIBLE
+            loginProgressText.visibility = View.VISIBLE
+            emailLayout.visibility = View.INVISIBLE
+            passwordLayout.visibility = View.INVISIBLE
+            resetPasswordHint.visibility = View.INVISIBLE
+            signUpHint.visibility = View.INVISIBLE
+            buttonSignIn.visibility = View.INVISIBLE
+        }
+
+    }
+
+    private fun hideProgressIndicator() {
+        binding!!.apply {
+            loginProgressIndicator.visibility = View.INVISIBLE
+            loginProgressText.visibility = View.INVISIBLE
+            emailLayout.visibility = View.VISIBLE
+            passwordLayout.visibility = View.VISIBLE
+            resetPasswordHint.visibility = View.VISIBLE
+            signUpHint.visibility = View.VISIBLE
+            buttonSignIn.visibility = View.VISIBLE
+        }
+    }
+
 }

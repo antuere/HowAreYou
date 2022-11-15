@@ -1,12 +1,14 @@
 package com.example.zeroapp.di
 
 import antuere.domain.authentication_manager.AuthenticationManager
+import antuere.domain.privacy_manager.PrivacyManager
 import antuere.domain.repository.DayRepository
 import antuere.domain.repository.QuoteRepository
 import antuere.domain.repository.SettingsRepository
 import antuere.domain.repository.ToggleBtnRepository
 import antuere.domain.usecases.*
 import antuere.domain.usecases.authentication.*
+import antuere.domain.usecases.privacy.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -192,4 +194,36 @@ class DomainModule {
     fun provideSignInByGoogleUseCase(authenticationManager: AuthenticationManager): SignInByGoogleUseCase {
         return SignInByGoogleUseCase(authenticationManager)
     }
+
+    @Provides
+    fun provideDoneAuthByPinUseCase(privacyManager: PrivacyManager): DoneAuthByPinUseCase {
+        return DoneAuthByPinUseCase(privacyManager)
+    }
+
+    @Provides
+    fun provideDoneAuthByBiometricUseCase(privacyManager: PrivacyManager): DoneAuthByBiometricUseCase {
+        return DoneAuthByBiometricUseCase(privacyManager)
+    }
+
+    @Provides
+    fun provideResetAuthByPinUseCase(privacyManager: PrivacyManager): ResetAuthByPinUseCase {
+        return ResetAuthByPinUseCase(privacyManager)
+    }
+
+    @Provides
+    fun provideResetAuthByBiometricUseCase(privacyManager: PrivacyManager): ResetAuthByBiometricUseCase {
+        return ResetAuthByBiometricUseCase(privacyManager)
+    }
+
+    @Provides
+    fun provideCheckAuthByPinUseCase(privacyManager: PrivacyManager): CheckAuthByPinUseCase {
+        return CheckAuthByPinUseCase(privacyManager)
+    }
+
+    @Provides
+    fun provideCheckAuthByBiometricUseCase(privacyManager: PrivacyManager): CheckAuthByBiometricUseCase {
+        return CheckAuthByBiometricUseCase(privacyManager)
+    }
+
+
 }

@@ -14,5 +14,4 @@ interface PrivacyManager {
 
     fun doneAuthUserByPinCode()
 
-    fun doneAuthUser()
 }

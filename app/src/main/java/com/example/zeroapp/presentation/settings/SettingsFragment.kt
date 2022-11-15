@@ -22,12 +22,12 @@ import com.example.zeroapp.presentation.base.ui_biometric_dialog.BiometricsAvail
 import com.example.zeroapp.presentation.base.ui_biometric_dialog.UIBiometricDialog
 import com.example.zeroapp.presentation.pin_code_сreating.PinCodeDialogFragment
 import com.example.zeroapp.presentation.base.ui_biometric_dialog.BiometricAuthState
+import com.example.zeroapp.presentation.base.ui_dialog.UIDialogListener
 import com.google.android.material.transition.MaterialFade
 import com.google.android.material.transition.MaterialFadeThrough
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -35,6 +35,11 @@ class SettingsFragment :
     BaseBindingFragment<FragmentSettingsBinding>(FragmentSettingsBinding::inflate) {
 
     private val viewModel by viewModels<SettingsViewModel>()
+
+
+    private val dialogListener: UIDialogListener by lazy {
+        UIDialogListener(requireContext(), viewModel)
+    }
 
     @Inject
     lateinit var uiBiometricDialog: UIBiometricDialog
@@ -55,6 +60,7 @@ class SettingsFragment :
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         binding = this.inflater(inflater, container, false)
+        dialogListener.collect(this, withNeutralBtn = true)
 
         binding!!.settingWorriedDialogSwitch.setOnCheckedChangeListener { _, isChecked ->
             viewModel.saveShowWorriedDialog(isChecked)
@@ -95,18 +101,18 @@ class SettingsFragment :
         }
 
         binding!!.buttonSignOut.setOnClickListener {
-            viewModel.onSignOutClicked()
-            showSignInButton(container!!)
+            viewModel.onClickSignOut()
         }
 
         viewModel.userNickname.observe(viewLifecycleOwner) {
             it?.let { userName ->
-                Timber.i("user error : nick saved  is $userName")
                 if(userName != "UserUnknownError175"){
                     val welcomeText = "${getString(R.string.hello_user)} $userName"
                     binding!!.userNickname.text = welcomeText
 
                     showSignOutButton()
+                } else {
+                    showSignInButton(container!!)
                 }
             }
         }

@@ -12,7 +12,6 @@ import com.example.zeroapp.R
 import com.example.zeroapp.databinding.FragmentCatsBinding
 import com.example.zeroapp.presentation.base.BaseBindingFragment
 import com.example.zeroapp.util.createSharedElementEnterTransition
-import com.example.zeroapp.util.setToolbarIcon
 import com.google.android.material.transition.MaterialElevationScale
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -54,8 +53,6 @@ class CatsFragment : BaseBindingFragment<FragmentCatsBinding>(FragmentCatsBindin
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        setToolbarIcon(R.drawable.ic_back)
-
         binding = FragmentCatsBinding.inflate(inflater, container, false)
         getCatsImage()
 

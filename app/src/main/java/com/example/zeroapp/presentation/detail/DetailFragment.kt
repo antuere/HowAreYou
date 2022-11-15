@@ -15,7 +15,6 @@ import com.example.zeroapp.presentation.base.ui_dialog.UIDialogListener
 import com.example.zeroapp.util.SmileProvider
 import com.example.zeroapp.util.createSharedElementEnterTransition
 import com.example.zeroapp.util.mainActivity
-import com.example.zeroapp.util.setToolbarIcon
 import com.google.android.material.appbar.MaterialToolbar
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -37,7 +36,6 @@ class DetailFragment : BaseBindingFragment<FragmentDetailBinding>(FragmentDetail
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        setToolbarIcon(R.drawable.ic_back)
         dialogListener.collect(this)
         toolbar = mainActivity!!.toolbar!!
 

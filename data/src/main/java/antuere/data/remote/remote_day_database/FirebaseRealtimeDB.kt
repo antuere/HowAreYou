@@ -7,7 +7,6 @@ import antuere.domain.authentication_manager.AuthenticationManager
 import antuere.domain.dto.Day
 import antuere.domain.remote_db.RemoteDbApi
 import com.google.firebase.database.DatabaseReference
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
@@ -42,7 +41,6 @@ data class FirebaseRealtimeDB @Inject constructor(
         daysNode = getDaysNode()
         if (daysNode != null && networkInfo.isNetworkAvailable()) {
             val query = daysNode!!.get().await()
-            delay(100)
             if (query.exists()) {
                 query.children.forEach {
                     val dayRemote = it.getValue(DayEntityRemote::class.java)

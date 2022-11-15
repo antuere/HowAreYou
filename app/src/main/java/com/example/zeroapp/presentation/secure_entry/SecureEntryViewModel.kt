@@ -7,9 +7,9 @@ import androidx.lifecycle.viewModelScope
 import antuere.domain.dto.Settings
 import antuere.domain.usecases.*
 import antuere.domain.usecases.authentication.SignOutUseCase
+import antuere.domain.usecases.privacy.DoneAuthByBiometricUseCase
 import com.example.zeroapp.R
 import antuere.domain.usecases.privacy.DoneAuthByPinUseCase
-import antuere.domain.usecases.privacy.DoneAuthUseCase
 import com.example.zeroapp.presentation.base.ui_biometric_dialog.IUIBiometricListener
 import com.example.zeroapp.presentation.base.ui_dialog.IUIDialogAction
 import com.example.zeroapp.presentation.base.ui_dialog.UIDialog
@@ -33,7 +33,7 @@ class SecureEntryViewModel @Inject constructor(
     private val deleteAllSettingsUseCase: DeleteAllSettingsUseCase,
     private val deleteAllDaysLocalUseCase: DeleteAllDaysLocalUseCase,
     private val signOutUseCase: SignOutUseCase,
-    private val doneAuthUseCase: DoneAuthUseCase,
+    private val doneAuthByBiometricUseCase: DoneAuthByBiometricUseCase,
     private val doneAuthByPinUseCase: DoneAuthByPinUseCase,
     private val uiBiometricDialog: UIBiometricDialog
 ) : ViewModel(), IUIDialogAction {
@@ -93,7 +93,8 @@ class SecureEntryViewModel @Inject constructor(
             _pinCodeCirclesState.value = PinCodeCirclesState.IsShowAll
 
             viewModelScope.launch {
-                doneAuthUseCase(Unit)
+                doneAuthByPinUseCase(Unit)
+                doneAuthByBiometricUseCase(Unit)
             }
 
             _biometricAuthState.value = BiometricAuthState.Successful
@@ -226,7 +227,8 @@ class SecureEntryViewModel @Inject constructor(
         if (pinCode == savedPinCode.value) {
             if (isBiomAuthCanceled) {
                 viewModelScope.launch {
-                    doneAuthUseCase(Unit)
+                    doneAuthByPinUseCase(Unit)
+                    doneAuthByBiometricUseCase(Unit)
                 }
             } else {
                 viewModelScope.launch {

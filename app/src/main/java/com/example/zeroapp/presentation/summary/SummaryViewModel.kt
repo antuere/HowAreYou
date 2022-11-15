@@ -139,7 +139,7 @@ class SummaryViewModel @Inject constructor(
             if (result && settings.value!!.isShowWorriedDialog) {
                 _uiDialog.value = UIDialog(
                     title = R.string.dialog_warning_title,
-                    desc = R.string.dialog_warning_message,
+                    desc = R.string.dialog_warning_desc,
                     icon = R.drawable.ic_warning_dialog,
                     positiveButton = UIDialog.UiButton(
                         text = R.string.dialog_warning_positive,

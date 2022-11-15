@@ -28,6 +28,9 @@ class LoginEmailViewModel @Inject constructor(
     val loginState: LiveData<LoginState?>
         get() = _loginState
 
+    private var _isShowLoginProgressIndicator = MutableLiveData(false)
+    val isShowLoginProgressIndicator: LiveData<Boolean>
+        get() = _isShowLoginProgressIndicator
 
     private val firebaseLoginListener = object : LoginResultListener {
 
@@ -53,6 +56,7 @@ class LoginEmailViewModel @Inject constructor(
 
     fun onClickSignIn(email: String, password: String) {
         if (email.isNotEmpty() && password.isNotEmpty()) {
+            _isShowLoginProgressIndicator.value = true
             viewModelScope.launch {
                 signInUseCase(firebaseLoginListener, email, password)
             }
@@ -63,6 +67,17 @@ class LoginEmailViewModel @Inject constructor(
 
     fun nullifyState() {
         _loginState.value = null
+    }
+
+    fun resetIsLoginProgressIndicator(withDelay: Boolean = false) {
+        if(withDelay){
+            viewModelScope.launch {
+                delay(250)
+                _isShowLoginProgressIndicator.value = false
+            }
+        } else {
+            _isShowLoginProgressIndicator.value = false
+        }
     }
 
     fun checkCurrentAuth() {

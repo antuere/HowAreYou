@@ -22,7 +22,7 @@ class SignInMethodsViewModel @Inject constructor(
     private val refreshRemoteDataUseCase: RefreshRemoteDataUseCase,
     private val saveUserNicknameUseCase: SaveUserNicknameUseCase,
     private val checkCurrentAuthUseCase: CheckCurrentAuthUseCase,
-    private val setUserNicknameOnServer: SetUserNicknameOnServerUseCase,
+    private val setUserNicknameOnServerUseCase: SetUserNicknameOnServerUseCase,
     private val signInByGoogleUseCase: SignInByGoogleUseCase
 ) : ViewModel() {
 
@@ -42,7 +42,6 @@ class SignInMethodsViewModel @Inject constructor(
         }
     }
 
-
     init {
         checkCurrentAuth()
     }
@@ -57,7 +56,7 @@ class SignInMethodsViewModel @Inject constructor(
 
     private fun loginSuccessful(name: String) {
         viewModelScope.launch {
-            setUserNicknameOnServer(name)
+            setUserNicknameOnServerUseCase(name)
             saveUserNicknameUseCase(name)
             refreshRemoteDataUseCase(Unit)
             _signInState.value = SignInMethodsState.UserAuthorized

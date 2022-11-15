@@ -35,9 +35,7 @@ class UIDialogListener(private val context: Context, private val action: IUIDial
             .setTitle(uiDialog.title)
             .setMessage(uiDialog.desc)
             .setIcon(uiDialog.icon)
-            .setOnCancelListener {
-                uiDialog.negativeButton.onClick.invoke()
-            }
+            .setCancelable(false)
             .setNeutralButton(uiDialog.neutralButton!!.text) { _, _ ->
                 uiDialog.neutralButton.onClick.invoke()
             }

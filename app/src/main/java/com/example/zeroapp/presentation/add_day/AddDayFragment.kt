@@ -5,12 +5,10 @@ import android.view.View
 import android.widget.ImageButton
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.example.zeroapp.R
 import com.example.zeroapp.databinding.FragmentAddDayBinding
 import com.example.zeroapp.presentation.base.BaseBindingFragment
 import com.example.zeroapp.util.SmileProvider
 import com.example.zeroapp.util.createSharedElementEnterTransition
-import com.example.zeroapp.util.setToolbarIcon
 import com.example.zeroapp.util.startOnClickAnimation
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -36,8 +34,6 @@ class AddDayFragment : BaseBindingFragment<FragmentAddDayBinding>(FragmentAddDay
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        setToolbarIcon(R.drawable.ic_back)
-
         smileButtons.forEach(::setSmileListeners)
     }
 

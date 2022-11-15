@@ -47,6 +47,7 @@
     <string name="nickname">Nickname</string>
     <string name="sign_up">Sign up</string>
     <string name="don_have_acc">Don\'t have account? Sign Up</string>
+    <string name="login_progress_name">Great day today…</string>
     <string name="reset_password_hint">Forgot password?</string>
     <string name="reset_password_button">Reset password</string>
     <string name="reset_password_plug">Enter email from your account. Tap on button below and an email with instructions for resetting your password will be sent to your email address.</string>
@@ -56,9 +57,9 @@
 
     <!-- Dialogs/SnackBars -->
     <string name="dialog_delete_title">Delete day</string>
-    <string name="dialog_delete_message">Deleting permanently this day?</string>
+    <string name="dialog_delete_desc">Deleting permanently this day?</string>
     <string name="dialog_warning_title">How are you</string>
-    <string name="dialog_warning_message">We have noticed a drop in your mood in the last 5 days, are you all right?</string>
+    <string name="dialog_warning_desc">We have noticed a drop in your mood in the last 5 days, are you all right?</string>
     <string name="dialog_warning_positive">Yes</string>
     <string name="dialog_warning_neutral">Don\'t show again</string>
     <string name="dialog_warning_negative">No</string>
@@ -66,6 +67,12 @@
     <string name="dialog_sign_out_desc">All your data will be deleted on this device, to restore them, log in to your account again.</string>
     <string name="dialog_sign_out_positive">Sign out</string>
     <string name="dialog_sign_out_negative">Cancel</string>
+    <string name="dialog_delete_local_data_title">Day entries</string>
+    <string name="dialog_delete_local_data_desc">When you sign out of your account, you can save existing recordings locally on your device. Save local day entries?</string>
+    <string name="dialog_delete_local_data_positive">Yes</string>
+    <string name="dialog_delete_local_data_negative">No</string>
+    <string name="dialog_delete_local_data_neutral">Stay logged in</string>
+
     <string name="snack_bar_warning_negative">Pay attention to the cards above, we hope this will help you at least a little.</string>
     <string name="yes">Delete</string>
     <string name="no">Cancel</string>

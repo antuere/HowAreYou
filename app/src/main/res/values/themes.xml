@@ -16,6 +16,7 @@
         <item name="android:textColor">@color/black</item>
 
         <!-- Elements UI theme -->
+        <item name="drawerArrowStyle">@style/NavigationArrow</item>
         <item name="materialAlertDialogTheme">@style/MyDialogStyle</item>
         <item name="bottomNavigationStyle">@style/Widget.App.BottomNavigationView</item>
         <item name="toolbarStyle">@style/Widget.App.Toolbar</item>
@@ -31,6 +32,17 @@
     </style>
 
 
+    <!-- Navigation icon -->
+    <style name="NavigationArrow" parent="Widget.AppCompat.DrawerArrowToggle">
+        <item name="color">@color/white</item>
+        <item name="drawableSize">32dp</item>
+        <item name="spinBars">true</item>
+        <item name="arrowShaftLength">19dp</item>
+        <item name="thickness">2dp</item>
+        <item name="arrowHeadLength">9dp</item>
+    </style>
+
+
     <!-- Dialog theme -->
     <style name="MyDialogStyle" parent="ThemeOverlay.Material3.MaterialAlertDialog.Centered">
         <item name="alertDialogStyle">@style/MaterialAlertDialog.App</item>
@@ -40,6 +52,7 @@
         </item>
         <item name="buttonBarPositiveButtonStyle">@style/Widget.App.Button</item>
         <item name="buttonBarNegativeButtonStyle">@style/Widget.App.Button</item>
+        <item name="buttonBarNeutralButtonStyle">@style/Widget.App.Button.Flush</item>
     </style>
 
 
@@ -130,11 +143,11 @@
     <style name="Widget.App.CircularProgressIndicator" parent="Widget.Material3.CircularProgressIndicator.Medium">
         <item name="materialThemeOverlay">@style/ThemeOverlay.App.CircularProgressIndicator</item>
         <item name="trackThickness">4dp</item>
-        <item name="indicatorSize">70dp</item>
+        <item name="indicatorSize">50dp</item>
     </style>
 
     <style name="ThemeOverlay.App.CircularProgressIndicator" parent="">
-        <item name="colorPrimary">@color/white</item>
+        <item name="colorPrimary">@color/teal_main</item>
     </style>
 
     <!-- Popup overflow menu  button theme -->

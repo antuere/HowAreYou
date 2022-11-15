@@ -25,9 +25,8 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintVertical_bias="0.09"
+                app:layout_constraintVertical_bias="0.08"
                 app:layout_constraintHorizontal_bias="0.15" />
-
 
         <TextView
                 android:id="@+id/how_are_you_text"
@@ -36,7 +35,6 @@
                 android:textSize="@dimen/textSize_small"
                 android:text="@string/how_are_you_text"
                 android:layout_marginTop="@dimen/margin_small"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/user_nickname"
                 app:layout_constraintStart_toStartOf="@id/user_nickname"
                 app:layout_constraintHorizontal_bias="0.0" />
@@ -48,11 +46,9 @@
                 android:textSize="@dimen/textSize_small"
                 android:text="@string/sign_in_advice"
                 android:layout_marginTop="@dimen/margin_small"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/how_are_you_text"
                 app:layout_constraintStart_toStartOf="@id/user_nickname"
                 app:layout_constraintHorizontal_bias="0.0" />
-
 
         <Button
                 android:id="@+id/button_signIn"
@@ -74,7 +70,7 @@
                 android:visibility="invisible"
                 tools:visibility="visible"
                 android:layout_marginTop="@dimen/margin_small_two"
-                app:layout_constraintStart_toEndOf="@+id/button_signIn"
+                android:layout_marginEnd="@dimen/margin_normal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/sign_in_advice_text" />
 
@@ -96,7 +92,6 @@
                 android:textSize="@dimen/textSize_small_two"
                 android:text="@string/settings_general_text"
                 android:layout_marginTop="@dimen/margin_small_two"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/materialDivider"
                 app:layout_constraintStart_toStartOf="@id/user_nickname"
                 app:layout_constraintHorizontal_bias="0.0" />
@@ -156,10 +151,8 @@
                 android:textSize="@dimen/textSize_small_two"
                 android:text="@string/settings_privacy_text"
                 android:layout_marginTop="@dimen/margin_small_two"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/materialDivider_under_general"
-                app:layout_constraintStart_toStartOf="@id/user_nickname"
-                app:layout_constraintHorizontal_bias="0.0" />
+                app:layout_constraintStart_toStartOf="@id/user_nickname"/>
 
         <com.google.android.material.materialswitch.MaterialSwitch
                 android:id="@+id/setting_pin_code_switch"

@@ -9,8 +9,7 @@
         tools:context=".presentation.summary.SummaryFragment">
 
     <com.google.android.material.card.MaterialCardView
-            app:cardElevation="1dp"
-            android:id="@+id/materialCardView"
+            android:id="@+id/main_card_view"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:cardBackgroundColor="@color/color_for_card"
@@ -20,18 +19,21 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/guideline_horizontal_1">
 
-        <TextView
-                android:id="@+id/wish_text"
-                android:layout_width="275dp"
-                android:layout_height="85dp"
-                android:layout_gravity="start"
-                android:text="@string/wish_for_users_plug"
-                android:textSize="@dimen/textSize_small_one"
-                android:layout_margin="20dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
-
     </com.google.android.material.card.MaterialCardView>
+
+    <TextView
+            android:elevation="1dp"
+            android:id="@+id/wish_text"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_gravity="start"
+            android:text="@string/wish_for_users_plug"
+            android:textSize="@dimen/textSize_small_one"
+            android:layout_margin="20dp"
+            app:layout_constraintStart_toStartOf="@+id/main_card_view"
+            app:layout_constraintBottom_toBottomOf="@+id/main_card_view"
+            app:layout_constraintTop_toTopOf="@+id/main_card_view"
+            app:layout_constraintEnd_toStartOf="@+id/guideline_vertical_2" />
 
     <com.google.android.material.card.MaterialCardView
             android:id="@+id/cats"
@@ -193,7 +195,6 @@
             android:transitionName="@string/transition_name_for_sum"
             style="?android:attr/borderlessButtonStyle"
             tools:ignore="RedundantDescriptionCheck" />
-
 
     <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline_vertical"
