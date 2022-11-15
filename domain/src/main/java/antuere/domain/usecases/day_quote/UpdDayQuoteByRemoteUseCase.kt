@@ -1,6 +1,7 @@
-package antuere.domain.usecases
+package antuere.domain.usecases.day_quote
 
 import antuere.domain.repository.QuoteRepository
+import antuere.domain.usecases.UseCaseDefault
 
 class UpdDayQuoteByRemoteUseCase(private val quoteRepository: QuoteRepository) :
     UseCaseDefault<Boolean, Unit> {

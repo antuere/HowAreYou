@@ -3,7 +3,7 @@ package com.example.zeroapp.presentation.add_day
 
 import androidx.lifecycle.*
 import antuere.domain.dto.Day
-import antuere.domain.usecases.AddDayUseCase
+import antuere.domain.usecases.days_entities.AddDayUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject

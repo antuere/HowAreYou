@@ -6,9 +6,13 @@ import antuere.domain.repository.DayRepository
 import antuere.domain.repository.QuoteRepository
 import antuere.domain.repository.SettingsRepository
 import antuere.domain.repository.ToggleBtnRepository
-import antuere.domain.usecases.*
 import antuere.domain.usecases.authentication.*
+import antuere.domain.usecases.day_quote.GetDayQuoteLocalUseCase
+import antuere.domain.usecases.day_quote.SaveDayQuoteLocalUseCase
+import antuere.domain.usecases.day_quote.UpdDayQuoteByRemoteUseCase
+import antuere.domain.usecases.days_entities.*
 import antuere.domain.usecases.privacy.*
+import antuere.domain.usecases.user_settings.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

@@ -1,7 +1,8 @@
-package antuere.domain.usecases
+package antuere.domain.usecases.user_settings
 
 import antuere.domain.dto.ToggleBtnState
 import antuere.domain.repository.ToggleBtnRepository
+import antuere.domain.usecases.UseCaseDefault
 import kotlinx.coroutines.flow.Flow
 
 class GetToggleBtnStateUseCase(private val toggleBtnRepository: ToggleBtnRepository) :

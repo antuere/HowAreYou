@@ -5,9 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import antuere.domain.dto.Settings
-import antuere.domain.usecases.GetSettingsUseCase
-import antuere.domain.usecases.SavePinCodeUseCase
-import antuere.domain.usecases.SaveSettingsUseCase
+import antuere.domain.usecases.user_settings.GetSettingsUseCase
+import antuere.domain.usecases.user_settings.SavePinCodeUseCase
+import antuere.domain.usecases.user_settings.SaveSettingsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest

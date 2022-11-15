@@ -5,11 +5,15 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import antuere.domain.dto.Settings
-import antuere.domain.usecases.*
 import antuere.domain.usecases.authentication.SignOutUseCase
+import antuere.domain.usecases.days_entities.DeleteAllDaysLocalUseCase
 import antuere.domain.usecases.privacy.DoneAuthByBiometricUseCase
 import com.example.zeroapp.R
 import antuere.domain.usecases.privacy.DoneAuthByPinUseCase
+import antuere.domain.usecases.user_settings.DeleteAllSettingsUseCase
+import antuere.domain.usecases.user_settings.GetSavedPinCodeUseCase
+import antuere.domain.usecases.user_settings.GetSettingsUseCase
+import antuere.domain.usecases.user_settings.SaveSettingsUseCase
 import com.example.zeroapp.presentation.base.ui_biometric_dialog.IUIBiometricListener
 import com.example.zeroapp.presentation.base.ui_dialog.IUIDialogAction
 import com.example.zeroapp.presentation.base.ui_dialog.UIDialog

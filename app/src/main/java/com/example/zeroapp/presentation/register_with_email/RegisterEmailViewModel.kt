@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import antuere.domain.authentication_manager.RegisterResultListener
-import antuere.domain.usecases.SaveUserNicknameUseCase
+import antuere.domain.usecases.user_settings.SaveUserNicknameUseCase
 import antuere.domain.usecases.authentication.SetUserNicknameOnServerUseCase
 import antuere.domain.usecases.authentication.SignUpUseCase
 import com.example.zeroapp.R

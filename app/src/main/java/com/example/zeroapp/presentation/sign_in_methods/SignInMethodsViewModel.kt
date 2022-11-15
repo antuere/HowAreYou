@@ -6,8 +6,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import antuere.domain.authentication_manager.RegisterResultListener
 import antuere.domain.usecases.authentication.CheckCurrentAuthUseCase
-import antuere.domain.usecases.RefreshRemoteDataUseCase
-import antuere.domain.usecases.SaveUserNicknameUseCase
+import antuere.domain.usecases.days_entities.RefreshRemoteDataUseCase
+import antuere.domain.usecases.user_settings.SaveUserNicknameUseCase
 import antuere.domain.usecases.authentication.SetUserNicknameOnServerUseCase
 import antuere.domain.usecases.authentication.SignInByGoogleUseCase
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount

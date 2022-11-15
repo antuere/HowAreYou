@@ -4,8 +4,8 @@ import android.view.View
 import androidx.lifecycle.*
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import antuere.domain.dto.Day
-import antuere.domain.usecases.DeleteDayUseCase
-import antuere.domain.usecases.GetFavoritesDaysUseCase
+import antuere.domain.usecases.days_entities.DeleteDayUseCase
+import antuere.domain.usecases.days_entities.GetFavoritesDaysUseCase
 import com.example.zeroapp.R
 import com.example.zeroapp.presentation.base.ui_dialog.IUIDialogAction
 import com.example.zeroapp.presentation.base.ui_dialog.UIDialog

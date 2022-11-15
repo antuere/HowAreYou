@@ -6,9 +6,9 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import antuere.domain.dto.Day
-import antuere.domain.usecases.DeleteDayUseCase
-import antuere.domain.usecases.GetDayByIdUseCase
-import antuere.domain.usecases.UpdateDayUseCase
+import antuere.domain.usecases.days_entities.DeleteDayUseCase
+import antuere.domain.usecases.days_entities.GetDayByIdUseCase
+import antuere.domain.usecases.days_entities.UpdateDayUseCase
 import com.example.zeroapp.R
 import com.example.zeroapp.presentation.base.ui_dialog.IUIDialogAction
 import com.example.zeroapp.presentation.base.ui_dialog.UIDialog

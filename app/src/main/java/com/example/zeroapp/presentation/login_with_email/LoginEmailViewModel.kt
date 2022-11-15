@@ -5,10 +5,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import antuere.domain.authentication_manager.LoginResultListener
-import antuere.domain.usecases.*
 import antuere.domain.usecases.authentication.CheckCurrentAuthUseCase
 import antuere.domain.usecases.authentication.GetUserNameFromServerUseCase
 import antuere.domain.usecases.authentication.SignInUseCase
+import antuere.domain.usecases.days_entities.RefreshRemoteDataUseCase
+import antuere.domain.usecases.user_settings.SaveUserNicknameUseCase
 import com.example.zeroapp.R
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay

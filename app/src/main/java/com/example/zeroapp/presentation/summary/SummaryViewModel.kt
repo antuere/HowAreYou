@@ -7,7 +7,12 @@ import androidx.lifecycle.viewModelScope
 import antuere.domain.dto.Day
 import antuere.domain.dto.Quote
 import antuere.domain.dto.Settings
-import antuere.domain.usecases.*
+import antuere.domain.usecases.day_quote.GetDayQuoteLocalUseCase
+import antuere.domain.usecases.day_quote.UpdDayQuoteByRemoteUseCase
+import antuere.domain.usecases.days_entities.GetDaysByLimitUseCase
+import antuere.domain.usecases.days_entities.UpdateLastDayUseCase
+import antuere.domain.usecases.user_settings.GetSettingsUseCase
+import antuere.domain.usecases.user_settings.SaveSettingsUseCase
 import antuere.domain.util.TimeUtility
 import com.example.zeroapp.R
 import com.example.zeroapp.presentation.base.ui_dialog.IUIDialogAction
