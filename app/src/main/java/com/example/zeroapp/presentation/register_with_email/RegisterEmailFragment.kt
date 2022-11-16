@@ -48,16 +48,56 @@ class RegisterEmailFragment :
             }
         }
 
+        viewModel.isShowRegisterProgressIndicator.observe(viewLifecycleOwner) {
+            if (it) {
+                showProgressIndicator()
+            } else {
+                hideProgressIndicator()
+            }
+        }
+
         viewModel.registerState.observe(viewLifecycleOwner) { state ->
             state?.let {
                 when (it) {
-                    is RegisterState.Successful -> findNavController().navigateUp()
+                    is RegisterState.Successful -> {
+                        findNavController().navigateUp()
+                        viewModel.resetIsShowRegisterProgressIndicator(withDelay = true)
+                    }
                     is RegisterState.EmptyFields -> showSnackBar(stringResId = it.res)
                     is RegisterState.PasswordsError -> showSnackBar(stringResId = it.res)
-                    is RegisterState.ErrorFromFireBase -> showSnackBarByString(string = it.message)
+                    is RegisterState.ErrorFromFireBase -> {
+                        showSnackBarByString(string = it.message)
+                        viewModel.resetIsShowRegisterProgressIndicator()
+                    }
                 }
                 viewModel.nullifyState()
             }
+        }
+    }
+
+    private fun showProgressIndicator() {
+        binding!!.apply {
+            if (stubProgressRegister.root.parent != null) {
+                stubProgressRegister.root.inflate()
+            } else {
+                stubProgressRegister.root.visibility = View.VISIBLE
+            }
+            emailLayout.visibility = View.INVISIBLE
+            passwordLayout.visibility = View.INVISIBLE
+            confirmPasswordLayout.visibility = View.INVISIBLE
+            nicknameLayout.visibility = View.INVISIBLE
+            buttonSignUp.visibility = View.INVISIBLE
+        }
+    }
+
+    private fun hideProgressIndicator() {
+        binding!!.apply {
+            stubProgressRegister.root.visibility = View.GONE
+            emailLayout.visibility = View.VISIBLE
+            passwordLayout.visibility = View.VISIBLE
+            confirmPasswordLayout.visibility = View.VISIBLE
+            nicknameLayout.visibility = View.VISIBLE
+            buttonSignUp.visibility = View.VISIBLE
         }
     }
 }

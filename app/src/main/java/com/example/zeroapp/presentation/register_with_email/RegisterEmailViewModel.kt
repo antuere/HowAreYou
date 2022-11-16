@@ -10,6 +10,7 @@ import antuere.domain.usecases.authentication.SetUserNicknameOnServerUseCase
 import antuere.domain.usecases.authentication.SignUpUseCase
 import com.example.zeroapp.R
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -23,6 +24,10 @@ class RegisterEmailViewModel @Inject constructor(
     private var _registerState = MutableLiveData<RegisterState?>()
     val registerState: LiveData<RegisterState?>
         get() = _registerState
+
+    private var _isShowRegisterProgressIndicator = MutableLiveData(false)
+    val isShowRegisterProgressIndicator: LiveData<Boolean>
+        get() = _isShowRegisterProgressIndicator
 
 
     private val firebaseRegisterListener = object : RegisterResultListener {
@@ -47,6 +52,7 @@ class RegisterEmailViewModel @Inject constructor(
 
     fun onClickSignUp(email: String, password: String, confirmPassword: String, name: String) {
         if (isValidateFields(email, password, confirmPassword, name)) {
+            _isShowRegisterProgressIndicator.value = true
             viewModelScope.launch {
                 signUpUseCase(firebaseRegisterListener, email, password, name)
             }
@@ -69,6 +75,17 @@ class RegisterEmailViewModel @Inject constructor(
         } else {
             _registerState.value = RegisterState.EmptyFields(R.string.empty_fields)
             false
+        }
+    }
+
+    fun resetIsShowRegisterProgressIndicator(withDelay: Boolean = false) {
+        if(withDelay){
+            viewModelScope.launch {
+                delay(250)
+                _isShowRegisterProgressIndicator.value = false
+            }
+        } else {
+            _isShowRegisterProgressIndicator.value = false
         }
     }
 

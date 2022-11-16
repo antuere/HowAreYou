@@ -76,12 +76,12 @@ class LoginEmailFragment :
                 when (it) {
                     is LoginState.Successful -> {
                         findNavController().navigateUp()
-                        viewModel.resetIsLoginProgressIndicator(withDelay = true)
+                        viewModel.resetIsShowLoginProgressIndicator(withDelay = true)
                     }
                     is LoginState.EmptyFields -> showSnackBar(stringResId = it.res)
                     is LoginState.ErrorFromFireBase -> {
                         showSnackBarByString(string = it.message)
-                        viewModel.resetIsLoginProgressIndicator()
+                        viewModel.resetIsShowLoginProgressIndicator()
                     }
                 }
                 viewModel.nullifyState()
@@ -99,8 +99,11 @@ class LoginEmailFragment :
 
     private fun showProgressIndicator() {
         binding!!.apply {
-            loginProgressIndicator.visibility = View.VISIBLE
-            loginProgressText.visibility = View.VISIBLE
+            if (stubProgressLogin.root.parent != null) {
+                stubProgressLogin.root.inflate()
+            } else {
+                stubProgressLogin.root.visibility = View.VISIBLE
+            }
             emailLayout.visibility = View.INVISIBLE
             passwordLayout.visibility = View.INVISIBLE
             resetPasswordHint.visibility = View.INVISIBLE
@@ -112,8 +115,7 @@ class LoginEmailFragment :
 
     private fun hideProgressIndicator() {
         binding!!.apply {
-            loginProgressIndicator.visibility = View.INVISIBLE
-            loginProgressText.visibility = View.INVISIBLE
+            stubProgressLogin.root.visibility = View.GONE
             emailLayout.visibility = View.VISIBLE
             passwordLayout.visibility = View.VISIBLE
             resetPasswordHint.visibility = View.VISIBLE

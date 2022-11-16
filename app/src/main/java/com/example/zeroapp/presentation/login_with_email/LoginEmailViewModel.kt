@@ -70,7 +70,7 @@ class LoginEmailViewModel @Inject constructor(
         _loginState.value = null
     }
 
-    fun resetIsLoginProgressIndicator(withDelay: Boolean = false) {
+    fun resetIsShowLoginProgressIndicator(withDelay: Boolean = false) {
         if(withDelay){
             viewModelScope.launch {
                 delay(250)
