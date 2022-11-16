@@ -10,7 +10,7 @@ import antuere.domain.dto.Settings
 import antuere.domain.usecases.day_quote.GetDayQuoteLocalUseCase
 import antuere.domain.usecases.day_quote.UpdDayQuoteByRemoteUseCase
 import antuere.domain.usecases.days_entities.GetDaysByLimitUseCase
-import antuere.domain.usecases.days_entities.UpdateLastDayUseCase
+import antuere.domain.usecases.days_entities.GetLastDayUseCase
 import antuere.domain.usecases.user_settings.GetSettingsUseCase
 import antuere.domain.usecases.user_settings.SaveSettingsUseCase
 import antuere.domain.util.TimeUtility
@@ -24,12 +24,13 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
 class SummaryViewModel @Inject constructor(
-    private val updateLastDayUseCase: UpdateLastDayUseCase,
+    private val getLastDayUseCase: GetLastDayUseCase,
     private val updDayQuoteByRemoteUseCase: UpdDayQuoteByRemoteUseCase,
     private val getDayQuoteLocalUseCase: GetDayQuoteLocalUseCase,
     private val getDaysByLimitUseCase: GetDaysByLimitUseCase,
@@ -79,24 +80,13 @@ class SummaryViewModel @Inject constructor(
         checkLastFiveDays()
     }
 
-    fun getLastDay() {
+    private fun getLastDay() {
         viewModelScope.launch {
+            getLastDayUseCase(Unit).collectLatest {
+                _lastDay.postValue(it)
+                delay(100)
 
-            _lastDay.value = updateLastDayUseCase(Unit)
-
-            if (TimeUtility.format(Date()) == (_lastDay.value?.dateString ?: "show add button")) {
-
-                val resId = SmileProvider.getSmileImageByName(_lastDay.value?.imageName ?: "none")
-                _fabButtonState.value = FabButtonState.Smile(resId)
-                _wishText.value =
-                    myAnalystForSummary.getWishStringForSummary(resId)
-
-            } else {
-
-                _fabButtonState.value = FabButtonState.Add
-                _wishText.value =
-                    myAnalystForSummary.getWishStringForSummary(MyAnalystForSummary.DEFAULT_WISH)
-
+                checkDayTime()
             }
         }
     }
@@ -173,6 +163,20 @@ class SummaryViewModel @Inject constructor(
         viewModelScope.launch {
             settings.value!!.isShowWorriedDialog = false
             saveSettingsUseCase(settings.value!!)
+        }
+    }
+
+    private fun checkDayTime(){
+        if (TimeUtility.format(Date()) == (_lastDay.value?.dateString ?: "show add button")) {
+            val resId = SmileProvider.getSmileImageByName(_lastDay.value?.imageName ?: "none")
+            _fabButtonState.value = FabButtonState.Smile(resId)
+            _wishText.value =
+                myAnalystForSummary.getWishStringForSummary(resId)
+
+        } else {
+            _fabButtonState.value = FabButtonState.Add
+            _wishText.value =
+                myAnalystForSummary.getWishStringForSummary(MyAnalystForSummary.DEFAULT_WISH)
         }
     }
 

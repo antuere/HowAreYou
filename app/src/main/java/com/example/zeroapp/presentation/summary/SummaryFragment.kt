@@ -54,7 +54,6 @@ class SummaryFragment :
                 binding!!.quotesAuthor.text = author
             }
         }
-
         return binding?.root
     }
 
@@ -64,7 +63,6 @@ class SummaryFragment :
         view.doOnPreDraw {
             startPostponedEnterTransition()
         }
-        viewModel.getLastDay()
 
         viewModel.wishText.observe(viewLifecycleOwner) {
             it?.let { wishString ->

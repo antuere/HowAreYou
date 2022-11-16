@@ -87,9 +87,11 @@ class DayRepositoryImpl @Inject constructor(
             }
     }
 
-    override suspend fun getDay(): Day? = withContext(Dispatchers.IO) {
+    override suspend fun getDay(): Flow<Day?> = withContext(Dispatchers.IO) {
         val dayEntity = dayDataBaseRoom.dayDatabaseDao.getDay()
-        dayEntity?.let(dayEntityMapper::mapToDomainModel)
+        dayEntity.map {
+            it?.let  (dayEntityMapper::mapToDomainModel)
+        }
     }
 
     override suspend fun getDayById(id: Long): Day? = withContext(Dispatchers.IO) {

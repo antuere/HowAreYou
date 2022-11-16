@@ -25,8 +25,8 @@ class DomainModule {
 
 
     @Provides
-    fun provideUpdateLastDayUseCase(dayRepository: DayRepository): UpdateLastDayUseCase {
-        return UpdateLastDayUseCase(dayRepository)
+    fun provideGetLastDayUseCase(dayRepository: DayRepository): GetLastDayUseCase {
+        return GetLastDayUseCase(dayRepository)
     }
 
     @Provides
