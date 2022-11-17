@@ -17,14 +17,13 @@ import antuere.domain.util.TimeUtility
 import com.example.zeroapp.R
 import com.example.zeroapp.presentation.base.ui_dialog.IUIDialogAction
 import com.example.zeroapp.presentation.base.ui_dialog.UIDialog
-import com.example.zeroapp.util.SmileProvider
+import antuere.data.util.SmileProvider
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
 
@@ -168,10 +167,9 @@ class SummaryViewModel @Inject constructor(
 
     private fun checkDayTime(){
         if (TimeUtility.format(Date()) == (_lastDay.value?.dateString ?: "show add button")) {
-            val resId = SmileProvider.getSmileImageByName(_lastDay.value?.imageName ?: "none")
-            _fabButtonState.value = FabButtonState.Smile(resId)
+            _fabButtonState.value = FabButtonState.Smile(_lastDay.value?.imageResId!!)
             _wishText.value =
-                myAnalystForSummary.getWishStringForSummary(resId)
+                myAnalystForSummary.getWishStringForSummary(_lastDay.value?.imageResId!!)
 
         } else {
             _fabButtonState.value = FabButtonState.Add

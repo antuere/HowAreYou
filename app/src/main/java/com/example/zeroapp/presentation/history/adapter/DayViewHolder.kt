@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import antuere.domain.dto.Day
 import com.example.zeroapp.R
 import com.example.zeroapp.databinding.DayItemBinding
-import com.example.zeroapp.util.SmileProvider
+import antuere.data.util.SmileProvider
 
 class DayViewHolder private constructor(private val binding: DayItemBinding) :
     RecyclerView.ViewHolder(binding.root) {
@@ -22,12 +22,10 @@ class DayViewHolder private constructor(private val binding: DayItemBinding) :
 
     fun bind(item: Day, clickListener: DayClickListener) {
         with(binding) {
-            val resId = SmileProvider.getSmileImageByName(item.imageName)
-            imageView.setImageResource(resId)
+            imageView.setImageResource(item.imageResId)
             dateText.text = item.dateString
-            val transitionName =
-                itemView.context.getString(R.string.transition_name_item, item.dayId.toString())
-            itemView.transitionName = transitionName
+
+            itemView.transitionName = item.transitionName
 
             itemView.setOnClickListener {
                 clickListener.onClick(item, itemView)

@@ -22,10 +22,6 @@ import com.google.android.material.transition.MaterialContainerTransform
 val Fragment.mainActivity: MainActivity?
     get() = activity as? MainActivity
 
-fun Fragment.setToolbarIcon(@DrawableRes resId: Int) {
-    mainActivity?.toolbar?.setNavigationIcon(resId)
-}
-
 fun Fragment.startOnClickAnimation(view: View) {
     view.startAnimation(AnimationUtils.loadAnimation(requireContext(), R.anim.on_click_anim))
 }
@@ -37,6 +33,16 @@ fun Fragment.createSharedElementEnterTransition() = MaterialContainerTransform()
     setAllContainerColors(requireContext().themeColor(com.google.android.material.R.attr.colorOnPrimary))
 }
 
+fun View.getSmileResFromBtnId() : Int {
+    return when (this.id) {
+        R.id.b_very_happy -> antuere.data.R.drawable.smile_very_happy
+        R.id.b_happySmile -> antuere.data.R.drawable.smile_happy
+        R.id.b_smile_low -> antuere.data.R.drawable.smile_low
+        R.id.b_none -> antuere.data.R.drawable.smile_none
+        R.id.b_sad -> antuere.data.R.drawable.smile_sad
+        else -> antuere.data.R.drawable.smile_none
+    }
+}
 
 fun <T> LiveData<T>.toMutableLiveData(): MutableLiveData<T> {
     val mediatorLiveData = MediatorLiveData<T>()

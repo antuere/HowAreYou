@@ -25,6 +25,7 @@ android {
         versionCode 1
         versionName "1.0"
 
+        testInstrumentationRunnerArguments["androidx.benchmark.suppressErrors"] = "EMULATOR"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         signingConfig signingConfigs.release
     }
@@ -34,6 +35,13 @@ android {
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        benchmark {
+            debuggable false
+            initWith buildTypes.release
+            signingConfig signingConfigs.debug
+            matchingFallbacks = ['release']
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'benchmark-rules.pro'
         }
     }
     compileOptions {
@@ -106,6 +114,9 @@ dependencies {
     implementation "androidx.test:monitor:$version_android_test_monitor"
     implementation "androidx.test.ext:junit-ktx:$version_junit_ext"
     androidTestImplementation "junit:junit:$version_junit"
+
+    // ProfileInstaller
+    implementation "androidx.profileinstaller:profileinstaller:$version_profile_installer"
 
     // Timber
     implementation "com.jakewharton.timber:timber:$version_timber"

@@ -14,6 +14,7 @@ import antuere.domain.dto.ToggleBtnState
 import com.example.zeroapp.R
 import com.example.zeroapp.databinding.FragmentHistoryBinding
 import com.example.zeroapp.presentation.base.BaseBindingFragment
+import com.example.zeroapp.presentation.base.BaseItemAnimator
 import com.example.zeroapp.presentation.base.ui_date_picker.UIDatePickerListener
 import com.example.zeroapp.presentation.base.ui_dialog.UIDialogListener
 import com.example.zeroapp.presentation.history.adapter.DayAdapter
@@ -60,16 +61,23 @@ class HistoryFragment :
     ): View {
         binding = FragmentHistoryBinding.inflate(inflater, container, false)
 
-        val adapter =  DayAdapter(viewModel.dayClickListener, myAnalystForHistory)
+        val dayAdapter = DayAdapter(viewModel.dayClickListener, myAnalystForHistory)
         val manager = GridLayoutManager(mainActivity!!, 4)
 
-        binding!!.dayList.layoutManager = manager
-        binding!!.dayList.adapter = adapter
+        binding!!.dayList.apply {
+            layoutManager = manager
+            itemAnimator = BaseItemAnimator()
+            adapter = dayAdapter
+        }
 
         binding!!.toggleButton.addOnButtonCheckedListener { group, _, _ ->
             when (group.checkedButtonId) {
                 R.id.button_all_days -> viewModel.onClickCheckedItem(ToggleBtnState.AllDays(1))
-                R.id.button_current_month -> viewModel.onClickCheckedItem(ToggleBtnState.CurrentMonth(2))
+                R.id.button_current_month -> viewModel.onClickCheckedItem(
+                    ToggleBtnState.CurrentMonth(
+                        2
+                    )
+                )
                 R.id.button_last_week -> viewModel.onClickCheckedItem(ToggleBtnState.LastWeek(3))
             }
         }
@@ -84,14 +92,13 @@ class HistoryFragment :
                     binding!!.historyHint.visibility = View.VISIBLE
                 } else {
                     binding!!.historyHint.visibility = View.GONE
+                    dayAdapter.addHeaderAndSubmitList(it)
                 }
-
-                adapter.addHeaderAndSubmitList(it)
             }
         }
 
         viewModel.isFilterSelected.observe(viewLifecycleOwner) {
-            if(it) {
+            if (it) {
                 manager.setManagerSpanCount(3)
                 binding!!.toggleButton.clearChecked()
                 viewModel.resetIsFilterSelected()

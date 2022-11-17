@@ -1,16 +1,13 @@
 package antuere.data.local_day_database.converters
 
 import androidx.room.TypeConverter
+import antuere.data.local_day_database.entities.SmileImage
 import java.util.*
 
 class Converters {
     @TypeConverter
-    fun calendarFromLong(value: Long?): Calendar? = value?.let { value_new ->
-        GregorianCalendar().also { calendar ->
-            calendar.timeInMillis = value_new
-        }
-    }
+    fun toSmileImage(value: String) = enumValueOf<SmileImage>(value)
 
     @TypeConverter
-    fun calendarToLong(timestamp: Calendar?): Long? = timestamp?.timeInMillis
+    fun fromSmileImage(value: SmileImage) = value.name
 }

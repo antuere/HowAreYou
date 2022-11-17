@@ -24,8 +24,7 @@ class ToggleBtnDataStore(context: Context, name: String) {
 
     val toggleButtonState: Flow<ToggleBtnStateEntity>
         get() = toggleBtnDataStore.data.map { preferences ->
-            val intValue = preferences[CHECKED_BUTTON_HISTORY_KEY] ?: 1
-            when (intValue) {
+            when (val intValue = preferences[CHECKED_BUTTON_HISTORY_KEY] ?: 1) {
                 CHECKED_ALL_DAYS -> ToggleBtnStateEntity.AllDays(intValue)
                 CHECKED_CURRENT_MONTH -> ToggleBtnStateEntity.CurrentMonth(intValue)
                 CHECKED_LAST_WEEK -> ToggleBtnStateEntity.LastWeek(intValue)

@@ -9,7 +9,6 @@
         tools:theme="@style/Theme.ZeroApp"
         tools:context=".presentation.history.HistoryFragment">
 
-
     <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/favorites_list"
             android:padding="@dimen/padding_small_one"

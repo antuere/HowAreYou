@@ -21,6 +21,7 @@ import com.example.zeroapp.presentation.history.adapter.DayClickListener
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 

@@ -12,7 +12,7 @@ import com.example.zeroapp.*
 import com.example.zeroapp.databinding.FragmentDetailBinding
 import com.example.zeroapp.presentation.base.BaseBindingFragment
 import com.example.zeroapp.presentation.base.ui_dialog.UIDialogListener
-import com.example.zeroapp.util.SmileProvider
+import antuere.data.util.SmileProvider
 import com.example.zeroapp.util.createSharedElementEnterTransition
 import com.example.zeroapp.util.mainActivity
 import com.google.android.material.appbar.MaterialToolbar
@@ -46,8 +46,7 @@ class DetailFragment : BaseBindingFragment<FragmentDetailBinding>(FragmentDetail
                 binding!!.apply {
                     dateText.text = it.dateString
                     descText.text = it.dayText
-                    val resId = SmileProvider.getSmileImageByName(it.imageName)
-                    smileImage.setImageResource(resId)
+                    smileImage.setImageResource(it.imageResId)
                 }
             }
         }

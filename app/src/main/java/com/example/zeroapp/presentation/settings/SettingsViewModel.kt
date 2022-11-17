@@ -225,6 +225,7 @@ class SettingsViewModel @Inject constructor(
         viewModelScope.launch {
             resetAuthByBiometricUseCase(Unit)
             nullifyBiometricAuthState()
+            checkBiometricsAvailable()
             saveSettings(isUseBiometric, isUsePinCode)
         }
     }
@@ -238,6 +239,7 @@ class SettingsViewModel @Inject constructor(
             resetPinCodeUseCase(Unit)
         }
     }
+
 
     fun resetIsStartSetBiometric() {
         _isStartSetBiometric.value = false
