@@ -161,7 +161,7 @@ class SettingsFragment :
         viewModel.biometricAuthState.observe(viewLifecycleOwner) {
             it?.let { state ->
                 when (state) {
-                    is BiometricAuthState.Successful -> {
+                    BiometricAuthState.SUCCESS -> {
                         binding!!.settingBiomAuthSwitch.isChecked = true
                         viewModel.saveSettings(
                             binding!!.settingBiomAuthSwitch.isChecked,
@@ -170,7 +170,7 @@ class SettingsFragment :
                         viewModel.nullifyBiometricAuthState()
                         showSnackBar(stringResId = R.string.biom_auth_create_success)
                     }
-                    is BiometricAuthState.Error -> binding!!.settingBiomAuthSwitch.isChecked = false
+                    BiometricAuthState.ERROR -> binding!!.settingBiomAuthSwitch.isChecked = false
                 }
             }
         }

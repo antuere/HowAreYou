@@ -21,7 +21,6 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 
 
-// TODO Попробовать Cicerone вместо гугловой навигации
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 

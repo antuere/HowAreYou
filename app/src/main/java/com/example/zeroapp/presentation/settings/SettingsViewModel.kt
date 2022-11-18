@@ -82,7 +82,7 @@ class SettingsViewModel @Inject constructor(
     init {
         getUserNickname()
         getSettings()
-        getLastDay()
+        checkIsHasDayEntity()
         checkBiometricsAvailable()
     }
 
@@ -103,14 +103,14 @@ class SettingsViewModel @Inject constructor(
     val biometricAuthStateListener = object : IUIBiometricListener {
 
         override fun onBiometricAuthFailed() {
-            _biometricAuthState.value = BiometricAuthState.Error
+            _biometricAuthState.value = BiometricAuthState.ERROR
         }
 
         override fun onBiometricAuthSuccess() {
             viewModelScope.launch {
                 doneAuthByBiometricUseCase(Unit)
             }
-            _biometricAuthState.value = BiometricAuthState.Successful
+            _biometricAuthState.value = BiometricAuthState.SUCCESS
         }
 
         override fun noneEnrolled() {
@@ -132,7 +132,7 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
-    private fun getLastDay() {
+    private fun checkIsHasDayEntity() {
         viewModelScope.launch {
             getLastDayUseCase(Unit).collectLatest {
                 isShowDialogSignOut = it != null

@@ -11,6 +11,8 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.transition.TransitionManager
 import com.example.zeroapp.databinding.FragmentFavoritesBinding
 import com.example.zeroapp.presentation.base.BaseBindingFragment
+import com.example.zeroapp.presentation.base.recycle_view_animator.CustomItemAnimatorFactory
+import com.example.zeroapp.presentation.base.recycle_view_animator.custom.DefaultCustomAnimator
 import com.example.zeroapp.presentation.base.ui_dialog.UIDialogListener
 import com.example.zeroapp.presentation.favorites.adapter.FavoritesAdapter
 import com.example.zeroapp.util.createSharedElementEnterTransition
@@ -40,10 +42,17 @@ class FavoritesFragment :
         binding = FragmentFavoritesBinding.inflate(inflater, container, false)
 
         val manager = GridLayoutManager(activity, 2)
-        binding!!.favoritesList.layoutManager = manager
+        val favoritesAdapter = FavoritesAdapter(viewModel.dayClickListener)
 
-        val adapter = FavoritesAdapter(viewModel.dayClickListener)
-        binding!!.favoritesList.adapter = adapter
+        binding!!.favoritesList.apply {
+            layoutManager = manager
+            adapter = favoritesAdapter
+
+            itemAnimator = CustomItemAnimatorFactory(DefaultCustomAnimator()).also { animator ->
+                animator.addDuration = 250
+                animator.removeDuration = 500
+            }
+        }
 
         viewModel.listDays.observe(viewLifecycleOwner) {
             it?.let {
@@ -56,8 +65,8 @@ class FavoritesFragment :
                     binding!!.favoritesHint.visibility = View.VISIBLE
                 } else {
                     binding!!.favoritesHint.visibility = View.GONE
+                    favoritesAdapter.submitList(it)
                 }
-                adapter.submitList(it)
             }
         }
 

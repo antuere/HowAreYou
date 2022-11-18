@@ -30,7 +30,6 @@ class DayRepositoryImpl @Inject constructor(
         if (daysFromServer.isNotEmpty()) {
             CoroutineScope(Dispatchers.IO).launch {
                 deleteAllDaysLocal()
-                Timber.i("days not null")
                 daysFromServer.forEach { day ->
                     insertLocal(day)
                 }
@@ -44,6 +43,7 @@ class DayRepositoryImpl @Inject constructor(
 
     override suspend fun getAllDays(): Flow<List<Day>> {
         return dayDataBaseRoom.dayDatabaseDao.getAllDays().map {
+            Timber.i("recycle view error : all days update")
             it.map { dayEntity ->
                 dayEntityMapper.mapToDomainModel(dayEntity)
             }
@@ -72,6 +72,7 @@ class DayRepositoryImpl @Inject constructor(
         withContext(Dispatchers.IO) {
             dayDataBaseRoom.dayDatabaseDao.getCertainDays(dayStart)
                 .map {
+                    Timber.i("recycle view error : current start time is $dayStart")
                     it.map { dayEntity ->
                         dayEntityMapper.mapToDomainModel(dayEntity)
                     }

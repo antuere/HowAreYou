@@ -90,18 +90,18 @@ class SecureEntryViewModel @Inject constructor(
     val biometricAuthStateListener = object : IUIBiometricListener {
 
         override fun onBiometricAuthFailed() {
-            _biometricAuthState.value = BiometricAuthState.Error
+            _biometricAuthState.value = BiometricAuthState.ERROR
         }
 
         override fun onBiometricAuthSuccess() {
-            _pinCodeCirclesState.value = PinCodeCirclesState.IsShowAll
+            _pinCodeCirclesState.value = PinCodeCirclesState.ALL
 
             viewModelScope.launch {
                 doneAuthByPinUseCase(Unit)
                 doneAuthByBiometricUseCase(Unit)
             }
 
-            _biometricAuthState.value = BiometricAuthState.Successful
+            _biometricAuthState.value = BiometricAuthState.SUCCESS
         }
 
         override fun noneEnrolled() {
@@ -196,19 +196,19 @@ class SecureEntryViewModel @Inject constructor(
         when (list.size) {
             1 -> {
                 num1 = list[0]
-                _pinCodeCirclesState.value = PinCodeCirclesState.IsShowFirst
+                _pinCodeCirclesState.value = PinCodeCirclesState.FIRST
             }
             2 -> {
                 num2 = list[1]
-                _pinCodeCirclesState.value = PinCodeCirclesState.IsShowSecond
+                _pinCodeCirclesState.value = PinCodeCirclesState.SECOND
             }
             3 -> {
                 num3 = list[2]
-                _pinCodeCirclesState.value = PinCodeCirclesState.IsShowThird
+                _pinCodeCirclesState.value = PinCodeCirclesState.THIRD
             }
             4 -> {
                 num4 = list[3]
-                _pinCodeCirclesState.value = PinCodeCirclesState.IsShowFourth
+                _pinCodeCirclesState.value = PinCodeCirclesState.FOURTH
                 _userPinCode.value = num1 + num2 + num3 + num4
             }
             else -> throw IllegalArgumentException("Too much list size")
@@ -251,7 +251,7 @@ class SecureEntryViewModel @Inject constructor(
 
             _userPinCode.value = null
             currentNumbers.clear()
-            _pinCodeCirclesState.value = PinCodeCirclesState.IsShowNone
+            _pinCodeCirclesState.value = PinCodeCirclesState.NONE
         }
 
     }

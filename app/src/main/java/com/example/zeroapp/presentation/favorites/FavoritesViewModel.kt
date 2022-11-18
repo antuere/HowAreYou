@@ -11,11 +11,10 @@ import com.example.zeroapp.presentation.base.ui_dialog.IUIDialogAction
 import com.example.zeroapp.presentation.base.ui_dialog.UIDialog
 import com.example.zeroapp.presentation.history.NavigateToDetailState
 import com.example.zeroapp.presentation.history.adapter.DayClickListener
-import com.example.zeroapp.util.toMutableLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -24,7 +23,7 @@ class FavoritesViewModel @Inject constructor(
     getFavoritesDaysUseCase: GetFavoritesDaysUseCase,
     private val deleteDayUseCase: DeleteDayUseCase,
     private val transitionName: String
-    ) : ViewModel(), IUIDialogAction {
+) : ViewModel(), IUIDialogAction {
 
     private var _uiDialog = MutableStateFlow<UIDialog?>(null)
     override val uiDialog: StateFlow<UIDialog?>
@@ -42,9 +41,9 @@ class FavoritesViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            _listDays =
-                getFavoritesDaysUseCase(Unit).asLiveData(Dispatchers.Main)
-                    .toMutableLiveData()
+            getFavoritesDaysUseCase(Unit).collectLatest {
+                _listDays.postValue(it)
+            }
         }
     }
 

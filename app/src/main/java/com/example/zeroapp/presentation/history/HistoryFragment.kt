@@ -11,10 +11,13 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.transition.TransitionManager
 import antuere.domain.dto.ToggleBtnState
+import com.example.zeroapp.presentation.base.recycle_view_animator.custom.DefaultCustomAnimator
+import com.example.zeroapp.presentation.base.recycle_view_animator.custom.ScaleCustomAnimator
+import com.example.zeroapp.presentation.base.recycle_view_animator.custom.SlideInTopCustomAnimator
 import com.example.zeroapp.R
 import com.example.zeroapp.databinding.FragmentHistoryBinding
 import com.example.zeroapp.presentation.base.BaseBindingFragment
-import com.example.zeroapp.presentation.base.BaseItemAnimator
+import com.example.zeroapp.presentation.base.recycle_view_animator.CustomItemAnimatorFactory
 import com.example.zeroapp.presentation.base.ui_date_picker.UIDatePickerListener
 import com.example.zeroapp.presentation.base.ui_dialog.UIDialogListener
 import com.example.zeroapp.presentation.history.adapter.DayAdapter
@@ -66,17 +69,21 @@ class HistoryFragment :
 
         binding!!.dayList.apply {
             layoutManager = manager
-            itemAnimator = BaseItemAnimator()
             adapter = dayAdapter
+
+            itemAnimator = CustomItemAnimatorFactory(DefaultCustomAnimator()).also { animator ->
+                animator.addViewTypeAnimator(R.layout.day_item, ScaleCustomAnimator())
+                animator.addViewTypeAnimator(R.layout.header_history, SlideInTopCustomAnimator())
+                animator.addDuration = 250L
+                animator.removeDuration = 500L
+            }
         }
 
         binding!!.toggleButton.addOnButtonCheckedListener { group, _, _ ->
             when (group.checkedButtonId) {
                 R.id.button_all_days -> viewModel.onClickCheckedItem(ToggleBtnState.AllDays(1))
                 R.id.button_current_month -> viewModel.onClickCheckedItem(
-                    ToggleBtnState.CurrentMonth(
-                        2
-                    )
+                    ToggleBtnState.CurrentMonth(2)
                 )
                 R.id.button_last_week -> viewModel.onClickCheckedItem(ToggleBtnState.LastWeek(3))
             }

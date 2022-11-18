@@ -106,8 +106,8 @@ class SecureEntryFragment :
         viewModel.biometricAuthState.observe(viewLifecycleOwner) {
             it?.let { state ->
                 when (state) {
-                    is BiometricAuthState.Successful -> viewModel.navigateToHomeFragment()
-                    is BiometricAuthState.Error -> viewModel.biomAuthDialogCanceled()
+                    BiometricAuthState.SUCCESS -> viewModel.navigateToHomeFragment()
+                    BiometricAuthState.ERROR -> viewModel.biomAuthDialogCanceled()
                 }
             }
         }
@@ -184,25 +184,25 @@ class SecureEntryFragment :
         viewModel.pinCodeCirclesState.observe(viewLifecycleOwner) {
             it?.let { state ->
                 when (state) {
-                    is PinCodeCirclesState.IsShowNone -> {
+                    PinCodeCirclesState.NONE -> {
                         binding.entryCircle1.setImageResource(R.drawable.ic_outline_outlined)
                         binding.entryCircle2.setImageResource(R.drawable.ic_outline_outlined)
                         binding.entryCircle3.setImageResource(R.drawable.ic_outline_outlined)
                         binding.entryCircle4.setImageResource(R.drawable.ic_outline_outlined)
                     }
-                    is PinCodeCirclesState.IsShowFirst -> {
+                    PinCodeCirclesState.FIRST -> {
                         binding.entryCircle1.setImageResource(R.drawable.ic_circle_filled)
                     }
-                    is PinCodeCirclesState.IsShowSecond -> {
+                    PinCodeCirclesState.SECOND -> {
                         binding.entryCircle2.setImageResource(R.drawable.ic_circle_filled)
                     }
-                    is PinCodeCirclesState.IsShowThird -> {
+                    PinCodeCirclesState.THIRD -> {
                         binding.entryCircle3.setImageResource(R.drawable.ic_circle_filled)
                     }
-                    is PinCodeCirclesState.IsShowFourth -> {
+                    PinCodeCirclesState.FOURTH -> {
                         binding.entryCircle4.setImageResource(R.drawable.ic_circle_filled)
                     }
-                    is PinCodeCirclesState.IsShowAll -> {
+                    PinCodeCirclesState.ALL -> {
                         binding.entryCircle1.setImageResource(R.drawable.ic_circle_filled)
                         binding.entryCircle2.setImageResource(R.drawable.ic_circle_filled)
                         binding.entryCircle3.setImageResource(R.drawable.ic_circle_filled)
