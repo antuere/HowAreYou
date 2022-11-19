@@ -111,8 +111,8 @@ class SecureEntryViewModel @Inject constructor(
 
 
     init {
-        checkBiometricsAvailable()
         getSettings()
+        checkBiometricsAvailable()
         getSavedPinCode()
     }
 

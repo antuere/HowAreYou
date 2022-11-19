@@ -21,6 +21,7 @@ import com.example.zeroapp.presentation.base.ui_biometric_dialog.BiometricsAvail
 import com.example.zeroapp.util.startOnClickAnimation
 import com.google.android.material.transition.MaterialSharedAxis
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 import javax.inject.Inject
 
 
@@ -54,6 +55,7 @@ class SecureEntryFragment :
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Timber.i("fuck error : init secure fragment")
         exitTransition = MaterialSharedAxis(MaterialSharedAxis.X, true)
         reenterTransition = MaterialSharedAxis(MaterialSharedAxis.X, false)
     }
@@ -93,6 +95,17 @@ class SecureEntryFragment :
         binding.entryExitFromAccText.setOnClickListener {
             startOnClickAnimation(it)
             viewModel.onClickSignOut()
+        }
+
+        viewModel.settings.observe(viewLifecycleOwner) {
+            it?.let { settings ->
+                if (!settings.isPinCodeEnabled && !settings.isBiometricEnabled) {
+                    viewModel.navigateToHomeFragment()
+                }
+                if (settings.isBiometricEnabled) {
+                    viewModel.showBiometricAuth(withDelay = true)
+                }
+            }
         }
 
         viewModel.isNavigateToHomeFragment.observe(viewLifecycleOwner) {
@@ -141,16 +154,6 @@ class SecureEntryFragment :
             }
         }
 
-        viewModel.settings.observe(viewLifecycleOwner) {
-            it?.let { settings ->
-                if (!settings.isPinCodeEnabled && !settings.isBiometricEnabled) {
-                    viewModel.navigateToHomeFragment()
-                }
-                if (settings.isBiometricEnabled) {
-                    viewModel.showBiometricAuth(withDelay = true)
-                }
-            }
-        }
 
         viewModel.isShowBiometricAuth.observe(viewLifecycleOwner) {
             if (it) {

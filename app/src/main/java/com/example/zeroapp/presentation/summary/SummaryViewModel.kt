@@ -17,7 +17,6 @@ import antuere.domain.util.TimeUtility
 import com.example.zeroapp.R
 import com.example.zeroapp.presentation.base.ui_dialog.IUIDialogAction
 import com.example.zeroapp.presentation.base.ui_dialog.UIDialog
-import antuere.data.util.SmileProvider
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -69,7 +68,9 @@ class SummaryViewModel @Inject constructor(
     val isShowSplash: LiveData<Boolean>
         get() = _isShowSplash
 
-    private var settings = MutableLiveData<Settings?>()
+    private var _settings = MutableLiveData<Settings?>()
+    val settings: LiveData<Settings?>
+        get() = _settings
 
 
     init {
@@ -93,7 +94,7 @@ class SummaryViewModel @Inject constructor(
     private fun getSettings() {
         viewModelScope.launch {
             getSettingsUseCase(Unit).collectLatest {
-                settings.postValue(it)
+                _settings.postValue(it)
             }
         }
     }
@@ -130,7 +131,7 @@ class SummaryViewModel @Inject constructor(
             val result =
                 myAnalystForSummary.isShowWarningForSummary(_daysForCheck.value ?: emptyList())
 
-            if (result && settings.value!!.isShowWorriedDialog) {
+            if (result && _settings.value!!.isShowWorriedDialog) {
                 _uiDialog.value = UIDialog(
                     title = R.string.dialog_warning_title,
                     desc = R.string.dialog_warning_desc,
@@ -160,12 +161,12 @@ class SummaryViewModel @Inject constructor(
 
     private fun notShowWorriedDialog() {
         viewModelScope.launch {
-            settings.value!!.isShowWorriedDialog = false
-            saveSettingsUseCase(settings.value!!)
+            _settings.value!!.isShowWorriedDialog = false
+            saveSettingsUseCase(_settings.value!!)
         }
     }
 
-    private fun checkDayTime(){
+    private fun checkDayTime() {
         if (TimeUtility.format(Date()) == (_lastDay.value?.dateString ?: "show add button")) {
             _fabButtonState.value = FabButtonState.Smile(_lastDay.value?.imageResId!!)
             _wishText.value =
