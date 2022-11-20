@@ -31,19 +31,19 @@ import javax.inject.Inject
 class MainActivity : AppCompatActivity() {
 
     private var binding: ActivityMainBinding? = null
+
     private var _bottomNavView: BottomNavigationView? = null
     val bottomNavView: BottomNavigationView?
         get() = _bottomNavView
 
-    @Inject
-    lateinit var getSettingsUseCase: GetSettingsUseCase
+    var toolbar: MaterialToolbar? = null
     private var navController: NavController? = null
 
     private val viewModel by viewModels<SummaryViewModel>()
 
+    @Inject
+    lateinit var getSettingsUseCase: GetSettingsUseCase
     private var settings: Settings? = null
-
-    var toolbar: MaterialToolbar? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import antuere.domain.authentication_manager.RegisterResultListener
-import antuere.domain.usecases.authentication.CheckCurrentAuthUseCase
 import antuere.domain.usecases.days_entities.RefreshRemoteDataUseCase
 import antuere.domain.usecases.user_settings.SaveUserNicknameUseCase
 import antuere.domain.usecases.authentication.SetUserNicknameOnServerUseCase
@@ -21,7 +20,6 @@ import javax.inject.Inject
 class SignInMethodsViewModel @Inject constructor(
     private val refreshRemoteDataUseCase: RefreshRemoteDataUseCase,
     private val saveUserNicknameUseCase: SaveUserNicknameUseCase,
-    private val checkCurrentAuthUseCase: CheckCurrentAuthUseCase,
     private val setUserNicknameOnServerUseCase: SetUserNicknameOnServerUseCase,
     private val signInByGoogleUseCase: SignInByGoogleUseCase
 ) : ViewModel() {
@@ -39,18 +37,6 @@ class SignInMethodsViewModel @Inject constructor(
 
         override fun registerFailed(message: String) {
             _signInState.value = SignInMethodsState.Error(message)
-        }
-    }
-
-    init {
-        checkCurrentAuth()
-    }
-
-    fun checkCurrentAuth() {
-        viewModelScope.launch {
-            if (checkCurrentAuthUseCase(Unit)) {
-                _signInState.value = SignInMethodsState.UserAuthorized
-            }
         }
     }
 

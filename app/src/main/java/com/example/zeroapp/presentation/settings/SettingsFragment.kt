@@ -28,6 +28,7 @@ import com.google.android.material.transition.MaterialFadeThrough
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -59,6 +60,8 @@ class SettingsFragment :
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
+
+        Timber.i("navigate upd : createView setting fragment")
         binding = this.inflater(inflater, container, false)
         dialogListener.collect(this, withNeutralBtn = true)
 

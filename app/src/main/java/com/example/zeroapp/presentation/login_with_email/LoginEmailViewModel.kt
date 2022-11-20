@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import antuere.domain.authentication_manager.LoginResultListener
-import antuere.domain.usecases.authentication.CheckCurrentAuthUseCase
 import antuere.domain.usecases.authentication.GetUserNameFromServerUseCase
 import antuere.domain.usecases.authentication.SignInUseCase
 import antuere.domain.usecases.days_entities.RefreshRemoteDataUseCase
@@ -20,7 +19,6 @@ import javax.inject.Inject
 class LoginEmailViewModel @Inject constructor(
     private val refreshRemoteDataUseCase: RefreshRemoteDataUseCase,
     private val saveUserNicknameUseCase: SaveUserNicknameUseCase,
-    private val checkCurrentAuthUseCase: CheckCurrentAuthUseCase,
     private val getUserNameFromServerUseCase: GetUserNameFromServerUseCase,
     private val signInUseCase: SignInUseCase,
 ) : ViewModel() {
@@ -78,18 +76,6 @@ class LoginEmailViewModel @Inject constructor(
             }
         } else {
             _isShowLoginProgressIndicator.value = false
-        }
-    }
-
-    fun checkCurrentAuth() {
-        viewModelScope.launch {
-            if (checkCurrentAuthUseCase(Unit)) {
-                _loginState.value = LoginState.Successful
-
-                viewModelScope.launch {
-                    refreshRemoteDataUseCase(Unit)
-                }
-            }
         }
     }
 }

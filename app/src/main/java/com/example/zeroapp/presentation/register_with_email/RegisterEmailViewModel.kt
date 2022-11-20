@@ -81,7 +81,7 @@ class RegisterEmailViewModel @Inject constructor(
     fun resetIsShowRegisterProgressIndicator(withDelay: Boolean = false) {
         if(withDelay){
             viewModelScope.launch {
-                delay(250)
+                delay(150)
                 _isShowRegisterProgressIndicator.value = false
             }
         } else {

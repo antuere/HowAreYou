@@ -62,7 +62,9 @@ class HistoryViewModel @Inject constructor(
     val isFilterSelected: LiveData<Boolean>
         get() = _isFilterSelected
 
-    private var currentJob: JobType? = null
+    private var _currentJob: JobType? = null
+    val currentJob: JobType?
+        get() = _currentJob
 
     init {
         getToggleButtonState()
@@ -133,10 +135,10 @@ class HistoryViewModel @Inject constructor(
     }
 
     private fun checkedFilterButton(pair: Pair<Long, Long>) {
-        if (currentJob !is JobType.Filter) {
-            currentJob?.job?.cancel()
+        if (_currentJob !is JobType.Filter) {
+            _currentJob?.job?.cancel()
 
-            currentJob = JobType.Filter(viewModelScope.launch {
+            _currentJob = JobType.Filter(viewModelScope.launch {
                 getSelectedDaysUseCase(pair).cancellable().collectLatest {
                     _listDays.postValue(it)
                 }
@@ -145,10 +147,10 @@ class HistoryViewModel @Inject constructor(
     }
 
     fun checkedCurrentMonthButton() {
-        if (currentJob !is JobType.Month) {
-            currentJob?.job?.cancel()
+        if (_currentJob !is JobType.Month) {
+            _currentJob?.job?.cancel()
 
-            currentJob = JobType.Month(viewModelScope.launch {
+            _currentJob = JobType.Month(viewModelScope.launch {
                 getCertainDaysUseCase(TimeUtility.getCurrentMonthTime()).cancellable()
                     .collectLatest {
                         _listDays.postValue(it)
@@ -158,10 +160,10 @@ class HistoryViewModel @Inject constructor(
     }
 
     fun checkedLastWeekButton() {
-        if (currentJob !is JobType.Week) {
-            currentJob?.job?.cancel()
+        if (_currentJob !is JobType.Week) {
+            _currentJob?.job?.cancel()
 
-            currentJob = JobType.Week(viewModelScope.launch {
+            _currentJob = JobType.Week(viewModelScope.launch {
                 getCertainDaysUseCase(TimeUtility.getCurrentWeekTime()).cancellable()
                     .collectLatest {
                         _listDays.postValue(it)
@@ -171,10 +173,10 @@ class HistoryViewModel @Inject constructor(
     }
 
     fun checkedAllDaysButton() {
-        if (currentJob !is JobType.AllDays) {
-            currentJob?.job?.cancel()
+        if (_currentJob !is JobType.AllDays) {
+            _currentJob?.job?.cancel()
 
-            currentJob = JobType.AllDays(viewModelScope.launch {
+            _currentJob = JobType.AllDays(viewModelScope.launch {
                 getAllDaysUseCase(Unit).cancellable().collectLatest {
                     _listDays.postValue(it)
                 }

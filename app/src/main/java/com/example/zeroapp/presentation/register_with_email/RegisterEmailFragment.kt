@@ -6,10 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.example.zeroapp.R
 import com.example.zeroapp.databinding.FragmentRegisterEmailBinding
 import com.example.zeroapp.presentation.base.BaseBindingFragment
 import com.google.android.material.transition.MaterialSharedAxis
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 
 @AndroidEntryPoint
 class RegisterEmailFragment :
@@ -37,6 +39,8 @@ class RegisterEmailFragment :
 
     private fun setupBinding(binding: FragmentRegisterEmailBinding) {
 
+        Timber.i("navigate upd : createView register")
+
         binding.apply {
             buttonSignUp.setOnClickListener {
                 val name = nicknameText.text.toString()
@@ -60,7 +64,7 @@ class RegisterEmailFragment :
             state?.let {
                 when (it) {
                     is RegisterState.Successful -> {
-                        findNavController().navigateUp()
+                        findNavController().popBackStack(R.id.signInMethodsFragment, true)
                         viewModel.resetIsShowRegisterProgressIndicator(withDelay = true)
                     }
                     is RegisterState.EmptyFields -> showSnackBar(stringResId = it.res)

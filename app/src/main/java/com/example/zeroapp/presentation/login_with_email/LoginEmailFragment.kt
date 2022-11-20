@@ -7,12 +7,14 @@ import android.view.ViewGroup
 import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.example.zeroapp.R
 import com.example.zeroapp.databinding.FragmentLoginEmailBinding
 import com.example.zeroapp.presentation.base.BaseBindingFragment
 import com.example.zeroapp.util.createSharedElementEnterTransition
 import com.example.zeroapp.util.startOnClickAnimation
 import com.google.android.material.transition.MaterialSharedAxis
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 
 @AndroidEntryPoint
 class LoginEmailFragment :
@@ -42,8 +44,7 @@ class LoginEmailFragment :
     }
 
     private fun setupBinding(binding: FragmentLoginEmailBinding) {
-
-        viewModel.checkCurrentAuth()
+        Timber.i("navigate upd : createView login email")
 
         binding.apply {
             buttonSignIn.setOnClickListener {
@@ -75,7 +76,7 @@ class LoginEmailFragment :
             state?.let {
                 when (it) {
                     is LoginState.Successful -> {
-                        findNavController().navigateUp()
+                        findNavController().popBackStack(R.id.signInMethodsFragment, true)
                         viewModel.resetIsShowLoginProgressIndicator(withDelay = true)
                     }
                     is LoginState.EmptyFields -> showSnackBar(stringResId = it.res)
