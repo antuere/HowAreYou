@@ -188,10 +188,12 @@ class SecureEntryFragment :
             it?.let { state ->
                 when (state) {
                     PinCodeCirclesState.NONE -> {
-                        binding.entryCircle1.setImageResource(R.drawable.ic_outline_outlined)
-                        binding.entryCircle2.setImageResource(R.drawable.ic_outline_outlined)
-                        binding.entryCircle3.setImageResource(R.drawable.ic_outline_outlined)
-                        binding.entryCircle4.setImageResource(R.drawable.ic_outline_outlined)
+                        binding.apply {
+                            entryCircle1.setImageResource(R.drawable.ic_outline_outlined)
+                            entryCircle2.setImageResource(R.drawable.ic_outline_outlined)
+                            entryCircle3.setImageResource(R.drawable.ic_outline_outlined)
+                            entryCircle4.setImageResource(R.drawable.ic_outline_outlined)
+                        }
                     }
                     PinCodeCirclesState.FIRST -> {
                         binding.entryCircle1.setImageResource(R.drawable.ic_circle_filled)
@@ -206,10 +208,12 @@ class SecureEntryFragment :
                         binding.entryCircle4.setImageResource(R.drawable.ic_circle_filled)
                     }
                     PinCodeCirclesState.ALL -> {
-                        binding.entryCircle1.setImageResource(R.drawable.ic_circle_filled)
-                        binding.entryCircle2.setImageResource(R.drawable.ic_circle_filled)
-                        binding.entryCircle3.setImageResource(R.drawable.ic_circle_filled)
-                        binding.entryCircle4.setImageResource(R.drawable.ic_circle_filled)
+                        binding.apply {
+                            entryCircle1.setImageResource(R.drawable.ic_circle_filled)
+                            entryCircle2.setImageResource(R.drawable.ic_circle_filled)
+                            entryCircle3.setImageResource(R.drawable.ic_circle_filled)
+                            entryCircle4.setImageResource(R.drawable.ic_circle_filled)
+                        }
                     }
                 }
             }

@@ -25,7 +25,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -46,6 +46,7 @@ class SecureEntryViewModel @Inject constructor(
     private lateinit var num2: String
     private lateinit var num3: String
     private lateinit var num4: String
+
     private var currentNumbers = mutableListOf<String>()
 
     private var _uiDialog = MutableStateFlow<UIDialog?>(null)
@@ -118,9 +119,7 @@ class SecureEntryViewModel @Inject constructor(
 
     private fun getSettings() {
         viewModelScope.launch {
-            getSettingsUseCase(Unit).collectLatest {
-                _settings.postValue(it)
-            }
+            _settings.value = getSettingsUseCase(Unit).first()
         }
     }
 
@@ -133,9 +132,7 @@ class SecureEntryViewModel @Inject constructor(
 
     private fun getSavedPinCode() {
         viewModelScope.launch {
-            getSavedPinCodeUseCase.invoke(Unit).collectLatest {
-                savedPinCode.postValue(it)
-            }
+            savedPinCode.value = getSavedPinCodeUseCase(Unit).first()
         }
     }
 

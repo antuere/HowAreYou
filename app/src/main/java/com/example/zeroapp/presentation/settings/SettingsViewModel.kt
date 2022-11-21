@@ -19,6 +19,7 @@ import com.example.zeroapp.presentation.base.ui_biometric_dialog.BiometricAuthSt
 import com.example.zeroapp.presentation.base.ui_dialog.IUIDialogAction
 import com.example.zeroapp.presentation.base.ui_dialog.UIDialog
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -125,7 +126,7 @@ class SettingsViewModel @Inject constructor(
     }
 
     private fun getUserNickname() {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             getUserNicknameUseCase(Unit).collectLatest {
                 _userNickname.postValue(it)
             }
@@ -133,7 +134,7 @@ class SettingsViewModel @Inject constructor(
     }
 
     private fun checkIsHasDayEntity() {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             getLastDayUseCase(Unit).collectLatest {
                 isShowDialogSignOut = it != null
             }
@@ -181,7 +182,7 @@ class SettingsViewModel @Inject constructor(
     }
 
     private fun getSettings() {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             getSettingsUseCase(Unit).collectLatest {
                 _settings.postValue(it)
             }

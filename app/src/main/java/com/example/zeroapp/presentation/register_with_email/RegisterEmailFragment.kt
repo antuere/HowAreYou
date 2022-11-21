@@ -38,9 +38,6 @@ class RegisterEmailFragment :
     }
 
     private fun setupBinding(binding: FragmentRegisterEmailBinding) {
-
-        Timber.i("navigate upd : createView register")
-
         binding.apply {
             buttonSignUp.setOnClickListener {
                 val name = nicknameText.text.toString()

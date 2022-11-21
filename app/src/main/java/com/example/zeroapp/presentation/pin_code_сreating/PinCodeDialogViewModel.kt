@@ -10,7 +10,7 @@ import antuere.domain.usecases.user_settings.SavePinCodeUseCase
 import antuere.domain.usecases.user_settings.SaveSettingsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -122,9 +122,7 @@ class PinCodeDialogViewModel @Inject constructor(
 
     private fun getSettings() {
         viewModelScope.launch {
-            getSettingsUseCase(Unit).collectLatest {
-                _settings.postValue(it)
-            }
+            _settings.value = getSettingsUseCase(Unit).first()
         }
     }
 

@@ -18,11 +18,13 @@ import com.example.zeroapp.R
 import com.example.zeroapp.presentation.base.ui_dialog.IUIDialogAction
 import com.example.zeroapp.presentation.base.ui_dialog.UIDialog
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.*
 import javax.inject.Inject
 
@@ -81,7 +83,7 @@ class SummaryViewModel @Inject constructor(
     }
 
     private fun getLastDay() {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             getLastDayUseCase(Unit).collectLatest {
                 _lastDay.postValue(it)
                 delay(100)
@@ -168,14 +170,16 @@ class SummaryViewModel @Inject constructor(
 
     private fun checkDayTime() {
         if (TimeUtility.format(Date()) == (_lastDay.value?.dateString ?: "show add button")) {
-            _fabButtonState.value = FabButtonState.Smile(_lastDay.value?.imageResId!!)
-            _wishText.value =
+            _fabButtonState.postValue(FabButtonState.Smile(_lastDay.value?.imageResId!!))
+            _wishText.postValue(
                 myAnalystForSummary.getWishStringForSummary(_lastDay.value?.imageResId!!)
+            )
 
         } else {
-            _fabButtonState.value = FabButtonState.Add
-            _wishText.value =
+            _fabButtonState.postValue(FabButtonState.Add)
+            _wishText.postValue(
                 myAnalystForSummary.getWishStringForSummary(MyAnalystForSummary.DEFAULT_WISH)
+            )
         }
     }
 

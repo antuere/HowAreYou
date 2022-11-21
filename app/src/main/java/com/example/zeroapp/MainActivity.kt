@@ -22,7 +22,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -48,11 +47,10 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        lifecycleScope.launch {
-            withContext(Dispatchers.IO) {
-                settings = getSettingsUseCase(Unit).first()
-            }
+        lifecycleScope.launch(Dispatchers.IO) {
+            settings = getSettingsUseCase(Unit).first()
         }
+
         installSplashScreen().apply {
             if (BuildConfig.BUILD_TYPE != "benchmark") {
                 setKeepOnScreenCondition {
@@ -118,12 +116,12 @@ class MainActivity : AppCompatActivity() {
                 R.id.registerFragment -> hideBottomBar()
                 R.id.resetPasswordFragment -> hideBottomBar()
                 R.id.signInMethodsFragment -> hideBottomBar()
+                R.id.mentalTipsFragment -> hideBottomBar()
                 R.id.secureEntryFragment -> {
                     goneBottomBar()
                     goneAppBar()
                 }
             }
-
         }
 
         setupActionBarWithNavController(navController!!, appBarConfiguration)

@@ -74,8 +74,8 @@ class HistoryFragment :
             itemAnimator = CustomItemAnimatorFactory(DefaultCustomAnimator()).also { animator ->
                 animator.addViewTypeAnimator(R.layout.day_item, ScaleCustomAnimator())
                 animator.addViewTypeAnimator(R.layout.header_history, SlideInTopCustomAnimator())
-                animator.addDuration = 500L
-                animator.removeDuration = 500L
+                animator.addDuration = 400L
+                animator.removeDuration = 400L
             }
         }
 
@@ -92,7 +92,7 @@ class HistoryFragment :
             it?.let {
                 if (it.isEmpty()) {
                     if (dayAdapter.currentList.isNotEmpty()) {
-                        binding!!.dayList.itemAnimator!!.removeDuration = 1250L
+                        binding!!.dayList.itemAnimator!!.removeDuration = 350L
                         dayAdapter.addHeaderAndSubmitList(it)
                     }
 
@@ -122,27 +122,27 @@ class HistoryFragment :
             it?.let { state ->
                 when (state) {
                     is ToggleBtnState.AllDays -> {
-                        if (viewModel.currentJob !is JobType.AllDays) {
-                            dayAdapter.addHeaderAndSubmitList(emptyList())
-                        }
+//                        if (viewModel.currentJob !is JobType.AllDays) {
+//                            dayAdapter.submitList(emptyList())
+//                        }
 
                         viewModel.checkedAllDaysButton()
                         manager.setManagerSpanCount(4)
                         binding!!.toggleButton.check(R.id.button_all_days)
                     }
                     is ToggleBtnState.LastWeek -> {
-                        if (viewModel.currentJob !is JobType.Week) {
-                            dayAdapter.addHeaderAndSubmitList(emptyList())
-                        }
+//                        if (viewModel.currentJob !is JobType.Week) {
+//                            dayAdapter.submitList(emptyList())
+//                        }
 
                         viewModel.checkedLastWeekButton()
                         manager.setManagerSpanCount(2)
                         binding!!.toggleButton.check(R.id.button_last_week)
                     }
                     is ToggleBtnState.CurrentMonth -> {
-                        if (viewModel.currentJob !is JobType.Month) {
-                            dayAdapter.addHeaderAndSubmitList(emptyList())
-                        }
+//                        if (viewModel.currentJob !is JobType.Month) {
+//                            dayAdapter.submitList(emptyList())
+//                        }
 
                         viewModel.checkedCurrentMonthButton()
                         manager.setManagerSpanCount(3)
@@ -199,6 +199,11 @@ class HistoryFragment :
             }
 
         }, viewLifecycleOwner, Lifecycle.State.STARTED)
+    }
+
+    override fun onStop() {
+        super.onStop()
+//        binding!!.toggleButton.visibility = View.INVISIBLE
     }
 
 

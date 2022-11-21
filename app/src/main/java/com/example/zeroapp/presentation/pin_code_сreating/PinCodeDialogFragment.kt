@@ -107,14 +107,15 @@ class PinCodeDialogFragment : BottomSheetDialogFragment() {
                         binding!!.circle4.setImageResource(R.drawable.ic_circle_filled)
                     }
                     PinCodeCirclesState.NONE -> {
-                        binding!!.circle1.setImageResource(R.drawable.ic_outline_outlined)
-                        binding!!.circle2.setImageResource(R.drawable.ic_outline_outlined)
-                        binding!!.circle3.setImageResource(R.drawable.ic_outline_outlined)
-                        binding!!.circle4.setImageResource(R.drawable.ic_outline_outlined)
+                        binding!!.apply {
+                            circle1.setImageResource(R.drawable.ic_outline_outlined)
+                            circle2.setImageResource(R.drawable.ic_outline_outlined)
+                            circle3.setImageResource(R.drawable.ic_outline_outlined)
+                            circle4.setImageResource(R.drawable.ic_outline_outlined)
+                        }
                     }
                     PinCodeCirclesState.ALL -> {}
                 }
-
             }
         }
     }

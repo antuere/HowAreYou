@@ -19,6 +19,7 @@ import com.example.zeroapp.presentation.base.ui_dialog.IUIDialogAction
 import com.example.zeroapp.presentation.base.ui_dialog.UIDialog
 import com.example.zeroapp.presentation.history.adapter.DayClickListener
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -193,7 +194,7 @@ class HistoryViewModel @Inject constructor(
     }
 
     private fun getToggleButtonState() {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             getToggleBtnStateUseCase(Unit).collectLatest {
                 _toggleBtnState.postValue(it)
             }

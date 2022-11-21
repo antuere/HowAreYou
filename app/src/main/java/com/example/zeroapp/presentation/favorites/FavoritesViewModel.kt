@@ -33,11 +33,11 @@ class FavoritesViewModel @Inject constructor(
     val listDays: LiveData<List<Day>>
         get() = _listDays
 
-    private var _dayId = 0L
-
     private var _navigateToDetailState = MutableLiveData<NavigateToDetailState>()
     val navigateToDetailState: LiveData<NavigateToDetailState>
         get() = _navigateToDetailState
+
+    private var _dayId = 0L
 
     init {
         viewModelScope.launch {

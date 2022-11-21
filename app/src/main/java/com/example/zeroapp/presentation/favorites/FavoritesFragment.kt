@@ -47,7 +47,6 @@ class FavoritesFragment :
         binding!!.favoritesList.apply {
             layoutManager = manager
             adapter = favoritesAdapter
-
             itemAnimator = CustomItemAnimatorFactory(DefaultCustomAnimator()).also { animator ->
                 animator.addDuration = 250
                 animator.removeDuration = 500

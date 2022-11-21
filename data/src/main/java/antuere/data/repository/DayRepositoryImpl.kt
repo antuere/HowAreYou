@@ -41,17 +41,16 @@ class DayRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getAllDays(): Flow<List<Day>> {
-        return dayDataBaseRoom.dayDatabaseDao.getAllDays().map {
-            Timber.i("recycle view error : all days update")
+    override suspend fun getAllDays(): Flow<List<Day>> = withContext(Dispatchers.IO) {
+        dayDataBaseRoom.dayDatabaseDao.getAllDays().map {
             it.map { dayEntity ->
                 dayEntityMapper.mapToDomainModel(dayEntity)
             }
         }
     }
 
-    override suspend fun getFavoritesDays(): Flow<List<Day>> {
-        return dayDataBaseRoom.dayDatabaseDao.getFavoritesDays().map {
+    override suspend fun getFavoritesDays(): Flow<List<Day>> = withContext(Dispatchers.IO) {
+        dayDataBaseRoom.dayDatabaseDao.getFavoritesDays().map {
             it.map { dayEntity ->
                 dayEntityMapper.mapToDomainModel(dayEntity)
             }
@@ -91,7 +90,7 @@ class DayRepositoryImpl @Inject constructor(
     override suspend fun getDay(): Flow<Day?> = withContext(Dispatchers.IO) {
         val dayEntity = dayDataBaseRoom.dayDatabaseDao.getDay()
         dayEntity.map {
-            it?.let  (dayEntityMapper::mapToDomainModel)
+            it?.let(dayEntityMapper::mapToDomainModel)
         }
     }
 

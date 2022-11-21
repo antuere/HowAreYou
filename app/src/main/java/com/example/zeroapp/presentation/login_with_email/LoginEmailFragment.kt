@@ -14,7 +14,6 @@ import com.example.zeroapp.util.createSharedElementEnterTransition
 import com.example.zeroapp.util.startOnClickAnimation
 import com.google.android.material.transition.MaterialSharedAxis
 import dagger.hilt.android.AndroidEntryPoint
-import timber.log.Timber
 
 @AndroidEntryPoint
 class LoginEmailFragment :
@@ -44,8 +43,6 @@ class LoginEmailFragment :
     }
 
     private fun setupBinding(binding: FragmentLoginEmailBinding) {
-        Timber.i("navigate upd : createView login email")
-
         binding.apply {
             buttonSignIn.setOnClickListener {
                 val email = emailText.text.toString()
@@ -124,5 +121,4 @@ class LoginEmailFragment :
             buttonSignIn.visibility = View.VISIBLE
         }
     }
-
 }
