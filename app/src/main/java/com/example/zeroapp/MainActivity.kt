@@ -1,20 +1,42 @@
 package com.example.zeroapp
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.animation.core.*
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.outlined.History
+import androidx.compose.material.icons.outlined.Home
+import androidx.compose.material.icons.outlined.Settings
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import antuere.domain.dto.Settings
 import antuere.domain.usecases.user_settings.GetSettingsUseCase
 import com.example.zeroapp.databinding.ActivityMainBinding
 import com.example.zeroapp.presentation.summary.SummaryViewModel
+import com.example.zeroapp.ui_theme.Gray
+import com.example.zeroapp.ui_theme.TealMain
+import com.example.zeroapp.ui_theme.Typography
+import com.example.zeroapp.ui_theme.ZeroAppTheme
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
@@ -26,10 +48,10 @@ import timber.log.Timber
 import javax.inject.Inject
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
+class MainActivity : ComponentActivity() {
 
-    private var binding: ActivityMainBinding? = null
 
     private var _bottomNavView: BottomNavigationView? = null
     val bottomNavView: BottomNavigationView?
@@ -59,31 +81,196 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        binding = ActivityMainBinding.inflate(layoutInflater).also {
-            setContentView(it.root)
-            setupBinding(it)
+        setContent {
+            ZeroAppTheme() {
+                Scaffold(bottomBar = { BottomNavBar() }) { padding ->
+                    InitUi(modifier = Modifier.padding(padding))
+                }
+            }
         }
 
+    }
+
+    @Composable
+    private fun RowUi(modifier: Modifier = Modifier, string: String) {
+        val expended = rememberSaveable {
+            mutableStateOf(false)
+        }
+
+        val extraPadding by animateDpAsState(
+            if (expended.value) 45.dp else 0.dp,
+            animationSpec = spring(
+                dampingRatio = Spring.DampingRatioMediumBouncy,
+                stiffness = Spring.StiffnessLow,
+            )
+        )
+
+        Surface(
+            modifier = modifier,
+            color = MaterialTheme.colorScheme.primary,
+        ) {
+            Column {
+                Row(
+                    modifier = Modifier.padding(15.dp),
+                    horizontalArrangement = Arrangement.Start,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = string,
+                        modifier = Modifier
+                            .weight(1F)
+                            .padding(bottom = extraPadding.coerceAtLeast(0.dp)),
+                        textAlign = TextAlign.Start,
+                        fontSize = 20.sp
+                    )
+
+                    IconButton(
+                        onClick = { expended.value = expended.value.not() }) {
+
+                        Icon(
+                            imageVector = if (expended.value) Icons.Filled.ExpandLess else Icons.Filled.ExpandMore,
+                            contentDescription = if (expended.value) stringResource(R.string.click_less) else stringResource(
+                                R.string.click_more
+                            )
+                        )
+                    }
+                }
+
+                if (expended.value) {
+                    Text(
+                        text = "just new added text, need test, fucking plug!!",
+                        textAlign = TextAlign.Start,
+                        fontSize = 32.sp
+                    )
+                }
+            }
+        }
+    }
+
+
+    @Composable
+    fun InitUi(modifier: Modifier = Modifier) {
+
+        var shouldShowOnboarding by rememberSaveable { mutableStateOf(true) }
+
+        if (shouldShowOnboarding) {
+            OnboardingScreen(onClicked = { shouldShowOnboarding = false })
+        } else {
+            ColumnList()
+        }
+    }
+
+    @Composable
+    fun OnboardingScreen(modifier: Modifier = Modifier, onClicked: () -> Unit) {
+
+        Column(
+            modifier = modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text("Welcome to the Basics Codelab!")
+            Button(
+                modifier = Modifier.padding(vertical = 24.dp),
+                onClick = onClicked
+            ) {
+                Text("Continue")
+            }
+        }
+    }
+
+    @Composable
+    private fun ColumnList(list: List<String> = List(500) { "$it element" }) {
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(5.dp),
+            contentPadding = PaddingValues(vertical = 25.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(5.dp)
+        ) {
+            items(list) {
+                RowUi(
+                    string = it, modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 6.dp)
+                )
+            }
+        }
+    }
+
+
+    @Composable
+    private fun BottomNavBar() {
+        var selectedItem by rememberSaveable { mutableStateOf(0) }
+        val dest = listOf("Home", "History", "Settings")
+        val iconsOutline =
+            listOf(Icons.Outlined.Home, Icons.Outlined.History, Icons.Outlined.Settings)
+        val iconsFilled = listOf(Icons.Filled.Home, Icons.Filled.History, Icons.Filled.Settings)
+
+        NavigationBar(
+            containerColor = TealMain,
+            contentColor = Color.White
+        ) {
+            dest.forEachIndexed { index, dest ->
+                val isSelected = selectedItem == index
+
+                NavigationBarItem(
+                    icon = {
+                        Icon(
+                            imageVector = if (isSelected) iconsFilled[index] else iconsOutline[index],
+                            contentDescription = null
+                        )
+                    },
+                    label = {
+                        Text(
+                            text = dest,
+                            style = if (isSelected) Typography.displayMedium.copy(
+                                fontSize = 15.sp
+                            ) else Typography.displaySmall.copy(fontSize = 14.sp)
+                        )
+                    },
+                    selected = isSelected,
+                    onClick = { selectedItem = index },
+                    colors = NavigationBarItemDefaults.colors(
+                        selectedIconColor = Color.Black,
+                        selectedTextColor = Color.Black,
+                        indicatorColor = Color.White,
+                        unselectedIconColor = Gray,
+                        unselectedTextColor = Gray
+                    ),
+                )
+            }
+        }
+    }
+
+    @Preview(showBackground = true)
+    @Composable
+    fun OnboardingPreview() {
+        ZeroAppTheme() {
+        Scaffold(bottomBar = { BottomNavBar() }) { padding ->
+                    InitUi(modifier = Modifier.padding(padding))
+                }
+        }
     }
 
     private fun setupBinding(binding: ActivityMainBinding) {
         Timber.plant(Timber.DebugTree())
 
         toolbar = binding.toolBarApp
-        setSupportActionBar(toolbar)
+//        setSupportActionBar(toolbar)
         _bottomNavView = binding.bottomView
 
-        val navHostFragment =
-            supportFragmentManager.findFragmentById(R.id.myNavHostFragment) as NavHostFragment
+//        val navHostFragment =
+//            supportFragmentManager.findFragmentById(R.id.myNavHostFragment) as NavHostFragment
 
-        navController = navHostFragment.navController
-        val appBarConfiguration = AppBarConfiguration(
-            setOf(
-                R.id.settingsFragment,
-                R.id.historyFragment,
-                R.id.summaryFragment,
-            )
-        )
+//        navController = navHostFragment.navController
+//        val appBarConfiguration = AppBarConfiguration(
+//            setOf(
+//                R.id.settingsFragment,
+//                R.id.historyFragment,
+//                R.id.summaryFragment,
+//            )
+//        )
 
         val navInflater = navController!!.navInflater
         val graph = navInflater.inflate(R.navigation.navigation)
@@ -124,13 +311,13 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        setupActionBarWithNavController(navController!!, appBarConfiguration)
+//        setupActionBarWithNavController(navController!!, appBarConfiguration)
         _bottomNavView?.setupWithNavController(navController!!)
     }
 
-    override fun onSupportNavigateUp(): Boolean {
-        return navController?.navigateUp() ?: false
-    }
+//    override fun onSupportNavigateUp(): Boolean {
+//        return navController?.navigateUp() ?: false
+//    }
 
     private fun hideBottomBar() {
         _bottomNavView?.visibility = View.INVISIBLE

@@ -90,6 +90,7 @@ dependencies {
     androidTestImplementation 'androidx.compose.ui:ui-test-junit4'
     debugImplementation 'androidx.compose.ui:ui-test-manifest'
     implementation 'androidx.compose.material:material-icons-core'
+    implementation 'androidx.compose.material:material-icons-extended'
     implementation 'androidx.compose.material3:material3-window-size-class'
     implementation "androidx.activity:activity-compose:$version_compose_activity"
     implementation "androidx.lifecycle:lifecycle-viewmodel-compose:$version_compose_view_model"
