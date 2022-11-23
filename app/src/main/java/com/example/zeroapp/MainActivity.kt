@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.whenCreated
 import androidx.navigation.NavController
 import androidx.navigation.ui.setupWithNavController
 import antuere.domain.dto.Settings
@@ -51,7 +52,6 @@ import javax.inject.Inject
 @OptIn(ExperimentalMaterial3Api::class)
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-
 
     private var _bottomNavView: BottomNavigationView? = null
     val bottomNavView: BottomNavigationView?
@@ -162,7 +162,6 @@ class MainActivity : ComponentActivity() {
 
     @Composable
     fun OnboardingScreen(modifier: Modifier = Modifier, onClicked: () -> Unit) {
-
         Column(
             modifier = modifier.fillMaxSize(),
             verticalArrangement = Arrangement.Center,

@@ -9,16 +9,9 @@ import androidx.compose.ui.unit.sp
 import com.example.zeroapp.R
 
 //My fonts
-val RobotoMediumFont = FontFamily(
-    Font(
-        R.font.roboto_medium
-    )
-)
-
-val RobotoFont = FontFamily(
-    Font(
-        R.font.roboto
-    )
+val Roboto = FontFamily(
+    Font (R.font.roboto_medium, FontWeight.Medium),
+    Font(R.font.roboto)
 )
 
 // Set of Material typography styles to start with
@@ -31,7 +24,7 @@ val Typography = Typography(
         letterSpacing = 0.5.sp
     ),
     displaySmall = TextStyle(
-        fontFamily = RobotoFont,
+        fontFamily = Roboto,
         fontWeight = FontWeight.Normal,
         fontSize = 14.sp,
         lineHeight = 24.sp,
@@ -39,23 +32,23 @@ val Typography = Typography(
     ),
 
     displayMedium = TextStyle(
-        fontFamily = RobotoMediumFont,
-        fontWeight = FontWeight.Normal,
+        fontFamily = Roboto,
+        fontWeight = FontWeight.Medium,
         fontSize = 16.sp,
         lineHeight = 24.sp,
         letterSpacing = 0.5.sp
     ),
 
     titleLarge = TextStyle(
-        fontFamily = RobotoMediumFont,
-        fontWeight = FontWeight.Normal,
+        fontFamily = Roboto,
+        fontWeight = FontWeight.Medium,
         fontSize = 22.sp,
         lineHeight = 28.sp,
         letterSpacing = 0.sp
     ),
 
     labelSmall = TextStyle(
-        fontFamily = RobotoFont,
+        fontFamily = Roboto,
         fontWeight = FontWeight.Normal,
         fontSize = 14.sp,
         lineHeight = 24.sp,
