@@ -27,17 +27,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.whenCreated
 import androidx.navigation.NavController
 import androidx.navigation.ui.setupWithNavController
 import antuere.domain.dto.Settings
 import antuere.domain.usecases.user_settings.GetSettingsUseCase
 import com.example.zeroapp.databinding.ActivityMainBinding
-import com.example.zeroapp.presentation.summary.SummaryViewModel
-import com.example.zeroapp.ui_theme.Gray
-import com.example.zeroapp.ui_theme.TealMain
-import com.example.zeroapp.ui_theme.Typography
-import com.example.zeroapp.ui_theme.ZeroAppTheme
+import com.example.zeroapp.presentation.home.HomeViewModel
+import com.example.zeroapp.presentation.base.ui_theme.Gray
+import com.example.zeroapp.presentation.base.ui_theme.TealMain
+import com.example.zeroapp.presentation.base.ui_theme.Typography
+import com.example.zeroapp.presentation.base.ui_theme.ZeroAppTheme
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
@@ -60,7 +59,7 @@ class MainActivity : ComponentActivity() {
     var toolbar: MaterialToolbar? = null
     private var navController: NavController? = null
 
-    private val viewModel by viewModels<SummaryViewModel>()
+    private val viewModel by viewModels<HomeViewModel>()
 
     @Inject
     lateinit var getSettingsUseCase: GetSettingsUseCase
@@ -93,6 +92,7 @@ class MainActivity : ComponentActivity() {
 
     @Composable
     private fun RowUi(modifier: Modifier = Modifier, string: String) {
+
         val expended = rememberSaveable {
             mutableStateOf(false)
         }
@@ -104,7 +104,6 @@ class MainActivity : ComponentActivity() {
                 stiffness = Spring.StiffnessLow,
             )
         )
-
         Surface(
             modifier = modifier,
             color = MaterialTheme.colorScheme.primary,
@@ -197,11 +196,19 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    @Composable
+    private fun MyTopAppBar() {
+       TopAppBar() {
+
+        }
+    }
+
 
     @Composable
     private fun BottomNavBar() {
         var selectedItem by rememberSaveable { mutableStateOf(0) }
-        val dest = listOf("Home", "History", "Settings")
+        val destTitle = listOf("Home", "History", "Settings")
+
         val iconsOutline =
             listOf(Icons.Outlined.Home, Icons.Outlined.History, Icons.Outlined.Settings)
         val iconsFilled = listOf(Icons.Filled.Home, Icons.Filled.History, Icons.Filled.Settings)
@@ -210,9 +217,8 @@ class MainActivity : ComponentActivity() {
             containerColor = TealMain,
             contentColor = Color.White
         ) {
-            dest.forEachIndexed { index, dest ->
+            destTitle.forEachIndexed { index, dest ->
                 val isSelected = selectedItem == index
-
                 NavigationBarItem(
                     icon = {
                         Icon(

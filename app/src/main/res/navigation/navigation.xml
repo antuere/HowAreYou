@@ -48,7 +48,7 @@
     </fragment>
     <fragment
             android:id="@+id/summaryFragment"
-            android:name="com.example.zeroapp.presentation.summary.SummaryFragment"
+            android:name="com.example.zeroapp.presentation.home.HomeScreen"
             android:label="@string/summary"
             tools:layout="@layout/fragment_summary">
         <action

@@ -1,4 +1,4 @@
-package com.example.zeroapp.presentation.summary
+package com.example.zeroapp.presentation.home
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -23,20 +23,20 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
-class SummaryViewModel @Inject constructor(
+class HomeViewModel @Inject constructor(
     private val getLastDayUseCase: GetLastDayUseCase,
     private val updDayQuoteByRemoteUseCase: UpdDayQuoteByRemoteUseCase,
     private val getDayQuoteLocalUseCase: GetDayQuoteLocalUseCase,
     private val getDaysByLimitUseCase: GetDaysByLimitUseCase,
     private val getSettingsUseCase: GetSettingsUseCase,
     private val saveSettingsUseCase: SaveSettingsUseCase,
-    private val myAnalystForSummary: MyAnalystForSummary
+    private val myAnalystForSummary: MyAnalystForHome
 ) :
     ViewModel(), IUIDialogAction {
 
@@ -44,12 +44,12 @@ class SummaryViewModel @Inject constructor(
     override val uiDialog: StateFlow<UIDialog?>
         get() = _uiDialog
 
-    private var _lastDay = MutableLiveData<Day?>()
-    val lastDay: LiveData<Day?>
+    private var _lastDay = MutableStateFlow<Day?>(null)
+    val lastDay: StateFlow<Day?>
         get() = _lastDay
 
-    private var _dayQuote = MutableLiveData<Quote?>()
-    val dayQuote: LiveData<Quote?>
+    private var _dayQuote = MutableStateFlow<Quote?>(null)
+    val dayQuote: StateFlow<Quote?>
         get() = _dayQuote
 
     private var _fabButtonState = MutableLiveData<FabButtonState>(FabButtonState.Add)
@@ -84,8 +84,9 @@ class SummaryViewModel @Inject constructor(
 
     private fun getLastDay() {
         viewModelScope.launch(Dispatchers.IO) {
+
             getLastDayUseCase(Unit).collectLatest {
-                _lastDay.postValue(it)
+                _lastDay.value = it
                 delay(100)
 
                 checkDayTime()
@@ -178,7 +179,7 @@ class SummaryViewModel @Inject constructor(
         } else {
             _fabButtonState.postValue(FabButtonState.Add)
             _wishText.postValue(
-                myAnalystForSummary.getWishStringForSummary(MyAnalystForSummary.DEFAULT_WISH)
+                myAnalystForSummary.getWishStringForSummary(MyAnalystForHome.DEFAULT_WISH)
             )
         }
     }

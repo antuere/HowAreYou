@@ -1,26 +1,25 @@
-package com.example.zeroapp.presentation.summary
+package com.example.zeroapp.presentation.home
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.ComponentActivity
+import androidx.activity.viewModels
 import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import com.example.zeroapp.*
-import com.example.zeroapp.databinding.FragmentSummaryBinding
-import com.example.zeroapp.presentation.base.BaseBindingFragment
 import com.example.zeroapp.presentation.base.ui_dialog.UIDialogListener
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.transition.MaterialFadeThrough
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class SummaryFragment :
-    BaseBindingFragment<FragmentSummaryBinding>(FragmentSummaryBinding::inflate) {
+class HomeScreen : ComponentActivity() {
 
-    private val viewModel by viewModels<SummaryViewModel>()
+    private val viewModel by viewModels<HomeViewModel>()
 
     private var fabButton: FloatingActionButton? = null
 

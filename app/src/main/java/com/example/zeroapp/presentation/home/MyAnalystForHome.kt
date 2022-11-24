@@ -1,11 +1,10 @@
-package com.example.zeroapp.presentation.summary
+package com.example.zeroapp.presentation.home
 
 import android.content.Context
 import antuere.domain.dto.Day
 import com.example.zeroapp.R
-import antuere.data.util.SmileProvider
 
-class MyAnalystForSummary(private val context: Context) {
+class MyAnalystForHome(private val context: Context) {
 
     companion object {
         const val DEFAULT_WISH = -1

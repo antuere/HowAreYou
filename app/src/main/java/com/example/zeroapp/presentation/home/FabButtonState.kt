@@ -1,4 +1,4 @@
-package com.example.zeroapp.presentation.summary
+package com.example.zeroapp.presentation.home
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes

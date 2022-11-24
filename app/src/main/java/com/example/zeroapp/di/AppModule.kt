@@ -14,7 +14,7 @@ import com.example.zeroapp.presentation.history.MyAnalystForHistory
 import antuere.data.preferences_data_store.toggle_btn_data_store.ToggleBtnDataStore
 import antuere.data.remote.NetworkInfo
 import antuere.data.privacy_manager.PrivacyManagerImpl
-import com.example.zeroapp.presentation.summary.MyAnalystForSummary
+import com.example.zeroapp.presentation.home.MyAnalystForHome
 import com.example.zeroapp.presentation.base.ui_biometric_dialog.UIBiometricDialog
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -42,8 +42,8 @@ object AppModule {
     }
 
     @Provides
-    fun provideMyAnalystForSummary(@ApplicationContext context: Context): MyAnalystForSummary {
-        return MyAnalystForSummary(context)
+    fun provideMyAnalystForSummary(@ApplicationContext context: Context): MyAnalystForHome {
+        return MyAnalystForHome(context)
     }
 
     @Provides

@@ -6,7 +6,7 @@
         android:layout_height="match_parent"
         android:transitionGroup="true"
         tools:theme="@style/Theme.ZeroApp"
-        tools:context=".presentation.summary.SummaryFragment">
+        tools:context=".presentation.home.HomeScreen">
 
     <com.google.android.material.card.MaterialCardView
             android:id="@+id/main_card_view"

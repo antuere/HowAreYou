@@ -108,6 +108,7 @@ dependencies {
     // Navigation
     implementation "androidx.navigation:navigation-fragment-ktx:$version_navigation"
     implementation "androidx.navigation:navigation-ui-ktx:$version_navigation"
+    implementation "androidx.navigation:navigation-compose:$version_navigation"
 
     // Preferences DataStore
     implementation "androidx.datastore:datastore-preferences:$version_data_store"
@@ -127,6 +128,7 @@ dependencies {
     implementation "com.google.dagger:hilt-android:$version_dagger_hilt"
     kapt "com.google.dagger:hilt-android-compiler:$version_dagger_hilt"
     kapt "androidx.hilt:hilt-compiler:$version_dagger_hilt_compiler"
+    implementation "androidx.hilt:hilt-navigation-compose:$version_dagger_hilt_navigation"
 
     // Room
     annotationProcessor "androidx.room:room-compiler:$version_room"
