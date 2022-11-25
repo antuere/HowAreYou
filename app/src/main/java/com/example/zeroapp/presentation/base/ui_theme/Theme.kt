@@ -17,8 +17,9 @@ import androidx.core.view.ViewCompat
 
 private val DarkColorScheme = darkColorScheme(
     primary = TealMain,
-    secondary = Teal_200,
-    tertiary = Teal_700,
+    secondary = Teal200,
+    tertiary = Teal700,
+    surfaceVariant = LightBlue,
     background = White,
     onPrimary = White,
     onSecondary = Black,
@@ -26,15 +27,16 @@ private val DarkColorScheme = darkColorScheme(
 
 private val LightColorScheme = lightColorScheme(
     primary = TealMain,
-    secondary = Teal_200,
-    tertiary = Teal_700,
+    secondary = Teal200,
+    tertiary = Teal700,
+    surfaceVariant = LightBlue,
     background = White,
     onPrimary = White,
     onSecondary = Black,
 )
 
 @Composable
-fun ZeroAppTheme(
+fun HowAreYouTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     // Dynamic color is available on Android 12+
     dynamicColor: Boolean = true,
@@ -59,6 +61,7 @@ fun ZeroAppTheme(
     MaterialTheme(
         colorScheme = colorScheme,
         typography = Typography,
-        content = content
+        content = content,
+        shapes = MyShapes
     )
 }

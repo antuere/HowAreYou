@@ -1,7 +1,5 @@
 package com.example.zeroapp.presentation.home
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import antuere.domain.dto.Day
@@ -23,7 +21,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
@@ -52,27 +49,26 @@ class HomeViewModel @Inject constructor(
     val dayQuote: StateFlow<Quote?>
         get() = _dayQuote
 
-    private var _fabButtonState = MutableLiveData<FabButtonState>(FabButtonState.Add)
-    val fabButtonState: LiveData<FabButtonState>
+    private var _fabButtonState = MutableStateFlow<FabButtonState>(FabButtonState.Add)
+    val fabButtonState: StateFlow<FabButtonState>
         get() = _fabButtonState
 
-    private var _wishText = MutableLiveData<String>()
-    val wishText: LiveData<String>
+    private var _wishText = MutableStateFlow<String?>(null)
+    val wishText: StateFlow<String?>
         get() = _wishText
 
-    private var _daysForCheck = MutableLiveData<List<Day>>()
+    private var _isShowSnackBar = MutableStateFlow(false)
 
-    private var _isShowSnackBar = MutableLiveData<Boolean>()
-    val isShowSnackBar: LiveData<Boolean>
+    val isShowSnackBar: StateFlow<Boolean>
         get() = _isShowSnackBar
+    private var _isShowSplash = MutableStateFlow(true)
 
-    private var _isShowSplash = MutableLiveData(true)
-    val isShowSplash: LiveData<Boolean>
+    val isShowSplash: StateFlow<Boolean>
         get() = _isShowSplash
 
-    private var _settings = MutableLiveData<Settings?>()
-    val settings: LiveData<Settings?>
-        get() = _settings
+
+    private var _settings = MutableStateFlow<Settings?>(null)
+    private var _daysForCheck = MutableStateFlow<List<Day>>(emptyList())
 
 
     init {
@@ -97,7 +93,7 @@ class HomeViewModel @Inject constructor(
     private fun getSettings() {
         viewModelScope.launch {
             getSettingsUseCase(Unit).collectLatest {
-                _settings.postValue(it)
+                _settings.value = it
             }
         }
     }
@@ -106,7 +102,7 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             _dayQuote.value = getDayQuoteLocalUseCase(Unit)
 
-            if (_isShowSplash.value == true) _isShowSplash.value = false
+            if (_isShowSplash.value) _isShowSplash.value = false
         }
     }
 
@@ -121,7 +117,7 @@ class HomeViewModel @Inject constructor(
     private fun getLastFiveDays() {
         viewModelScope.launch {
             getDaysByLimitUseCase(5).collectLatest {
-                _daysForCheck.postValue(it)
+                _daysForCheck.value = it
             }
         }
     }
@@ -131,10 +127,10 @@ class HomeViewModel @Inject constructor(
             getLastFiveDays()
             delay(500)
 
-            val result =
-                myAnalystForSummary.isShowWarningForSummary(_daysForCheck.value ?: emptyList())
+            val isShowWorriedDialog =
+                myAnalystForSummary.isShowWarningForSummary(_daysForCheck.value)
 
-            if (result && _settings.value!!.isShowWorriedDialog) {
+            if (isShowWorriedDialog && _settings.value!!.isShowWorriedDialog) {
                 _uiDialog.value = UIDialog(
                     title = R.string.dialog_warning_title,
                     desc = R.string.dialog_warning_desc,
@@ -171,16 +167,16 @@ class HomeViewModel @Inject constructor(
 
     private fun checkDayTime() {
         if (TimeUtility.format(Date()) == (_lastDay.value?.dateString ?: "show add button")) {
-            _fabButtonState.postValue(FabButtonState.Smile(_lastDay.value?.imageResId!!))
-            _wishText.postValue(
+            _fabButtonState.value = FabButtonState.Smile(_lastDay.value?.imageResId!!)
+            _wishText.value =
                 myAnalystForSummary.getWishStringForSummary(_lastDay.value?.imageResId!!)
-            )
+
 
         } else {
-            _fabButtonState.postValue(FabButtonState.Add)
-            _wishText.postValue(
+            _fabButtonState.value = FabButtonState.Add
+            _wishText.value =
                 myAnalystForSummary.getWishStringForSummary(MyAnalystForHome.DEFAULT_WISH)
-            )
+
         }
     }
 

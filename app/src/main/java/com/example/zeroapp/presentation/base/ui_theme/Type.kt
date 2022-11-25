@@ -1,10 +1,14 @@
 package com.example.zeroapp.presentation.base.ui_theme
 
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Shapes
 import androidx.compose.material3.Typography
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.zeroapp.R
 
@@ -17,6 +21,7 @@ val Roboto = FontFamily(
 // Set of Material typography styles to start with
 val Typography = Typography(
     bodyLarge = TextStyle(
+        color = Color.Black,
         fontFamily = FontFamily.Default,
         fontWeight = FontWeight.Normal,
         fontSize = 16.sp,
@@ -32,6 +37,7 @@ val Typography = Typography(
     ),
 
     displayMedium = TextStyle(
+        color = Color.Black,
         fontFamily = Roboto,
         fontWeight = FontWeight.Medium,
         fontSize = 16.sp,
@@ -40,6 +46,7 @@ val Typography = Typography(
     ),
 
     titleLarge = TextStyle(
+        color = Color.Black,
         fontFamily = Roboto,
         fontWeight = FontWeight.Medium,
         fontSize = 22.sp,
@@ -48,10 +55,19 @@ val Typography = Typography(
     ),
 
     labelSmall = TextStyle(
+        color = Color.Black,
         fontFamily = Roboto,
         fontWeight = FontWeight.Normal,
         fontSize = 14.sp,
         lineHeight = 24.sp,
         letterSpacing = 0.5.sp
     ),
+)
+
+val MyShapes = Shapes(
+    extraSmall = RoundedCornerShape(4. dp),
+    small = RoundedCornerShape(8. dp),
+    medium = RoundedCornerShape(12. dp),
+    large = RoundedCornerShape(16. dp),
+    extraLarge = RoundedCornerShape(24. dp)
 )

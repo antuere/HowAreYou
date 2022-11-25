@@ -21,6 +21,6 @@
             android:layout_height="wrap_content"
             android:text="@string/login_progress_name"
             android:visibility="visible"
-            android:textSize="@dimen/textSize_small" />
+            android:textSize="@dimen/textSize_normal_0" />
 
 </LinearLayout>

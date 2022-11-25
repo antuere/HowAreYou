@@ -32,11 +32,13 @@ import androidx.navigation.ui.setupWithNavController
 import antuere.domain.dto.Settings
 import antuere.domain.usecases.user_settings.GetSettingsUseCase
 import com.example.zeroapp.databinding.ActivityMainBinding
+import com.example.zeroapp.presentation.base.ui_compose_components.BottomNavBar
 import com.example.zeroapp.presentation.home.HomeViewModel
 import com.example.zeroapp.presentation.base.ui_theme.Gray
 import com.example.zeroapp.presentation.base.ui_theme.TealMain
 import com.example.zeroapp.presentation.base.ui_theme.Typography
-import com.example.zeroapp.presentation.base.ui_theme.ZeroAppTheme
+import com.example.zeroapp.presentation.base.ui_theme.HowAreYouTheme
+import com.example.zeroapp.presentation.home.HomeScreen
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
@@ -75,15 +77,16 @@ class MainActivity : ComponentActivity() {
         installSplashScreen().apply {
             if (BuildConfig.BUILD_TYPE != "benchmark") {
                 setKeepOnScreenCondition {
-                    viewModel.isShowSplash.value!!
+                    viewModel.isShowSplash.value
                 }
             }
         }
 
         setContent {
-            ZeroAppTheme() {
+            HowAreYouTheme() {
                 Scaffold(bottomBar = { BottomNavBar() }) { padding ->
-                    InitUi(modifier = Modifier.padding(padding))
+//                    InitUi(modifier = Modifier.padding(padding))
+                    HomeScreen(modifier = Modifier.padding(padding))
                 }
             }
         }
@@ -160,7 +163,7 @@ class MainActivity : ComponentActivity() {
     }
 
     @Composable
-    fun OnboardingScreen(modifier: Modifier = Modifier, onClicked: () -> Unit) {
+    fun OnboardingScreen(modifier: Modifier = Modifier, onClicked: () -> Unit = {}) {
         Column(
             modifier = modifier.fillMaxSize(),
             verticalArrangement = Arrangement.Center,
@@ -196,65 +199,23 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    @Composable
-    private fun MyTopAppBar() {
-       TopAppBar() {
+//    @Composable
+//    private fun MyTopAppBar() {
+//       TopAppBar() {
+//
+//        }
+//    }
 
-        }
-    }
 
 
-    @Composable
-    private fun BottomNavBar() {
-        var selectedItem by rememberSaveable { mutableStateOf(0) }
-        val destTitle = listOf("Home", "History", "Settings")
-
-        val iconsOutline =
-            listOf(Icons.Outlined.Home, Icons.Outlined.History, Icons.Outlined.Settings)
-        val iconsFilled = listOf(Icons.Filled.Home, Icons.Filled.History, Icons.Filled.Settings)
-
-        NavigationBar(
-            containerColor = TealMain,
-            contentColor = Color.White
-        ) {
-            destTitle.forEachIndexed { index, dest ->
-                val isSelected = selectedItem == index
-                NavigationBarItem(
-                    icon = {
-                        Icon(
-                            imageVector = if (isSelected) iconsFilled[index] else iconsOutline[index],
-                            contentDescription = null
-                        )
-                    },
-                    label = {
-                        Text(
-                            text = dest,
-                            style = if (isSelected) Typography.displayMedium.copy(
-                                fontSize = 15.sp
-                            ) else Typography.displaySmall.copy(fontSize = 14.sp)
-                        )
-                    },
-                    selected = isSelected,
-                    onClick = { selectedItem = index },
-                    colors = NavigationBarItemDefaults.colors(
-                        selectedIconColor = Color.Black,
-                        selectedTextColor = Color.Black,
-                        indicatorColor = Color.White,
-                        unselectedIconColor = Gray,
-                        unselectedTextColor = Gray
-                    ),
-                )
-            }
-        }
-    }
 
     @Preview(showBackground = true)
     @Composable
     fun OnboardingPreview() {
-        ZeroAppTheme() {
-        Scaffold(bottomBar = { BottomNavBar() }) { padding ->
-                    InitUi(modifier = Modifier.padding(padding))
-                }
+        HowAreYouTheme() {
+            Scaffold(bottomBar = { BottomNavBar() }) { padding ->
+                InitUi(modifier = Modifier.padding(padding))
+            }
         }
     }
 

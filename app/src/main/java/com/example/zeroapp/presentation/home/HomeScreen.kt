@@ -1,147 +1,100 @@
 package com.example.zeroapp.presentation.home
 
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.activity.ComponentActivity
-import androidx.activity.viewModels
-import androidx.core.view.doOnPreDraw
-import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.FragmentNavigatorExtras
-import androidx.navigation.fragment.findNavController
-import com.example.zeroapp.*
+import androidx.compose.foundation.layout.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.stringResource
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.zeroapp.R
+import com.example.zeroapp.presentation.base.ui_compose_components.CardWithQuote
+import com.example.zeroapp.presentation.base.ui_compose_components.CardWithTitleCenter
 import com.example.zeroapp.presentation.base.ui_dialog.UIDialogListener
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.transition.MaterialFadeThrough
-import dagger.hilt.android.AndroidEntryPoint
 
-@AndroidEntryPoint
-class HomeScreen : ComponentActivity() {
+@Composable
+fun HomeScreen(
+//    navController: NavController,
+    modifier: Modifier = Modifier,
+    homeViewModel: HomeViewModel = hiltViewModel()
+) {
+    val dialogListener = UIDialogListener(LocalContext.current, homeViewModel)
+    val dayQuote by homeViewModel.dayQuote.collectAsState()
+    val wishText by homeViewModel.wishText.collectAsState()
+    val isShowSnackBar by homeViewModel.isShowSnackBar.collectAsState()
+    val fabBtnState by homeViewModel.fabButtonState.collectAsState()
 
-    private val viewModel by viewModels<HomeViewModel>()
-
-    private var fabButton: FloatingActionButton? = null
-
-    private val dialogListener: UIDialogListener by lazy {
-        UIDialogListener(requireContext(), viewModel)
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        exitTransition = MaterialFadeThrough().apply {
-            duration = resources.getInteger(R.integer.duration_normal).toLong()
-        }
-
-        enterTransition = MaterialFadeThrough().apply {
-            duration = resources.getInteger(R.integer.duration_normal).toLong()
-        }
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        binding = this.inflater(inflater, container, false)
-
-        viewModel.dayQuote.observe(viewLifecycleOwner) { quote ->
-            quote?.let {
-                binding!!.quotesText.text = it.text
-                val author = "${it.author} "
-                binding!!.quotesAuthor.text = author
-            }
-        }
-        return binding?.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
-        postponeEnterTransition()
-        view.doOnPreDraw {
-            startPostponedEnterTransition()
-        }
-
-        viewModel.wishText.observe(viewLifecycleOwner) {
-            it?.let { wishString ->
-                binding!!.wishText.text = wishString
-            }
-        }
-
-        viewModel.isShowSnackBar.observe(viewLifecycleOwner) {
-            if (it) {
-                showSnackBar(
-                    anchorView = binding!!.fabAddButton,
-                    stringResId = R.string.snack_bar_warning_negative,
-                    duration = 3000
-                )
-                viewModel.resetSnackBar()
-            }
-        }
-        fabButton = binding!!.fabAddButton
-        fabButton!!.setOnClickListener {
-
-            var transitionName = getString(R.string.transition_name_for_sum)
-            if (it.tag == getString(R.string.add)) {
-                val extrasAdd = FragmentNavigatorExtras(binding!!.fabAddButton to transitionName)
-                findNavController().navigate(
-                    SummaryFragmentDirections.actionSummaryFragmentToAddDayFragment(), extrasAdd
-                )
-            } else {
-                transitionName = getString(R.string.transition_name)
-                val extrasSmile = FragmentNavigatorExtras(binding!!.fabAddButton to transitionName)
-                findNavController().navigate(
-                    SummaryFragmentDirections.actionSummaryFragmentToDetailFragment(
-                        viewModel.lastDay.value!!.dayId
-                    ), extrasSmile
-                )
-            }
-        }
-
-
-        binding!!.favorites.setOnClickListener {
-            val transitionName = getString(R.string.transition_name_for_fav)
-            val extras = FragmentNavigatorExtras(binding!!.favorites to transitionName)
-            findNavController().navigate(
-                SummaryFragmentDirections.actionSummaryFragmentToFavoritesFragment(), extras
+    Box(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(dimensionResource(id = R.dimen.padding_normal_0))
+//            .background(Color.Red)
+    ) {
+        Column(verticalArrangement = Arrangement.Top) {
+            CardWithQuote(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .fillMaxHeight(0.3F),
+                titleText = stringResource(
+                    id = R.string.quotes_title
+                ),
+                quoteText = dayQuote?.text ?: "Test quote",
+                quiteAuthor = dayQuote?.author ?: "Test author"
             )
-        }
 
-        binding!!.cats.setOnClickListener {
-            val transitionName = getString(R.string.transition_name_for_cats)
-            val extras = FragmentNavigatorExtras(binding!!.cats to transitionName)
-            findNavController().navigate(
-                SummaryFragmentDirections.actionSummaryFragmentToCatsFragment(), extras
-            )
-        }
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .fillMaxHeight(0.3F),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                CardWithTitleCenter(
+                    modifier = Modifier
+                        .padding(
+                            top = dimensionResource(id = R.dimen.padding_normal_0),
+                            end = dimensionResource(id = R.dimen.padding_small_1)
+                        )
+                        .weight(0.5F),
+                    titleText = "Mental tips"
+                )
+                CardWithTitleCenter(
+                    modifier = Modifier
+                        .padding(
+                            top = dimensionResource(id = R.dimen.padding_normal_0),
+                            start = dimensionResource(id = R.dimen.padding_small_1)
+                        )
+                        .weight(0.5F),
+                    titleText = "Help for you"
+                )
+            }
 
-        dialogListener.collect(this, withNeutralBtn = true)
-    }
-
-    override fun onStart() {
-        super.onStart()
-        viewModel.fabButtonState.observe(viewLifecycleOwner) {
-            fabButton!!.tag = getString(it.tag)
-            fabButton!!.setImageResource(it.image)
-            if (it.tag == R.string.smile) {
-                binding!!.fabAddButton.transitionName = getString(it.transitionName)
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .fillMaxHeight(0.4F),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                CardWithTitleCenter(
+                    modifier = Modifier
+                        .padding(
+                            top = dimensionResource(id = R.dimen.padding_normal_0),
+                            end = dimensionResource(id = R.dimen.padding_small_1)
+                        )
+                        .weight(0.5F),
+                    titleText = stringResource(id = R.string.favorites)
+                )
+                CardWithTitleCenter(
+                    modifier = Modifier
+                        .padding(
+                            top = dimensionResource(id = R.dimen.padding_normal_0),
+                            start = dimensionResource(id = R.dimen.padding_small_1)
+                        )
+                        .weight(0.5F),
+                    titleText = stringResource(id = R.string.cats)
+                )
             }
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        viewModel.fabButtonState.observe(viewLifecycleOwner) {
-            if (it.tag == R.string.add) {
-                binding!!.fabAddButton.transitionName = getString(it.transitionName)
-            }
-        }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        fabButton = null
-        binding = null
     }
 }

@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="padding_very_small">6dp</dimen>
-    <dimen name="padding_small_one">12dp</dimen>
-    <dimen name="padding_small_two">16dp</dimen>
-    <dimen name="padding_normal">32dp</dimen>
+    <dimen name="padding_small_0">6dp</dimen>
+    <dimen name="padding_small_1">8dp</dimen>
+    <dimen name="padding_small_2">12dp</dimen>
+    <dimen name="padding_normal_0">16dp</dimen>
+    <dimen name="padding_normal_1">32dp</dimen>
 
+<!-- Spacers height -->
+    <dimen name="spacer_height_0">8dp</dimen>
+    <dimen name="spacer_height_1">16dp</dimen>
+    <dimen name="spacer_height_2">20dp</dimen>
+    <dimen name="spacer_height_3">32dp</dimen>
 
     <dimen name="margin_very_small">6dp</dimen>
     <dimen name="margin_very_smallest">4dp</dimen>
@@ -20,13 +26,13 @@
     <dimen name="margin_high_one">72dp</dimen>
     <dimen name="margin_high_two">80dp</dimen>
 
-    <dimen name="textSize_smallest">13sp</dimen>
-    <dimen name="textSize_small_ultra">15sp</dimen>
-    <dimen name="textSize_small">16sp</dimen>
-    <dimen name="textSize_small_one">18sp</dimen>
-    <dimen name="textSize_small_two">20sp</dimen>
-    <dimen name="textSize_big">24sp</dimen>
-    <dimen name="textSize_large">32sp</dimen>
+    <dimen name="textSize_small_0">13sp</dimen>
+    <dimen name="textSize_small_1">15sp</dimen>
+    <dimen name="textSize_normal_0">16sp</dimen>
+    <dimen name="textSize_normal_1">18sp</dimen>
+    <dimen name="textSize_normal_2">20sp</dimen>
+    <dimen name="textSize_big_0">24sp</dimen>
+    <dimen name="textSize_big_1">32sp</dimen>
 
     <dimen name="button_width">60dp</dimen>
     <dimen name="button_height">60dp</dimen>

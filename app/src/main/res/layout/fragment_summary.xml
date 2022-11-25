@@ -5,8 +5,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:transitionGroup="true"
-        tools:theme="@style/Theme.ZeroApp"
-        tools:context=".presentation.home.HomeScreen">
+        tools:theme="@style/Theme.ZeroApp">
 
     <com.google.android.material.card.MaterialCardView
             android:id="@+id/main_card_view"
@@ -31,7 +30,7 @@
             android:layout_height="0dp"
             android:layout_gravity="start"
             android:text="@string/wish_for_users_plug"
-            android:textSize="@dimen/textSize_small_one"
+            android:textSize="@dimen/textSize_normal_1"
             android:layout_margin="20dp"
             app:layout_constraintStart_toStartOf="@+id/main_card_view"
             app:layout_constraintBottom_toBottomOf="@+id/main_card_view"
@@ -58,7 +57,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Cats"
-                android:textSize="@dimen/textSize_small_one"
+                android:textSize="@dimen/textSize_normal_1"
                 android:layout_gravity="center"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
@@ -85,7 +84,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Favorites"
-                android:textSize="@dimen/textSize_small_one"
+                android:textSize="@dimen/textSize_normal_1"
                 android:layout_gravity="center"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
@@ -126,7 +125,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:cardBackgroundColor="@color/color_for_card"
-            android:padding="@dimen/padding_very_small"
+            android:padding="@dimen/padding_small_0"
             android:layout_marginStart="@dimen/margin_normal_button"
             android:layout_marginTop="@dimen/margin_normal_button"
             android:layout_marginBottom="@dimen/margin_normal_button_half"
@@ -145,7 +144,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/quotes_title"
-            android:textSize="@dimen/textSize_small_two"
+            android:textSize="@dimen/textSize_normal_2"
             android:elevation="1dp"
             android:layout_marginStart="@dimen/margin_normal"
             app:layout_constraintHorizontal_bias="0.2"
@@ -159,7 +158,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="Template a beautifully quote"
-            android:textSize="@dimen/textSize_small_one"
+            android:textSize="@dimen/textSize_normal_1"
             android:elevation="1dp"
             android:layout_marginStart="@dimen/margin_normal"
             app:layout_constraintHorizontal_bias="0.1"
@@ -173,7 +172,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="Porter"
-            android:textSize="@dimen/textSize_small_one"
+            android:textSize="@dimen/textSize_normal_1"
             android:elevation="1dp"
             android:layout_marginBottom="@dimen/margin_normal"
             android:layout_marginEnd="@dimen/margin_normal"

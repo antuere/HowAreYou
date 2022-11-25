@@ -4,7 +4,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:padding="@dimen/padding_normal"
+        android:padding="@dimen/padding_normal_1"
         tools:theme="@style/Theme.ZeroApp"
         tools:context=".presentation.detail.DetailFragment"
         android:transitionName="@string/transition_name">
@@ -19,7 +19,7 @@
 
         <TextView
                 android:id="@+id/date_text"
-                android:textSize="@dimen/textSize_large"
+                android:textSize="@dimen/textSize_big_1"
                 android:layout_gravity="center"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -34,7 +34,7 @@
                 android:layout_marginStart="@dimen/margin_normal"
                 android:layout_marginEnd="@dimen/margin_normal"
                 android:layout_marginTop="@dimen/margin_small"
-                android:textSize="@dimen/textSize_big"
+                android:textSize="@dimen/textSize_big_0"
                 android:fontFamily="@font/roboto"
                 tools:text="Its u day descjoijs hello hello hello" />
 

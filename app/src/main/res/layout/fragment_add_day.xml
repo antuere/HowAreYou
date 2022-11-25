@@ -19,7 +19,7 @@
             android:text="@string/how_are_you_today"
             android:gravity="center"
             app:layout_constraintVertical_bias="0.15"
-            android:textSize="@dimen/textSize_large"
+            android:textSize="@dimen/textSize_big_1"
             android:textColor="@color/black"
             android:fontFamily="@font/playfair_display" />
 
