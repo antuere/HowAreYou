@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="padding_small_0">6dp</dimen>
+    <dimen name="padding_small_0">4dp</dimen>
     <dimen name="padding_small_1">8dp</dimen>
     <dimen name="padding_small_2">12dp</dimen>
     <dimen name="padding_normal_0">16dp</dimen>
-    <dimen name="padding_normal_1">32dp</dimen>
+    <dimen name="padding_normal_1">20dp</dimen>
+    <dimen name="padding_normal_2">32dp</dimen>
 
 <!-- Spacers height -->
     <dimen name="spacer_height_0">8dp</dimen>

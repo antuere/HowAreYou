@@ -53,8 +53,9 @@ class HomeViewModel @Inject constructor(
     val fabButtonState: StateFlow<FabButtonState>
         get() = _fabButtonState
 
-    private var _wishText = MutableStateFlow<String?>(null)
-    val wishText: StateFlow<String?>
+    private var _wishText =
+        MutableStateFlow(myAnalystForSummary.getWishStringForSummary(MyAnalystForHome.DEFAULT_WISH))
+    val wishText: StateFlow<String>
         get() = _wishText
 
     private var _isShowSnackBar = MutableStateFlow(false)
@@ -176,7 +177,6 @@ class HomeViewModel @Inject constructor(
             _fabButtonState.value = FabButtonState.Add
             _wishText.value =
                 myAnalystForSummary.getWishStringForSummary(MyAnalystForHome.DEFAULT_WISH)
-
         }
     }
 

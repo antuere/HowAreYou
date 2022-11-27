@@ -23,8 +23,8 @@ val Typography = Typography(
     bodyLarge = TextStyle(
         color = Color.Black,
         fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.Normal,
-        fontSize = 16.sp,
+        fontWeight = FontWeight.Medium,
+        fontSize = 18.sp,
         lineHeight = 24.sp,
         letterSpacing = 0.5.sp
     ),
