@@ -1,14 +1,12 @@
 package com.example.zeroapp.presentation.home
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.Icon
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -17,26 +15,23 @@ import com.example.zeroapp.R
 import com.example.zeroapp.presentation.base.ui_compose_components.CardWithQuote
 import com.example.zeroapp.presentation.base.ui_compose_components.CardDefault
 import com.example.zeroapp.presentation.base.ui_compose_components.CardWithOnClick
-import com.example.zeroapp.presentation.base.ui_dialog.UIDialogListener
+import com.example.zeroapp.presentation.base.ui_compose_components.Dialog
 import com.example.zeroapp.presentation.base.ui_theme.TealMain
 
 @Composable
 fun HomeScreen(
 //    navController: NavController,
-    modifier: Modifier = Modifier,
-    homeViewModel: HomeViewModel = hiltViewModel()
+    modifier: Modifier = Modifier, homeViewModel: HomeViewModel = hiltViewModel()
 ) {
-    val dialogListener = UIDialogListener(LocalContext.current, homeViewModel)
+
+    val uiDialog by homeViewModel.uiDialog.collectAsState()
     val dayQuote by homeViewModel.dayQuote.collectAsState()
     val wishText by homeViewModel.wishText.collectAsState()
     val isShowSnackBar by homeViewModel.isShowSnackBar.collectAsState()
     val fabBtnState by homeViewModel.fabButtonState.collectAsState()
 
     val middleBtnNameId = listOf(
-        R.string.mental_tips,
-        R.string.help_for_you,
-        R.string.favorites,
-        R.string.cats
+        R.string.mental_tips, R.string.help_for_you, R.string.favorites, R.string.cats
     )
 
     Box(
@@ -70,8 +65,7 @@ fun HomeScreen(
                                 top = dimensionResource(id = R.dimen.padding_small_1),
                                 end = dimensionResource(id = R.dimen.padding_small_0)
                             )
-                            .weight(0.5F),
-                        titleText = stringResource(id = middleBtnNameId[i])
+                            .weight(0.5F), titleText = stringResource(id = middleBtnNameId[i])
                     )
                     CardWithOnClick(
                         cardModifier = Modifier
@@ -79,8 +73,7 @@ fun HomeScreen(
                                 top = dimensionResource(id = R.dimen.padding_small_1),
                                 start = dimensionResource(id = R.dimen.padding_small_0)
                             )
-                            .weight(0.5F),
-                        titleText = stringResource(id = middleBtnNameId[i + 1])
+                            .weight(0.5F), titleText = stringResource(id = middleBtnNameId[i + 1])
                     )
                 }
             }
@@ -90,12 +83,11 @@ fun HomeScreen(
                     .fillMaxSize()
                     .weight(0.3F)
                     .padding(top = dimensionResource(id = R.dimen.padding_small_1)),
-                textModifier = Modifier
-                    .padding(
-                        top = dimensionResource(id = R.dimen.padding_normal_1),
-                        start = dimensionResource(id = R.dimen.padding_normal_1),
-                        end = dimensionResource(id = R.dimen.padding_normal_1)
-                    ),
+                textModifier = Modifier.padding(
+                    top = dimensionResource(id = R.dimen.padding_normal_1),
+                    start = dimensionResource(id = R.dimen.padding_normal_1),
+                    end = dimensionResource(id = R.dimen.padding_normal_1)
+                ),
                 titleText = wishText,
                 textAlignment = Alignment.TopStart
             ) {
@@ -104,11 +96,11 @@ fun HomeScreen(
                 FloatingActionButton(
                     modifier = Modifier
                         .align(Alignment.End)
-                        .padding(bottom = dimensionResource(id = R.dimen.padding_normal_1),
+                        .padding(
+                            bottom = dimensionResource(id = R.dimen.padding_normal_1),
                             start = dimensionResource(id = R.dimen.padding_normal_1),
-                            end = dimensionResource(id = R.dimen.padding_normal_1)),
-                    onClick = {},
-                    containerColor = TealMain
+                            end = dimensionResource(id = R.dimen.padding_normal_1)
+                        ), onClick = { homeViewModel.testDialog() }, containerColor = TealMain
                 ) {
                     when (fabBtnState) {
                         is FabButtonState.Add -> {
@@ -127,7 +119,11 @@ fun HomeScreen(
                 }
             }
 
+        }
 
+        if(uiDialog != null){
+            Dialog(dialog = uiDialog!!)
         }
     }
+
 }

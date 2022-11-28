@@ -11,15 +11,11 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
-import androidx.compose.material.icons.outlined.History
-import androidx.compose.material.icons.outlined.Home
-import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -34,9 +30,6 @@ import antuere.domain.usecases.user_settings.GetSettingsUseCase
 import com.example.zeroapp.databinding.ActivityMainBinding
 import com.example.zeroapp.presentation.base.ui_compose_components.BottomNavBar
 import com.example.zeroapp.presentation.home.HomeViewModel
-import com.example.zeroapp.presentation.base.ui_theme.Gray
-import com.example.zeroapp.presentation.base.ui_theme.TealMain
-import com.example.zeroapp.presentation.base.ui_theme.Typography
 import com.example.zeroapp.presentation.base.ui_theme.HowAreYouTheme
 import com.example.zeroapp.presentation.home.HomeScreen
 import com.google.android.material.appbar.MaterialToolbar
@@ -69,6 +62,7 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Timber.plant(Timber.DebugTree())
 
         lifecycleScope.launch(Dispatchers.IO) {
             settings = getSettingsUseCase(Unit).first()

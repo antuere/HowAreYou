@@ -13,8 +13,7 @@ import antuere.domain.usecases.user_settings.GetSettingsUseCase
 import antuere.domain.usecases.user_settings.SaveSettingsUseCase
 import antuere.domain.util.TimeUtility
 import com.example.zeroapp.R
-import com.example.zeroapp.presentation.base.ui_dialog.IUIDialogAction
-import com.example.zeroapp.presentation.base.ui_dialog.UIDialog
+import com.example.zeroapp.presentation.base.ui_compose_components.dialog.UIDialogCompose
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -22,6 +21,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
 
@@ -35,10 +35,10 @@ class HomeViewModel @Inject constructor(
     private val saveSettingsUseCase: SaveSettingsUseCase,
     private val myAnalystForSummary: MyAnalystForHome
 ) :
-    ViewModel(), IUIDialogAction {
+    ViewModel() {
 
-    private var _uiDialog = MutableStateFlow<UIDialog?>(null)
-    override val uiDialog: StateFlow<UIDialog?>
+    private var _uiDialog = MutableStateFlow<UIDialogCompose?>(null)
+    val uiDialog: StateFlow<UIDialogCompose?>
         get() = _uiDialog
 
     private var _lastDay = MutableStateFlow<Day?>(null)
@@ -132,28 +132,28 @@ class HomeViewModel @Inject constructor(
                 myAnalystForSummary.isShowWarningForSummary(_daysForCheck.value)
 
             if (isShowWorriedDialog && _settings.value!!.isShowWorriedDialog) {
-                _uiDialog.value = UIDialog(
+                _uiDialog.value = UIDialogCompose(
                     title = R.string.dialog_warning_title,
                     desc = R.string.dialog_warning_desc,
                     icon = R.drawable.ic_warning_dialog,
-                    positiveButton = UIDialog.UiButton(
+                    positiveButton = UIDialogCompose.UiButton(
                         text = R.string.dialog_warning_positive,
                         onClick = {
                             _uiDialog.value = null
                         }),
-                    negativeButton = UIDialog.UiButton(
+                    negativeButton = UIDialogCompose.UiButton(
                         text = R.string.dialog_warning_negative,
                         onClick = {
                             _isShowSnackBar.value = true
                             _uiDialog.value = null
                         }),
-                    neutralButton = UIDialog.UiButton(
-                        text = R.string.dialog_warning_neutral,
-                        onClick = {
-                            notShowWorriedDialog()
-                            _uiDialog.value = null
-                        }
-                    )
+//                    neutralButton = UIDialog.UiButton(
+//                        text = R.string.dialog_warning_neutral,
+//                        onClick = {
+//                            notShowWorriedDialog()
+//                            _uiDialog.value = null
+//                        }
+//                    )
                 )
             }
         }
@@ -164,6 +164,26 @@ class HomeViewModel @Inject constructor(
             _settings.value!!.isShowWorriedDialog = false
             saveSettingsUseCase(_settings.value!!)
         }
+    }
+
+    fun testDialog() {
+        _uiDialog.value = UIDialogCompose(
+            title = R.string.dialog_warning_title,
+            desc = R.string.dialog_warning_desc,
+            icon = R.drawable.ic_warning_dialog,
+            positiveButton = UIDialogCompose.UiButton(
+                text = R.string.dialog_warning_positive,
+                onClick = {
+                    Timber.i("compose error : onClick yes")
+                    _uiDialog.value = null
+                }),
+            negativeButton = UIDialogCompose.UiButton(
+                text = R.string.dialog_warning_negative,
+                onClick = {
+                    Timber.i("compose error : onClick no")
+                    _isShowSnackBar.value = true
+                    _uiDialog.value = null
+                }))
     }
 
     private fun checkDayTime() {
