@@ -4,9 +4,9 @@ import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.core.intPreferencesKey
+import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
-import antuere.data.preferences_data_store.toggle_btn_data_store.entities.ToggleBtnStateEntity
+import antuere.domain.dto.ToggleBtnState
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
@@ -16,24 +16,21 @@ class ToggleBtnDataStore(context: Context, name: String) {
     private val toggleBtnDataStore: DataStore<Preferences> = context.datastore
 
     companion object {
-        val CHECKED_BUTTON_HISTORY_KEY = intPreferencesKey("checked button in history")
-        const val CHECKED_ALL_DAYS = 1
-        const val CHECKED_CURRENT_MONTH = 2
-        const val CHECKED_LAST_WEEK = 3
+        val CHECKED_BUTTON_HISTORY_KEY = stringPreferencesKey("checked button in history")
     }
 
-    val toggleButtonState: Flow<ToggleBtnStateEntity>
+    val toggleButtonState: Flow<ToggleBtnState>
         get() = toggleBtnDataStore.data.map { preferences ->
-            when (val intValue = preferences[CHECKED_BUTTON_HISTORY_KEY] ?: 1) {
-                CHECKED_ALL_DAYS -> ToggleBtnStateEntity.AllDays(intValue)
-                CHECKED_CURRENT_MONTH -> ToggleBtnStateEntity.CurrentMonth(intValue)
-                CHECKED_LAST_WEEK -> ToggleBtnStateEntity.LastWeek(intValue)
-                else -> ToggleBtnStateEntity.AllDays(CHECKED_ALL_DAYS)
+            when (preferences[CHECKED_BUTTON_HISTORY_KEY] ?: "ALL_DAYS") {
+                ToggleBtnState.ALL_DAYS.name -> ToggleBtnState.ALL_DAYS
+                ToggleBtnState.CURRENT_MONTH.name  -> ToggleBtnState.CURRENT_MONTH
+                ToggleBtnState.LAST_WEEK.name -> ToggleBtnState.LAST_WEEK
+                else -> ToggleBtnState.ALL_DAYS
             }
         }
 
 
-    suspend fun saveToggleButtonState(state: Int) {
+    suspend fun saveToggleButtonState(state: String) {
         toggleBtnDataStore.edit { preferences ->
             preferences[CHECKED_BUTTON_HISTORY_KEY] = state
         }

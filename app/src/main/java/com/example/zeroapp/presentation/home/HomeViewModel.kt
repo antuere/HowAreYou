@@ -174,13 +174,11 @@ class HomeViewModel @Inject constructor(
             positiveButton = UIDialogCompose.UiButton(
                 text = R.string.dialog_warning_positive,
                 onClick = {
-                    Timber.i("compose error : onClick yes")
                     _uiDialog.value = null
                 }),
             negativeButton = UIDialogCompose.UiButton(
                 text = R.string.dialog_warning_negative,
                 onClick = {
-                    Timber.i("compose error : onClick no")
                     _isShowSnackBar.value = true
                     _uiDialog.value = null
                 }))

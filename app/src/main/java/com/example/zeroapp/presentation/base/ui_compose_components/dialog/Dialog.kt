@@ -1,16 +1,17 @@
-package com.example.zeroapp.presentation.base.ui_compose_components
+package com.example.zeroapp.presentation.base.ui_compose_components.dialog
 
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import com.example.zeroapp.presentation.base.ui_compose_components.dialog.UIDialogCompose
+import androidx.compose.ui.text.font.FontWeight
 
 @Composable
-fun Dialog(dialog: UIDialogCompose){
+fun Dialog(
+    dialog: UIDialogCompose,
+    iconColor: Color = Color.Black
+) {
     AlertDialog(
         onDismissRequest = dialog.negativeButton.onClick,
         icon = {
@@ -20,7 +21,7 @@ fun Dialog(dialog: UIDialogCompose){
             )
         },
         title = {
-            Text(stringResource(id = dialog.title))
+            Text(stringResource(id = dialog.title), fontWeight = FontWeight.Medium)
         },
         text = {
             Text(stringResource(id = dialog.desc))
@@ -31,7 +32,10 @@ fun Dialog(dialog: UIDialogCompose){
                     dialog.positiveButton.onClick.invoke()
                 }
             ) {
-                Text(stringResource(id = dialog.positiveButton.text))
+                Text(
+                    stringResource(id = dialog.positiveButton.text),
+                    color = MaterialTheme.colorScheme.primary
+                )
             }
         },
         dismissButton = {
@@ -40,8 +44,12 @@ fun Dialog(dialog: UIDialogCompose){
                     dialog.negativeButton.onClick.invoke()
                 }
             ) {
-                Text(stringResource(id = dialog.negativeButton.text))
+                Text(
+                    stringResource(id = dialog.negativeButton.text),
+                    color = MaterialTheme.colorScheme.primary
+                )
             }
-        }
+        },
+        iconContentColor = iconColor
     )
 }

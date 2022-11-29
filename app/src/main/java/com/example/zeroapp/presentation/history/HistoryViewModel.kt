@@ -15,7 +15,6 @@ import antuere.domain.util.TimeUtility
 import com.example.zeroapp.R
 import com.example.zeroapp.presentation.base.ui_date_picker.IUIDatePickerAction
 import com.example.zeroapp.presentation.base.ui_date_picker.UIDatePicker
-import com.example.zeroapp.presentation.base.ui_dialog.IUIDialogAction
 import com.example.zeroapp.presentation.base.ui_dialog.UIDialog
 import com.example.zeroapp.presentation.history.adapter.DayClickListener
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -35,37 +34,35 @@ class HistoryViewModel @Inject constructor(
     private val saveToggleBtnUseCase: SaveToggleBtnUseCase,
     private val transitionName: String,
 ) :
-    ViewModel(), IUIDialogAction, IUIDatePickerAction {
+    ViewModel(), IUIDatePickerAction {
 
     private var _dayId = 0L
 
     private var _uiDialog = MutableStateFlow<UIDialog?>(null)
-    override val uiDialog: StateFlow<UIDialog?>
+    val uiDialog: StateFlow<UIDialog?>
         get() = _uiDialog
 
     private var _uiDatePicker = MutableStateFlow<UIDatePicker?>(null)
     override val datePicker: StateFlow<UIDatePicker?>
         get() = _uiDatePicker
 
-    private var _listDays = MutableLiveData<List<Day>>()
-    val listDays: LiveData<List<Day>>
+    private var _listDays = MutableStateFlow<List<Day>>(emptyList())
+    val listDays: StateFlow<List<Day>>
         get() = _listDays
 
-    private var _navigateToDetailState = MutableLiveData<NavigateToDetailState>()
-    val navigateToDetailState: LiveData<NavigateToDetailState>
+    private var _navigateToDetailState = MutableStateFlow<NavigateToDetailState?>(null)
+    val navigateToDetailState: StateFlow<NavigateToDetailState?>
         get() = _navigateToDetailState
 
-    private var _toggleBtnState = MutableLiveData<ToggleBtnState>()
-    val toggleBtnState: LiveData<ToggleBtnState>
+    private var _toggleBtnState = MutableStateFlow(ToggleBtnState.ALL_DAYS)
+    val toggleBtnState: StateFlow<ToggleBtnState>
         get() = _toggleBtnState
 
-    private var _isFilterSelected = MutableLiveData<Boolean>()
-    val isFilterSelected: LiveData<Boolean>
+    private var _isFilterSelected = MutableStateFlow(false)
+    val isFilterSelected: StateFlow<Boolean>
         get() = _isFilterSelected
 
     private var _currentJob: JobType? = null
-    val currentJob: JobType?
-        get() = _currentJob
 
     init {
         getToggleButtonState()
@@ -141,7 +138,7 @@ class HistoryViewModel @Inject constructor(
 
             _currentJob = JobType.Filter(viewModelScope.launch {
                 getSelectedDaysUseCase(pair).cancellable().collectLatest {
-                    _listDays.postValue(it)
+                    _listDays.value = it
                 }
             })
         }
@@ -154,7 +151,7 @@ class HistoryViewModel @Inject constructor(
             _currentJob = JobType.Month(viewModelScope.launch {
                 getCertainDaysUseCase(TimeUtility.getCurrentMonthTime()).cancellable()
                     .collectLatest {
-                        _listDays.postValue(it)
+                        _listDays.value = it
                     }
             })
         }
@@ -167,7 +164,7 @@ class HistoryViewModel @Inject constructor(
             _currentJob = JobType.Week(viewModelScope.launch {
                 getCertainDaysUseCase(TimeUtility.getCurrentWeekTime()).cancellable()
                     .collectLatest {
-                        _listDays.postValue(it)
+                        _listDays.value = it
                     }
             })
         }
@@ -179,7 +176,7 @@ class HistoryViewModel @Inject constructor(
 
             _currentJob = JobType.AllDays(viewModelScope.launch {
                 getAllDaysUseCase(Unit).cancellable().collectLatest {
-                    _listDays.postValue(it)
+                    _listDays.value = it
                 }
             })
         }
@@ -196,7 +193,7 @@ class HistoryViewModel @Inject constructor(
     private fun getToggleButtonState() {
         viewModelScope.launch(Dispatchers.IO) {
             getToggleBtnStateUseCase(Unit).collectLatest {
-                _toggleBtnState.postValue(it)
+                _toggleBtnState.value = it
             }
         }
     }

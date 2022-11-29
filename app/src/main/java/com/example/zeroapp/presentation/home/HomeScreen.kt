@@ -12,10 +12,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.zeroapp.R
-import com.example.zeroapp.presentation.base.ui_compose_components.CardWithQuote
+import com.example.zeroapp.presentation.home.ui_compose.CardWithQuote
 import com.example.zeroapp.presentation.base.ui_compose_components.CardDefault
 import com.example.zeroapp.presentation.base.ui_compose_components.CardWithOnClick
-import com.example.zeroapp.presentation.base.ui_compose_components.Dialog
+import com.example.zeroapp.presentation.base.ui_compose_components.dialog.Dialog
 import com.example.zeroapp.presentation.base.ui_theme.TealMain
 
 @Composable
@@ -38,7 +38,6 @@ fun HomeScreen(
         modifier = modifier
             .fillMaxSize()
             .padding(dimensionResource(id = R.dimen.padding_normal_0))
-//            .background(Color.Red)
     ) {
         Column(verticalArrangement = Arrangement.Top) {
             CardWithQuote(
@@ -65,7 +64,8 @@ fun HomeScreen(
                                 top = dimensionResource(id = R.dimen.padding_small_1),
                                 end = dimensionResource(id = R.dimen.padding_small_0)
                             )
-                            .weight(0.5F), titleText = stringResource(id = middleBtnNameId[i])
+                            .weight(0.5F),
+                        titleText = stringResource(id = middleBtnNameId[i])
                     )
                     CardWithOnClick(
                         cardModifier = Modifier
@@ -73,7 +73,8 @@ fun HomeScreen(
                                 top = dimensionResource(id = R.dimen.padding_small_1),
                                 start = dimensionResource(id = R.dimen.padding_small_0)
                             )
-                            .weight(0.5F), titleText = stringResource(id = middleBtnNameId[i + 1])
+                            .weight(0.5F),
+                        titleText = stringResource(id = middleBtnNameId[i + 1])
                     )
                 }
             }
@@ -121,8 +122,8 @@ fun HomeScreen(
 
         }
 
-        if(uiDialog != null){
-            Dialog(dialog = uiDialog!!)
+        uiDialog?.let {
+            Dialog(dialog = it)
         }
     }
 
