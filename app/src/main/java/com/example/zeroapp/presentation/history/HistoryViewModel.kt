@@ -13,6 +13,7 @@ import antuere.domain.usecases.user_settings.GetToggleBtnStateUseCase
 import antuere.domain.usecases.user_settings.SaveToggleBtnUseCase
 import antuere.domain.util.TimeUtility
 import com.example.zeroapp.R
+import com.example.zeroapp.presentation.base.ui_compose_components.dialog.UIDialogCompose
 import com.example.zeroapp.presentation.base.ui_date_picker.IUIDatePickerAction
 import com.example.zeroapp.presentation.base.ui_date_picker.UIDatePicker
 import com.example.zeroapp.presentation.base.ui_dialog.UIDialog
@@ -21,6 +22,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 
@@ -38,8 +40,8 @@ class HistoryViewModel @Inject constructor(
 
     private var _dayId = 0L
 
-    private var _uiDialog = MutableStateFlow<UIDialog?>(null)
-    val uiDialog: StateFlow<UIDialog?>
+    private var _uiDialog = MutableStateFlow<UIDialogCompose?>(null)
+    val uiDialog: StateFlow<UIDialogCompose?>
         get() = _uiDialog
 
     private var _uiDatePicker = MutableStateFlow<UIDatePicker?>(null)
@@ -54,7 +56,7 @@ class HistoryViewModel @Inject constructor(
     val navigateToDetailState: StateFlow<NavigateToDetailState?>
         get() = _navigateToDetailState
 
-    private var _toggleBtnState = MutableStateFlow(ToggleBtnState.ALL_DAYS)
+    private var _toggleBtnState = MutableStateFlow(ToggleBtnState.CURRENT_MONTH)
     val toggleBtnState: StateFlow<ToggleBtnState>
         get() = _toggleBtnState
 
@@ -66,6 +68,18 @@ class HistoryViewModel @Inject constructor(
 
     init {
         getToggleButtonState()
+    }
+
+    fun onClickDay(day: Day) {
+        _navigateToDetailState.value = NavigateToDetailState(
+            dayId = day.dayId,
+            navigateToDetail = true
+        )
+    }
+
+    fun onClickLongDay(day: Day) {
+        _dayId = day.dayId
+        onClickLongSmile()
     }
 
     val dayClickListener = object : DayClickListener {
@@ -96,18 +110,18 @@ class HistoryViewModel @Inject constructor(
         }
     }
 
-    fun onClickLongSmile() {
-        _uiDialog.value = UIDialog(
+    private fun onClickLongSmile() {
+        _uiDialog.value = UIDialogCompose(
             title = R.string.dialog_delete_title,
             desc = R.string.dialog_delete_desc,
             icon = R.drawable.ic_delete_black,
-            positiveButton = UIDialog.UiButton(
+            positiveButton = UIDialogCompose.UiButton(
                 text = R.string.yes,
                 onClick = {
                     deleteDay()
                     _uiDialog.value = null
                 }),
-            negativeButton = UIDialog.UiButton(
+            negativeButton = UIDialogCompose.UiButton(
                 text = R.string.no,
                 onClick = {
                     _uiDialog.value = null
@@ -183,6 +197,7 @@ class HistoryViewModel @Inject constructor(
     }
 
     fun onClickCheckedItem(state: ToggleBtnState) {
+        Timber.i("checked item click, state is $state")
         if (_toggleBtnState.value != state) {
             viewModelScope.launch {
                 saveToggleBtnUseCase(state)
@@ -193,6 +208,7 @@ class HistoryViewModel @Inject constructor(
     private fun getToggleButtonState() {
         viewModelScope.launch(Dispatchers.IO) {
             getToggleBtnStateUseCase(Unit).collectLatest {
+                Timber.i("checked item click, saved state is $it")
                 _toggleBtnState.value = it
             }
         }

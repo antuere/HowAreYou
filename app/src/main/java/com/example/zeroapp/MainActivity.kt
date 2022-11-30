@@ -31,6 +31,8 @@ import com.example.zeroapp.databinding.ActivityMainBinding
 import com.example.zeroapp.presentation.base.ui_compose_components.BottomNavBar
 import com.example.zeroapp.presentation.home.HomeViewModel
 import com.example.zeroapp.presentation.base.ui_theme.HowAreYouTheme
+import com.example.zeroapp.presentation.history.HistoryScreen
+import com.example.zeroapp.presentation.history.MyAnalystForHistory
 import com.example.zeroapp.presentation.home.HomeScreen
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -58,6 +60,10 @@ class MainActivity : ComponentActivity() {
 
     @Inject
     lateinit var getSettingsUseCase: GetSettingsUseCase
+
+    @Inject
+    lateinit var myAnalystForHistory: MyAnalystForHistory
+
     private var settings: Settings? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -80,7 +86,11 @@ class MainActivity : ComponentActivity() {
             HowAreYouTheme() {
                 Scaffold(bottomBar = { BottomNavBar() }) { padding ->
 //                    InitUi(modifier = Modifier.padding(padding))
-                    HomeScreen(modifier = Modifier.padding(padding))
+//                    HomeScreen(modifier = Modifier.padding(padding))
+                    HistoryScreen(
+                        modifier = Modifier.padding(padding),
+                        myAnalystForHistory = myAnalystForHistory
+                    )
                 }
             }
         }
@@ -199,8 +209,6 @@ class MainActivity : ComponentActivity() {
 //
 //        }
 //    }
-
-
 
 
     @Preview(showBackground = true)

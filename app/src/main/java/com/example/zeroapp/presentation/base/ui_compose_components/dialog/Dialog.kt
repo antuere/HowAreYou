@@ -6,6 +6,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 
 @Composable
 fun Dialog(
@@ -24,7 +25,10 @@ fun Dialog(
             Text(stringResource(id = dialog.title), fontWeight = FontWeight.Medium)
         },
         text = {
-            Text(stringResource(id = dialog.desc))
+            Text(
+                text = stringResource(id = dialog.desc),
+                textAlign = TextAlign.Center
+            )
         },
         confirmButton = {
             TextButton(

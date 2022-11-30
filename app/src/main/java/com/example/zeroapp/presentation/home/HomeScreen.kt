@@ -39,6 +39,10 @@ fun HomeScreen(
             .fillMaxSize()
             .padding(dimensionResource(id = R.dimen.padding_normal_0))
     ) {
+        uiDialog?.let {
+            Dialog(dialog = it)
+        }
+
         Column(verticalArrangement = Arrangement.Top) {
             CardWithQuote(
                 modifier = Modifier
@@ -122,9 +126,7 @@ fun HomeScreen(
 
         }
 
-        uiDialog?.let {
-            Dialog(dialog = it)
-        }
+
     }
 
 }

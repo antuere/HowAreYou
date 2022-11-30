@@ -1,7 +1,8 @@
-package com.example.zeroapp.presentation.history.components
+package com.example.zeroapp.presentation.history.ui_compose
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -12,35 +13,44 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import antuere.domain.dto.Day
 import com.example.zeroapp.R
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun DaysListItem(
     modifier: Modifier = Modifier,
     day: Day,
-    onClick: (Day) -> Unit
+    onClick: (Day) -> Unit,
+    onLongClick: (Day) -> Unit
 ) {
     Card(
-        modifier = modifier.clickable {
-            onClick(day)
-        },
+        modifier = modifier
+            .combinedClickable(
+                onClick = { onClick(day) },
+                onLongClick = { onLongClick(day) }
+            )
+            .padding(dimensionResource(id = R.dimen.padding_small_0)),
         shape = MaterialTheme.shapes.large,
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
     ) {
         Image(
-            modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_small_0)),
+            modifier = Modifier
+                .padding(dimensionResource(id = R.dimen.padding_small_0))
+                .align(Alignment.CenterHorizontally),
             painter = painterResource(id = day.imageResId),
             contentDescription = null,
-            alignment = Alignment.Center
         )
         Text(
             modifier = Modifier
-                .padding(top = dimensionResource(id = R.dimen.padding_small_1)),
-            textAlign = TextAlign.Center,
-            text = day.dateString
+                .padding(vertical = dimensionResource(id = R.dimen.padding_small_1))
+                .align(Alignment.CenterHorizontally),
+            text = day.dateString,
+            fontSize = 14.sp
         )
+
     }
 }
 
@@ -56,6 +66,6 @@ private fun TestDaysListItem() {
         isFavorite = false
     )
 
-    DaysListItem(day = testDay, onClick = {})
+    DaysListItem(day = testDay, onClick = {}, onLongClick = {})
 
 }
