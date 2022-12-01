@@ -59,11 +59,10 @@ class HomeViewModel @Inject constructor(
         get() = _wishText
 
     private var _isShowSnackBar = MutableStateFlow(false)
-
     val isShowSnackBar: StateFlow<Boolean>
         get() = _isShowSnackBar
-    private var _isShowSplash = MutableStateFlow(true)
 
+    private var _isShowSplash = MutableStateFlow(true)
     val isShowSplash: StateFlow<Boolean>
         get() = _isShowSplash
 
@@ -181,7 +180,8 @@ class HomeViewModel @Inject constructor(
                 onClick = {
                     _isShowSnackBar.value = true
                     _uiDialog.value = null
-                }))
+                })
+        )
     }
 
     private fun checkDayTime() {

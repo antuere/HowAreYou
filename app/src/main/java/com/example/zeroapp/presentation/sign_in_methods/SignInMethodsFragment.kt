@@ -21,76 +21,74 @@ import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 import javax.inject.Inject
 
-@AndroidEntryPoint
-class SignInMethodsFragment :
-    BaseBindingFragment<FragmentSignInMethodsBinding>(FragmentSignInMethodsBinding::inflate) {
-
-    private val viewModel by viewModels<SignInMethodsViewModel>()
-
-    @Inject
-    lateinit var signInClient: GoogleSignInClient
-
-    private val launcher =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == Activity.RESULT_OK) {
-                val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
-                viewModel.handleResult(task)
-            }
-        }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        sharedElementEnterTransition = createSharedElementEnterTransition()
-
-        exitTransition = MaterialElevationScale(false).apply {
-            duration = resources.getInteger(R.integer.duration_normal).toLong()
-        }
-
-        reenterTransition = MaterialElevationScale(true).apply {
-            duration = resources.getInteger(R.integer.duration_normal).toLong()
-        }
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-
-        Timber.i("navigate upd : createView signInMethods")
-        binding = this.inflater(inflater, container, false)
-        binding!!.buttonEmailMethod.setOnClickListener {
-            val transitionName = getString(R.string.transition_name_for_sign_in)
-            val extras = FragmentNavigatorExtras(binding!!.buttonEmailMethod to transitionName)
-            findNavController().navigate(
-                SignInMethodsFragmentDirections.actionSignInMethodsFragmentToLoginFragment(),
-                extras
-            )
-        }
-
-        binding!!.buttonGoogleMethod.setOnClickListener {
-            val intent = signInClient.signInIntent
-            launcher.launch(intent)
-        }
-
-        return binding!!.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        postponeEnterTransition()
-        view.doOnPreDraw {
-            startPostponedEnterTransition()
-        }
-
-        viewModel.signInState.observe(viewLifecycleOwner) { state ->
-            state?.let {
-                when (it) {
-                    is SignInMethodsState.UserAuthorized -> findNavController().navigateUp()
-                    is SignInMethodsState.Error -> showSnackBarByString(string = it.message)
-                }
-                viewModel.nullifyState()
-            }
-        }
-
-    }
-}
+//@AndroidEntryPoint
+//class SignInMethodsFragment :
+//    BaseBindingFragment<FragmentSignInMethodsBinding>(FragmentSignInMethodsBinding::inflate) {
+//
+//    private val viewModel by viewModels<SignInMethodsViewModel>()
+//
+//    @Inject
+//    lateinit var signInClient: GoogleSignInClient
+//
+//    private val launcher =
+//        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+//            if (result.resultCode == Activity.RESULT_OK) {
+//                val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
+//                viewModel.handleResult(task)
+//            }
+//        }
+//
+//    override fun onCreate(savedInstanceState: Bundle?) {
+//        super.onCreate(savedInstanceState)
+//        sharedElementEnterTransition = createSharedElementEnterTransition()
+//
+//        exitTransition = MaterialElevationScale(false).apply {
+//            duration = resources.getInteger(R.integer.duration_normal).toLong()
+//        }
+//
+//        reenterTransition = MaterialElevationScale(true).apply {
+//            duration = resources.getInteger(R.integer.duration_normal).toLong()
+//        }
+//    }
+//
+//    override fun onCreateView(
+//        inflater: LayoutInflater,
+//        container: ViewGroup?,
+//        savedInstanceState: Bundle?
+//    ): View {
+//        binding = this.inflater(inflater, container, false)
+//        binding!!.buttonEmailMethod.setOnClickListener {
+//            val transitionName = getString(R.string.transition_name_for_sign_in)
+//            val extras = FragmentNavigatorExtras(binding!!.buttonEmailMethod to transitionName)
+//            findNavController().navigate(
+//                SignInMethodsFragmentDirections.actionSignInMethodsFragmentToLoginFragment(),
+//                extras
+//            )
+//        }
+//
+//        binding!!.buttonGoogleMethod.setOnClickListener {
+//            val intent = signInClient.signInIntent
+//            launcher.launch(intent)
+//        }
+//
+//        return binding!!.root
+//    }
+//
+//    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+//        postponeEnterTransition()
+//        view.doOnPreDraw {
+//            startPostponedEnterTransition()
+//        }
+//
+//        viewModel.signInState.observe(viewLifecycleOwner) { state ->
+//            state?.let {
+//                when (it) {
+//                    is SignInMethodsState.UserAuthorized -> findNavController().navigateUp()
+//                    is SignInMethodsState.Error -> showSnackBarByString(string = it.message)
+//                }
+//                viewModel.nullifyState()
+//            }
+//        }
+//
+//    }
+//}

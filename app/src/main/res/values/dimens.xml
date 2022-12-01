@@ -5,13 +5,17 @@
     <dimen name="padding_small_2">12dp</dimen>
     <dimen name="padding_normal_0">16dp</dimen>
     <dimen name="padding_normal_1">20dp</dimen>
-    <dimen name="padding_normal_2">32dp</dimen>
+    <dimen name="padding_normal_2">24dp</dimen>
+    <dimen name="padding_normal_3">32dp</dimen>
+    <dimen name="padding_large_0">48dp</dimen>
 
-<!-- Spacers height -->
+    <!-- Spacers height -->
     <dimen name="spacer_height_0">8dp</dimen>
-    <dimen name="spacer_height_1">16dp</dimen>
-    <dimen name="spacer_height_2">20dp</dimen>
-    <dimen name="spacer_height_3">32dp</dimen>
+    <dimen name="spacer_height_1">12dp</dimen>
+    <dimen name="spacer_height_2">16dp</dimen>
+    <dimen name="spacer_height_3">18dp</dimen>
+    <dimen name="spacer_height_4">20dp</dimen>
+    <dimen name="spacer_height_5">32dp</dimen>
 
     <dimen name="margin_very_small">6dp</dimen>
     <dimen name="margin_very_smallest">4dp</dimen>

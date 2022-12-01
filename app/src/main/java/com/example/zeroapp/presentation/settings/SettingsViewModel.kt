@@ -10,12 +10,14 @@ import antuere.domain.usecases.days_entities.DeleteAllDaysLocalUseCase
 import antuere.domain.usecases.days_entities.GetLastDayUseCase
 import antuere.domain.usecases.privacy.*
 import antuere.domain.usecases.user_settings.*
+import antuere.domain.util.Constants
 import com.example.zeroapp.R
 import com.example.zeroapp.presentation.base.ui_biometric_dialog.BiometricsAvailableState
 import com.example.zeroapp.presentation.base.ui_biometric_dialog.IUIBiometricListener
 import com.example.zeroapp.presentation.base.ui_biometric_dialog.UIBiometricDialog
 import com.example.zeroapp.presentation.pin_code_сreating.IPinCodeCreatingListener
 import com.example.zeroapp.presentation.base.ui_biometric_dialog.BiometricAuthState
+import com.example.zeroapp.presentation.base.ui_compose_components.dialog.UIDialogCompose
 import com.example.zeroapp.presentation.base.ui_dialog.IUIDialogAction
 import com.example.zeroapp.presentation.base.ui_dialog.UIDialog
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -43,39 +45,39 @@ class SettingsViewModel @Inject constructor(
     private val checkAuthByBiometricUseCase: CheckAuthByBiometricUseCase,
     private val checkAuthByPinUseCase: CheckAuthByPinUseCase,
     private val deleteAllDaysLocalUseCase: DeleteAllDaysLocalUseCase,
-    private val uiBiometricDialog: UIBiometricDialog
-) : ViewModel(), IUIDialogAction {
+    val uiBiometricDialog: UIBiometricDialog
+) : ViewModel() {
 
-    private var _uiDialog = MutableStateFlow<UIDialog?>(null)
-    override val uiDialog: StateFlow<UIDialog?>
+    private var _uiDialog = MutableStateFlow<UIDialogCompose?>(null)
+    val uiDialog: StateFlow<UIDialogCompose?>
         get() = _uiDialog
 
-    private var _userNickname = MutableLiveData<String?>()
-    val userNickname: LiveData<String?>
+    private var _userNickname = MutableStateFlow<String>(Constants.USER_NOT_AUTH)
+    val userNickname: StateFlow<String>
         get() = _userNickname
 
-    private var _settings = MutableLiveData<Settings?>()
-    val settings: LiveData<Settings?>
+    private var _settings = MutableStateFlow<Settings?>(null)
+    val settings: StateFlow<Settings?>
         get() = _settings
 
-    private var _biometricAuthState = MutableLiveData<BiometricAuthState?>()
-    val biometricAuthState: LiveData<BiometricAuthState?>
+    private var _biometricAuthState = MutableStateFlow<BiometricAuthState?>(null)
+    val biometricAuthState: StateFlow<BiometricAuthState?>
         get() = _biometricAuthState
 
-    private var _isPinCodeCreated = MutableLiveData<Boolean?>()
-    val isPinCodeCreated: LiveData<Boolean?>
+    private var _isPinCodeCreated = MutableStateFlow<Boolean?>(null)
+    val isPinCodeCreated: StateFlow<Boolean?>
         get() = _isPinCodeCreated
 
-    private var _isStartSetBiometric = MutableLiveData(false)
-    val isStartSetBiometric: LiveData<Boolean>
+    private var _isStartSetBiometric = MutableStateFlow(false)
+    val isStartSetBiometric: StateFlow<Boolean>
         get() = _isStartSetBiometric
 
-    private var _isStartSetPinCode = MutableLiveData(false)
-    val isStartSetPinCode: LiveData<Boolean>
+    private var _isStartSetPinCode = MutableStateFlow(false)
+    val isStartSetPinCode: StateFlow<Boolean>
         get() = _isStartSetPinCode
 
-    private var _biometricAvailableState = MutableLiveData<BiometricsAvailableState?>()
-    val biometricAvailableState: LiveData<BiometricsAvailableState?>
+    private var _biometricAvailableState = MutableStateFlow<BiometricsAvailableState?>(null)
+    val biometricAvailableState: StateFlow<BiometricsAvailableState?>
         get() = _biometricAvailableState
 
     private var isShowDialogSignOut = false
@@ -128,7 +130,7 @@ class SettingsViewModel @Inject constructor(
     private fun getUserNickname() {
         viewModelScope.launch(Dispatchers.IO) {
             getUserNicknameUseCase(Unit).collectLatest {
-                _userNickname.postValue(it)
+                _userNickname.value = it
             }
         }
     }
@@ -143,23 +145,23 @@ class SettingsViewModel @Inject constructor(
 
     fun onClickSignOut() {
         if (isShowDialogSignOut) {
-            _uiDialog.value = UIDialog(
+            _uiDialog.value = UIDialogCompose(
                 title = R.string.dialog_delete_local_data_title,
                 desc = R.string.dialog_delete_local_data_desc,
                 icon = R.drawable.ic_delete_black,
-                positiveButton = UIDialog.UiButton(
+                positiveButton = UIDialogCompose.UiButton(
                     text = R.string.dialog_delete_local_data_positive,
                     onClick = {
                         signOut(isSaveDayEntities = true)
                         _uiDialog.value = null
                     }),
-                negativeButton = UIDialog.UiButton(
+                negativeButton = UIDialogCompose.UiButton(
                     text = R.string.dialog_delete_local_data_negative,
                     onClick = {
                         signOut(isSaveDayEntities = false)
                         _uiDialog.value = null
                     }),
-                neutralButton = UIDialog.UiButton(
+                neutralButton = UIDialogCompose.UiButton(
                     text = R.string.dialog_delete_local_data_neutral,
                     onClick = {
                         _uiDialog.value = null
@@ -184,7 +186,7 @@ class SettingsViewModel @Inject constructor(
     private fun getSettings() {
         viewModelScope.launch(Dispatchers.IO) {
             getSettingsUseCase(Unit).collectLatest {
-                _settings.postValue(it)
+                _settings.value = it
             }
         }
     }

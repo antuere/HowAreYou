@@ -1,8 +1,11 @@
 package com.example.zeroapp.presentation.home
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.FilterList
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -11,17 +14,22 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.example.zeroapp.R
+import com.example.zeroapp.presentation.base.ui_compose_components.AppBarState
 import com.example.zeroapp.presentation.home.ui_compose.CardWithQuote
 import com.example.zeroapp.presentation.base.ui_compose_components.CardDefault
 import com.example.zeroapp.presentation.base.ui_compose_components.CardWithOnClick
+import com.example.zeroapp.presentation.base.ui_compose_components.DefaultTopAppBar
 import com.example.zeroapp.presentation.base.ui_compose_components.dialog.Dialog
 import com.example.zeroapp.presentation.base.ui_theme.TealMain
 
 @Composable
 fun HomeScreen(
-//    navController: NavController,
-    modifier: Modifier = Modifier, homeViewModel: HomeViewModel = hiltViewModel()
+    modifier: Modifier = Modifier,
+    navController: NavController,
+    onComposing: (AppBarState, Boolean) -> Unit,
+    homeViewModel: HomeViewModel = hiltViewModel()
 ) {
 
     val uiDialog by homeViewModel.uiDialog.collectAsState()
@@ -34,6 +42,15 @@ fun HomeScreen(
         R.string.mental_tips, R.string.help_for_you, R.string.favorites, R.string.cats
     )
 
+    LaunchedEffect(key1 = true) {
+        onComposing(
+            AppBarState(
+                titleId = R.string.home
+            ),
+            true
+        )
+    }
+
     Box(
         modifier = modifier
             .fillMaxSize()
@@ -42,7 +59,6 @@ fun HomeScreen(
         uiDialog?.let {
             Dialog(dialog = it)
         }
-
         Column(verticalArrangement = Arrangement.Top) {
             CardWithQuote(
                 modifier = Modifier
@@ -125,8 +141,5 @@ fun HomeScreen(
             }
 
         }
-
-
     }
-
 }

@@ -10,20 +10,24 @@ import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.NavDestination.Companion.hierarchy
+import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.zeroapp.presentation.base.ui_theme.Gray
 import com.example.zeroapp.presentation.base.ui_theme.TealMain
 import com.example.zeroapp.presentation.base.ui_theme.Typography
 
 
 @Composable
-fun BottomNavBar() {
-    var selectedItem by rememberSaveable { mutableStateOf(0) }
-    val destTitle = listOf("Home", "History", "Settings")
+fun BottomNavBar(navController: NavController) {
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentDestination = navBackStackEntry?.destination
+
+    val iconsTitle = listOf("Home", "History", "Settings")
+    val destinations = listOf(Screen.HomeScreen, Screen.HistoryScreen, Screen.Settings)
 
     val iconsOutline =
         listOf(Icons.Outlined.Home, Icons.Outlined.History, Icons.Outlined.Settings)
@@ -33,8 +37,10 @@ fun BottomNavBar() {
         containerColor = TealMain,
         contentColor = Color.White
     ) {
-        destTitle.forEachIndexed { index, dest ->
-            val isSelected = selectedItem == index
+        iconsTitle.forEachIndexed { index, dest ->
+            val isSelected =
+                currentDestination?.hierarchy?.any { it.route == destinations[index].route } == true
+
             NavigationBarItem(
                 icon = {
                     Icon(
@@ -51,7 +57,15 @@ fun BottomNavBar() {
                     )
                 },
                 selected = isSelected,
-                onClick = { selectedItem = index },
+                onClick = {
+                    navController.navigate(destinations[index].route) {
+                        popUpTo(navController.graph.findStartDestination().id) {
+                            saveState = true
+                        }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+                },
                 colors = NavigationBarItemDefaults.colors(
                     selectedIconColor = Color.Black,
                     selectedTextColor = Color.Black,

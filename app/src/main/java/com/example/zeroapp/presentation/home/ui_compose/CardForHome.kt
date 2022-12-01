@@ -37,9 +37,14 @@ fun CardWithQuote(
                 Modifier.align(Alignment.Start),
                 fontSize = dimensionResource(id = R.dimen.textSize_normal_2).value.sp
             )
-            Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_2)))
+            Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_3)))
             Text(
-                text = quoteText, Modifier.align(Alignment.Start),
+                text = quoteText,
+                Modifier
+                    .align(Alignment.Start)
+                    .padding(
+                        start = dimensionResource(id = R.dimen.padding_small_0)
+                    ),
                 fontSize = dimensionResource(id = R.dimen.textSize_normal_1).value.sp
             )
 

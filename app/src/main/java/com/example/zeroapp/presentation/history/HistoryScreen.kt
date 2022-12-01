@@ -4,17 +4,19 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.FilterList
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import antuere.domain.dto.Day
 import antuere.domain.dto.ToggleBtnState
-import antuere.domain.util.TimeUtility
 import com.example.zeroapp.R
+import com.example.zeroapp.presentation.base.ui_compose_components.AppBarState
 import com.example.zeroapp.presentation.base.ui_compose_components.dialog.Dialog
 import com.example.zeroapp.presentation.history.ui_compose.DaysListItem
 import com.example.zeroapp.presentation.history.ui_compose.HistoryHeaderText
@@ -22,8 +24,9 @@ import com.example.zeroapp.presentation.history.ui_compose.ToggleBtnGroup
 
 @Composable
 fun HistoryScreen(
-//    navController: NavController,
     modifier: Modifier = Modifier,
+    navController: NavController,
+    onComposing: (AppBarState, Boolean) -> Unit,
     historyViewModel: HistoryViewModel = hiltViewModel(),
     myAnalystForHistory: MyAnalystForHistory
 ) {
@@ -34,8 +37,42 @@ fun HistoryScreen(
     val toggleBtnState by historyViewModel.toggleBtnState.collectAsState()
     val navigateToDetailState by historyViewModel.navigateToDetailState.collectAsState()
 
-    Column(modifier = modifier.fillMaxSize(), verticalArrangement = Arrangement.Top) {
+    val cellsAmount = when (toggleBtnState) {
+        ToggleBtnState.ALL_DAYS -> {
+            historyViewModel.checkedAllDaysButton()
+            4
+        }
+        ToggleBtnState.CURRENT_MONTH -> {
+            historyViewModel.checkedCurrentMonthButton()
+            3
+        }
+        ToggleBtnState.LAST_WEEK -> {
+            historyViewModel.checkedLastWeekButton()
+            2
+        }
+    }
 
+    LaunchedEffect(key1 = true) {
+        onComposing(
+            AppBarState(
+                titleId = R.string.history,
+                actions = {
+                    IconButton(onClick = { /* doSomething() */ }) {
+                        Icon(
+                            imageVector = Icons.Rounded.FilterList,
+                            contentDescription = null
+                        )
+                    }
+                }
+            ),
+            true
+        )
+    }
+    Column(
+        modifier = modifier
+            .fillMaxSize(),
+        verticalArrangement = Arrangement.Top
+    ) {
         uiDialog?.let {
             Dialog(dialog = it)
         }
@@ -53,7 +90,10 @@ fun HistoryScreen(
             myAnalystForHistory = myAnalystForHistory
         )
 
-        LazyVerticalGrid(columns = GridCells.Fixed(4)) {
+        LazyVerticalGrid(
+            columns = GridCells.Fixed(cellsAmount),
+            modifier = Modifier.fillMaxSize()
+        ) {
             items(getMockDays()) { day ->
                 DaysListItem(
                     day = day,
@@ -63,7 +103,6 @@ fun HistoryScreen(
 
             }
         }
-
     }
 }
 

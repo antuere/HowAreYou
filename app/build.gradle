@@ -50,6 +50,8 @@ android {
         }
     }
     compileOptions {
+        coreLibraryDesugaringEnabled true
+
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
@@ -152,6 +154,10 @@ dependencies {
     // Glide
     implementation "com.github.bumptech.glide:glide:$version_glide"
     kapt "com.github.bumptech.glide:compiler:$version_glide"
+
+    // DatePicker
+    implementation "io.github.vanpra.compose-material-dialogs:datetime:$version_date_picker"
+    coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:$version_desugar_jdk"
 
     //Domain(module)
     implementation project(path: ':domain')

@@ -16,24 +16,33 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import androidx.navigation.ui.setupWithNavController
 import antuere.domain.dto.Settings
 import antuere.domain.usecases.user_settings.GetSettingsUseCase
 import com.example.zeroapp.databinding.ActivityMainBinding
+import com.example.zeroapp.presentation.base.ui_compose_components.AppBarState
+import com.example.zeroapp.presentation.base.ui_compose_components.Screen
 import com.example.zeroapp.presentation.base.ui_compose_components.BottomNavBar
+import com.example.zeroapp.presentation.base.ui_compose_components.DefaultTopAppBar
 import com.example.zeroapp.presentation.home.HomeViewModel
 import com.example.zeroapp.presentation.base.ui_theme.HowAreYouTheme
 import com.example.zeroapp.presentation.history.HistoryScreen
 import com.example.zeroapp.presentation.history.MyAnalystForHistory
 import com.example.zeroapp.presentation.home.HomeScreen
+import com.example.zeroapp.presentation.settings.SettingsScreen
+import com.example.zeroapp.presentation.sign_in_methods.SignInMethodsScreen
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
@@ -83,15 +92,75 @@ class MainActivity : ComponentActivity() {
         }
 
         setContent {
-            HowAreYouTheme() {
-                Scaffold(bottomBar = { BottomNavBar() }) { padding ->
-//                    InitUi(modifier = Modifier.padding(padding))
-//                    HomeScreen(modifier = Modifier.padding(padding))
-                    HistoryScreen(
-                        modifier = Modifier.padding(padding),
-                        myAnalystForHistory = myAnalystForHistory
-                    )
+            HowAreYouTheme {
+                val navController = rememberNavController()
+                var appBarState by remember {
+                    mutableStateOf(AppBarState())
                 }
+                var isShowBottomBar by remember {
+                    mutableStateOf(true)
+                }
+                Scaffold(
+                    bottomBar = {
+                        if (isShowBottomBar) {
+                            BottomNavBar(navController)
+                        }
+                    },
+                    topBar = {
+                        DefaultTopAppBar(
+                            titleId = appBarState.titleId,
+                            navigationIcon = appBarState.navigationIcon,
+                            navigationOnClick = appBarState.navigationOnClick,
+                            actions = appBarState.actions
+                        )
+                    }) { innerPadding ->
+                    NavHost(
+                        modifier = Modifier.padding(innerPadding),
+                        navController = navController,
+                        startDestination = Screen.HomeScreen.route
+                    ) {
+
+                        composable(
+                            route = Screen.HomeScreen.route
+                        ) {
+                            HomeScreen(
+                                navController = navController,
+                                onComposing = { barState: AppBarState, isShow: Boolean ->
+                                    appBarState = barState
+                                    isShowBottomBar = isShow
+                                })
+                        }
+
+                        composable(route = Screen.HistoryScreen.route) {
+                            HistoryScreen(
+                                navController = navController,
+                                myAnalystForHistory = myAnalystForHistory,
+                                onComposing = { barState: AppBarState, isShow: Boolean ->
+                                    appBarState = barState
+                                    isShowBottomBar = isShow
+                                })
+                        }
+
+                        composable(route = Screen.Settings.route) {
+                            SettingsScreen(
+                                navController = navController,
+                                onComposing = { barState: AppBarState, isShow: Boolean ->
+                                    appBarState = barState
+                                    isShowBottomBar = isShow
+                                })
+                        }
+
+                        composable(route = Screen.SignInMethods.route) {
+                            SignInMethodsScreen(
+                                navController = navController,
+                                onComposing = { barState: AppBarState, isShow: Boolean ->
+                                    appBarState = barState
+                                    isShowBottomBar = isShow
+                                })
+                        }
+                    }
+                }
+
             }
         }
 
@@ -185,6 +254,11 @@ class MainActivity : ComponentActivity() {
 
     @Composable
     private fun ColumnList(list: List<String> = List(500) { "$it element" }) {
+        val context = LocalContext.current
+        remember(context) {
+            (context as FragmentActivity).supportFragmentManager
+        }
+
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
@@ -211,15 +285,15 @@ class MainActivity : ComponentActivity() {
 //    }
 
 
-    @Preview(showBackground = true)
-    @Composable
-    fun OnboardingPreview() {
-        HowAreYouTheme() {
-            Scaffold(bottomBar = { BottomNavBar() }) { padding ->
-                InitUi(modifier = Modifier.padding(padding))
-            }
-        }
-    }
+//    @Preview(showBackground = true)
+//    @Composable
+//    fun OnboardingPreview() {
+//        HowAreYouTheme() {
+//            Scaffold(bottomBar = { BottomNavBar(nav) }) { padding ->
+//                InitUi(modifier = Modifier.padding(padding))
+//            }
+//        }
+//    }
 
     private fun setupBinding(binding: ActivityMainBinding) {
         Timber.plant(Timber.DebugTree())

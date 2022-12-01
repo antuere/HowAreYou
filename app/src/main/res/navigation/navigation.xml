@@ -49,7 +49,7 @@
     <fragment
             android:id="@+id/summaryFragment"
             android:name="com.example.zeroapp.presentation.home.HomeScreen"
-            android:label="@string/summary"
+            android:label="@string/home"
             tools:layout="@layout/fragment_summary">
         <action
                 android:id="@+id/action_summaryFragment_to_addDayFragment"

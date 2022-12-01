@@ -12,6 +12,8 @@ import antuere.domain.usecases.authentication.SignInByGoogleUseCase
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.tasks.Task
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -24,8 +26,8 @@ class SignInMethodsViewModel @Inject constructor(
     private val signInByGoogleUseCase: SignInByGoogleUseCase
 ) : ViewModel() {
 
-    private var _signInState = MutableLiveData<SignInMethodsState?>()
-    val signInState: LiveData<SignInMethodsState?>
+    private var _signInState = MutableStateFlow<SignInMethodsState?>(null)
+    val signInState: StateFlow<SignInMethodsState?>
         get() = _signInState
 
 

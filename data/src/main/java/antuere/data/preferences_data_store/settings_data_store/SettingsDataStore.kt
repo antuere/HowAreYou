@@ -8,6 +8,7 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import antuere.data.preferences_data_store.settings_data_store.entities.SettingsEntity
+import antuere.domain.util.Constants
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
@@ -43,7 +44,7 @@ class SettingsDataStore(context: Context, name: String) {
 
     val userNickname: Flow<String>
         get() = settingsDataStore.data.map { preferences ->
-            preferences[USER_NICKNAME] ?: "UserUnknownError175"
+            preferences[USER_NICKNAME] ?: Constants.USER_NOT_AUTH
         }
 
     suspend fun saveSettings(settings: SettingsEntity) {
