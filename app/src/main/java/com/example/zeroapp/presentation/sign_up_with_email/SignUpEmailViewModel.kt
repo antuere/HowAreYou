@@ -1,7 +1,5 @@
-package com.example.zeroapp.presentation.register_with_email
+package com.example.zeroapp.presentation.sign_up_with_email
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import antuere.domain.authentication_manager.RegisterResultListener
@@ -11,22 +9,24 @@ import antuere.domain.usecases.authentication.SignUpUseCase
 import com.example.zeroapp.R
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class RegisterEmailViewModel @Inject constructor(
+class SignUpEmailViewModel @Inject constructor(
     private val saveUserNicknameUseCase: SaveUserNicknameUseCase,
     private val setUserNicknameOnServerUseCase: SetUserNicknameOnServerUseCase,
     private val signUpUseCase: SignUpUseCase
 ) : ViewModel() {
 
-    private var _registerState = MutableLiveData<RegisterState?>()
-    val registerState: LiveData<RegisterState?>
-        get() = _registerState
+    private var _signUpState = MutableStateFlow<SignUpState?>(null)
+    val signUpState: StateFlow<SignUpState?>
+        get() = _signUpState
 
-    private var _isShowRegisterProgressIndicator = MutableLiveData(false)
-    val isShowRegisterProgressIndicator: LiveData<Boolean>
+    private var _isShowRegisterProgressIndicator = MutableStateFlow(false)
+    val isShowRegisterProgressIndicator: StateFlow<Boolean>
         get() = _isShowRegisterProgressIndicator
 
 
@@ -37,7 +37,7 @@ class RegisterEmailViewModel @Inject constructor(
         }
 
         override fun registerFailed(message: String) {
-            _registerState.value = RegisterState.ErrorFromFireBase(message)
+            _signUpState.value = SignUpState.ErrorFromFireBase(message)
         }
     }
 
@@ -45,7 +45,7 @@ class RegisterEmailViewModel @Inject constructor(
         viewModelScope.launch {
             saveUserNicknameUseCase(name)
             setUserNicknameOnServerUseCase(name)
-            _registerState.value = RegisterState.Successful
+            _signUpState.value = SignUpState.Successful
         }
     }
 
@@ -69,19 +69,19 @@ class RegisterEmailViewModel @Inject constructor(
             if (password == confirmPassword) {
                 true
             } else {
-                _registerState.value = RegisterState.PasswordsError(R.string.passwords_error)
+                _signUpState.value = SignUpState.PasswordsError(R.string.passwords_error)
                 false
             }
         } else {
-            _registerState.value = RegisterState.EmptyFields(R.string.empty_fields)
+            _signUpState.value = SignUpState.EmptyFields(R.string.empty_fields)
             false
         }
     }
 
     fun resetIsShowRegisterProgressIndicator(withDelay: Boolean = false) {
-        if(withDelay){
+        if (withDelay) {
             viewModelScope.launch {
-                delay(150)
+                delay(250)
                 _isShowRegisterProgressIndicator.value = false
             }
         } else {
@@ -90,6 +90,9 @@ class RegisterEmailViewModel @Inject constructor(
     }
 
     fun nullifyState() {
-        _registerState.value = null
+        viewModelScope.launch {
+            delay(2000)
+            _signUpState.value = null
+        }
     }
 }

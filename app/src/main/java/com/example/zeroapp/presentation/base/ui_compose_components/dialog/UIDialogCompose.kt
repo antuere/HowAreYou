@@ -9,7 +9,7 @@ data class UIDialogCompose(
     @DrawableRes val icon: Int,
     val positiveButton: UiButton,
     val negativeButton: UiButton,
-    val neutralButton : UiButton? = null
+    val dismissAction: () -> Unit = {}
 ) {
     data class UiButton(
         @StringRes val text: Int,

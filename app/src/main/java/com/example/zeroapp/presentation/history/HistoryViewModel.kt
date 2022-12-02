@@ -165,6 +165,7 @@ class HistoryViewModel @Inject constructor(
             _currentJob = JobType.Month(viewModelScope.launch {
                 getCertainDaysUseCase(TimeUtility.getCurrentMonthTime()).cancellable()
                     .collectLatest {
+                        Timber.i("list error: currentMonth is size ${it.size}")
                         _listDays.value = it
                     }
             })
@@ -178,6 +179,7 @@ class HistoryViewModel @Inject constructor(
             _currentJob = JobType.Week(viewModelScope.launch {
                 getCertainDaysUseCase(TimeUtility.getCurrentWeekTime()).cancellable()
                     .collectLatest {
+                        Timber.i("list error: last week is size ${it.size}")
                         _listDays.value = it
                     }
             })
@@ -190,6 +192,7 @@ class HistoryViewModel @Inject constructor(
 
             _currentJob = JobType.AllDays(viewModelScope.launch {
                 getAllDaysUseCase(Unit).cancellable().collectLatest {
+                    Timber.i("list error: all days is size ${it.size}")
                     _listDays.value = it
                 }
             })
@@ -197,7 +200,7 @@ class HistoryViewModel @Inject constructor(
     }
 
     fun onClickCheckedItem(state: ToggleBtnState) {
-        Timber.i("checked item click, state is $state")
+        Timber.i("list error : checked item click, state is $state")
         if (_toggleBtnState.value != state) {
             viewModelScope.launch {
                 saveToggleBtnUseCase(state)
@@ -208,7 +211,7 @@ class HistoryViewModel @Inject constructor(
     private fun getToggleButtonState() {
         viewModelScope.launch(Dispatchers.IO) {
             getToggleBtnStateUseCase(Unit).collectLatest {
-                Timber.i("checked item click, saved state is $it")
+                Timber.i("list error: checked item click, saved state is $it")
                 _toggleBtnState.value = it
             }
         }

@@ -161,12 +161,7 @@ class SettingsViewModel @Inject constructor(
                         signOut(isSaveDayEntities = false)
                         _uiDialog.value = null
                     }),
-                neutralButton = UIDialogCompose.UiButton(
-                    text = R.string.dialog_delete_local_data_neutral,
-                    onClick = {
-                        _uiDialog.value = null
-                    }
-                )
+                dismissAction = { _uiDialog.value = null }
             )
         } else {
             signOut(false)

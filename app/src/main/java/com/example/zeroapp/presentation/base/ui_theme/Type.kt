@@ -30,7 +30,7 @@ val Typography = Typography(
     ),
     displaySmall = TextStyle(
         fontFamily = Roboto,
-        fontWeight = FontWeight.Normal,
+        fontWeight = FontWeight.Medium,
         fontSize = 14.sp,
         lineHeight = 24.sp,
         letterSpacing = 0.5.sp

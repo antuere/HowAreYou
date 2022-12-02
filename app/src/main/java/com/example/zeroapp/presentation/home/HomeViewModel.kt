@@ -146,6 +146,7 @@ class HomeViewModel @Inject constructor(
                             _isShowSnackBar.value = true
                             _uiDialog.value = null
                         }),
+                    dismissAction = { _uiDialog.value = null }
 //                    neutralButton = UIDialog.UiButton(
 //                        text = R.string.dialog_warning_neutral,
 //                        onClick = {

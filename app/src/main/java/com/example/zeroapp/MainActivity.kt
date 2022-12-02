@@ -41,8 +41,11 @@ import com.example.zeroapp.presentation.base.ui_theme.HowAreYouTheme
 import com.example.zeroapp.presentation.history.HistoryScreen
 import com.example.zeroapp.presentation.history.MyAnalystForHistory
 import com.example.zeroapp.presentation.home.HomeScreen
+import com.example.zeroapp.presentation.reset_password.ResetPasswordScreen
+import com.example.zeroapp.presentation.sign_in_with_email.SignInEmailScreen
 import com.example.zeroapp.presentation.settings.SettingsScreen
 import com.example.zeroapp.presentation.sign_in_methods.SignInMethodsScreen
+import com.example.zeroapp.presentation.sign_up_with_email.SignUpEmailScreen
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
@@ -120,9 +123,7 @@ class MainActivity : ComponentActivity() {
                         startDestination = Screen.HomeScreen.route
                     ) {
 
-                        composable(
-                            route = Screen.HomeScreen.route
-                        ) {
+                        composable(route = Screen.HomeScreen.route) {
                             HomeScreen(
                                 navController = navController,
                                 onComposing = { barState: AppBarState, isShow: Boolean ->
@@ -152,6 +153,33 @@ class MainActivity : ComponentActivity() {
 
                         composable(route = Screen.SignInMethods.route) {
                             SignInMethodsScreen(
+                                navController = navController,
+                                onComposing = { barState: AppBarState, isShow: Boolean ->
+                                    appBarState = barState
+                                    isShowBottomBar = isShow
+                                })
+                        }
+
+                        composable(route = Screen.SignInWithEmail.route) {
+                            SignInEmailScreen(
+                                navController = navController,
+                                onComposing = { barState: AppBarState, isShow: Boolean ->
+                                    appBarState = barState
+                                    isShowBottomBar = isShow
+                                })
+                        }
+
+                        composable(route = Screen.SignUpWithEmail.route) {
+                            SignUpEmailScreen(
+                                navController = navController,
+                                onComposing = { barState: AppBarState, isShow: Boolean ->
+                                    appBarState = barState
+                                    isShowBottomBar = isShow
+                                })
+                        }
+
+                        composable(route = Screen.ResetPassEmail.route) {
+                            ResetPasswordScreen(
                                 navController = navController,
                                 onComposing = { barState: AppBarState, isShow: Boolean ->
                                     appBarState = barState

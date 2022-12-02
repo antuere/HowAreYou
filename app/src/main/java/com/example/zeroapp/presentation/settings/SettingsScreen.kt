@@ -15,6 +15,7 @@ import androidx.navigation.NavController
 import com.example.zeroapp.R
 import com.example.zeroapp.presentation.base.ui_compose_components.AppBarState
 import com.example.zeroapp.presentation.base.ui_compose_components.Screen
+import com.example.zeroapp.presentation.base.ui_compose_components.dialog.Dialog
 import com.example.zeroapp.presentation.home.HomeViewModel
 import com.example.zeroapp.presentation.settings.ui_compose.AuthSection
 
@@ -56,6 +57,10 @@ fun SettingsScreen(
             )
             .fillMaxSize()
     ) {
+        uiDialog?.let {
+            Dialog(dialog = it)
+        }
+
         AuthSection(
             modifier = Modifier.padding(top = paddingLarge),
             userName = userNickName,

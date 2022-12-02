@@ -1,7 +1,5 @@
-package com.example.zeroapp.presentation.login_with_email
+package com.example.zeroapp.presentation.sign_in_with_email
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import antuere.domain.authentication_manager.LoginResultListener
@@ -12,23 +10,25 @@ import antuere.domain.usecases.user_settings.SaveUserNicknameUseCase
 import com.example.zeroapp.R
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class LoginEmailViewModel @Inject constructor(
+class SignInEmailViewModel @Inject constructor(
     private val refreshRemoteDataUseCase: RefreshRemoteDataUseCase,
     private val saveUserNicknameUseCase: SaveUserNicknameUseCase,
     private val getUserNameFromServerUseCase: GetUserNameFromServerUseCase,
     private val signInUseCase: SignInUseCase,
 ) : ViewModel() {
 
-    private var _loginState = MutableLiveData<LoginState?>()
-    val loginState: LiveData<LoginState?>
-        get() = _loginState
+    private var _signInState = MutableStateFlow<SignInState?>(null)
+    val signInState: StateFlow<SignInState?>
+        get() = _signInState
 
-    private var _isShowLoginProgressIndicator = MutableLiveData(false)
-    val isShowLoginProgressIndicator: LiveData<Boolean>
+    private var _isShowLoginProgressIndicator = MutableStateFlow(false)
+    val isShowLoginProgressIndicator: StateFlow<Boolean>
         get() = _isShowLoginProgressIndicator
 
     private val firebaseLoginListener = object : LoginResultListener {
@@ -38,7 +38,7 @@ class LoginEmailViewModel @Inject constructor(
         }
 
         override fun loginFailed(message: String) {
-            _loginState.value = LoginState.ErrorFromFireBase(message)
+            _signInState.value = SignInState.ErrorFromFireBase(message)
         }
 
     }
@@ -49,7 +49,7 @@ class LoginEmailViewModel @Inject constructor(
             delay(100)
             val userNickname = getUserNameFromServerUseCase(Unit)
             saveUserNicknameUseCase(userNickname ?: "Unknown")
-            _loginState.value = LoginState.Successful
+            _signInState.value = SignInState.Successful
         }
     }
 
@@ -60,12 +60,15 @@ class LoginEmailViewModel @Inject constructor(
                 signInUseCase(firebaseLoginListener, email, password)
             }
         } else {
-            _loginState.value = LoginState.EmptyFields(R.string.empty_fields)
+            _signInState.value = SignInState.EmptyFields(R.string.empty_fields)
         }
     }
 
     fun nullifyState() {
-        _loginState.value = null
+        viewModelScope.launch {
+            delay(2000)
+            _signInState.value = null
+        }
     }
 
     fun resetIsShowLoginProgressIndicator(withDelay: Boolean = false) {

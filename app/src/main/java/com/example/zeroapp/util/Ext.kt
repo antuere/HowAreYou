@@ -8,6 +8,11 @@ import android.view.animation.AnimationUtils
 import androidx.annotation.AttrRes
 import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.core.content.res.use
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
@@ -33,7 +38,7 @@ fun Fragment.createSharedElementEnterTransition() = MaterialContainerTransform()
     setAllContainerColors(requireContext().themeColor(com.google.android.material.R.attr.colorOnPrimary))
 }
 
-fun View.getSmileResFromBtnId() : Int {
+fun View.getSmileResFromBtnId(): Int {
     return when (this.id) {
         R.id.b_very_happy -> antuere.data.R.drawable.smile_very_happy
         R.id.b_happySmile -> antuere.data.R.drawable.smile_happy
@@ -73,5 +78,18 @@ fun GridLayoutManager.setManagerSpanCount(value: Int) {
                 else -> 1
             }
         }
+    }
+}
+
+@Composable
+fun SnackbarHostState.ShowSnackBar(
+    message: String,
+    duration: SnackbarDuration = SnackbarDuration.Short
+) {
+    LaunchedEffect(this) {
+        this@ShowSnackBar.showSnackbar(
+            message = message,
+            duration = duration
+        )
     }
 }

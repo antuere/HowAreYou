@@ -32,8 +32,8 @@
     <string name="home">Home</string>
     <string name="mental_tips">Mental tips</string>
     <string name="login_methods">Sign in methods</string>
-    <string name="login">Login with email</string>
-    <string name="register">Register with email</string>
+    <string name="login">Sign in</string>
+    <string name="register">Sign up</string>
     <string name="register_google_title">Register with Google</string>
     <string name="login_google_title">Login with Google</string>
     <string name="quotes_title">Quote of the day</string>
@@ -51,7 +51,7 @@
     <string name="don_have_acc">Don\'t have account? Sign Up</string>
     <string name="login_progress_name">Great day today…</string>
     <string name="reset_password_hint">Forgot password?</string>
-    <string name="reset_password_button">Reset password</string>
+    <string name="reset_password">Reset password</string>
     <string name="reset_password_plug">Enter email from your account. Tap on button below and an email with instructions for resetting your password will be sent to your email address.</string>
     <string name="email_reset_successful">Successful. Check your mail please</string>
     <string name="empty_fields">Please fill the fields</string>

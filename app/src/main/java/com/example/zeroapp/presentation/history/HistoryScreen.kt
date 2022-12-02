@@ -86,7 +86,7 @@ fun HistoryScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(vertical = dimensionResource(id = R.dimen.padding_normal_0)),
-            dayList = getMockDays(),
+            dayList = listDays,
             myAnalystForHistory = myAnalystForHistory
         )
 
@@ -94,7 +94,7 @@ fun HistoryScreen(
             columns = GridCells.Fixed(cellsAmount),
             modifier = Modifier.fillMaxSize()
         ) {
-            items(getMockDays()) { day ->
+            items(listDays) { day ->
                 DaysListItem(
                     day = day,
                     onClick = { historyViewModel.onClickDay(it) },

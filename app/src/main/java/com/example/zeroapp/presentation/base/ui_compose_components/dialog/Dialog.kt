@@ -14,7 +14,7 @@ fun Dialog(
     iconColor: Color = Color.Black
 ) {
     AlertDialog(
-        onDismissRequest = dialog.negativeButton.onClick,
+        onDismissRequest = dialog.dismissAction,
         icon = {
             Icon(
                 painterResource(id = dialog.icon),

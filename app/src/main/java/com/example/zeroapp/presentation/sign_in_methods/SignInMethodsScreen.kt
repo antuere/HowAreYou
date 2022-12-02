@@ -17,6 +17,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.zeroapp.R
 import com.example.zeroapp.presentation.base.ui_compose_components.AppBarState
+import com.example.zeroapp.presentation.base.ui_compose_components.Screen
 import com.example.zeroapp.presentation.settings.SettingsViewModel
 
 @Composable
@@ -45,7 +46,7 @@ fun SignInMethodsScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Button(
-            onClick = { /*TODO*/ },
+            onClick = { navController.navigate(Screen.SignInWithEmail.route) },
             contentPadding = ButtonDefaults.ButtonWithIconContentPadding
         ) {
             Icon(

@@ -84,7 +84,7 @@
             android:label="@string/cats" />
     <fragment
             android:id="@+id/loginFragment"
-            android:name="com.example.zeroapp.presentation.login_with_email.LoginEmailFragment"
+            android:name="com.example.zeroapp.presentation.sign_in_with_email.LoginEmailFragment"
             android:label="@string/login"
             tools:layout="@layout/fragment_login_email">
         <action
@@ -100,13 +100,13 @@
     </fragment>
     <fragment
             android:id="@+id/registerFragment"
-            android:name="com.example.zeroapp.presentation.register_with_email.RegisterEmailFragment"
+            android:name="com.example.zeroapp.presentation.sign_up_with_email.RegisterEmailFragment"
             android:label="@string/register"
             tools:layout="@layout/fragment_register_email" />
     <fragment
             android:id="@+id/resetPasswordFragment"
             android:name="com.example.zeroapp.presentation.reset_password.ResetPasswordFragment"
-            android:label="@string/reset_password_button"
+            android:label="@string/reset_password"
             tools:layout="@layout/fragment_reset_password" />
     <fragment
             android:id="@+id/signInMethodsFragment"
