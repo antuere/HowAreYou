@@ -9,13 +9,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import com.example.zeroapp.R
 import com.example.zeroapp.presentation.base.ui_compose_components.AppBarState
 import com.example.zeroapp.presentation.base.ui_compose_components.IconApp
-import com.example.zeroapp.presentation.base.ui_compose_components.Screen
 import com.example.zeroapp.presentation.base.ui_compose_components.text_field.EmailTextField
 import com.example.zeroapp.presentation.base.ui_compose_components.text_field.PasswordTextField
 import com.example.zeroapp.presentation.sign_in_with_email.ui_compose.ForgotPassBtn
@@ -27,8 +24,11 @@ import com.example.zeroapp.util.ShowSnackBar
 @Composable
 fun SignInEmailScreen(
     modifier: Modifier = Modifier,
-    navController: NavController,
     onComposing: (AppBarState, Boolean) -> Unit,
+    onNavigateUp : () -> Unit,
+    onNavigateSettings : () -> Unit,
+    onNavigateSignUp: () -> Unit,
+    onNavigateResetPassword: () -> Unit,
     signInEmailViewModel: SignInEmailViewModel = hiltViewModel()
 ) {
     val isShowLoginProgressIndicator by signInEmailViewModel.isShowLoginProgressIndicator.collectAsState()
@@ -44,7 +44,7 @@ fun SignInEmailScreen(
             AppBarState(
                 titleId = R.string.sign_in,
                 navigationIcon = Icons.Filled.ArrowBack,
-                navigationOnClick = { navController.navigateUp() }
+                navigationOnClick = { onNavigateUp() }
             ),
             false
         )
@@ -63,19 +63,22 @@ fun SignInEmailScreen(
         signInState?.let { state ->
             when (state) {
                 is SignInState.Successful -> {
-                    navController.popBackStack(Screen.Settings.route, false)
+                    onNavigateSettings()
+                    signInEmailViewModel.nullifyState()
                     signInEmailViewModel.resetIsShowLoginProgressIndicator(true)
                 }
                 is SignInState.EmptyFields -> {
                     snackbarHostState.ShowSnackBar(message = stringResource(id = R.string.empty_fields))
+                    signInEmailViewModel.nullifyState(true)
                 }
 
                 is SignInState.ErrorFromFireBase -> {
                     snackbarHostState.ShowSnackBar(message = state.message)
+                    signInEmailViewModel.nullifyState(true)
                     signInEmailViewModel.resetIsShowLoginProgressIndicator()
                 }
             }
-            signInEmailViewModel.nullifyState()
+
         }
 
         Column(
@@ -109,7 +112,7 @@ fun SignInEmailScreen(
                     modifier = Modifier
                         .padding(end = dimensionResource(id = R.dimen.padding_normal_3))
                         .align(Alignment.End),
-                    onClick = { navController.navigate(Screen.ResetPassEmail.route) })
+                    onClick = { onNavigateResetPassword() })
                 Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_11)))
 
                 SignInButton(
@@ -122,7 +125,7 @@ fun SignInEmailScreen(
 
                 SignUpHintButton(
                     modifier = modifier.padding(bottom = dimensionResource(id = R.dimen.padding_large_1)),
-                    onClick = { navController.navigate(Screen.SignUpWithEmail.route) }
+                    onClick = { onNavigateSignUp() }
                 )
                 Spacer(modifier = Modifier.weight(1F))
 

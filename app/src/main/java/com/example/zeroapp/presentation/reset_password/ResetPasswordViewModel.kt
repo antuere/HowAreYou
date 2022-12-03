@@ -1,7 +1,5 @@
 package com.example.zeroapp.presentation.reset_password
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import antuere.domain.authentication_manager.ResetPassResultListener
@@ -44,9 +42,13 @@ class ResetPasswordViewModel @Inject constructor(
         }
     }
 
-    fun nullifyState() {
-        viewModelScope.launch {
-            delay(2000)
+    fun nullifyState(withDelay : Boolean = false) {
+        if (withDelay) {
+            viewModelScope.launch {
+                delay(2000)
+                _resetState.value = null
+            }
+        } else {
             _resetState.value = null
         }
     }

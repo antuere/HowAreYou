@@ -11,7 +11,6 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import com.example.zeroapp.R
 import com.example.zeroapp.presentation.base.ui_compose_components.AppBarState
 import com.example.zeroapp.presentation.base.ui_compose_components.text_field.EmailTextField
@@ -22,7 +21,7 @@ import com.example.zeroapp.util.ShowSnackBar
 @Composable
 fun ResetPasswordScreen(
     modifier: Modifier = Modifier,
-    navController: NavController,
+    onNavigateUp: () -> Unit,
     onComposing: (AppBarState, Boolean) -> Unit,
     resetPasswordViewModel: ResetPasswordViewModel = hiltViewModel()
 ) {
@@ -36,7 +35,7 @@ fun ResetPasswordScreen(
             AppBarState(
                 titleId = R.string.reset_password,
                 navigationIcon = Icons.Filled.ArrowBack,
-                navigationOnClick = { navController.navigateUp() }
+                navigationOnClick = { onNavigateUp() }
             ),
             false
         )
@@ -57,17 +56,20 @@ fun ResetPasswordScreen(
             when (state) {
                 is ResetPasswordState.Successful -> {
                     snackbarHostState.ShowSnackBar(message = stringResource(id = state.res))
-                    navController.navigateUp()
+                    onNavigateUp()
+                    resetPasswordViewModel.nullifyState()
                 }
                 is ResetPasswordState.EmptyFields -> {
                     snackbarHostState.ShowSnackBar(message = stringResource(id = R.string.empty_fields))
+                    resetPasswordViewModel.nullifyState(true)
                 }
 
                 is ResetPasswordState.ErrorFromFireBase -> {
                     snackbarHostState.ShowSnackBar(message = state.message)
+                    resetPasswordViewModel.nullifyState(true)
                 }
             }
-            resetPasswordViewModel.nullifyState()
+
         }
         Column(
             modifier = Modifier

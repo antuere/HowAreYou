@@ -64,9 +64,13 @@ class SignInEmailViewModel @Inject constructor(
         }
     }
 
-    fun nullifyState() {
-        viewModelScope.launch {
-            delay(2000)
+    fun nullifyState(withDelay : Boolean = false) {
+        if (withDelay) {
+            viewModelScope.launch {
+                delay(2000)
+                _signInState.value = null
+            }
+        } else {
             _signInState.value = null
         }
     }

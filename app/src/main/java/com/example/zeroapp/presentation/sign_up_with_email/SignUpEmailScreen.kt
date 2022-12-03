@@ -12,11 +12,9 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import com.example.zeroapp.R
 import com.example.zeroapp.presentation.base.ui_compose_components.AppBarState
 import com.example.zeroapp.presentation.base.ui_compose_components.IconApp
-import com.example.zeroapp.presentation.base.ui_compose_components.Screen
 import com.example.zeroapp.presentation.base.ui_compose_components.text_field.DefaultTextField
 import com.example.zeroapp.presentation.base.ui_compose_components.text_field.EmailTextField
 import com.example.zeroapp.presentation.base.ui_compose_components.text_field.PasswordTextField
@@ -27,8 +25,9 @@ import com.example.zeroapp.util.ShowSnackBar
 @Composable
 fun SignUpEmailScreen(
     modifier: Modifier = Modifier,
-    navController: NavController,
     onComposing: (AppBarState, Boolean) -> Unit,
+    onNavigateUp : () -> Unit,
+    onNavigateSettings : () -> Unit,
     signUpEmailViewModel: SignUpEmailViewModel = hiltViewModel()
 ) {
     val isShowRegisterProgressIndicator by signUpEmailViewModel.isShowRegisterProgressIndicator.collectAsState()
@@ -46,7 +45,7 @@ fun SignUpEmailScreen(
             AppBarState(
                 titleId = R.string.sign_up,
                 navigationIcon = Icons.Filled.ArrowBack,
-                navigationOnClick = { navController.navigateUp() }
+                navigationOnClick = { onNavigateUp() }
             ),
             false
         )
@@ -65,23 +64,27 @@ fun SignUpEmailScreen(
         signUpState?.let { state ->
             when (state) {
                 is SignUpState.Successful -> {
-                    navController.popBackStack(Screen.Settings.route, false)
+                    onNavigateSettings()
+                    signUpEmailViewModel.nullifyState()
                     signUpEmailViewModel.resetIsShowRegisterProgressIndicator(true)
                 }
                 is SignUpState.EmptyFields -> {
                     snackbarHostState.ShowSnackBar(message = stringResource(id = state.res))
+                    signUpEmailViewModel.nullifyState(true)
                 }
                 is SignUpState.PasswordsError -> {
                     snackbarHostState.ShowSnackBar(message = stringResource(id = state.res))
+                    signUpEmailViewModel.nullifyState(true)
                 }
 
                 is SignUpState.ErrorFromFireBase -> {
                     snackbarHostState.ShowSnackBar(message = state.message)
+                    signUpEmailViewModel.nullifyState(true)
                     signUpEmailViewModel.resetIsShowRegisterProgressIndicator()
                 }
 
             }
-            signUpEmailViewModel.nullifyState()
+
         }
 
         Column(

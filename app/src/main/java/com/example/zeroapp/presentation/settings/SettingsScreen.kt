@@ -9,21 +9,18 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import com.example.zeroapp.R
 import com.example.zeroapp.presentation.base.ui_compose_components.AppBarState
-import com.example.zeroapp.presentation.base.ui_compose_components.Screen
 import com.example.zeroapp.presentation.base.ui_compose_components.dialog.Dialog
-import com.example.zeroapp.presentation.home.HomeViewModel
 import com.example.zeroapp.presentation.settings.ui_compose.AuthSection
+import timber.log.Timber
 
 @Composable
 fun SettingsScreen(
     modifier: Modifier = Modifier,
-    navController: NavController,
     onComposing: (AppBarState, Boolean) -> Unit,
+    onNavigateSignIn : () -> Unit,
     settingsViewModel: SettingsViewModel = hiltViewModel()
 
 ) {
@@ -60,11 +57,11 @@ fun SettingsScreen(
         uiDialog?.let {
             Dialog(dialog = it)
         }
-
+        Timber.i("navigate error : enter in settings")
         AuthSection(
             modifier = Modifier.padding(top = paddingLarge),
             userName = userNickName,
-            onClickSignIn = { navController.navigate(Screen.SignInMethods.route) },
+            onClickSignIn = { onNavigateSignIn() },
             onClickSignOut = { settingsViewModel.onClickSignOut() })
 
     }

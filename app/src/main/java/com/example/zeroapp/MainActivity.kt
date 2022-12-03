@@ -144,7 +144,7 @@ class MainActivity : ComponentActivity() {
 
                         composable(route = Screen.Settings.route) {
                             SettingsScreen(
-                                navController = navController,
+                                onNavigateSignIn = { navController.navigate(Screen.SignInMethods.route) },
                                 onComposing = { barState: AppBarState, isShow: Boolean ->
                                     appBarState = barState
                                     isShowBottomBar = isShow
@@ -153,7 +153,8 @@ class MainActivity : ComponentActivity() {
 
                         composable(route = Screen.SignInMethods.route) {
                             SignInMethodsScreen(
-                                navController = navController,
+                                onNavigateUp = { navController.navigateUp() },
+                                onNavigateSignInEmail = { navController.navigate(Screen.SignInWithEmail.route) },
                                 onComposing = { barState: AppBarState, isShow: Boolean ->
                                     appBarState = barState
                                     isShowBottomBar = isShow
@@ -162,7 +163,15 @@ class MainActivity : ComponentActivity() {
 
                         composable(route = Screen.SignInWithEmail.route) {
                             SignInEmailScreen(
-                                navController = navController,
+                                onNavigateUp = { navController.navigateUp() },
+                                onNavigateSettings = {
+                                    navController.popBackStack(
+                                        Screen.Settings.route,
+                                        false
+                                    )
+                                },
+                                onNavigateSignUp = { navController.navigate(Screen.SignUpWithEmail.route) },
+                                onNavigateResetPassword = { navController.navigate(Screen.ResetPassEmail.route) },
                                 onComposing = { barState: AppBarState, isShow: Boolean ->
                                     appBarState = barState
                                     isShowBottomBar = isShow
@@ -171,7 +180,13 @@ class MainActivity : ComponentActivity() {
 
                         composable(route = Screen.SignUpWithEmail.route) {
                             SignUpEmailScreen(
-                                navController = navController,
+                                onNavigateSettings = {
+                                    navController.popBackStack(
+                                        Screen.Settings.route,
+                                        false
+                                    )
+                                },
+                                onNavigateUp = { navController.navigateUp() },
                                 onComposing = { barState: AppBarState, isShow: Boolean ->
                                     appBarState = barState
                                     isShowBottomBar = isShow
@@ -180,7 +195,7 @@ class MainActivity : ComponentActivity() {
 
                         composable(route = Screen.ResetPassEmail.route) {
                             ResetPasswordScreen(
-                                navController = navController,
+                                onNavigateUp = { navController.navigateUp() },
                                 onComposing = { barState: AppBarState, isShow: Boolean ->
                                     appBarState = barState
                                     isShowBottomBar = isShow
