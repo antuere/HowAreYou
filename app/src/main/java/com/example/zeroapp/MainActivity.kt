@@ -46,6 +46,7 @@ import com.example.zeroapp.presentation.sign_in_with_email.SignInEmailScreen
 import com.example.zeroapp.presentation.settings.SettingsScreen
 import com.example.zeroapp.presentation.sign_in_methods.SignInMethodsScreen
 import com.example.zeroapp.presentation.sign_up_with_email.SignUpEmailScreen
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
@@ -75,6 +76,9 @@ class MainActivity : ComponentActivity() {
 
     @Inject
     lateinit var myAnalystForHistory: MyAnalystForHistory
+
+    @Inject
+    lateinit var signInClient: GoogleSignInClient
 
     private var settings: Settings? = null
 
@@ -158,7 +162,9 @@ class MainActivity : ComponentActivity() {
                                 onComposing = { barState: AppBarState, isShow: Boolean ->
                                     appBarState = barState
                                     isShowBottomBar = isShow
-                                })
+                                },
+                                signInClient = signInClient
+                            )
                         }
 
                         composable(route = Screen.SignInWithEmail.route) {

@@ -64,8 +64,9 @@ class SignInMethodsViewModel @Inject constructor(
 
     private fun signInWithGoogle(account: GoogleSignInAccount) {
         val name = account.displayName ?: account.givenName ?: "Google user"
+        val idToken = account.idToken!!
         viewModelScope.launch {
-            signInByGoogleUseCase(googleSignInListener, name)
+            signInByGoogleUseCase(googleSignInListener, idToken, name)
         }
     }
 

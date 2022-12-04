@@ -1,30 +1,48 @@
 package com.example.zeroapp.presentation.sign_in_methods
 
+import android.app.Activity
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.zeroapp.R
 import com.example.zeroapp.presentation.base.ui_compose_components.AppBarState
+import com.example.zeroapp.presentation.sign_in_methods.ui_compose.ButtonWithIcon
+import com.example.zeroapp.presentation.sign_in_with_email.SignInState
+import com.example.zeroapp.util.ShowSnackBar
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import timber.log.Timber
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SignInMethodsScreen(
     modifier: Modifier = Modifier,
     onComposing: (AppBarState, Boolean) -> Unit,
     onNavigateUp: () -> Unit,
     onNavigateSignInEmail: () -> Unit,
-    signInMethodsViewModel: SignInMethodsViewModel = hiltViewModel()
+    signInMethodsViewModel: SignInMethodsViewModel = hiltViewModel(),
+    signInClient: GoogleSignInClient,
 ) {
     val signInState by signInMethodsViewModel.signInState.collectAsState()
+
+    val snackbarHostState = remember { SnackbarHostState() }
+    val launcher =
+        rememberLauncherForActivityResult(contract = ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
+                signInMethodsViewModel.handleResult(task)
+            }
+        }
 
     LaunchedEffect(key1 = true) {
         onComposing(
@@ -37,24 +55,49 @@ fun SignInMethodsScreen(
         )
     }
 
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Button(
-            onClick = { onNavigateSignInEmail() },
-            contentPadding = ButtonDefaults.ButtonWithIconContentPadding
+    Scaffold(
+        snackbarHost = {
+            SnackbarHost(snackbarHostState) { data ->
+                Snackbar(
+                    snackbarData = data,
+                    containerColor = MaterialTheme.colorScheme.onPrimary,
+                    contentColor = MaterialTheme.colorScheme.onSecondary
+                )
+            }
+        }
+    ) { it ->
+        signInState?.let { state ->
+            when (state) {
+                is SignInMethodsState.UserAuthorized -> {
+                    onNavigateUp()
+                }
+                is SignInMethodsState.Error -> {
+                    snackbarHostState.ShowSnackBar(message = state.message)
+                }
+            }
+            signInMethodsViewModel.nullifyState()
+        }
+
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(it),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Icon(
-                painter = painterResource(id = R.drawable.ic_email),
-                contentDescription = "Localized description",
-                modifier = Modifier.size(ButtonDefaults.IconSize)
+            ButtonWithIcon(
+                modifier = Modifier.fillMaxWidth(0.7F),
+                onClick = { onNavigateSignInEmail() },
+                labelId = R.string.login_email,
+                iconId = R.drawable.ic_email
             )
-            Spacer(Modifier.size(ButtonDefaults.IconSpacing))
-            Text(
-                stringResource(id = R.string.login_email),
-                color = MaterialTheme.colorScheme.onPrimary
+            Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_1)))
+
+            ButtonWithIcon(
+                modifier = Modifier.fillMaxWidth(0.7F),
+                onClick = { launcher.launch(signInClient.signInIntent) },
+                labelId = R.string.login_google,
+                iconId = R.drawable.ic_google
             )
         }
     }
