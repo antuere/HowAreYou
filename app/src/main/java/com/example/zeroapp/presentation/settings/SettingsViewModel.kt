@@ -52,7 +52,7 @@ class SettingsViewModel @Inject constructor(
     val uiDialog: StateFlow<UIDialogCompose?>
         get() = _uiDialog
 
-    private var _userNickname = MutableStateFlow<String>(Constants.USER_NOT_AUTH)
+    private var _userNickname = MutableStateFlow(Constants.USER_NOT_AUTH)
     val userNickname: StateFlow<String>
         get() = _userNickname
 

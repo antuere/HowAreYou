@@ -16,7 +16,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.example.zeroapp.presentation.base.ui_theme.Gray
+import com.example.zeroapp.presentation.base.ui_theme.Gray800
 import com.example.zeroapp.presentation.base.ui_theme.TealMain
 import com.example.zeroapp.presentation.base.ui_theme.Typography
 
@@ -70,8 +70,8 @@ fun BottomNavBar(navController: NavController) {
                     selectedIconColor = Color.Black,
                     selectedTextColor = Color.Black,
                     indicatorColor = Color.White,
-                    unselectedIconColor = Gray,
-                    unselectedTextColor = Gray
+                    unselectedIconColor = Gray800,
+                    unselectedTextColor = Gray800
                 ),
             )
         }

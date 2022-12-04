@@ -1,26 +1,31 @@
 package com.example.zeroapp.presentation.settings
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Scaffold
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.zeroapp.R
 import com.example.zeroapp.presentation.base.ui_compose_components.AppBarState
+import com.example.zeroapp.presentation.base.ui_compose_components.bottom_sheet_scaffold.BottomSheetScaffold
 import com.example.zeroapp.presentation.base.ui_compose_components.dialog.Dialog
 import com.example.zeroapp.presentation.settings.ui_compose.AuthSection
+import com.example.zeroapp.presentation.settings.ui_compose.GeneralSettings
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import timber.log.Timber
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsScreen(
     modifier: Modifier = Modifier,
     onComposing: (AppBarState, Boolean) -> Unit,
-    onNavigateSignIn : () -> Unit,
+    onNavigateSignIn: () -> Unit,
     settingsViewModel: SettingsViewModel = hiltViewModel()
 
 ) {
@@ -36,7 +41,10 @@ fun SettingsScreen(
     val isStartSetPinCode by settingsViewModel.isStartSetPinCode.collectAsState()
 
     val paddingNormal = dimensionResource(id = R.dimen.padding_normal_3)
-    val paddingLarge = dimensionResource(id = R.dimen.padding_large_0)
+
+    var isCheckedWorriedDialog by remember {
+        mutableStateOf(settings?.isShowWorriedDialog ?: true)
+    }
 
     LaunchedEffect(key1 = true) {
         onComposing(
@@ -46,23 +54,32 @@ fun SettingsScreen(
             true
         )
     }
-
     Column(
-        modifier = Modifier
-            .padding(
-                horizontal = paddingNormal
-            )
-            .fillMaxSize()
+        modifier = Modifier.fillMaxSize()
     ) {
         uiDialog?.let {
             Dialog(dialog = it)
         }
-        Timber.i("navigate error : enter in settings")
         AuthSection(
-            modifier = Modifier.padding(top = paddingLarge),
+            modifier = Modifier.padding(
+                horizontal = paddingNormal
+            ),
             userName = userNickName,
             onClickSignIn = { onNavigateSignIn() },
             onClickSignOut = { settingsViewModel.onClickSignOut() })
+
+        settings?.let {
+            GeneralSettings(
+                modifier = Modifier.padding(
+                    horizontal = paddingNormal
+                ),
+                isCheckedWorriedDialog = isCheckedWorriedDialog,
+                checkChangeWorriedDialog = {
+                    isCheckedWorriedDialog = it
+                    settingsViewModel.saveShowWorriedDialog(it)
+                }
+            )
+        }
 
     }
 

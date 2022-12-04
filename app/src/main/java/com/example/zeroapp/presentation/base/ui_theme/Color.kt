@@ -10,7 +10,8 @@ val LightBlue = Color(0xFF77C0C8)
 
 val White = Color.White
 val Black = Color.Black
-val Gray = Color(0x80000000)
+val Gray800 = Color(0x80000000)
+val Gray400 = Color(0xFF4E4D4D)
 
 val Purple40 = Color(0xFF6650a4)
 val PurpleGrey40 = Color(0xFF625b71)

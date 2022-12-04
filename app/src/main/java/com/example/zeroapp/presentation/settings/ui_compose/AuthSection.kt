@@ -22,10 +22,11 @@ fun AuthSection(
     onClickSignOut: () -> Unit,
 ) {
     Column(
-        modifier = modifier,
         horizontalAlignment = Alignment.Start
     ) {
+        Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_8)))
         Text(
+            modifier = modifier,
             fontSize = dimensionResource(id = R.dimen.textSize_normal_2).value.sp,
             text = if (userName != Constants.USER_NOT_AUTH) "${stringResource(id = R.string.hello_user)} $userName" else stringResource(
                 id = R.string.hello_user_plug
@@ -34,6 +35,7 @@ fun AuthSection(
         Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_1)))
 
         Text(
+            modifier = modifier,
             fontSize = dimensionResource(id = R.dimen.textSize_normal_0).value.sp,
             text = stringResource(id = R.string.how_are_you_text)
         )
@@ -41,6 +43,7 @@ fun AuthSection(
         if (userName == Constants.USER_NOT_AUTH) {
             Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_1)))
             Text(
+                modifier = modifier,
                 fontSize = dimensionResource(id = R.dimen.textSize_normal_0).value.sp,
                 text = stringResource(id = R.string.sign_in_advice)
             )
@@ -48,9 +51,10 @@ fun AuthSection(
 
             Button(
                 onClick = { onClickSignIn() },
-                modifier = Modifier.align(Alignment.CenterHorizontally)
+                modifier = modifier.align(Alignment.CenterHorizontally)
             ) {
                 Text(
+                    modifier = modifier,
                     text = stringResource(id = R.string.sign_in),
                     color = MaterialTheme.colorScheme.onPrimary
                 )
@@ -60,13 +64,13 @@ fun AuthSection(
 
             OutlinedButton(
                 onClick = { onClickSignOut() },
-                modifier = Modifier.align(Alignment.End)
+                modifier = modifier.align(Alignment.End)
             ) {
                 Text(text = stringResource(id = R.string.sign_out))
             }
         }
 
         Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_4)))
-        Divider(modifier = Modifier.fillMaxWidth(), color = MaterialTheme.colorScheme.onSecondary)
+        Divider(modifier = modifier.fillMaxWidth(), color = MaterialTheme.colorScheme.onSecondary)
     }
 }
