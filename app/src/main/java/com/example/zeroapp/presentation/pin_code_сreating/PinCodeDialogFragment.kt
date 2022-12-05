@@ -108,10 +108,10 @@ class PinCodeDialogFragment : BottomSheetDialogFragment() {
                     }
                     PinCodeCirclesState.NONE -> {
                         binding!!.apply {
-                            circle1.setImageResource(R.drawable.ic_outline_outlined)
-                            circle2.setImageResource(R.drawable.ic_outline_outlined)
-                            circle3.setImageResource(R.drawable.ic_outline_outlined)
-                            circle4.setImageResource(R.drawable.ic_outline_outlined)
+                            circle1.setImageResource(R.drawable.ic_circle_outlined)
+                            circle2.setImageResource(R.drawable.ic_circle_outlined)
+                            circle3.setImageResource(R.drawable.ic_circle_outlined)
+                            circle4.setImageResource(R.drawable.ic_circle_outlined)
                         }
                     }
                     PinCodeCirclesState.ALL -> {}

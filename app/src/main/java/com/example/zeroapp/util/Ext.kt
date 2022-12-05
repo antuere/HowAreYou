@@ -8,6 +8,7 @@ import android.view.animation.AnimationUtils
 import androidx.annotation.AttrRes
 import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHostState
@@ -21,6 +22,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.zeroapp.MainActivity
 import com.example.zeroapp.R
+import com.example.zeroapp.presentation.base.ui_compose_components.AppBarState
 import com.google.android.material.transition.MaterialContainerTransform
 
 
@@ -90,6 +92,22 @@ fun SnackbarHostState.ShowSnackBar(
         this@ShowSnackBar.showSnackbar(
             message = message,
             duration = duration
+        )
+    }
+}
+
+@Composable
+fun ChangeAppUiState(
+    onComposing: (AppBarState, Boolean) -> Unit,
+    @StringRes titleTopBar: Int,
+    isShowBottomBar: Boolean
+) {
+    LaunchedEffect(key1 = true) {
+        onComposing(
+            AppBarState(
+                titleId = titleTopBar
+            ),
+            isShowBottomBar
         )
     }
 }

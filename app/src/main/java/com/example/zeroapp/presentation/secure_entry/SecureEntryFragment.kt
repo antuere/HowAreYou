@@ -189,10 +189,10 @@ class SecureEntryFragment :
                 when (state) {
                     PinCodeCirclesState.NONE -> {
                         binding.apply {
-                            entryCircle1.setImageResource(R.drawable.ic_outline_outlined)
-                            entryCircle2.setImageResource(R.drawable.ic_outline_outlined)
-                            entryCircle3.setImageResource(R.drawable.ic_outline_outlined)
-                            entryCircle4.setImageResource(R.drawable.ic_outline_outlined)
+                            entryCircle1.setImageResource(R.drawable.ic_circle_outlined)
+                            entryCircle2.setImageResource(R.drawable.ic_circle_outlined)
+                            entryCircle3.setImageResource(R.drawable.ic_circle_outlined)
+                            entryCircle4.setImageResource(R.drawable.ic_circle_outlined)
                         }
                     }
                     PinCodeCirclesState.FIRST -> {

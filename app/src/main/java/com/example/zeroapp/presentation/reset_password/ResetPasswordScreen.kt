@@ -94,7 +94,6 @@ fun ResetPasswordScreen(
                 modifier = modifier.padding(bottom = dimensionResource(id = R.dimen.padding_large_1)),
                 onClick = { resetPasswordViewModel.onClickResetPassword(userEmail) }
             )
-
         }
     }
 }

@@ -105,7 +105,7 @@
     <string name="hello_user_plug">Hello, dear user</string>
     <string name="sign_in">Sign in</string>
     <string name="sign_out">Sign out</string>
-    <string name="create_a_password">Create a password</string>
+    <string name="create_a_pin_code">Create PIN code</string>
     <string name="show_worried_dialog_title">Show worried dialog</string>
     <string name="show_worried_dialog_desc">Show dialog if mood drop have been noticed in the last 5 days</string>
     <string name="enable_biometric_authentication">Enable biometric authentication</string>
