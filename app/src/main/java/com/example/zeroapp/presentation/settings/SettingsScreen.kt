@@ -6,23 +6,19 @@ import androidx.compose.material.ModalBottomSheetLayout
 import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.zeroapp.R
 import com.example.zeroapp.presentation.base.ui_biometric_dialog.BiometricsAvailableState
 import com.example.zeroapp.presentation.base.ui_compose_components.AppBarState
 import com.example.zeroapp.presentation.base.ui_compose_components.dialog.Dialog
-import com.example.zeroapp.presentation.pin_code_сreating.PinCodeCirclesState
 import com.example.zeroapp.presentation.settings.ui_compose.AuthSection
 import com.example.zeroapp.presentation.settings.ui_compose.GeneralSettings
-import com.example.zeroapp.presentation.settings.ui_compose.PinCodeCreating
+import com.example.zeroapp.presentation.pin_code_сreating.PinCodeCreating
 import com.example.zeroapp.presentation.settings.ui_compose.PrivacySettings
-import com.example.zeroapp.util.ChangeAppUiState
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class, ExperimentalMaterial3Api::class)
@@ -37,6 +33,7 @@ fun SettingsScreen(
     val uiDialog by settingsViewModel.uiDialog.collectAsState()
     val userNickName by settingsViewModel.userNickname.collectAsState()
     val settings by settingsViewModel.settings.collectAsState()
+    val userPinCode by settingsViewModel.savedPinCode.collectAsState()
     val biometricsAvailableState by settingsViewModel.biometricAvailableState.collectAsState()
     val biometricAuthState by settingsViewModel.biometricAuthState.collectAsState()
 
@@ -63,6 +60,10 @@ fun SettingsScreen(
         mutableStateOf(settings?.isBiometricEnabled ?: false)
     }
 
+//    userPinCode?.let { pin ->
+//        isCheckedPinCode = pin.length == 4
+//    }
+
     LaunchedEffect(bottomSheetState.targetValue) {
         onComposing(
             AppBarState(
@@ -79,10 +80,9 @@ fun SettingsScreen(
                     .fillMaxWidth(),
                 contentAlignment = Alignment.Center
             ) {
-                PinCodeCreating(
-                    pinCodeCirclesState = PinCodeCirclesState.SECOND,
-                    onClick = {},
-                    onClickClear = {})
+                PinCodeCreating(bottomSheetState = bottomSheetState, changeCheckPinCode = {
+                    isCheckedPinCode = it
+                })
             }
         },
         sheetState = bottomSheetState
@@ -122,8 +122,14 @@ fun SettingsScreen(
                         isCheckedPinCode = it
                         if (it) {
                             scope.launch {
-                                bottomSheetState.show()
+                                bottomSheetState.animateTo(ModalBottomSheetValue.Expanded)
                             }
+                        } else {
+                            settingsViewModel.resetPinCodeAuth()
+                            settingsViewModel.resetBiometricAuthAndSaveSettings(
+                                isUseBiometric = false,
+                                isUsePinCode = false
+                            )
                         }
                     },
                     isShowBiometricSetting = biometricsAvailableState is BiometricsAvailableState.Available,

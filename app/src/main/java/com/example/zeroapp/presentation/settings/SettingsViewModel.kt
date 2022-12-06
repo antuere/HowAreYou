@@ -34,6 +34,7 @@ class SettingsViewModel @Inject constructor(
     private val getLastDayUseCase: GetLastDayUseCase,
     private val saveSettingsUseCase: SaveSettingsUseCase,
     private val getSettingsUseCase: GetSettingsUseCase,
+    private val getSavedPinCodeUseCase: GetSavedPinCodeUseCase,
     private val getUserNicknameUseCase: GetUserNicknameUseCase,
     private val resetPinCodeUseCase: ResetPinCodeUseCase,
     private val resetUserNicknameUseCase: ResetUserNicknameUseCase,
@@ -60,6 +61,10 @@ class SettingsViewModel @Inject constructor(
     val settings: StateFlow<Settings?>
         get() = _settings
 
+    private var _savedPinCode = MutableStateFlow<String?>(null)
+    val savedPinCode: StateFlow<String?>
+        get() = _savedPinCode
+
     private var _biometricAuthState = MutableStateFlow<BiometricAuthState?>(null)
     val biometricAuthState: StateFlow<BiometricAuthState?>
         get() = _biometricAuthState
@@ -85,6 +90,7 @@ class SettingsViewModel @Inject constructor(
     init {
         getUserNickname()
         getSettings()
+        getSavedPinCode()
         checkIsHasDayEntity()
         checkBiometricsAvailable()
     }
@@ -182,6 +188,14 @@ class SettingsViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             getSettingsUseCase(Unit).collectLatest {
                 _settings.value = it
+            }
+        }
+    }
+
+    private fun getSavedPinCode() {
+        viewModelScope.launch(Dispatchers.IO) {
+            getSavedPinCodeUseCase(Unit).collectLatest {
+                _savedPinCode.value = it
             }
         }
     }

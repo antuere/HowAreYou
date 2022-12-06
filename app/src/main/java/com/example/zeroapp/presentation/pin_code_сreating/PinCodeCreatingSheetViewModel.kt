@@ -1,7 +1,5 @@
 package com.example.zeroapp.presentation.pin_code_сreating
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import antuere.domain.dto.Settings
@@ -10,32 +8,34 @@ import antuere.domain.usecases.user_settings.SavePinCodeUseCase
 import antuere.domain.usecases.user_settings.SaveSettingsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class PinCodeDialogViewModel @Inject constructor(
+class PinCodeCreatingSheetViewModel @Inject constructor(
     private val getSettingsUseCase: GetSettingsUseCase,
     private val saveSettingsUseCase: SaveSettingsUseCase,
     private val savePinCodeUseCase: SavePinCodeUseCase,
 ) : ViewModel() {
 
-    private var _userPinCode = MutableLiveData<String?>()
-    val userPinCode: LiveData<String?>
+    private var _userPinCode = MutableStateFlow<String?>(null)
+    val userPinCode: StateFlow<String?>
         get() = _userPinCode
 
-    private var _pinCodeCirclesState = MutableLiveData<PinCodeCirclesState>()
-    val pinCodeCirclesState: LiveData<PinCodeCirclesState>
+    private var _pinCodeCirclesState = MutableStateFlow(PinCodeCirclesState.NONE)
+    val pinCodeCirclesState: StateFlow<PinCodeCirclesState>
         get() = _pinCodeCirclesState
 
-    private var _settings = MutableLiveData<Settings>()
-    val settings: LiveData<Settings>
+    private var _settings = MutableStateFlow<Settings?>(null)
+    val settings: StateFlow<Settings?>
         get() = _settings
 
-    private var _isNavigateUp = MutableLiveData<Boolean>()
-    val isNavigateUp: LiveData<Boolean>
-        get() = _isNavigateUp
+    private var _isPinCodeCreated = MutableStateFlow(false)
+    val isPinCodeCreated: StateFlow<Boolean>
+        get() = _isPinCodeCreated
 
 
     init {
@@ -92,7 +92,7 @@ class PinCodeDialogViewModel @Inject constructor(
                 currentNumbers.add(value)
                 checkPassword(currentNumbers)
             }
-            else -> throw IllegalArgumentException("Invalid number")
+            else -> throw IllegalArgumentException("Invalid number: $value")
 
         }
     }
@@ -115,6 +115,7 @@ class PinCodeDialogViewModel @Inject constructor(
                 num4 = list[3]
                 _pinCodeCirclesState.value = PinCodeCirclesState.FOURTH
                 _userPinCode.value = num1 + num2 + num3 + num4
+                pinCodeCreated()
             }
             else -> throw IllegalArgumentException("Too much list size")
         }
@@ -126,13 +127,13 @@ class PinCodeDialogViewModel @Inject constructor(
         }
     }
 
-    fun pinCodeCreated() {
+    private fun pinCodeCreated() {
         viewModelScope.launch {
             saveSettings()
             savePinCode(_userPinCode.value!!)
             delay(100)
 
-            navigateUp()
+            _isPinCodeCreated.value = true
         }
     }
 
@@ -160,11 +161,8 @@ class PinCodeDialogViewModel @Inject constructor(
         }
     }
 
-    private fun navigateUp() {
-        _isNavigateUp.value = true
-    }
 
-    fun doneNavigationUp() {
-        _isNavigateUp.value = false
+    fun resetIsPinCodeCreated() {
+        _isPinCodeCreated.value = false
     }
 }

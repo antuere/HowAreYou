@@ -20,7 +20,6 @@ import com.example.zeroapp.databinding.FragmentSettingsBinding
 import com.example.zeroapp.presentation.base.BaseBindingFragment
 import com.example.zeroapp.presentation.base.ui_biometric_dialog.BiometricsAvailableState
 import com.example.zeroapp.presentation.base.ui_biometric_dialog.UIBiometricDialog
-import com.example.zeroapp.presentation.pin_code_сreating.PinCodeDialogFragment
 import com.example.zeroapp.presentation.base.ui_biometric_dialog.BiometricAuthState
 import com.example.zeroapp.presentation.base.ui_dialog.UIDialogListener
 import com.google.android.material.transition.MaterialFade

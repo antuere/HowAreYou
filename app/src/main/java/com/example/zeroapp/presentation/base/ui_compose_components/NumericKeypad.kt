@@ -2,8 +2,11 @@ package com.example.zeroapp.presentation.base.ui_compose_components
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
@@ -15,34 +18,50 @@ fun NumericKeyPad(
     onClick: (String) -> Unit,
     onClickClear: () -> Unit
 ) {
-    Column(modifier = Modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_normal_3))) {
-        var value = 1
-        repeat(3) {
+    Column(
+        modifier = Modifier
+            .padding(horizontal = dimensionResource(id = R.dimen.padding_normal_3))
+    ) {
+        val numberList = listOf(
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9",
+        )
+
+        for (i in 0..8 step 3) {
             Row() {
-                Button(modifier = Modifier.padding(horizontal = 2.dp),
-                    onClick = { onClick("$value") }) {
-                    Text(text = "$value")
+                Button(modifier = Modifier.padding(horizontal = 16.dp),
+                    onClick = { onClick(numberList[i]) }) {
+                    Text(text = numberList[i], color = MaterialTheme.colorScheme.onPrimary)
                 }
-                Button(modifier = Modifier.padding(horizontal = 2.dp),
-                    onClick = { onClick("${value + 1}") }) {
-                    Text(text = "${value + 1}")
+                Button(modifier = Modifier.padding(horizontal = 16.dp),
+                    onClick = { onClick(numberList[i + 1]) }) {
+                    Text(text = numberList[i + 1], color = MaterialTheme.colorScheme.onPrimary)
                 }
-                Button(modifier = Modifier.padding(horizontal = 2.dp),
-                    onClick = { onClick("${value + 2}") }) {
-                    Text(text = "${value + 2}")
+                Button(modifier = Modifier.padding(horizontal = 16.dp),
+                    onClick = { onClick(numberList[i + 2]) }) {
+                    Text(text = numberList[i + 2], color = MaterialTheme.colorScheme.onPrimary)
                 }
             }
-            Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_4)))
-            value += 3
+            Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_2)))
         }
-        Row(horizontalArrangement = Arrangement.End) {
-            Button(modifier = Modifier.padding(horizontal = 2.dp),
+        Row(modifier = Modifier.align(Alignment.End)) {
+            Button(modifier = Modifier.padding(horizontal = 16.dp),
                 onClick = { onClick("0") }) {
-                Text(text = "0")
+                Text(text = "0", color = MaterialTheme.colorScheme.onPrimary)
             }
-            Button(modifier = Modifier.padding(horizontal = 2.dp),
+            TextButton(modifier = Modifier.padding(horizontal = 16.dp),
                 onClick = { onClickClear() }) {
-                Text(text = stringResource(id = R.string.clear_pin))
+                Text(
+                    text = stringResource(id = R.string.clear_pin),
+                    color = MaterialTheme.colorScheme.onSecondary
+                )
             }
         }
 

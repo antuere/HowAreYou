@@ -1,26 +1,50 @@
-package com.example.zeroapp.presentation.settings.ui_compose
+package com.example.zeroapp.presentation.pin_code_сreating
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.ModalBottomSheetState
+import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.zeroapp.R
 import com.example.zeroapp.presentation.base.ui_compose_components.NumericKeyPad
-import com.example.zeroapp.presentation.pin_code_сreating.PinCodeCirclesState
+import com.example.zeroapp.presentation.settings.ui_compose.ProgressCircle
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun PinCodeCreating(
-    pinCodeCirclesState: PinCodeCirclesState,
-    onClick: (String) -> Unit,
-    onClickClear: () -> Unit
+    sheetViewModel: PinCodeCreatingSheetViewModel = hiltViewModel(),
+    bottomSheetState: ModalBottomSheetState,
+    changeCheckPinCode: (Boolean) -> Unit
 ) {
-    val paddingHorizontal = 2.dp
+    val pinCodeCirclesState by sheetViewModel.pinCodeCirclesState.collectAsState()
+    val isPinCodeCreated by sheetViewModel.isPinCodeCreated.collectAsState()
 
-    Column(verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
+    LaunchedEffect(bottomSheetState.targetValue) {
+        if (bottomSheetState.targetValue == ModalBottomSheetValue.Hidden) {
+            if (!isPinCodeCreated) {
+                changeCheckPinCode(false)
+            }
+        }
+    }
+
+
+    if (isPinCodeCreated) {
+        LaunchedEffect(key1 = true) {
+            bottomSheetState.hide()
+            sheetViewModel.resetIsPinCodeCreated()
+        }
+    }
+
+    Column(
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
         Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_10)))
 
         Text(text = stringResource(id = R.string.create_a_pin_code))
@@ -60,7 +84,9 @@ fun PinCodeCreating(
         }
         Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_11)))
 
-        NumericKeyPad(onClick = onClick, onClickClear = onClickClear)
+        NumericKeyPad(
+            onClick = { sheetViewModel.onClickNumber(it) },
+            onClickClear = { sheetViewModel.resetEnteredPinCode() })
 
         Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_5)))
     }
