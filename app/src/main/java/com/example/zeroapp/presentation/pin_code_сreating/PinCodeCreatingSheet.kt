@@ -20,24 +20,27 @@ import com.example.zeroapp.presentation.settings.ui_compose.ProgressCircle
 fun PinCodeCreating(
     sheetViewModel: PinCodeCreatingSheetViewModel = hiltViewModel(),
     bottomSheetState: ModalBottomSheetState,
-    changeCheckPinCode: (Boolean) -> Unit
+    onShowSuccessSnackBar: () -> Unit,
 ) {
     val pinCodeCirclesState by sheetViewModel.pinCodeCirclesState.collectAsState()
     val isPinCodeCreated by sheetViewModel.isPinCodeCreated.collectAsState()
 
     LaunchedEffect(bottomSheetState.targetValue) {
         if (bottomSheetState.targetValue == ModalBottomSheetValue.Hidden) {
-            if (!isPinCodeCreated) {
-                changeCheckPinCode(false)
-            }
+            sheetViewModel.resetAllPinCodeStates()
         }
     }
 
+    LaunchedEffect(bottomSheetState.currentValue) {
+        if (bottomSheetState.currentValue == ModalBottomSheetValue.Hidden) {
+            sheetViewModel.resetIsPinCodeCreated()
+        }
+    }
 
     if (isPinCodeCreated) {
         LaunchedEffect(key1 = true) {
+            onShowSuccessSnackBar()
             bottomSheetState.hide()
-            sheetViewModel.resetIsPinCodeCreated()
         }
     }
 
@@ -86,7 +89,7 @@ fun PinCodeCreating(
 
         NumericKeyPad(
             onClick = { sheetViewModel.onClickNumber(it) },
-            onClickClear = { sheetViewModel.resetEnteredPinCode() })
+            onClickClear = { sheetViewModel.resetAllPinCodeStates() })
 
         Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_5)))
     }

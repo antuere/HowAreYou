@@ -10,7 +10,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -22,8 +22,6 @@ class PinCodeCreatingSheetViewModel @Inject constructor(
 ) : ViewModel() {
 
     private var _userPinCode = MutableStateFlow<String?>(null)
-    val userPinCode: StateFlow<String?>
-        get() = _userPinCode
 
     private var _pinCodeCirclesState = MutableStateFlow(PinCodeCirclesState.NONE)
     val pinCodeCirclesState: StateFlow<PinCodeCirclesState>
@@ -42,10 +40,10 @@ class PinCodeCreatingSheetViewModel @Inject constructor(
         getSettings()
     }
 
-    private lateinit var num1: String
-    private lateinit var num2: String
-    private lateinit var num3: String
-    private lateinit var num4: String
+    private var num1: String? = null
+    private var num2: String? = null
+    private var num3: String? = null
+    private var num4: String? = null
 
     private var currentNumbers = mutableListOf<String>()
 
@@ -123,7 +121,9 @@ class PinCodeCreatingSheetViewModel @Inject constructor(
 
     private fun getSettings() {
         viewModelScope.launch {
-            _settings.value = getSettingsUseCase(Unit).first()
+            getSettingsUseCase(Unit).collectLatest {
+                _settings.value = it
+            }
         }
     }
 
@@ -137,16 +137,13 @@ class PinCodeCreatingSheetViewModel @Inject constructor(
         }
     }
 
-    fun resetEnteredPinCode() {
+    fun resetAllPinCodeStates() {
         viewModelScope.launch {
-            delay(100)
-
             _userPinCode.value = null
             currentNumbers.clear()
             _pinCodeCirclesState.value = PinCodeCirclesState.NONE
         }
     }
-
 
     private fun savePinCode(pinCode: String) {
         viewModelScope.launch {
@@ -160,7 +157,6 @@ class PinCodeCreatingSheetViewModel @Inject constructor(
             saveSettingsUseCase(_settings.value!!)
         }
     }
-
 
     fun resetIsPinCodeCreated() {
         _isPinCodeCreated.value = false

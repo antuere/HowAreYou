@@ -2,7 +2,6 @@ package com.example.zeroapp
 
 import android.os.Bundle
 import android.view.View
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.animation.core.*
@@ -60,7 +59,7 @@ import javax.inject.Inject
 
 @OptIn(ExperimentalMaterial3Api::class)
 @AndroidEntryPoint
-class MainActivity : ComponentActivity() {
+class MainActivity : FragmentActivity() {
 
     private var _bottomNavView: BottomNavigationView? = null
     val bottomNavView: BottomNavigationView?

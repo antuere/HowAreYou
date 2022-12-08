@@ -11,22 +11,18 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.zeroapp.R
 import com.example.zeroapp.presentation.base.ui_compose_components.AppBarState
 import com.example.zeroapp.presentation.sign_in_methods.ui_compose.ButtonWithIcon
-import com.example.zeroapp.presentation.sign_in_with_email.SignInState
 import com.example.zeroapp.util.ShowSnackBar
+import com.example.zeroapp.util.ShowSnackBarExperimental
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import timber.log.Timber
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SignInMethodsScreen(
-    modifier: Modifier = Modifier,
     onComposing: (AppBarState, Boolean) -> Unit,
     onNavigateUp: () -> Unit,
     onNavigateSignInEmail: () -> Unit,

@@ -1,7 +1,5 @@
 package com.example.zeroapp.presentation.settings
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import antuere.domain.dto.Settings
@@ -15,11 +13,8 @@ import com.example.zeroapp.R
 import com.example.zeroapp.presentation.base.ui_biometric_dialog.BiometricsAvailableState
 import com.example.zeroapp.presentation.base.ui_biometric_dialog.IUIBiometricListener
 import com.example.zeroapp.presentation.base.ui_biometric_dialog.UIBiometricDialog
-import com.example.zeroapp.presentation.pin_code_сreating.IPinCodeCreatingListener
 import com.example.zeroapp.presentation.base.ui_biometric_dialog.BiometricAuthState
 import com.example.zeroapp.presentation.base.ui_compose_components.dialog.UIDialogCompose
-import com.example.zeroapp.presentation.base.ui_dialog.IUIDialogAction
-import com.example.zeroapp.presentation.base.ui_dialog.UIDialog
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -69,18 +64,6 @@ class SettingsViewModel @Inject constructor(
     val biometricAuthState: StateFlow<BiometricAuthState?>
         get() = _biometricAuthState
 
-    private var _isPinCodeCreated = MutableStateFlow<Boolean?>(null)
-    val isPinCodeCreated: StateFlow<Boolean?>
-        get() = _isPinCodeCreated
-
-    private var _isStartSetBiometric = MutableStateFlow(false)
-    val isStartSetBiometric: StateFlow<Boolean>
-        get() = _isStartSetBiometric
-
-    private var _isStartSetPinCode = MutableStateFlow(false)
-    val isStartSetPinCode: StateFlow<Boolean>
-        get() = _isStartSetPinCode
-
     private var _biometricAvailableState = MutableStateFlow<BiometricsAvailableState?>(null)
     val biometricAvailableState: StateFlow<BiometricsAvailableState?>
         get() = _biometricAvailableState
@@ -93,20 +76,6 @@ class SettingsViewModel @Inject constructor(
         getSavedPinCode()
         checkIsHasDayEntity()
         checkBiometricsAvailable()
-    }
-
-    val pinCodeCreatingListener = object : IPinCodeCreatingListener {
-
-        override fun pinCodeCreated() {
-            viewModelScope.launch {
-                doneAuthByPinUseCase(Unit)
-            }
-            _isPinCodeCreated.value = true
-        }
-
-        override fun pinCodeNotCreated() {
-            _isPinCodeCreated.value = false
-        }
     }
 
     val biometricAuthStateListener = object : IUIBiometricListener {
@@ -217,22 +186,6 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
-    fun setBiometricAuth() {
-        viewModelScope.launch {
-            if (!checkAuthByBiometricUseCase(Unit)) {
-                _isStartSetBiometric.value = true
-            }
-        }
-    }
-
-    fun setPinCodeAuth() {
-        viewModelScope.launch {
-            if (!checkAuthByPinUseCase(Unit) && !checkAuthByBiometricUseCase(Unit)) {
-                _isStartSetPinCode.value = true
-            }
-        }
-    }
-
     fun resetBiometricAuthAndSaveSettings(isUseBiometric: Boolean, isUsePinCode: Boolean) {
         viewModelScope.launch {
             resetAuthByBiometricUseCase(Unit)
@@ -245,7 +198,6 @@ class SettingsViewModel @Inject constructor(
     fun resetPinCodeAuth() {
         viewModelScope.launch {
             resetAuthByPinUseCase(Unit)
-            _isPinCodeCreated.value = null
             delay(100)
 
             resetPinCodeUseCase(Unit)
@@ -253,19 +205,11 @@ class SettingsViewModel @Inject constructor(
     }
 
 
-    fun resetIsStartSetBiometric() {
-        _isStartSetBiometric.value = false
-    }
-
-    fun resetIsStartSetPinCode() {
-        _isStartSetPinCode.value = false
+    fun nullifyBiometricAvailableState() {
+        _biometricAvailableState.value = null
     }
 
     fun nullifyBiometricAuthState() {
         _biometricAuthState.value = null
-    }
-
-    fun nullifyIsPinCodeCreated() {
-        _isPinCodeCreated.value = null
     }
 }
