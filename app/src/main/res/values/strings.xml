@@ -113,6 +113,7 @@
     <string name="enable_pin_code">Enable PIN code</string>
     <string name="enable_pin_code_desc">Use a pin to login to the app</string>
     <string name="pin_code_create_success">PIN code set successfully</string>
+    <string name="pin_code_delete_success">PIN code delete</string>
     <string name="biom_auth_create_success">Biometrics set successfully</string>
     <string name="biometric_unknown_error">Unknown error</string>
     <string name="biometric_none_enroll">First, set the biometrics in the device settings</string>
@@ -121,7 +122,7 @@
     <!-- Home fragment -->
 
     <!-- Secure entry fragment -->
-    <string name="enter_a_password">Enter password</string>
+    <string name="enter_a_pin">Enter PIN code</string>
     <string name="clear_pin">Clear</string>
     <string name="wrong_pin_code">Wrong PIN</string>
 

@@ -7,6 +7,7 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.biometric.BiometricManager
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetLayout
 import androidx.compose.material.ModalBottomSheetValue
@@ -17,6 +18,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.zeroapp.R
 import com.example.zeroapp.presentation.base.ui_biometric_dialog.BiometricAuthState
@@ -30,17 +33,18 @@ import com.example.zeroapp.presentation.settings.ui_compose.PrivacySettings
 import com.example.zeroapp.util.ShowSnackBarExperimental
 import com.example.zeroapp.util.findFragmentActivity
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 @OptIn(ExperimentalMaterialApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsScreen(
     onComposing: (AppBarState, Boolean) -> Unit,
     onNavigateSignIn: () -> Unit,
+    snackbarHostState: SnackbarHostState,
     settingsViewModel: SettingsViewModel = hiltViewModel()
 ) {
     val fragmentActivity = LocalContext.current.findFragmentActivity()
     val scope = rememberCoroutineScope()
-    val snackbarHostState = remember { SnackbarHostState() }
 
     val uiBiometricDialog = settingsViewModel.uiBiometricDialog
     val uiDialog by settingsViewModel.uiDialog.collectAsState()
@@ -60,7 +64,9 @@ fun SettingsScreen(
         mutableStateOf(settings?.isShowWorriedDialog ?: true)
     }
 
-    var isCheckedPinCode = settings?.isPinCodeEnabled ?: false
+    var isCheckedPinCode by remember {
+        mutableStateOf(settings?.isPinCodeEnabled ?: false)
+    }
 
     var isCheckedBiometric by remember {
         mutableStateOf(settings?.isBiometricEnabled ?: false)
@@ -93,164 +99,153 @@ fun SettingsScreen(
         )
     }
 
-    Scaffold(
-        snackbarHost = {
-            SnackbarHost(snackbarHostState) { data ->
-                Snackbar(
-                    snackbarData = data,
-                    containerColor = MaterialTheme.colorScheme.onPrimary,
-                    contentColor = MaterialTheme.colorScheme.onSecondary,
+    if (isShowBiometricAuthSuccessSnackBar) {
+        snackbarHostState.ShowSnackBarExperimental(
+            messageId = R.string.biom_auth_create_success,
+            hideSnackbarAfterDelay = { isShowBiometricAuthSuccessSnackBar = false }
+        )
+    }
+
+    if (isShowNoneEnrollBiometricAuthSnackBar) {
+        snackbarHostState.ShowSnackBarExperimental(
+            messageId = R.string.biometric_none_enroll,
+            hideSnackbarAfterDelay = { isShowNoneEnrollBiometricAuthSnackBar = false }
+        )
+    }
+
+    if (isShowPinCodeSuccessCreatedSnackBar) {
+        snackbarHostState.ShowSnackBarExperimental(
+            messageId = R.string.pin_code_create_success,
+            hideSnackbarAfterDelay = { isShowPinCodeSuccessCreatedSnackBar = false })
+    }
+
+    biometricAuthState?.let { biomAuthState ->
+        when (biomAuthState) {
+            BiometricAuthState.SUCCESS -> {
+                isCheckedBiometric = true
+                settingsViewModel.saveSettings(
+                    isUseBiometric = true,
+                    isUsePinCode = true
                 )
+                isShowBiometricAuthSuccessSnackBar = true
+            }
+            BiometricAuthState.ERROR -> {
+                isCheckedBiometric = false
             }
         }
-    ) { it ->
-        if (isShowBiometricAuthSuccessSnackBar) {
-            snackbarHostState.ShowSnackBarExperimental(
-                messageId = R.string.biom_auth_create_success,
-                hideSnackbarAfterDelay = { isShowBiometricAuthSuccessSnackBar = false }
-            )
-        }
+        settingsViewModel.nullifyBiometricAuthState()
+    }
 
-        if (isShowNoneEnrollBiometricAuthSnackBar) {
-            snackbarHostState.ShowSnackBarExperimental(
-                messageId = R.string.biometric_none_enroll,
-                hideSnackbarAfterDelay = { isShowNoneEnrollBiometricAuthSnackBar = false }
-            )
-        }
-
-        if (isShowPinCodeSuccessCreatedSnackBar) {
-            snackbarHostState.ShowSnackBarExperimental(
-                messageId = R.string.pin_code_create_success,
-                hideSnackbarAfterDelay = { isShowPinCodeSuccessCreatedSnackBar = false })
-        }
-
-        biometricAuthState?.let { biomAuthState ->
-            when (biomAuthState) {
-                BiometricAuthState.SUCCESS -> {
-                    isCheckedBiometric = true
-                    settingsViewModel.saveSettings(
-                        isUseBiometric = true,
-                        isUsePinCode = true
-                    )
-                    isShowBiometricAuthSuccessSnackBar = true
-                }
-                BiometricAuthState.ERROR -> {
+    biometricsAvailableState?.let { availableState ->
+        when (availableState) {
+            is BiometricsAvailableState.NoneEnrolled -> {
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
+                    val enrollIntent = Intent(Settings.ACTION_BIOMETRIC_ENROLL).apply {
+                        putExtra(
+                            Settings.EXTRA_BIOMETRIC_AUTHENTICATORS_ALLOWED,
+                            BiometricManager.Authenticators.BIOMETRIC_STRONG or BiometricManager.Authenticators.BIOMETRIC_WEAK
+                        )
+                    }
+                    val launcher =
+                        rememberLauncherForActivityResult(contract = ActivityResultContracts.StartActivityForResult()) { result ->
+                            if (result.resultCode == Activity.RESULT_OK) {
+                                isShowBiometricAuthSuccessSnackBar = true
+                                isCheckedBiometric = true
+                            } else {
+                                isCheckedBiometric = false
+                            }
+                        }
+                    launcher.launch(enrollIntent)
+                } else {
+                    isShowNoneEnrollBiometricAuthSnackBar = true
                     isCheckedBiometric = false
                 }
             }
-            settingsViewModel.nullifyBiometricAuthState()
+            else -> {}
         }
+        settingsViewModel.nullifyBiometricAvailableState()
+    }
 
-        biometricsAvailableState?.let { availableState ->
-            when (availableState) {
-                is BiometricsAvailableState.NoneEnrolled -> {
-                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
-                        val enrollIntent = Intent(Settings.ACTION_BIOMETRIC_ENROLL).apply {
-                            putExtra(
-                                Settings.EXTRA_BIOMETRIC_AUTHENTICATORS_ALLOWED,
-                                BiometricManager.Authenticators.BIOMETRIC_STRONG or BiometricManager.Authenticators.BIOMETRIC_WEAK
-                            )
-                        }
-                        val launcher =
-                            rememberLauncherForActivityResult(contract = ActivityResultContracts.StartActivityForResult()) { result ->
-                                if (result.resultCode == Activity.RESULT_OK) {
-                                    isShowBiometricAuthSuccessSnackBar = true
-                                    isCheckedBiometric = true
-                                } else {
-                                    isCheckedBiometric = false
-                                }
-                            }
-                        launcher.launch(enrollIntent)
-                    } else {
-                        isShowNoneEnrollBiometricAuthSnackBar = true
-                        isCheckedBiometric = false
-                    }
-                }
-                is BiometricsAvailableState.NoHardware, is BiometricsAvailableState.Available, is BiometricsAvailableState.SomeError -> {}
-            }
-            settingsViewModel.nullifyBiometricAvailableState()
-        }
-
-        ModalBottomSheetLayout(
-            sheetState = bottomSheetState,
-            sheetContent = {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    PinCodeCreating(
-                        bottomSheetState = bottomSheetState,
-                        onShowSuccessSnackBar = { isShowPinCodeSuccessCreatedSnackBar = true })
-                }
-            },
-        ) {
-            Column(
+    ModalBottomSheetLayout(
+        sheetState = bottomSheetState,
+        sheetShape = RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp),
+        sheetContent = {
+            Box(
                 modifier = Modifier
-                    .fillMaxSize()
-                    .padding(it)
+                    .fillMaxWidth(),
+                contentAlignment = Alignment.Center
             ) {
-                uiDialog?.let {
-                    Dialog(dialog = it)
-                }
+                PinCodeCreating(
+                    bottomSheetState = bottomSheetState,
+                    onShowSuccessSnackBar = { isShowPinCodeSuccessCreatedSnackBar = true })
+            }
+        },
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+        ) {
+            uiDialog?.let {
+                Dialog(dialog = it)
+            }
 
-                AuthSection(
+            AuthSection(
+                modifier = Modifier.padding(
+                    horizontal = paddingNormal
+                ),
+                userName = userNickName,
+                onClickSignIn = { onNavigateSignIn() },
+                onClickSignOut = { settingsViewModel.onClickSignOut() })
+
+            settings?.let {
+                GeneralSettings(
                     modifier = Modifier.padding(
                         horizontal = paddingNormal
                     ),
-                    userName = userNickName,
-                    onClickSignIn = { onNavigateSignIn() },
-                    onClickSignOut = { settingsViewModel.onClickSignOut() })
+                    isCheckedWorriedDialog = isCheckedWorriedDialog,
+                    checkChangeWorriedDialog = {
+                        isCheckedWorriedDialog = it
+                        settingsViewModel.saveShowWorriedDialog(it)
+                    }
+                )
 
-                settings?.let {
-                    GeneralSettings(
-                        modifier = Modifier.padding(
-                            horizontal = paddingNormal
-                        ),
-                        isCheckedWorriedDialog = isCheckedWorriedDialog,
-                        checkChangeWorriedDialog = {
-                            isCheckedWorriedDialog = it
-                            settingsViewModel.saveShowWorriedDialog(it)
-                        }
-                    )
-
-                    PrivacySettings(
-                        modifier = Modifier.padding(
-                            horizontal = paddingNormal
-                        ),
-                        isCheckedPinCode = isCheckedPinCode,
-                        checkChangePinCode = {
-                            isCheckedPinCode = it
-                            if (it) {
-                                scope.launch {
-                                    bottomSheetState.animateTo(ModalBottomSheetValue.Expanded)
-                                }
-                            } else {
-                                settingsViewModel.resetPinCodeAuth()
-                                settingsViewModel.resetBiometricAuthAndSaveSettings(
-                                    isUseBiometric = false,
-                                    isUsePinCode = false
-                                )
+                PrivacySettings(
+                    modifier = Modifier.padding(
+                        horizontal = paddingNormal
+                    ),
+                    isCheckedPinCode = isCheckedPinCode,
+                    checkChangePinCode = {
+                        isCheckedPinCode = it
+                        if (it) {
+                            scope.launch {
+                                bottomSheetState.animateTo(ModalBottomSheetValue.Expanded)
                             }
-                        },
-                        isShowBiometricSetting = biometricsAvailableState !is BiometricsAvailableState.NoHardware,
-                        isCheckedBiometric = isCheckedBiometric,
-                        checkChangeBiometric = {
-                            isCheckedBiometric = it
-                            if (it) {
-                                uiBiometricDialog.startBiometricAuth(
-                                    biometricListener = settingsViewModel.biometricAuthStateListener,
-                                    activity = fragmentActivity
-                                )
-                            } else {
-                                settingsViewModel.resetBiometricAuthAndSaveSettings(
-                                    isUseBiometric = false,
-                                    isUsePinCode = isCheckedPinCode
-                                )
-                            }
+                        } else {
+                            settingsViewModel.resetPinCodeAuth()
+                            settingsViewModel.resetBiometricAuthAndSaveSettings(
+                                isUseBiometric = false,
+                                isUsePinCode = false
+                            )
                         }
-                    )
-                }
+                    },
+                    isShowBiometricSetting =
+                    biometricsAvailableState !is BiometricsAvailableState.NoHardware && userPinCode!!.length == 4,
+                    isCheckedBiometric = isCheckedBiometric,
+                    checkChangeBiometric = {
+                        isCheckedBiometric = it
+                        if (it) {
+                            uiBiometricDialog.startBiometricAuth(
+                                biometricListener = settingsViewModel.biometricAuthStateListener,
+                                activity = fragmentActivity
+                            )
+                        } else {
+                            settingsViewModel.resetBiometricAuthAndSaveSettings(
+                                isUseBiometric = false,
+                                isUsePinCode = true
+                            )
+                        }
+                    }
+                )
             }
         }
     }

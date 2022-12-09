@@ -41,6 +41,7 @@ import com.example.zeroapp.presentation.history.HistoryScreen
 import com.example.zeroapp.presentation.history.MyAnalystForHistory
 import com.example.zeroapp.presentation.home.HomeScreen
 import com.example.zeroapp.presentation.reset_password.ResetPasswordScreen
+import com.example.zeroapp.presentation.secure_entry.SecureEntryScreen
 import com.example.zeroapp.presentation.sign_in_with_email.SignInEmailScreen
 import com.example.zeroapp.presentation.settings.SettingsScreen
 import com.example.zeroapp.presentation.sign_in_methods.SignInMethodsScreen
@@ -99,34 +100,61 @@ class MainActivity : FragmentActivity() {
 
         setContent {
             HowAreYouTheme {
+                var startDestination = Screen.SecureEntry.route
+
+                if (!settings!!.isPinCodeEnabled && !settings!!.isBiometricEnabled) {
+                    startDestination = Screen.Home.route
+                }
+
                 val navController = rememberNavController()
+                val snackbarHostState = remember { SnackbarHostState() }
                 var appBarState by remember {
                     mutableStateOf(AppBarState())
                 }
                 var isShowBottomBar by remember {
                     mutableStateOf(true)
                 }
+
                 Scaffold(
+                    snackbarHost = {
+                        SnackbarHost(snackbarHostState) { data ->
+                            Snackbar(
+                                modifier = Modifier.padding(16.dp),
+                                containerColor = MaterialTheme.colorScheme.onPrimary,
+                                contentColor = MaterialTheme.colorScheme.onSecondary,
+                                shape = SnackbarDefaults.shape,
+                            ) {
+                                Box {
+                                    Text(
+                                        text = data.visuals.message,
+                                        style = MaterialTheme.typography.displaySmall
+                                    )
+                                }
+                            }
+                        }
+                    },
                     bottomBar = {
                         if (isShowBottomBar) {
                             BottomNavBar(navController)
                         }
                     },
                     topBar = {
-                        DefaultTopAppBar(
-                            titleId = appBarState.titleId,
-                            navigationIcon = appBarState.navigationIcon,
-                            navigationOnClick = appBarState.navigationOnClick,
-                            actions = appBarState.actions
-                        )
+                        if (appBarState.isVisible) {
+                            DefaultTopAppBar(
+                                titleId = appBarState.titleId,
+                                navigationIcon = appBarState.navigationIcon,
+                                navigationOnClick = appBarState.navigationOnClick,
+                                actions = appBarState.actions
+                            )
+                        }
                     }) { innerPadding ->
                     NavHost(
                         modifier = Modifier.padding(innerPadding),
                         navController = navController,
-                        startDestination = Screen.HomeScreen.route
+                        startDestination = startDestination
                     ) {
 
-                        composable(route = Screen.HomeScreen.route) {
+                        composable(route = Screen.Home.route) {
                             HomeScreen(
                                 navController = navController,
                                 onComposing = { barState: AppBarState, isShow: Boolean ->
@@ -135,7 +163,7 @@ class MainActivity : FragmentActivity() {
                                 })
                         }
 
-                        composable(route = Screen.HistoryScreen.route) {
+                        composable(route = Screen.History.route) {
                             HistoryScreen(
                                 navController = navController,
                                 myAnalystForHistory = myAnalystForHistory,
@@ -151,7 +179,9 @@ class MainActivity : FragmentActivity() {
                                 onComposing = { barState: AppBarState, isShow: Boolean ->
                                     appBarState = barState
                                     isShowBottomBar = isShow
-                                })
+                                },
+                                snackbarHostState = snackbarHostState
+                            )
                         }
 
                         composable(route = Screen.SignInMethods.route) {
@@ -205,6 +235,17 @@ class MainActivity : FragmentActivity() {
                                     appBarState = barState
                                     isShowBottomBar = isShow
                                 })
+                        }
+
+                        composable(route = Screen.SecureEntry.route) {
+                            SecureEntryScreen(
+                                onComposing = { barState: AppBarState, isShow: Boolean ->
+                                    appBarState = barState
+                                    isShowBottomBar = isShow
+                                },
+                                onNavigateHomeScreen = { navController.navigate(Screen.Home.route) },
+                                snackbarHostState = snackbarHostState
+                            )
                         }
                     }
                 }

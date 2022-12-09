@@ -23,7 +23,7 @@
             android:id="@+id/entry_enter_pass_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/enter_a_password"
+            android:text="@string/enter_a_pin"
             android:textSize="@dimen/textSize_normal_0"
             app:layout_constraintTop_toBottomOf="@+id/entry_icon_app"
             app:layout_constraintEnd_toEndOf="parent"

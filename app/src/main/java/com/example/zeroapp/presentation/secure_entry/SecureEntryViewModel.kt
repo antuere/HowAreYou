@@ -1,7 +1,5 @@
 package com.example.zeroapp.presentation.secure_entry
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import antuere.domain.dto.Settings
@@ -15,12 +13,11 @@ import antuere.domain.usecases.user_settings.GetSavedPinCodeUseCase
 import antuere.domain.usecases.user_settings.GetSettingsUseCase
 import antuere.domain.usecases.user_settings.SaveSettingsUseCase
 import com.example.zeroapp.presentation.base.ui_biometric_dialog.IUIBiometricListener
-import com.example.zeroapp.presentation.base.ui_dialog.IUIDialogAction
-import com.example.zeroapp.presentation.base.ui_dialog.UIDialog
 import com.example.zeroapp.presentation.pin_code_сreating.PinCodeCirclesState
 import com.example.zeroapp.presentation.base.ui_biometric_dialog.BiometricAuthState
 import com.example.zeroapp.presentation.base.ui_biometric_dialog.BiometricsAvailableState
 import com.example.zeroapp.presentation.base.ui_biometric_dialog.UIBiometricDialog
+import com.example.zeroapp.presentation.base.ui_compose_components.dialog.UIDialogCompose
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -39,8 +36,8 @@ class SecureEntryViewModel @Inject constructor(
     private val signOutUseCase: SignOutUseCase,
     private val doneAuthByBiometricUseCase: DoneAuthByBiometricUseCase,
     private val doneAuthByPinUseCase: DoneAuthByPinUseCase,
-    private val uiBiometricDialog: UIBiometricDialog
-) : ViewModel(), IUIDialogAction {
+    val uiBiometricDialog: UIBiometricDialog
+) : ViewModel() {
 
     private lateinit var num1: String
     private lateinit var num2: String
@@ -49,44 +46,41 @@ class SecureEntryViewModel @Inject constructor(
 
     private var currentNumbers = mutableListOf<String>()
 
-    private var _uiDialog = MutableStateFlow<UIDialog?>(null)
-    override val uiDialog: StateFlow<UIDialog?>
+    private var _uiDialog = MutableStateFlow<UIDialogCompose?>(null)
+    val uiDialog: StateFlow<UIDialogCompose?>
         get() = _uiDialog
 
-    private var _userPinCode = MutableLiveData<String?>()
-    val userPinCode: LiveData<String?>
-        get() = _userPinCode
+    private var _userPinCode = MutableStateFlow<String?>(null)
 
-    private var _biometricAuthState = MutableLiveData<BiometricAuthState?>()
-    val biometricAuthState: LiveData<BiometricAuthState?>
+    private var _biometricAuthState = MutableStateFlow<BiometricAuthState?>(null)
+    val biometricAuthState: StateFlow<BiometricAuthState?>
         get() = _biometricAuthState
 
-    private var _isShowBiometricAuth = MutableLiveData(false)
-    val isShowBiometricAuth: LiveData<Boolean>
+    private var _isShowBiometricAuth = MutableStateFlow(false)
+    val isShowBiometricAuth: StateFlow<Boolean>
         get() = _isShowBiometricAuth
 
-    private var _pinCodeCirclesState = MutableLiveData<PinCodeCirclesState>()
-    val pinCodeCirclesState: LiveData<PinCodeCirclesState>
+    private var _pinCodeCirclesState = MutableStateFlow(PinCodeCirclesState.NONE)
+    val pinCodeCirclesState: StateFlow<PinCodeCirclesState>
         get() = _pinCodeCirclesState
 
-    private var _settings = MutableLiveData<Settings>()
-    val settings: LiveData<Settings>
+    private var _settings = MutableStateFlow<Settings?>(null)
+    val settings: StateFlow<Settings?>
         get() = _settings
 
-    private var _isCorrectPinCode = MutableLiveData<Boolean>()
-    val isCorrectPinCode: LiveData<Boolean>
-        get() = _isCorrectPinCode
+    private var _isShowErrorSnackBar = MutableStateFlow(false)
+    val isShowErrorSnackBar: StateFlow<Boolean>
+        get() = _isShowErrorSnackBar
 
-    private var _isNavigateToHomeFragment = MutableLiveData(false)
-    val isNavigateToHomeFragment: LiveData<Boolean>
-        get() = _isNavigateToHomeFragment
+    private var _isNavigateToHomeScreen = MutableStateFlow(false)
+    val isNavigateToHomeScreen: StateFlow<Boolean>
+        get() = _isNavigateToHomeScreen
 
-    private var _biometricAvailableState = MutableLiveData<BiometricsAvailableState?>()
-    val biometricAvailableState: LiveData<BiometricsAvailableState?>
+    private var _biometricAvailableState = MutableStateFlow<BiometricsAvailableState?>(null)
+    val biometricAvailableState: StateFlow<BiometricsAvailableState?>
         get() = _biometricAvailableState
 
-    private var isBiomAuthCanceled = false
-    private var savedPinCode = MutableLiveData<String>()
+    private var savedPinCode: String? = null
 
     val biometricAuthStateListener = object : IUIBiometricListener {
 
@@ -123,7 +117,7 @@ class SecureEntryViewModel @Inject constructor(
         }
     }
 
-    private fun saveSettings() {
+    fun saveSettings() {
         viewModelScope.launch {
             _settings.value!!.isBiometricEnabled = true
             saveSettingsUseCase(_settings.value!!)
@@ -132,7 +126,7 @@ class SecureEntryViewModel @Inject constructor(
 
     private fun getSavedPinCode() {
         viewModelScope.launch {
-            savedPinCode.value = getSavedPinCodeUseCase(Unit).first()
+            savedPinCode = getSavedPinCodeUseCase(Unit).first()
         }
     }
 
@@ -207,6 +201,8 @@ class SecureEntryViewModel @Inject constructor(
                 num4 = list[3]
                 _pinCodeCirclesState.value = PinCodeCirclesState.FOURTH
                 _userPinCode.value = num1 + num2 + num3 + num4
+
+                validateEnteredPinCode(_userPinCode.value!!)
             }
             else -> throw IllegalArgumentException("Too much list size")
         }
@@ -219,33 +215,22 @@ class SecureEntryViewModel @Inject constructor(
             deleteAllDaysLocalUseCase(Unit)
 
             delay(150)
-            _isNavigateToHomeFragment.value = true
+            _isNavigateToHomeScreen.value = true
         }
 
     }
 
-    fun validateEnteredPinCode(pinCode: String) {
-        if (pinCode == savedPinCode.value) {
-            if (isBiomAuthCanceled) {
-                viewModelScope.launch {
-                    doneAuthByPinUseCase(Unit)
-                    doneAuthByBiometricUseCase(Unit)
-                }
-            } else {
-                viewModelScope.launch {
-                    doneAuthByPinUseCase(Unit)
-                }
-            }
-            _isCorrectPinCode.value = true
+    private fun validateEnteredPinCode(pinCode: String) {
+        if (pinCode == savedPinCode) {
+            _isNavigateToHomeScreen.value = true
         } else {
-            _isCorrectPinCode.value = false
+            _isShowErrorSnackBar.value = true
+            resetAllPinCodeStates()
         }
     }
 
-    fun resetEnteredPinCode() {
+    fun resetAllPinCodeStates() {
         viewModelScope.launch {
-            delay(100)
-
             _userPinCode.value = null
             currentNumbers.clear()
             _pinCodeCirclesState.value = PinCodeCirclesState.NONE
@@ -253,49 +238,56 @@ class SecureEntryViewModel @Inject constructor(
 
     }
 
-    fun onClickBiometricBtn() {
-        showBiometricAuth(false)
-        _isShowBiometricAuth.value = false
-        saveSettings()
-    }
+//    fun onClickBiometricBtn() {
+//        showBiometricAuth(false)
+//        _isShowBiometricAuth.value = false
+//        saveSettings()
+//    }
 
     fun onClickSignOut() {
-        _uiDialog.value = UIDialog(
+        _uiDialog.value = UIDialogCompose(
             title = R.string.dialog_sign_out_title,
             desc = R.string.dialog_sign_out_desc,
             icon = R.drawable.ic_log_out,
-            positiveButton = UIDialog.UiButton(
+            positiveButton = UIDialogCompose.UiButton(
                 text = R.string.dialog_sign_out_positive,
                 onClick = {
                     resetAllUserData()
                     _uiDialog.value = null
                 }),
-            negativeButton = UIDialog.UiButton(
+            negativeButton = UIDialogCompose.UiButton(
                 text = R.string.dialog_sign_out_negative,
                 onClick = {
                     _uiDialog.value = null
-                })
+                }),
+            dismissAction = {
+                _uiDialog.value = null
+            }
 
         )
     }
 
-    fun showBiometricAuth(withDelay: Boolean) {
-        if (withDelay) {
-            viewModelScope.launch {
-                delay(1000)
-                _isShowBiometricAuth.value = true
-            }
-        } else {
-            _isShowBiometricAuth.value = true
-        }
+//    fun showBiometricAuth(withDelay: Boolean) {
+//        if (withDelay) {
+//            viewModelScope.launch {
+//                delay(1000)
+//                _isShowBiometricAuth.value = true
+//            }
+//        } else {
+//            _isShowBiometricAuth.value = true
+//        }
+//    }
+
+    fun resetIsShowErrorSnackBar() {
+        _isShowErrorSnackBar.value = false
     }
 
-    fun biomAuthDialogCanceled() {
-        isBiomAuthCanceled = true
+    fun nullifyBiometricAvailableState() {
+        _biometricAvailableState.value = null
     }
 
-    fun navigateToHomeFragment() {
-        _isNavigateToHomeFragment.value = true
+    fun resetIsNavigateToHomeScreen() {
+        _isNavigateToHomeScreen.value = false
     }
 
 }

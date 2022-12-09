@@ -44,7 +44,7 @@ fun PrivacySettings(
             checkChanged = checkChangePinCode
         )
 
-        if (isCheckedPinCode && isShowBiometricSetting) {
+        if (isShowBiometricSetting) {
             Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_1)))
             SettingItem(
                 modifier = Modifier.padding(

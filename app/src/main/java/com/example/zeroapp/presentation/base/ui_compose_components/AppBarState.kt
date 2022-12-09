@@ -11,4 +11,5 @@ data class AppBarState(
     val navigationIcon: ImageVector? = null,
     val navigationOnClick: () -> Unit = {},
     val actions: (@Composable RowScope.() -> Unit) = {},
+    var isVisible : Boolean = true
 )

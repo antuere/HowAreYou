@@ -27,7 +27,7 @@ fun BottomNavBar(navController: NavController) {
     val currentDestination = navBackStackEntry?.destination
 
     val iconsTitle = listOf("Home", "History", "Settings")
-    val destinations = listOf(Screen.HomeScreen, Screen.HistoryScreen, Screen.Settings)
+    val destinations = listOf(Screen.Home, Screen.History, Screen.Settings)
 
     val iconsOutline =
         listOf(Icons.Outlined.Home, Icons.Outlined.History, Icons.Outlined.Settings)

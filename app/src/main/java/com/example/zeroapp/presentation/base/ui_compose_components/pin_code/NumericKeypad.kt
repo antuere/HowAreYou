@@ -1,14 +1,12 @@
 package com.example.zeroapp.presentation.base.ui_compose_components
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.Button
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.zeroapp.R
@@ -16,7 +14,9 @@ import com.example.zeroapp.R
 @Composable
 fun NumericKeyPad(
     onClick: (String) -> Unit,
-    onClickClear: () -> Unit
+    onClickClear: () -> Unit,
+    isShowBiometricBtn: Boolean = false,
+    onClickBiometric: () -> Unit = {}
 ) {
     Column(
         modifier = Modifier
@@ -52,6 +52,16 @@ fun NumericKeyPad(
             Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_2)))
         }
         Row(modifier = Modifier.align(Alignment.End)) {
+            if (isShowBiometricBtn) {
+                IconButton(modifier = Modifier.padding(horizontal = 16.dp),
+                    onClick = { onClickBiometric() }) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_finger_print),
+                        contentDescription = null
+                    )
+                }
+            }
+
             Button(modifier = Modifier.padding(horizontal = 16.dp),
                 onClick = { onClick("0") }) {
                 Text(text = "0", color = MaterialTheme.colorScheme.onPrimary)
