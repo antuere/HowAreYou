@@ -21,7 +21,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
 
@@ -42,8 +41,6 @@ class HomeViewModel @Inject constructor(
         get() = _uiDialog
 
     private var _lastDay = MutableStateFlow<Day?>(null)
-    val lastDay: StateFlow<Day?>
-        get() = _lastDay
 
     private var _dayQuote = MutableStateFlow<Quote?>(null)
     val dayQuote: StateFlow<Quote?>
@@ -164,25 +161,6 @@ class HomeViewModel @Inject constructor(
             _settings.value!!.isShowWorriedDialog = false
             saveSettingsUseCase(_settings.value!!)
         }
-    }
-
-    fun testDialog() {
-        _uiDialog.value = UIDialogCompose(
-            title = R.string.dialog_warning_title,
-            desc = R.string.dialog_warning_desc,
-            icon = R.drawable.ic_warning_dialog,
-            positiveButton = UIDialogCompose.UiButton(
-                text = R.string.dialog_warning_positive,
-                onClick = {
-                    _uiDialog.value = null
-                }),
-            negativeButton = UIDialogCompose.UiButton(
-                text = R.string.dialog_warning_negative,
-                onClick = {
-                    _isShowSnackBar.value = true
-                    _uiDialog.value = null
-                })
-        )
     }
 
     private fun checkDayTime() {

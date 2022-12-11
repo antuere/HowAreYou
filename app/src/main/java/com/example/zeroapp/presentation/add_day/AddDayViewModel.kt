@@ -9,8 +9,9 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class AddDayFragmentViewModel @Inject constructor(private val addDayUseCase: AddDayUseCase) :
-    ViewModel() {
+class AddDayViewModel @Inject constructor(
+    private val addDayUseCase: AddDayUseCase
+    ) : ViewModel() {
 
     fun onClickSmile(imageResId: Int, descDay: String) {
         val day = Day(imageResId = imageResId, dayText = descDay)

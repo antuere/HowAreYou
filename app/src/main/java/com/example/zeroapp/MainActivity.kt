@@ -31,6 +31,7 @@ import androidx.navigation.ui.setupWithNavController
 import antuere.domain.dto.Settings
 import antuere.domain.usecases.user_settings.GetSettingsUseCase
 import com.example.zeroapp.databinding.ActivityMainBinding
+import com.example.zeroapp.presentation.add_day.AddDayScreen
 import com.example.zeroapp.presentation.base.ui_compose_components.AppBarState
 import com.example.zeroapp.presentation.base.ui_compose_components.Screen
 import com.example.zeroapp.presentation.base.ui_compose_components.BottomNavBar
@@ -155,12 +156,23 @@ class MainActivity : FragmentActivity() {
                     ) {
 
                         composable(route = Screen.Home.route) {
+                            startDestination = Screen.Home.route
                             HomeScreen(
-                                navController = navController,
+                                onNavigateToAddDay = { navController.navigate(Screen.AddDay.route) },
                                 onComposing = { barState: AppBarState, isShow: Boolean ->
                                     appBarState = barState
                                     isShowBottomBar = isShow
                                 })
+                        }
+
+                        composable(route = Screen.AddDay.route) {
+                            AddDayScreen(
+                                onComposing = { barState: AppBarState, isShow: Boolean ->
+                                    appBarState = barState
+                                    isShowBottomBar = isShow
+                                },
+                                onNavigateUp = { navController.navigateUp() },
+                            )
                         }
 
                         composable(route = Screen.History.route) {

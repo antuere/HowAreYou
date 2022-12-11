@@ -2,6 +2,7 @@ package com.example.zeroapp.presentation.base.ui_compose_components
 
 sealed class Screen(val route: String) {
     object Home : Screen("home_screen")
+    object AddDay : Screen("add_day_screen")
     object History : Screen("history_screen")
     object Settings : Screen("settings_screen")
     object SignInMethods : Screen("sign_in_methods_screen")

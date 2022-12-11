@@ -97,6 +97,8 @@ class SecureEntryViewModel @Inject constructor(
             }
 
             _biometricAuthState.value = BiometricAuthState.SUCCESS
+            saveSettings()
+            _isNavigateToHomeScreen.value = true
         }
 
         override fun noneEnrolled() {
@@ -114,6 +116,10 @@ class SecureEntryViewModel @Inject constructor(
     private fun getSettings() {
         viewModelScope.launch {
             _settings.value = getSettingsUseCase(Unit).first()
+            delay(350)
+            if (_settings.value!!.isBiometricEnabled) {
+                _isShowBiometricAuth.value = true
+            }
         }
     }
 
@@ -238,12 +244,6 @@ class SecureEntryViewModel @Inject constructor(
 
     }
 
-//    fun onClickBiometricBtn() {
-//        showBiometricAuth(false)
-//        _isShowBiometricAuth.value = false
-//        saveSettings()
-//    }
-
     fun onClickSignOut() {
         _uiDialog.value = UIDialogCompose(
             title = R.string.dialog_sign_out_title,
@@ -267,16 +267,9 @@ class SecureEntryViewModel @Inject constructor(
         )
     }
 
-//    fun showBiometricAuth(withDelay: Boolean) {
-//        if (withDelay) {
-//            viewModelScope.launch {
-//                delay(1000)
-//                _isShowBiometricAuth.value = true
-//            }
-//        } else {
-//            _isShowBiometricAuth.value = true
-//        }
-//    }
+    fun onClickBiometricBtn() {
+        _isShowBiometricAuth.value = true
+    }
 
     fun resetIsShowErrorSnackBar() {
         _isShowErrorSnackBar.value = false
@@ -286,8 +279,17 @@ class SecureEntryViewModel @Inject constructor(
         _biometricAvailableState.value = null
     }
 
+    fun navigateToHomeScreen() {
+        _isNavigateToHomeScreen.value = true
+
+    }
+
     fun resetIsNavigateToHomeScreen() {
         _isNavigateToHomeScreen.value = false
+    }
+
+    fun resetIsShowBiometricAuth() {
+        _isShowBiometricAuth.value = false
     }
 
 }

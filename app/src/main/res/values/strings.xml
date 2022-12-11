@@ -91,6 +91,7 @@
     <!-- Add day fragment -->
     <string name="how_are_you_today">How are you today?</string>
     <string name="desc_you_day">Describe your day in a nutshell</string>
+    <string name="too_many_chars_100">Cannot be more than 100 characters</string>
 
     <!-- Cats fragment -->
     <string name="getCats">Update cute cats!</string>
@@ -169,5 +170,6 @@
     <string name="leak_canary_test_class_name">assertk.Assert</string>
     <string name="click_less">Click less</string>
     <string name="click_more">Click more</string>
+    <string name="too_many_chars_default">Cannot be more characters</string>
 
 </resources>

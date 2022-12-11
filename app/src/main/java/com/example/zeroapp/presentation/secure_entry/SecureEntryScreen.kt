@@ -18,7 +18,6 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.zeroapp.R
-import com.example.zeroapp.presentation.base.ui_biometric_dialog.BiometricAuthState
 import com.example.zeroapp.presentation.base.ui_biometric_dialog.BiometricsAvailableState
 import com.example.zeroapp.presentation.base.ui_compose_components.AppBarState
 import com.example.zeroapp.presentation.base.ui_compose_components.IconApp
@@ -49,18 +48,13 @@ fun SecureEntryScreen(
 
     val uiBiometricDialog = secureEntryViewModel.uiBiometricDialog
     val uiDialog by secureEntryViewModel.uiDialog.collectAsState()
-    val settings by secureEntryViewModel.settings.collectAsState()
+    val isShowBiometricAuth by secureEntryViewModel.isShowBiometricAuth.collectAsState()
     val isNavigateToHomeScreen by secureEntryViewModel.isNavigateToHomeScreen.collectAsState()
     val isShowPinCodeError by secureEntryViewModel.isShowErrorSnackBar.collectAsState()
-    val biometricAuthState by secureEntryViewModel.biometricAuthState.collectAsState()
     val biometricsAvailableState by secureEntryViewModel.biometricAvailableState.collectAsState()
     val pinCodeCirclesState by secureEntryViewModel.pinCodeCirclesState.collectAsState()
 
     var isShowNoneEnrollBiometricAuthSnackBar by remember {
-        mutableStateOf(false)
-    }
-
-    var isShowBiomAuth by remember {
         mutableStateOf(false)
     }
 
@@ -81,10 +75,13 @@ fun SecureEntryScreen(
             hideSnackbarAfterDelay = { secureEntryViewModel.resetIsShowErrorSnackBar() }
         )
     }
-    settings?.let {
-        if (it.isBiometricEnabled) {
-            isShowBiomAuth = true
-        }
+
+    if (isShowBiometricAuth) {
+        uiBiometricDialog.startBiometricAuth(
+            biometricListener = secureEntryViewModel.biometricAuthStateListener,
+            activity = fragmentActivity
+        )
+        secureEntryViewModel.resetIsShowBiometricAuth()
     }
 
     biometricsAvailableState?.let { availableState ->
@@ -112,12 +109,6 @@ fun SecureEntryScreen(
         }
         secureEntryViewModel.nullifyBiometricAvailableState()
     }
-    biometricAuthState?.let { state ->
-        if (state == BiometricAuthState.SUCCESS) {
-            secureEntryViewModel.saveSettings()
-            onNavigateHomeScreen()
-        }
-    }
 
     if (isNavigateToHomeScreen) {
         onNavigateHomeScreen()
@@ -142,9 +133,7 @@ fun SecureEntryScreen(
             onClick = { secureEntryViewModel.onClickNumber(it) },
             onClickClear = { secureEntryViewModel.resetAllPinCodeStates() },
             isShowBiometricBtn = biometricsAvailableState !is BiometricsAvailableState.NoHardware,
-            onClickBiometric = {
-                isShowBiomAuth = true
-            })
+            onClickBiometric = { secureEntryViewModel.onClickBiometricBtn() })
         Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_7)))
 
         TextButton(onClick = { secureEntryViewModel.onClickSignOut() }) {

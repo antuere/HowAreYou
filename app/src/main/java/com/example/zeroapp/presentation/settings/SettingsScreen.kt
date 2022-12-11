@@ -18,7 +18,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.zeroapp.R
@@ -33,9 +32,8 @@ import com.example.zeroapp.presentation.settings.ui_compose.PrivacySettings
 import com.example.zeroapp.util.ShowSnackBarExperimental
 import com.example.zeroapp.util.findFragmentActivity
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
-@OptIn(ExperimentalMaterialApi::class, ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun SettingsScreen(
     onComposing: (AppBarState, Boolean) -> Unit,
@@ -46,11 +44,11 @@ fun SettingsScreen(
     val fragmentActivity = LocalContext.current.findFragmentActivity()
     val scope = rememberCoroutineScope()
 
+    val settings by settingsViewModel.settings.collectAsState()
+    val userPinCode by settingsViewModel.savedPinCode.collectAsState()
     val uiBiometricDialog = settingsViewModel.uiBiometricDialog
     val uiDialog by settingsViewModel.uiDialog.collectAsState()
     val userNickName by settingsViewModel.userNickname.collectAsState()
-    val settings by settingsViewModel.settings.collectAsState()
-    val userPinCode by settingsViewModel.savedPinCode.collectAsState()
     val biometricsAvailableState by settingsViewModel.biometricAvailableState.collectAsState()
     val biometricAuthState by settingsViewModel.biometricAuthState.collectAsState()
 
@@ -59,18 +57,6 @@ fun SettingsScreen(
     val bottomSheetState = rememberModalBottomSheetState(
         initialValue = ModalBottomSheetValue.Hidden,
     )
-
-    var isCheckedWorriedDialog by remember {
-        mutableStateOf(settings?.isShowWorriedDialog ?: true)
-    }
-
-    var isCheckedPinCode by remember {
-        mutableStateOf(settings?.isPinCodeEnabled ?: false)
-    }
-
-    var isCheckedBiometric by remember {
-        mutableStateOf(settings?.isBiometricEnabled ?: false)
-    }
 
     var isShowBiometricAuthSuccessSnackBar by remember {
         mutableStateOf(false)
@@ -84,10 +70,8 @@ fun SettingsScreen(
         mutableStateOf(false)
     }
 
-    if (bottomSheetState.isVisible) {
-        userPinCode?.let { pin ->
-            isCheckedPinCode = pin.length == 4
-        }
+    var isCheckedWorriedDialog by remember {
+        mutableStateOf(settings?.isShowWorriedDialog ?: true)
     }
 
     LaunchedEffect(bottomSheetState.targetValue) {
@@ -117,6 +101,24 @@ fun SettingsScreen(
         snackbarHostState.ShowSnackBarExperimental(
             messageId = R.string.pin_code_create_success,
             hideSnackbarAfterDelay = { isShowPinCodeSuccessCreatedSnackBar = false })
+    }
+
+    var isCheckedPinCode by remember {
+        mutableStateOf(
+            settings?.isPinCodeEnabled ?: false
+        )
+    }
+
+    var isCheckedBiometric  by remember {
+        mutableStateOf(
+            settings?.isBiometricEnabled ?: false
+        )
+    }
+
+    if (bottomSheetState.isVisible) {
+        userPinCode?.let { pin ->
+            isCheckedPinCode = pin.length == 4
+        }
     }
 
     biometricAuthState?.let { biomAuthState ->
@@ -188,7 +190,6 @@ fun SettingsScreen(
             uiDialog?.let {
                 Dialog(dialog = it)
             }
-
             AuthSection(
                 modifier = Modifier.padding(
                     horizontal = paddingNormal
@@ -229,7 +230,7 @@ fun SettingsScreen(
                         }
                     },
                     isShowBiometricSetting =
-                    biometricsAvailableState !is BiometricsAvailableState.NoHardware && userPinCode!!.length == 4,
+                    biometricsAvailableState !is BiometricsAvailableState.NoHardware && userPinCode?.length == 4,
                     isCheckedBiometric = isCheckedBiometric,
                     checkChangeBiometric = {
                         isCheckedBiometric = it

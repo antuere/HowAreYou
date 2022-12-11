@@ -1,8 +1,6 @@
 package com.example.zeroapp.presentation.home
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.FilterList
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -13,21 +11,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import com.example.zeroapp.R
 import com.example.zeroapp.presentation.base.ui_compose_components.AppBarState
 import com.example.zeroapp.presentation.home.ui_compose.CardWithQuote
 import com.example.zeroapp.presentation.base.ui_compose_components.CardDefault
 import com.example.zeroapp.presentation.base.ui_compose_components.CardWithOnClick
-import com.example.zeroapp.presentation.base.ui_compose_components.DefaultTopAppBar
 import com.example.zeroapp.presentation.base.ui_compose_components.dialog.Dialog
 import com.example.zeroapp.presentation.base.ui_theme.TealMain
 
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
-    navController: NavController,
+    onNavigateToAddDay : () -> Unit,
     onComposing: (AppBarState, Boolean) -> Unit,
     homeViewModel: HomeViewModel = hiltViewModel()
 ) {
@@ -121,18 +118,29 @@ fun HomeScreen(
                             bottom = dimensionResource(id = R.dimen.padding_normal_1),
                             start = dimensionResource(id = R.dimen.padding_normal_1),
                             end = dimensionResource(id = R.dimen.padding_normal_1)
-                        ), onClick = { homeViewModel.testDialog() }, containerColor = TealMain
+                        ), onClick = {
+                                     when(fabBtnState) {
+                                         is FabButtonState.Add -> {
+                                             onNavigateToAddDay()
+                                         }
+                                         is FabButtonState.Smile -> {
+                                         }
+                                     }
+
+                    }, containerColor = TealMain
                 ) {
                     when (fabBtnState) {
                         is FabButtonState.Add -> {
                             Icon(
                                 painter = painterResource(id = R.drawable.ic_plus),
+                                modifier = Modifier.size(24.dp),
                                 contentDescription = null
                             )
                         }
                         is FabButtonState.Smile -> {
                             Icon(
                                 painter = painterResource(id = fabBtnState.image),
+                                modifier = Modifier.size(24.dp),
                                 contentDescription = null
                             )
                         }

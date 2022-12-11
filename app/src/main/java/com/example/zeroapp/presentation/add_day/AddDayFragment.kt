@@ -15,7 +15,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class AddDayFragment : BaseBindingFragment<FragmentAddDayBinding>(FragmentAddDayBinding::inflate) {
 
-    private val viewModel by viewModels<AddDayFragmentViewModel>()
+    private val viewModel by viewModels<AddDayViewModel>()
     private val smileButtons: List<ImageButton> by lazy {
         listOf(
             binding!!.bHappySmile,

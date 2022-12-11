@@ -22,6 +22,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -34,12 +35,9 @@ class SettingsViewModel @Inject constructor(
     private val resetPinCodeUseCase: ResetPinCodeUseCase,
     private val resetUserNicknameUseCase: ResetUserNicknameUseCase,
     private val signOutUseCase: SignOutUseCase,
-    private val doneAuthByPinUseCase: DoneAuthByPinUseCase,
     private val doneAuthByBiometricUseCase: DoneAuthByBiometricUseCase,
     private val resetAuthByBiometricUseCase: ResetAuthByBiometricUseCase,
     private val resetAuthByPinUseCase: ResetAuthByPinUseCase,
-    private val checkAuthByBiometricUseCase: CheckAuthByBiometricUseCase,
-    private val checkAuthByPinUseCase: CheckAuthByPinUseCase,
     private val deleteAllDaysLocalUseCase: DeleteAllDaysLocalUseCase,
     val uiBiometricDialog: UIBiometricDialog
 ) : ViewModel() {
@@ -71,9 +69,9 @@ class SettingsViewModel @Inject constructor(
     private var isShowDialogSignOut = false
 
     init {
-        getUserNickname()
         getSettings()
         getSavedPinCode()
+        getUserNickname()
         checkIsHasDayEntity()
         checkBiometricsAvailable()
     }
@@ -164,6 +162,7 @@ class SettingsViewModel @Inject constructor(
     private fun getSavedPinCode() {
         viewModelScope.launch(Dispatchers.IO) {
             getSavedPinCodeUseCase(Unit).collectLatest {
+                Timber.i("NPE error in VM : pin is $it")
                 _savedPinCode.value = it
             }
         }

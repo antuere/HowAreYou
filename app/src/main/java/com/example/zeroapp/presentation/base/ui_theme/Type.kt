@@ -17,6 +17,9 @@ val Roboto = FontFamily(
     Font (R.font.roboto_medium, FontWeight.Medium),
     Font(R.font.roboto)
 )
+val PlayfairDisplay = FontFamily(
+    Font (R.font.playfair_display),
+)
 
 // Set of Material typography styles to start with
 val Typography = Typography(
