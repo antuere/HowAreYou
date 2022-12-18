@@ -165,11 +165,11 @@ class HomeViewModel @Inject constructor(
 
     private fun checkDayTime() {
         if (TimeUtility.format(Date()) == (_lastDay.value?.dateString ?: "show add button")) {
-            _fabButtonState.value = FabButtonState.Smile(_lastDay.value?.imageResId!!)
+            val currentDay = _lastDay.value!!
+            _fabButtonState.value =
+                FabButtonState.Smile(imageId = currentDay.imageResId, dayId = currentDay.dayId)
             _wishText.value =
-                myAnalystForSummary.getWishStringForSummary(_lastDay.value?.imageResId!!)
-
-
+                myAnalystForSummary.getWishStringForSummary(currentDay.imageResId)
         } else {
             _fabButtonState.value = FabButtonState.Add
             _wishText.value =

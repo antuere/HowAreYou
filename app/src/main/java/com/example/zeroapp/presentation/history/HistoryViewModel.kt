@@ -1,8 +1,6 @@
 package com.example.zeroapp.presentation.history
 
-import android.view.View
 import androidx.lifecycle.*
-import androidx.navigation.fragment.FragmentNavigatorExtras
 import antuere.domain.dto.Day
 import antuere.domain.dto.ToggleBtnState
 import antuere.domain.usecases.days_entities.DeleteDayUseCase
@@ -16,13 +14,10 @@ import com.example.zeroapp.R
 import com.example.zeroapp.presentation.base.ui_compose_components.dialog.UIDialogCompose
 import com.example.zeroapp.presentation.base.ui_date_picker.IUIDatePickerAction
 import com.example.zeroapp.presentation.base.ui_date_picker.UIDatePicker
-import com.example.zeroapp.presentation.base.ui_dialog.UIDialog
-import com.example.zeroapp.presentation.history.adapter.DayClickListener
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 
@@ -80,24 +75,6 @@ class HistoryViewModel @Inject constructor(
     fun onClickLongDay(day: Day) {
         _dayId = day.dayId
         onClickLongSmile()
-    }
-
-    val dayClickListener = object : DayClickListener {
-
-        override fun onClick(day: Day, view: View) {
-            val extras = FragmentNavigatorExtras(view to transitionName)
-
-            _navigateToDetailState.value = NavigateToDetailState(
-                extras = extras,
-                dayId = day.dayId,
-                navigateToDetail = true
-            )
-        }
-
-        override fun onClickLong(day: Day) {
-            _dayId = day.dayId
-            onClickLongSmile()
-        }
     }
 
     fun doneNavigateToDetail() {
@@ -166,7 +143,6 @@ class HistoryViewModel @Inject constructor(
             _currentJob = JobType.Month(viewModelScope.launch {
                 getCertainDaysUseCase(TimeUtility.getCurrentMonthTime()).cancellable()
                     .collectLatest {
-                        Timber.i("list error: currentMonth is size ${it.size}")
                         _listDays.value = it
                     }
             })
@@ -180,7 +156,6 @@ class HistoryViewModel @Inject constructor(
             _currentJob = JobType.Week(viewModelScope.launch {
                 getCertainDaysUseCase(TimeUtility.getCurrentWeekTime()).cancellable()
                     .collectLatest {
-                        Timber.i("list error: last week is size ${it.size}")
                         _listDays.value = it
                     }
             })
@@ -193,7 +168,6 @@ class HistoryViewModel @Inject constructor(
 
             _currentJob = JobType.AllDays(viewModelScope.launch {
                 getAllDaysUseCase(Unit).cancellable().collectLatest {
-                    Timber.i("list error: all days is size ${it.size}")
                     _listDays.value = it
                 }
             })
@@ -201,7 +175,6 @@ class HistoryViewModel @Inject constructor(
     }
 
     fun onClickCheckedItem(state: ToggleBtnState) {
-        Timber.i("list error : checked item click, state is $state")
         if (_toggleBtnState.value != state) {
             viewModelScope.launch {
                 saveToggleBtnUseCase(state)
@@ -212,7 +185,6 @@ class HistoryViewModel @Inject constructor(
     private fun getToggleButtonState() {
         viewModelScope.launch(Dispatchers.IO) {
             getToggleBtnStateUseCase(Unit).collectLatest {
-                Timber.i("list error: checked item click, saved state is $it")
                 _toggleBtnState.value = it
             }
         }

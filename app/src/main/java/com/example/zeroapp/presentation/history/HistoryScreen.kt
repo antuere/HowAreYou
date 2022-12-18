@@ -23,7 +23,6 @@ import com.example.zeroapp.presentation.history.ui_compose.ToggleBtnGroup
 
 @Composable
 fun HistoryScreen(
-    modifier: Modifier = Modifier,
     onNavigateToDetail : (Long) -> Unit,
     onComposing: (AppBarState, Boolean) -> Unit,
     historyViewModel: HistoryViewModel = hiltViewModel(),
@@ -78,7 +77,7 @@ fun HistoryScreen(
     }
 
     Column(
-        modifier = modifier
+        modifier = Modifier
             .fillMaxSize(),
         verticalArrangement = Arrangement.Top
     ) {

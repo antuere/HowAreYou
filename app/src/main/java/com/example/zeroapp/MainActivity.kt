@@ -40,6 +40,7 @@ import com.example.zeroapp.presentation.base.ui_compose_components.DefaultTopApp
 import com.example.zeroapp.presentation.home.HomeViewModel
 import com.example.zeroapp.presentation.base.ui_theme.HowAreYouTheme
 import com.example.zeroapp.presentation.detail.DetailScreen
+import com.example.zeroapp.presentation.favorites.FavoritesScreen
 import com.example.zeroapp.presentation.history.HistoryScreen
 import com.example.zeroapp.presentation.history.MyAnalystForHistory
 import com.example.zeroapp.presentation.home.HomeScreen
@@ -160,11 +161,28 @@ class MainActivity : FragmentActivity() {
                         composable(route = Screen.Home.route) {
                             startDestination = Screen.Home.route
                             HomeScreen(
+                                onNavigateToDetail = {
+                                    navController.navigate(Screen.Detail.route + "/$it")
+                                },
                                 onNavigateToAddDay = { navController.navigate(Screen.AddDay.route) },
+                                onNavigateToFavorites = { navController.navigate(Screen.Favorites.route) },
                                 onComposing = { barState: AppBarState, isShow: Boolean ->
                                     appBarState = barState
                                     isShowBottomBar = isShow
                                 })
+                        }
+
+                        composable(route = Screen.Favorites.route) {
+                            FavoritesScreen(
+                                onComposing = { barState: AppBarState, isShow: Boolean ->
+                                    appBarState = barState
+                                    isShowBottomBar = isShow
+                                },
+                                onNavigateToDetail = {
+                                    navController.navigate(Screen.Detail.route + "/$it")
+                                },
+                                onNavigateUp = { navController.navigateUp() },
+                            )
                         }
 
                         composable(route = Screen.AddDay.route) {

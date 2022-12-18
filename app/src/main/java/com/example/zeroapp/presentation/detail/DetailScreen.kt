@@ -28,7 +28,6 @@ fun DetailScreen(
     val selectedDay by detailViewModel.selectedDay.collectAsState()
     val navigateToHistory by detailViewModel.navigateToHistory.collectAsState()
 
-
     if (navigateToHistory) {
         onNavigateUp()
         detailViewModel.navigateDone()
