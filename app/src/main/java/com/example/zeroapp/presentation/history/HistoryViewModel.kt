@@ -83,6 +83,7 @@ class HistoryViewModel @Inject constructor(
     }
 
     val dayClickListener = object : DayClickListener {
+
         override fun onClick(day: Day, view: View) {
             val extras = FragmentNavigatorExtras(view to transitionName)
 

@@ -12,7 +12,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import antuere.domain.dto.Day
 import antuere.domain.dto.ToggleBtnState
 import com.example.zeroapp.R
@@ -25,11 +24,28 @@ import com.example.zeroapp.presentation.history.ui_compose.ToggleBtnGroup
 @Composable
 fun HistoryScreen(
     modifier: Modifier = Modifier,
-    navController: NavController,
+    onNavigateToDetail : (Long) -> Unit,
     onComposing: (AppBarState, Boolean) -> Unit,
     historyViewModel: HistoryViewModel = hiltViewModel(),
     myAnalystForHistory: MyAnalystForHistory
 ) {
+    LaunchedEffect(key1 = true) {
+        onComposing(
+            AppBarState(
+                titleId = R.string.history,
+                actions = {
+                    IconButton(onClick = { /* doSomething() */ }) {
+                        Icon(
+                            imageVector = Icons.Rounded.FilterList,
+                            contentDescription = null
+                        )
+                    }
+                }
+            ),
+            true
+        )
+    }
+
 //    val datePickerListener = UIDatePickerListener(requireActivity().supportFragmentManager, viewModel)
     val uiDialog by historyViewModel.uiDialog.collectAsState()
     val listDays by historyViewModel.listDays.collectAsState()
@@ -52,22 +68,15 @@ fun HistoryScreen(
         }
     }
 
-    LaunchedEffect(key1 = true) {
-        onComposing(
-            AppBarState(
-                titleId = R.string.history,
-                actions = {
-                    IconButton(onClick = { /* doSomething() */ }) {
-                        Icon(
-                            imageVector = Icons.Rounded.FilterList,
-                            contentDescription = null
-                        )
-                    }
-                }
-            ),
-            true
-        )
+    LaunchedEffect(navigateToDetailState) {
+        navigateToDetailState?.let { state ->
+            if(state.navigateToDetail){
+                onNavigateToDetail(state.dayId!!)
+            }
+            historyViewModel.doneNavigateToDetail()
+        }
     }
+
     Column(
         modifier = modifier
             .fillMaxSize(),

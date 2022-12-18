@@ -30,6 +30,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.ui.setupWithNavController
 import antuere.domain.dto.Settings
 import antuere.domain.usecases.user_settings.GetSettingsUseCase
+import antuere.domain.util.Constants
 import com.example.zeroapp.databinding.ActivityMainBinding
 import com.example.zeroapp.presentation.add_day.AddDayScreen
 import com.example.zeroapp.presentation.base.ui_compose_components.AppBarState
@@ -38,6 +39,7 @@ import com.example.zeroapp.presentation.base.ui_compose_components.BottomNavBar
 import com.example.zeroapp.presentation.base.ui_compose_components.DefaultTopAppBar
 import com.example.zeroapp.presentation.home.HomeViewModel
 import com.example.zeroapp.presentation.base.ui_theme.HowAreYouTheme
+import com.example.zeroapp.presentation.detail.DetailScreen
 import com.example.zeroapp.presentation.history.HistoryScreen
 import com.example.zeroapp.presentation.history.MyAnalystForHistory
 import com.example.zeroapp.presentation.home.HomeScreen
@@ -177,12 +179,23 @@ class MainActivity : FragmentActivity() {
 
                         composable(route = Screen.History.route) {
                             HistoryScreen(
-                                navController = navController,
                                 myAnalystForHistory = myAnalystForHistory,
+                                onNavigateToDetail = {
+                                    navController.navigate(Screen.Detail.route + "/$it")
+                                },
                                 onComposing = { barState: AppBarState, isShow: Boolean ->
                                     appBarState = barState
                                     isShowBottomBar = isShow
                                 })
+                        }
+
+                        composable(route = Screen.Detail.route + "/{${Constants.DAY_ID_KEY}}") {
+                            DetailScreen(
+                                onComposing = { barState: AppBarState, isShow: Boolean ->
+                                    appBarState = barState
+                                    isShowBottomBar = isShow
+                                },
+                                onNavigateUp = { navController.navigateUp() })
                         }
 
                         composable(route = Screen.Settings.route) {
