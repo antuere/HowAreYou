@@ -7,8 +7,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.example.zeroapp.R
-import com.example.zeroapp.presentation.pin_code_сreating.PinCodeCirclesState
 
 @Composable
 fun ProgressCircle(@DrawableRes drawId: Int) {

@@ -20,15 +20,15 @@ import com.example.zeroapp.presentation.sign_in_with_email.ui_compose.SignInButt
 import com.example.zeroapp.presentation.sign_in_with_email.ui_compose.SignUpHintButton
 import com.example.zeroapp.util.ShowSnackBar
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SignInEmailScreen(
     modifier: Modifier = Modifier,
     onComposing: (AppBarState, Boolean) -> Unit,
-    onNavigateUp : () -> Unit,
-    onNavigateSettings : () -> Unit,
+    onNavigateUp: () -> Unit,
+    onNavigateSettings: () -> Unit,
     onNavigateSignUp: () -> Unit,
     onNavigateResetPassword: () -> Unit,
+    snackbarHostState: SnackbarHostState,
     signInEmailViewModel: SignInEmailViewModel = hiltViewModel()
 ) {
     val isShowLoginProgressIndicator by signInEmailViewModel.isShowLoginProgressIndicator.collectAsState()
@@ -36,8 +36,6 @@ fun SignInEmailScreen(
 
     var userEmail by remember { mutableStateOf("") }
     var userPassword by remember { mutableStateOf("") }
-
-    val snackbarHostState = remember { SnackbarHostState() }
 
     LaunchedEffect(key1 = true) {
         onComposing(
@@ -49,89 +47,78 @@ fun SignInEmailScreen(
             false
         )
     }
-    Scaffold(
-        snackbarHost = {
-            SnackbarHost(snackbarHostState) { data ->
-                Snackbar(
-                    snackbarData = data,
-                    containerColor = MaterialTheme.colorScheme.onPrimary,
-                    contentColor = MaterialTheme.colorScheme.onSecondary
-                )
+
+    //    TODO подумать как сделать элегантней ч2
+    signInState?.let { state ->
+        when (state) {
+            is SignInState.Successful -> {
+                onNavigateSettings()
+                signInEmailViewModel.nullifyState()
+                signInEmailViewModel.resetIsShowLoginProgressIndicator(true)
+            }
+            is SignInState.EmptyFields -> {
+                snackbarHostState.ShowSnackBar(message = stringResource(id = R.string.empty_fields))
+                signInEmailViewModel.nullifyState(true)
+            }
+
+            is SignInState.ErrorFromFireBase -> {
+                snackbarHostState.ShowSnackBar(message = state.message)
+                signInEmailViewModel.nullifyState(true)
+                signInEmailViewModel.resetIsShowLoginProgressIndicator()
             }
         }
-    ) { it ->
-        signInState?.let { state ->
-            when (state) {
-                is SignInState.Successful -> {
-                    onNavigateSettings()
-                    signInEmailViewModel.nullifyState()
-                    signInEmailViewModel.resetIsShowLoginProgressIndicator(true)
-                }
-                is SignInState.EmptyFields -> {
-                    snackbarHostState.ShowSnackBar(message = stringResource(id = R.string.empty_fields))
-                    signInEmailViewModel.nullifyState(true)
-                }
 
-                is SignInState.ErrorFromFireBase -> {
-                    snackbarHostState.ShowSnackBar(message = state.message)
-                    signInEmailViewModel.nullifyState(true)
-                    signInEmailViewModel.resetIsShowLoginProgressIndicator()
-                }
-            }
+    }
 
-        }
+    Column(
+        modifier = Modifier
+            .fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        IconApp(modifier = Modifier.padding(top = dimensionResource(id = R.dimen.padding_small_1)))
+        Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_4)))
 
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(it),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            IconApp(modifier = Modifier.padding(top = dimensionResource(id = R.dimen.padding_small_1)))
-            Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_4)))
+        if (!isShowLoginProgressIndicator) {
+            EmailTextField(
+                modifier = Modifier
+                    .padding(horizontal = dimensionResource(id = R.dimen.padding_normal_3))
+                    .fillMaxWidth(),
+                value = userEmail,
+                onValueChange = { userEmail = it })
+            Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_5)))
 
-            if (!isShowLoginProgressIndicator) {
-                EmailTextField(
-                    modifier = Modifier
-                        .padding(horizontal = dimensionResource(id = R.dimen.padding_normal_3))
-                        .fillMaxWidth(),
-                    value = userEmail,
-                    onValueChange = { userEmail = it })
-                Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_5)))
+            PasswordTextField(
+                modifier = Modifier
+                    .padding(horizontal = dimensionResource(id = R.dimen.padding_normal_3))
+                    .fillMaxWidth(),
+                labelId = R.string.password,
+                value = userPassword,
+                onValueChange = { userPassword = it })
+            Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_2)))
 
-                PasswordTextField(
-                    modifier = Modifier
-                        .padding(horizontal = dimensionResource(id = R.dimen.padding_normal_3))
-                        .fillMaxWidth(),
-                    labelId = R.string.password,
-                    value = userPassword,
-                    onValueChange = { userPassword = it })
-                Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_2)))
+            ForgotPassBtn(
+                modifier = Modifier
+                    .padding(end = dimensionResource(id = R.dimen.padding_normal_3))
+                    .align(Alignment.End),
+                onClick = { onNavigateResetPassword() })
+            Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_11)))
 
-                ForgotPassBtn(
-                    modifier = Modifier
-                        .padding(end = dimensionResource(id = R.dimen.padding_normal_3))
-                        .align(Alignment.End),
-                    onClick = { onNavigateResetPassword() })
-                Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_11)))
+            SignInButton(
+                modifier = Modifier
+                    .padding(horizontal = dimensionResource(id = R.dimen.padding_normal_3))
+                    .fillMaxWidth(),
+                onClick = { signInEmailViewModel.onClickSignIn(userEmail, userPassword) }
+            )
+            Spacer(modifier = Modifier.weight(1F))
 
-                SignInButton(
-                    modifier = Modifier
-                        .padding(horizontal = dimensionResource(id = R.dimen.padding_normal_3))
-                        .fillMaxWidth(),
-                    onClick = { signInEmailViewModel.onClickSignIn(userEmail, userPassword) }
-                )
-                Spacer(modifier = Modifier.weight(1F))
+            SignUpHintButton(
+                modifier = modifier.padding(bottom = dimensionResource(id = R.dimen.padding_large_1)),
+                onClick = { onNavigateSignUp() }
+            )
+            Spacer(modifier = Modifier.weight(1F))
 
-                SignUpHintButton(
-                    modifier = modifier.padding(bottom = dimensionResource(id = R.dimen.padding_large_1)),
-                    onClick = { onNavigateSignUp() }
-                )
-                Spacer(modifier = Modifier.weight(1F))
-
-            } else {
-                CircularProgressIndicator()
-            }
+        } else {
+            CircularProgressIndicator()
         }
     }
 }

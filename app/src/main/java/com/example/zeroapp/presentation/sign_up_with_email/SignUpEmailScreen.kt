@@ -26,8 +26,9 @@ import com.example.zeroapp.util.ShowSnackBar
 fun SignUpEmailScreen(
     modifier: Modifier = Modifier,
     onComposing: (AppBarState, Boolean) -> Unit,
-    onNavigateUp : () -> Unit,
-    onNavigateSettings : () -> Unit,
+    onNavigateUp: () -> Unit,
+    onNavigateSettings: () -> Unit,
+    snackbarHostState: SnackbarHostState,
     signUpEmailViewModel: SignUpEmailViewModel = hiltViewModel()
 ) {
     val isShowRegisterProgressIndicator by signUpEmailViewModel.isShowRegisterProgressIndicator.collectAsState()
@@ -38,7 +39,6 @@ fun SignUpEmailScreen(
     var userPassword by remember { mutableStateOf("") }
     var userConfirmedPassword by remember { mutableStateOf("") }
 
-    val snackbarHostState = remember { SnackbarHostState() }
 
     LaunchedEffect(key1 = true) {
         onComposing(
@@ -50,109 +50,98 @@ fun SignUpEmailScreen(
             false
         )
     }
-    Scaffold(
-        snackbarHost = {
-            SnackbarHost(snackbarHostState) { data ->
-                Snackbar(
-                    snackbarData = data,
-                    containerColor = MaterialTheme.colorScheme.onPrimary,
-                    contentColor = MaterialTheme.colorScheme.onSecondary,
-                )
+
+    //    TODO подумать как сделать элегантней ч3
+    signUpState?.let { state ->
+        when (state) {
+            is SignUpState.Successful -> {
+                onNavigateSettings()
+                signUpEmailViewModel.nullifyState()
+                signUpEmailViewModel.resetIsShowRegisterProgressIndicator(true)
             }
-        }
-    ) { it ->
-        signUpState?.let { state ->
-            when (state) {
-                is SignUpState.Successful -> {
-                    onNavigateSettings()
-                    signUpEmailViewModel.nullifyState()
-                    signUpEmailViewModel.resetIsShowRegisterProgressIndicator(true)
-                }
-                is SignUpState.EmptyFields -> {
-                    snackbarHostState.ShowSnackBar(message = stringResource(id = state.res))
-                    signUpEmailViewModel.nullifyState(true)
-                }
-                is SignUpState.PasswordsError -> {
-                    snackbarHostState.ShowSnackBar(message = stringResource(id = state.res))
-                    signUpEmailViewModel.nullifyState(true)
-                }
+            is SignUpState.EmptyFields -> {
+                snackbarHostState.ShowSnackBar(message = stringResource(id = state.res))
+                signUpEmailViewModel.nullifyState(true)
+            }
+            is SignUpState.PasswordsError -> {
+                snackbarHostState.ShowSnackBar(message = stringResource(id = state.res))
+                signUpEmailViewModel.nullifyState(true)
+            }
 
-                is SignUpState.ErrorFromFireBase -> {
-                    snackbarHostState.ShowSnackBar(message = state.message)
-                    signUpEmailViewModel.nullifyState(true)
-                    signUpEmailViewModel.resetIsShowRegisterProgressIndicator()
-                }
-
+            is SignUpState.ErrorFromFireBase -> {
+                snackbarHostState.ShowSnackBar(message = state.message)
+                signUpEmailViewModel.nullifyState(true)
+                signUpEmailViewModel.resetIsShowRegisterProgressIndicator()
             }
 
         }
-
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(it),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            IconApp(modifier = Modifier.padding(top = dimensionResource(id = R.dimen.padding_small_1)))
-            Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_4)))
-
-            if (!isShowRegisterProgressIndicator) {
-                DefaultTextField(
-                    modifier = Modifier
-                        .padding(horizontal = dimensionResource(id = R.dimen.padding_normal_3))
-                        .fillMaxWidth(),
-                    value = userNickname,
-                    onValueChange = { userNickname = it },
-                    label = stringResource(id = R.string.nickname),
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-                    singleLine = true
-                )
-                Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_5)))
-
-                EmailTextField(
-                    modifier = Modifier
-                        .padding(horizontal = dimensionResource(id = R.dimen.padding_normal_3))
-                        .fillMaxWidth(),
-                    value = userEmail,
-                    onValueChange = { userEmail = it })
-                Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_5)))
-
-                PasswordTextField(
-                    modifier = Modifier
-                        .padding(horizontal = dimensionResource(id = R.dimen.padding_normal_3))
-                        .fillMaxWidth(),
-                    labelId = R.string.password,
-                    value = userPassword,
-                    onValueChange = { userPassword = it })
-                Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_5)))
-
-                PasswordTextField(
-                    modifier = Modifier
-                        .padding(horizontal = dimensionResource(id = R.dimen.padding_normal_3))
-                        .fillMaxWidth(),
-                    labelId = R.string.confirm_password,
-                    value = userConfirmedPassword,
-                    onValueChange = { userConfirmedPassword = it })
-                Spacer(modifier = Modifier.weight(1F))
-
-                SignUpButton(
-                    modifier = modifier.padding(bottom = dimensionResource(id = R.dimen.padding_large_1)),
-                    onClick = {
-                        signUpEmailViewModel.onClickSignUp(
-                            email = userEmail,
-                            password = userPassword,
-                            confirmPassword = userConfirmedPassword,
-                            name = userNickname
-                        )
-                    }
-                )
-
-                Spacer(modifier = Modifier.weight(1F))
-            } else {
-                CircularProgressIndicator()
-            }
-        }
-
 
     }
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        IconApp(modifier = Modifier.padding(top = dimensionResource(id = R.dimen.padding_small_1)))
+        Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_4)))
+
+        if (!isShowRegisterProgressIndicator) {
+            DefaultTextField(
+                modifier = Modifier
+                    .padding(horizontal = dimensionResource(id = R.dimen.padding_normal_3))
+                    .fillMaxWidth(),
+                value = userNickname,
+                onValueChange = { userNickname = it },
+                label = stringResource(id = R.string.nickname),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+                singleLine = true
+            )
+            Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_5)))
+
+            EmailTextField(
+                modifier = Modifier
+                    .padding(horizontal = dimensionResource(id = R.dimen.padding_normal_3))
+                    .fillMaxWidth(),
+                value = userEmail,
+                onValueChange = { userEmail = it })
+            Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_5)))
+
+            PasswordTextField(
+                modifier = Modifier
+                    .padding(horizontal = dimensionResource(id = R.dimen.padding_normal_3))
+                    .fillMaxWidth(),
+                labelId = R.string.password,
+                value = userPassword,
+                onValueChange = { userPassword = it })
+            Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_5)))
+
+            PasswordTextField(
+                modifier = Modifier
+                    .padding(horizontal = dimensionResource(id = R.dimen.padding_normal_3))
+                    .fillMaxWidth(),
+                labelId = R.string.confirm_password,
+                value = userConfirmedPassword,
+                onValueChange = { userConfirmedPassword = it })
+            Spacer(modifier = Modifier.weight(1F))
+
+            SignUpButton(
+                modifier = modifier.padding(bottom = dimensionResource(id = R.dimen.padding_large_1)),
+                onClick = {
+                    signUpEmailViewModel.onClickSignUp(
+                        email = userEmail,
+                        password = userPassword,
+                        confirmPassword = userConfirmedPassword,
+                        name = userNickname
+                    )
+                }
+            )
+
+            Spacer(modifier = Modifier.weight(1F))
+        } else {
+            CircularProgressIndicator()
+        }
+    }
+
+
 }

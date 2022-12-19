@@ -161,15 +161,17 @@ class MainActivity : FragmentActivity() {
                         composable(route = Screen.Home.route) {
                             startDestination = Screen.Home.route
                             HomeScreen(
+                                onComposing = { barState: AppBarState, isShow: Boolean ->
+                                    appBarState = barState
+                                    isShowBottomBar = isShow
+                                },
                                 onNavigateToDetail = {
                                     navController.navigate(Screen.Detail.route + "/$it")
                                 },
                                 onNavigateToAddDay = { navController.navigate(Screen.AddDay.route) },
                                 onNavigateToFavorites = { navController.navigate(Screen.Favorites.route) },
-                                onComposing = { barState: AppBarState, isShow: Boolean ->
-                                    appBarState = barState
-                                    isShowBottomBar = isShow
-                                })
+                                snackbarHostState = snackbarHostState
+                            )
                         }
 
                         composable(route = Screen.Favorites.route) {
@@ -197,13 +199,13 @@ class MainActivity : FragmentActivity() {
 
                         composable(route = Screen.History.route) {
                             HistoryScreen(
-                                myAnalystForHistory = myAnalystForHistory,
-                                onNavigateToDetail = {
-                                    navController.navigate(Screen.Detail.route + "/$it")
-                                },
                                 onComposing = { barState: AppBarState, isShow: Boolean ->
                                     appBarState = barState
                                     isShowBottomBar = isShow
+                                },
+                                myAnalystForHistory = myAnalystForHistory,
+                                onNavigateToDetail = {
+                                    navController.navigate(Screen.Detail.route + "/$it")
                                 })
                         }
 
@@ -229,18 +231,23 @@ class MainActivity : FragmentActivity() {
 
                         composable(route = Screen.SignInMethods.route) {
                             SignInMethodsScreen(
-                                onNavigateUp = { navController.navigateUp() },
-                                onNavigateSignInEmail = { navController.navigate(Screen.SignInWithEmail.route) },
                                 onComposing = { barState: AppBarState, isShow: Boolean ->
                                     appBarState = barState
                                     isShowBottomBar = isShow
                                 },
-                                signInClient = signInClient
+                                onNavigateUp = { navController.navigateUp() },
+                                onNavigateSignInEmail = { navController.navigate(Screen.SignInWithEmail.route) },
+                                signInClient = signInClient,
+                                snackbarHostState = snackbarHostState
                             )
                         }
 
                         composable(route = Screen.SignInWithEmail.route) {
                             SignInEmailScreen(
+                                onComposing = { barState: AppBarState, isShow: Boolean ->
+                                    appBarState = barState
+                                    isShowBottomBar = isShow
+                                },
                                 onNavigateUp = { navController.navigateUp() },
                                 onNavigateSettings = {
                                     navController.popBackStack(
@@ -250,14 +257,15 @@ class MainActivity : FragmentActivity() {
                                 },
                                 onNavigateSignUp = { navController.navigate(Screen.SignUpWithEmail.route) },
                                 onNavigateResetPassword = { navController.navigate(Screen.ResetPassEmail.route) },
-                                onComposing = { barState: AppBarState, isShow: Boolean ->
-                                    appBarState = barState
-                                    isShowBottomBar = isShow
-                                })
+                                snackbarHostState = snackbarHostState)
                         }
 
                         composable(route = Screen.SignUpWithEmail.route) {
                             SignUpEmailScreen(
+                                onComposing = { barState: AppBarState, isShow: Boolean ->
+                                    appBarState = barState
+                                    isShowBottomBar = isShow
+                                },
                                 onNavigateSettings = {
                                     navController.popBackStack(
                                         Screen.Settings.route,
@@ -265,19 +273,17 @@ class MainActivity : FragmentActivity() {
                                     )
                                 },
                                 onNavigateUp = { navController.navigateUp() },
-                                onComposing = { barState: AppBarState, isShow: Boolean ->
-                                    appBarState = barState
-                                    isShowBottomBar = isShow
-                                })
+                                snackbarHostState = snackbarHostState)
                         }
 
                         composable(route = Screen.ResetPassEmail.route) {
                             ResetPasswordScreen(
-                                onNavigateUp = { navController.navigateUp() },
                                 onComposing = { barState: AppBarState, isShow: Boolean ->
                                     appBarState = barState
                                     isShowBottomBar = isShow
-                                })
+                                },
+                                onNavigateUp = { navController.navigateUp() },
+                                snackbarHostState = snackbarHostState)
                         }
 
                         composable(route = Screen.SecureEntry.route) {

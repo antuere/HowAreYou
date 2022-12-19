@@ -3,7 +3,7 @@ package com.example.zeroapp.presentation.base.ui_compose_components.pin_code
 import androidx.compose.foundation.layout.Row
 import androidx.compose.runtime.Composable
 import com.example.zeroapp.R
-import com.example.zeroapp.presentation.pin_code_сreating.PinCodeCirclesState
+import com.example.zeroapp.presentation.pin_code_creation.PinCodeCirclesState
 import com.example.zeroapp.presentation.settings.ui_compose.ProgressCircle
 
 @Composable

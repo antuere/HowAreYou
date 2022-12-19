@@ -75,7 +75,7 @@
     <string name="dialog_delete_local_data_negative">No</string>
     <string name="dialog_delete_local_data_neutral">Stay logged in</string>
 
-    <string name="snack_bar_warning_negative">Pay attention to the cards above, we hope this will help you at least a little.</string>
+
     <string name="yes">Delete</string>
     <string name="no">Cancel</string>
 
@@ -121,6 +121,7 @@
 
 
     <!-- Home fragment -->
+    <string name="snack_bar_warning_negative">Pay attention to the cards above, we hope this will help you at least a little.</string>
 
     <!-- Secure entry fragment -->
     <string name="enter_a_pin">Enter PIN code</string>

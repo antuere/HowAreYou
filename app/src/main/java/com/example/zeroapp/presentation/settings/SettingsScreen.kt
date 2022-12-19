@@ -27,7 +27,7 @@ import com.example.zeroapp.presentation.base.ui_compose_components.AppBarState
 import com.example.zeroapp.presentation.base.ui_compose_components.dialog.Dialog
 import com.example.zeroapp.presentation.settings.ui_compose.AuthSection
 import com.example.zeroapp.presentation.settings.ui_compose.GeneralSettings
-import com.example.zeroapp.presentation.pin_code_сreating.PinCodeCreating
+import com.example.zeroapp.presentation.pin_code_creation.PinCodeCreating
 import com.example.zeroapp.presentation.settings.ui_compose.PrivacySettings
 import com.example.zeroapp.util.ShowSnackBarExperimental
 import com.example.zeroapp.util.findFragmentActivity

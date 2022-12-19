@@ -1,4 +1,4 @@
-package com.example.zeroapp.presentation.history.ui_compose
+package com.example.zeroapp.presentation.base.ui_compose_components
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image

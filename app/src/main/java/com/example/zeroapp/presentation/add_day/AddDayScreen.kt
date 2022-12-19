@@ -64,6 +64,7 @@ fun AddDayScreen(
             maxLength = 100,
         )
         Spacer(modifier = Modifier.weight(0.25F))
+
         Row(
             modifier = Modifier
                 .padding(horizontal = dimensionResource(id = R.dimen.padding_normal_3))

@@ -1,4 +1,4 @@
-package com.example.zeroapp.presentation.pin_code_сreating
+package com.example.zeroapp.presentation.pin_code_creation
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image

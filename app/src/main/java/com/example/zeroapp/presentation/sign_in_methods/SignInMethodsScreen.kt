@@ -16,22 +16,20 @@ import com.example.zeroapp.R
 import com.example.zeroapp.presentation.base.ui_compose_components.AppBarState
 import com.example.zeroapp.presentation.sign_in_methods.ui_compose.ButtonWithIcon
 import com.example.zeroapp.util.ShowSnackBar
-import com.example.zeroapp.util.ShowSnackBarExperimental
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SignInMethodsScreen(
     onComposing: (AppBarState, Boolean) -> Unit,
     onNavigateUp: () -> Unit,
     onNavigateSignInEmail: () -> Unit,
     signInMethodsViewModel: SignInMethodsViewModel = hiltViewModel(),
+    snackbarHostState: SnackbarHostState,
     signInClient: GoogleSignInClient,
 ) {
     val signInState by signInMethodsViewModel.signInState.collectAsState()
 
-    val snackbarHostState = remember { SnackbarHostState() }
     val launcher =
         rememberLauncherForActivityResult(contract = ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
@@ -51,50 +49,39 @@ fun SignInMethodsScreen(
         )
     }
 
-    Scaffold(
-        snackbarHost = {
-            SnackbarHost(snackbarHostState) { data ->
-                Snackbar(
-                    snackbarData = data,
-                    containerColor = MaterialTheme.colorScheme.onPrimary,
-                    contentColor = MaterialTheme.colorScheme.onSecondary
-                )
+
+    signInState?.let { state ->
+        when (state) {
+            is SignInMethodsState.UserAuthorized -> {
+                onNavigateUp()
+            }
+            is SignInMethodsState.Error -> {
+                snackbarHostState.ShowSnackBar(message = state.message)
             }
         }
-    ) { it ->
-        signInState?.let { state ->
-            when (state) {
-                is SignInMethodsState.UserAuthorized -> {
-                    onNavigateUp()
-                }
-                is SignInMethodsState.Error -> {
-                    snackbarHostState.ShowSnackBar(message = state.message)
-                }
-            }
-            signInMethodsViewModel.nullifyState()
-        }
+        signInMethodsViewModel.nullifyState()
+    }
 
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(it),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            ButtonWithIcon(
-                modifier = Modifier.fillMaxWidth(0.7F),
-                onClick = { onNavigateSignInEmail() },
-                labelId = R.string.login_email,
-                iconId = R.drawable.ic_email
-            )
-            Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_1)))
 
-            ButtonWithIcon(
-                modifier = Modifier.fillMaxWidth(0.7F),
-                onClick = { launcher.launch(signInClient.signInIntent) },
-                labelId = R.string.login_google,
-                iconId = R.drawable.ic_google
-            )
-        }
+    Column(
+        modifier = Modifier
+            .fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        ButtonWithIcon(
+            modifier = Modifier.fillMaxWidth(0.7F),
+            onClick = { onNavigateSignInEmail() },
+            labelId = R.string.login_email,
+            iconId = R.drawable.ic_email
+        )
+        Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_1)))
+
+        ButtonWithIcon(
+            modifier = Modifier.fillMaxWidth(0.7F),
+            onClick = { launcher.launch(signInClient.signInIntent) },
+            labelId = R.string.login_google,
+            iconId = R.drawable.ic_google
+        )
     }
 }

@@ -17,7 +17,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.zeroapp.R
 import com.example.zeroapp.presentation.base.ui_compose_components.AppBarState
 import com.example.zeroapp.presentation.base.ui_compose_components.dialog.Dialog
-import com.example.zeroapp.presentation.history.ui_compose.DaysListItem
+import com.example.zeroapp.presentation.base.ui_compose_components.DaysListItem
 
 @Composable
 fun FavoritesScreen(
@@ -26,7 +26,7 @@ fun FavoritesScreen(
     onComposing: (AppBarState, Boolean) -> Unit,
     favoritesViewModel: FavoritesViewModel = hiltViewModel()
 ) {
-    LaunchedEffect(key1 = true) {
+    LaunchedEffect(true) {
         onComposing(
             AppBarState(
                 titleId = R.string.favorites,
@@ -36,23 +36,23 @@ fun FavoritesScreen(
             false
         )
     }
+
     val listDays by favoritesViewModel.listDays.collectAsState()
     val uiDialog by favoritesViewModel.uiDialog.collectAsState()
     val navigateToDetailState by favoritesViewModel.navigateToDetailState.collectAsState()
 
-    LaunchedEffect(navigateToDetailState) {
-        navigateToDetailState?.let { state ->
-            if (state.navigateToDetail) {
-                onNavigateToDetail(state.dayId!!)
-            }
-            favoritesViewModel.doneNavigateToDetail()
+    navigateToDetailState?.let { state ->
+        if (state.navigateToDetail) {
+            onNavigateToDetail(state.dayId!!)
         }
+        favoritesViewModel.doneNavigateToDetail()
     }
 
     Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Top) {
         uiDialog?.let {
             Dialog(dialog = it)
         }
+
         LazyVerticalGrid(
             columns = GridCells.Fixed(3),
             modifier = Modifier.fillMaxSize()

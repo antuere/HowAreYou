@@ -12,12 +12,11 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.hilt.navigation.compose.hiltViewModel
-import antuere.domain.dto.Day
 import antuere.domain.dto.ToggleBtnState
 import com.example.zeroapp.R
 import com.example.zeroapp.presentation.base.ui_compose_components.AppBarState
 import com.example.zeroapp.presentation.base.ui_compose_components.dialog.Dialog
-import com.example.zeroapp.presentation.history.ui_compose.DaysListItem
+import com.example.zeroapp.presentation.base.ui_compose_components.DaysListItem
 import com.example.zeroapp.presentation.history.ui_compose.HistoryHeaderText
 import com.example.zeroapp.presentation.history.ui_compose.ToggleBtnGroup
 
@@ -112,21 +111,4 @@ fun HistoryScreen(
             }
         }
     }
-}
-
-
-private fun getMockDays(): List<Day> {
-    val result = mutableListOf<Day>()
-    for (i in 1..10) {
-        val testDay = Day(
-            dayId = i.toLong(),
-            imageResId = antuere.data.R.drawable.smile_happy,
-            dayText = "Nice day $i",
-            dateString = "$i.11.2022",
-            transitionName = "noup",
-            isFavorite = false
-        )
-        result.add(testDay)
-    }
-    return result
 }

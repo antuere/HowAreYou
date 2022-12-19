@@ -1,4 +1,4 @@
-package com.example.zeroapp.presentation.pin_code_сreating
+package com.example.zeroapp.presentation.pin_code_creation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

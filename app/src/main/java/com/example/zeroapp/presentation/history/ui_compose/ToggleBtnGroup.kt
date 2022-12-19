@@ -20,7 +20,6 @@ fun ToggleBtnGroup(
     currentToggleBtnState: ToggleBtnState,
     onClick: (ToggleBtnState) -> Unit
 ) {
-
     val shapePercent = 50
     val allDaysBtnName = stringResource(id = R.string.all_days_title)
     val weekBtnName = stringResource(id = R.string.last_week_title)

@@ -8,7 +8,6 @@ import antuere.domain.repository.DayRepository
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import timber.log.Timber
 import javax.inject.Inject
 
 
@@ -71,7 +70,6 @@ class DayRepositoryImpl @Inject constructor(
         withContext(Dispatchers.IO) {
             dayDataBaseRoom.dayDatabaseDao.getCertainDays(dayStart)
                 .map {
-                    Timber.i("recycle view error : current start time is $dayStart")
                     it.map { dayEntity ->
                         dayEntityMapper.mapToDomainModel(dayEntity)
                     }

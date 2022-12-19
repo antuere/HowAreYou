@@ -20,6 +20,7 @@ import com.example.zeroapp.presentation.base.ui_compose_components.CardDefault
 import com.example.zeroapp.presentation.base.ui_compose_components.CardWithOnClick
 import com.example.zeroapp.presentation.base.ui_compose_components.dialog.Dialog
 import com.example.zeroapp.presentation.base.ui_theme.TealMain
+import com.example.zeroapp.util.ShowSnackBarExperimental
 
 @Composable
 fun HomeScreen(
@@ -27,6 +28,7 @@ fun HomeScreen(
     onNavigateToDetail: (Long) -> Unit,
     onNavigateToFavorites: () -> Unit,
     onComposing: (AppBarState, Boolean) -> Unit,
+    snackbarHostState: SnackbarHostState,
     homeViewModel: HomeViewModel = hiltViewModel()
 ) {
     val uiDialog by homeViewModel.uiDialog.collectAsState()
@@ -34,13 +36,6 @@ fun HomeScreen(
     val wishText by homeViewModel.wishText.collectAsState()
     val isShowSnackBar by homeViewModel.isShowSnackBar.collectAsState()
     val fabBtnState by homeViewModel.fabButtonState.collectAsState()
-
-    val middleBtns = mapOf(
-        R.string.mental_tips to {},
-        R.string.help_for_you to {},
-        R.string.favorites to { onNavigateToFavorites() },
-        R.string.cats to {}
-    )
 
     LaunchedEffect(key1 = true) {
         onComposing(
@@ -51,132 +46,139 @@ fun HomeScreen(
         )
     }
 
-    Box(
+    uiDialog?.let {
+        Dialog(dialog = it)
+    }
+
+    if (isShowSnackBar) {
+        snackbarHostState.ShowSnackBarExperimental(
+            messageId = R.string.snack_bar_warning_negative,
+            hideSnackbarAfterDelay = { homeViewModel.resetSnackBar() }
+        )
+    }
+
+    Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(dimensionResource(id = R.dimen.padding_normal_0))
+            .padding(dimensionResource(id = R.dimen.padding_normal_0)),
+        verticalArrangement = Arrangement.Top
     ) {
-        uiDialog?.let {
-            Dialog(dialog = it)
-        }
-        Column(verticalArrangement = Arrangement.Top) {
-            CardWithQuote(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .weight(0.3F),
-                titleText = stringResource(
-                    id = R.string.quotes_title
-                ),
-                quoteText = dayQuote?.text ?: "Test quote",
-                quiteAuthor = dayQuote?.author ?: "Test author"
-            )
+        CardWithQuote(
+            modifier = Modifier
+                .fillMaxSize()
+                .weight(0.3F),
+            titleText = stringResource(
+                id = R.string.quotes_title
+            ),
+            quoteText = dayQuote?.text ?: "Test quote",
+            quiteAuthor = dayQuote?.author ?: "Test author"
+        )
 
-            Row(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .weight(0.2F),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                CardWithOnClick(
-                    cardModifier = Modifier
-                        .padding(
-                            top = dimensionResource(id = R.dimen.padding_small_1),
-                            end = dimensionResource(id = R.dimen.padding_small_0)
-                        )
-                        .weight(0.5F),
-                    titleText = stringResource(id = R.string.mental_tips)
-                )
-                CardWithOnClick(
-                    cardModifier = Modifier
-                        .padding(
-                            top = dimensionResource(id = R.dimen.padding_small_1),
-                            start = dimensionResource(id = R.dimen.padding_small_0)
-                        )
-                        .weight(0.5F),
-                    titleText = stringResource(id = R.string.help_for_you)
-                )
-            }
-
-            Row(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .weight(0.2F),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                CardWithOnClick(
-                    onClick = onNavigateToFavorites,
-                    cardModifier = Modifier
-                        .padding(
-                            top = dimensionResource(id = R.dimen.padding_small_1),
-                            end = dimensionResource(id = R.dimen.padding_small_0)
-                        )
-                        .weight(0.5F),
-                    titleText = stringResource(id = R.string.favorites),
-                )
-                CardWithOnClick(
-                    cardModifier = Modifier
-                        .padding(
-                            top = dimensionResource(id = R.dimen.padding_small_1),
-                            start = dimensionResource(id = R.dimen.padding_small_0)
-                        )
-                        .weight(0.5F),
-                    titleText = stringResource(id = R.string.cats)
-                )
-            }
-
-            CardDefault(
+        Row(
+            modifier = Modifier
+                .fillMaxSize()
+                .weight(0.2F),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            CardWithOnClick(
                 cardModifier = Modifier
-                    .fillMaxSize()
-                    .weight(0.3F)
-                    .padding(top = dimensionResource(id = R.dimen.padding_small_1)),
-                textModifier = Modifier.padding(
-                    top = dimensionResource(id = R.dimen.padding_normal_1),
-                    start = dimensionResource(id = R.dimen.padding_normal_1),
-                    end = dimensionResource(id = R.dimen.padding_normal_1)
-                ),
-                titleText = wishText,
-                textAlignment = Alignment.TopStart
-            ) {
-                Spacer(modifier = Modifier.weight(1F))
+                    .padding(
+                        top = dimensionResource(id = R.dimen.padding_small_1),
+                        end = dimensionResource(id = R.dimen.padding_small_0)
+                    )
+                    .weight(0.5F),
+                titleText = stringResource(id = R.string.mental_tips)
+            )
+            CardWithOnClick(
+                cardModifier = Modifier
+                    .padding(
+                        top = dimensionResource(id = R.dimen.padding_small_1),
+                        start = dimensionResource(id = R.dimen.padding_small_0)
+                    )
+                    .weight(0.5F),
+                titleText = stringResource(id = R.string.help_for_you)
+            )
+        }
 
-                FloatingActionButton(
-                    modifier = Modifier
-                        .align(Alignment.End)
-                        .padding(
-                            bottom = dimensionResource(id = R.dimen.padding_normal_1),
-                            start = dimensionResource(id = R.dimen.padding_normal_1),
-                            end = dimensionResource(id = R.dimen.padding_normal_1)
-                        ), onClick = {
-                        when (fabBtnState) {
-                            is FabButtonState.Add -> {
-                                onNavigateToAddDay()
-                            }
-                            is FabButtonState.Smile -> {
-                                onNavigateToDetail((fabBtnState as FabButtonState.Smile).dayId)
-                            }
-                        }
+        Row(
+            modifier = Modifier
+                .fillMaxSize()
+                .weight(0.2F),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            CardWithOnClick(
+                onClick = onNavigateToFavorites,
+                cardModifier = Modifier
+                    .padding(
+                        top = dimensionResource(id = R.dimen.padding_small_1),
+                        end = dimensionResource(id = R.dimen.padding_small_0)
+                    )
+                    .weight(0.5F),
+                titleText = stringResource(id = R.string.favorites),
+            )
+            CardWithOnClick(
+                cardModifier = Modifier
+                    .padding(
+                        top = dimensionResource(id = R.dimen.padding_small_1),
+                        start = dimensionResource(id = R.dimen.padding_small_0)
+                    )
+                    .weight(0.5F),
+                titleText = stringResource(id = R.string.cats)
+            )
+        }
 
-                    }, containerColor = TealMain
-                ) {
+        CardDefault(
+            cardModifier = Modifier
+                .fillMaxSize()
+                .weight(0.3F)
+                .padding(top = dimensionResource(id = R.dimen.padding_small_1)),
+            textModifier = Modifier.padding(
+                top = dimensionResource(id = R.dimen.padding_normal_1),
+                start = dimensionResource(id = R.dimen.padding_normal_1),
+                end = dimensionResource(id = R.dimen.padding_normal_1)
+            ),
+            titleText = wishText,
+            textAlignment = Alignment.TopStart
+        ) {
+            Spacer(modifier = Modifier.weight(1F))
+
+            FloatingActionButton(
+                modifier = Modifier
+                    .align(Alignment.End)
+                    .padding(
+                        bottom = dimensionResource(id = R.dimen.padding_normal_1),
+                        start = dimensionResource(id = R.dimen.padding_normal_1),
+                        end = dimensionResource(id = R.dimen.padding_normal_1)
+                    ), onClick = {
                     when (fabBtnState) {
                         is FabButtonState.Add -> {
-                            Icon(
-                                painter = painterResource(id = R.drawable.ic_plus),
-                                modifier = Modifier.size(24.dp),
-                                contentDescription = null
-                            )
+                            onNavigateToAddDay()
                         }
                         is FabButtonState.Smile -> {
-                            Icon(
-                                painter = painterResource(id = fabBtnState.image),
-                                modifier = Modifier.size(24.dp),
-                                contentDescription = null
-                            )
+                            onNavigateToDetail((fabBtnState as FabButtonState.Smile).dayId)
                         }
+                    }
+
+                }, containerColor = TealMain
+            ) {
+                when (fabBtnState) {
+                    is FabButtonState.Add -> {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_plus),
+                            modifier = Modifier.size(24.dp),
+                            contentDescription = null
+                        )
+                    }
+                    is FabButtonState.Smile -> {
+                        Icon(
+                            painter = painterResource(id = fabBtnState.image),
+                            modifier = Modifier.size(24.dp),
+                            contentDescription = null
+                        )
                     }
                 }
             }
-
         }
+
     }
 }
