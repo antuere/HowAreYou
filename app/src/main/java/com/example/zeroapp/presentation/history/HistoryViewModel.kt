@@ -11,13 +11,14 @@ import antuere.domain.usecases.user_settings.GetToggleBtnStateUseCase
 import antuere.domain.usecases.user_settings.SaveToggleBtnUseCase
 import antuere.domain.util.TimeUtility
 import com.example.zeroapp.R
-import com.example.zeroapp.presentation.base.ui_compose_components.dialog.UIDialogCompose
+import com.example.zeroapp.presentation.base.ui_compose_components.dialog.UIDialog
 import com.example.zeroapp.presentation.base.ui_date_picker.IUIDatePickerAction
 import com.example.zeroapp.presentation.base.ui_date_picker.UIDatePicker
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 
@@ -35,8 +36,8 @@ class HistoryViewModel @Inject constructor(
 
     private var _dayId = 0L
 
-    private var _uiDialog = MutableStateFlow<UIDialogCompose?>(null)
-    val uiDialog: StateFlow<UIDialogCompose?>
+    private var _uiDialog = MutableStateFlow<UIDialog?>(null)
+    val uiDialog: StateFlow<UIDialog?>
         get() = _uiDialog
 
     private var _uiDatePicker = MutableStateFlow<UIDatePicker?>(null)
@@ -89,17 +90,17 @@ class HistoryViewModel @Inject constructor(
     }
 
     private fun onClickLongSmile() {
-        _uiDialog.value = UIDialogCompose(
+        _uiDialog.value = UIDialog(
             title = R.string.dialog_delete_title,
             desc = R.string.dialog_delete_desc,
             icon = R.drawable.ic_delete_black,
-            positiveButton = UIDialogCompose.UiButton(
+            positiveButton = UIDialog.UiButton(
                 text = R.string.yes,
                 onClick = {
                     deleteDay()
                     _uiDialog.value = null
                 }),
-            negativeButton = UIDialogCompose.UiButton(
+            negativeButton = UIDialog.UiButton(
                 text = R.string.no,
                 onClick = {
                     _uiDialog.value = null
@@ -113,6 +114,7 @@ class HistoryViewModel @Inject constructor(
             positiveButton = UIDatePicker.UiButtonPositive(
                 onClick = {
                     val kotlinPair: Pair<Long, Long> = Pair(it.first, it.second)
+                    Timber.i("selected pair is ${kotlinPair.toString()}")
                     checkedFilterButton(kotlinPair)
                     _isFilterSelected.value = true
                     _uiDatePicker.value = null
@@ -127,7 +129,7 @@ class HistoryViewModel @Inject constructor(
     private fun checkedFilterButton(pair: Pair<Long, Long>) {
         if (_currentJob !is JobType.Filter) {
             _currentJob?.job?.cancel()
-
+            Timber.i("selected pair, days is")
             _currentJob = JobType.Filter(viewModelScope.launch {
                 getSelectedDaysUseCase(pair).cancellable().collectLatest {
                     _listDays.value = it

@@ -29,19 +29,7 @@ import com.google.android.material.transition.MaterialContainerTransform
 import kotlinx.coroutines.delay
 
 
-val Fragment.mainActivity: MainActivity?
-    get() = activity as? MainActivity
 
-fun Fragment.startOnClickAnimation(view: View) {
-    view.startAnimation(AnimationUtils.loadAnimation(requireContext(), R.anim.on_click_anim))
-}
-
-fun Fragment.createSharedElementEnterTransition() = MaterialContainerTransform().apply {
-    drawingViewId = R.id.myNavHostFragment
-    duration = resources.getInteger(R.integer.duration_normal).toLong()
-    scrimColor = Color.TRANSPARENT
-    setAllContainerColors(requireContext().themeColor(com.google.android.material.R.attr.colorOnPrimary))
-}
 
 fun View.getSmileResFromBtnId(): Int {
     return when (this.id) {
@@ -54,14 +42,6 @@ fun View.getSmileResFromBtnId(): Int {
     }
 }
 
-fun <T> LiveData<T>.toMutableLiveData(): MutableLiveData<T> {
-    val mediatorLiveData = MediatorLiveData<T>()
-    mediatorLiveData.addSource(this) {
-        mediatorLiveData.value = it
-    }
-    return mediatorLiveData
-}
-
 fun Context.findFragmentActivity(): FragmentActivity {
     var context = this
     while (context is ContextWrapper) {
@@ -69,30 +49,6 @@ fun Context.findFragmentActivity(): FragmentActivity {
         context = context.baseContext
     }
     throw IllegalStateException("no activity")
-}
-
-@ColorInt
-@SuppressLint("Recycle")
-fun Context.themeColor(
-    @AttrRes themeAttrId: Int
-): Int {
-    return obtainStyledAttributes(
-        intArrayOf(themeAttrId)
-    ).use {
-        it.getColor(0, Color.MAGENTA)
-    }
-}
-
-fun GridLayoutManager.setManagerSpanCount(value: Int) {
-    this.spanCount = value
-    this.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
-        override fun getSpanSize(position: Int): Int {
-            return when (position) {
-                0 -> value
-                else -> 1
-            }
-        }
-    }
 }
 
 @Composable

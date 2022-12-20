@@ -14,7 +14,7 @@ import com.example.zeroapp.presentation.base.ui_biometric_dialog.BiometricsAvail
 import com.example.zeroapp.presentation.base.ui_biometric_dialog.IUIBiometricListener
 import com.example.zeroapp.presentation.base.ui_biometric_dialog.UIBiometricDialog
 import com.example.zeroapp.presentation.base.ui_biometric_dialog.BiometricAuthState
-import com.example.zeroapp.presentation.base.ui_compose_components.dialog.UIDialogCompose
+import com.example.zeroapp.presentation.base.ui_compose_components.dialog.UIDialog
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -42,8 +42,8 @@ class SettingsViewModel @Inject constructor(
     val uiBiometricDialog: UIBiometricDialog
 ) : ViewModel() {
 
-    private var _uiDialog = MutableStateFlow<UIDialogCompose?>(null)
-    val uiDialog: StateFlow<UIDialogCompose?>
+    private var _uiDialog = MutableStateFlow<UIDialog?>(null)
+    val uiDialog: StateFlow<UIDialog?>
         get() = _uiDialog
 
     private var _userNickname = MutableStateFlow(Constants.USER_NOT_AUTH)
@@ -118,17 +118,17 @@ class SettingsViewModel @Inject constructor(
 
     fun onClickSignOut() {
         if (isShowDialogSignOut) {
-            _uiDialog.value = UIDialogCompose(
+            _uiDialog.value = UIDialog(
                 title = R.string.dialog_delete_local_data_title,
                 desc = R.string.dialog_delete_local_data_desc,
                 icon = R.drawable.ic_delete_black,
-                positiveButton = UIDialogCompose.UiButton(
+                positiveButton = UIDialog.UiButton(
                     text = R.string.dialog_delete_local_data_positive,
                     onClick = {
                         signOut(isSaveDayEntities = true)
                         _uiDialog.value = null
                     }),
-                negativeButton = UIDialogCompose.UiButton(
+                negativeButton = UIDialog.UiButton(
                     text = R.string.dialog_delete_local_data_negative,
                     onClick = {
                         signOut(isSaveDayEntities = false)

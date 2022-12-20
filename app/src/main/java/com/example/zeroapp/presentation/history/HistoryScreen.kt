@@ -10,6 +10,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.dimensionResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import antuere.domain.dto.ToggleBtnState
@@ -17,12 +19,14 @@ import com.example.zeroapp.R
 import com.example.zeroapp.presentation.base.ui_compose_components.AppBarState
 import com.example.zeroapp.presentation.base.ui_compose_components.dialog.Dialog
 import com.example.zeroapp.presentation.base.ui_compose_components.DaysListItem
+import com.example.zeroapp.presentation.base.ui_date_picker.UIDatePickerListener
 import com.example.zeroapp.presentation.history.ui_compose.HistoryHeaderText
 import com.example.zeroapp.presentation.history.ui_compose.ToggleBtnGroup
+import com.example.zeroapp.util.findFragmentActivity
 
 @Composable
 fun HistoryScreen(
-    onNavigateToDetail : (Long) -> Unit,
+    onNavigateToDetail: (Long) -> Unit,
     onComposing: (AppBarState, Boolean) -> Unit,
     historyViewModel: HistoryViewModel = hiltViewModel(),
     myAnalystForHistory: MyAnalystForHistory
@@ -32,7 +36,7 @@ fun HistoryScreen(
             AppBarState(
                 titleId = R.string.history,
                 actions = {
-                    IconButton(onClick = { /* doSomething() */ }) {
+                    IconButton(onClick = { historyViewModel.onClickFilterButton() }) {
                         Icon(
                             imageVector = Icons.Rounded.FilterList,
                             contentDescription = null
@@ -43,15 +47,19 @@ fun HistoryScreen(
             true
         )
     }
+    val fragmentActivity = LocalContext.current.findFragmentActivity()
+    val lifecycleOwner = LocalLifecycleOwner.current
 
-//    val datePickerListener = UIDatePickerListener(requireActivity().supportFragmentManager, viewModel)
+    val datePickerListener =
+        UIDatePickerListener(fragmentActivity.supportFragmentManager, historyViewModel)
+
     val uiDialog by historyViewModel.uiDialog.collectAsState()
     val listDays by historyViewModel.listDays.collectAsState()
     val isFilterSelected by historyViewModel.isFilterSelected.collectAsState()
     val toggleBtnState by historyViewModel.toggleBtnState.collectAsState()
     val navigateToDetailState by historyViewModel.navigateToDetailState.collectAsState()
 
-    val cellsAmount = when (toggleBtnState) {
+    var cellsAmount = when (toggleBtnState) {
         ToggleBtnState.ALL_DAYS -> {
             historyViewModel.checkedAllDaysButton()
             4
@@ -68,11 +76,24 @@ fun HistoryScreen(
 
     LaunchedEffect(navigateToDetailState) {
         navigateToDetailState?.let { state ->
-            if(state.navigateToDetail){
+            if (state.navigateToDetail) {
                 onNavigateToDetail(state.dayId!!)
             }
             historyViewModel.doneNavigateToDetail()
         }
+    }
+
+    uiDialog?.let {
+        Dialog(dialog = it)
+    }
+
+    if (isFilterSelected) {
+        cellsAmount = 3
+        historyViewModel.resetIsFilterSelected()
+    }
+
+    LaunchedEffect(datePickerListener) {
+        datePickerListener.collect(lifecycleOwner)
     }
 
     Column(
@@ -80,14 +101,12 @@ fun HistoryScreen(
             .fillMaxSize(),
         verticalArrangement = Arrangement.Top
     ) {
-        uiDialog?.let {
-            Dialog(dialog = it)
-        }
-
         ToggleBtnGroup(
             modifier = Modifier.padding(top = dimensionResource(id = R.dimen.padding_small_2)),
             currentToggleBtnState = toggleBtnState,
-            onClick = { historyViewModel.onClickCheckedItem(it) })
+            onClick = { historyViewModel.onClickCheckedItem(it) },
+            isAvailable = !isFilterSelected
+        )
 
         HistoryHeaderText(
             modifier = Modifier

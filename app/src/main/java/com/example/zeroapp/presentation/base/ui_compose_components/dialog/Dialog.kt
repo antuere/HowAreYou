@@ -10,7 +10,7 @@ import androidx.compose.ui.text.style.TextAlign
 
 @Composable
 fun Dialog(
-    dialog: UIDialogCompose,
+    dialog: UIDialog,
     iconColor: Color = Color.Black
 ) {
     AlertDialog(

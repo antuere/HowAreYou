@@ -18,7 +18,8 @@ import com.example.zeroapp.R
 fun ToggleBtnGroup(
     modifier: Modifier = Modifier,
     currentToggleBtnState: ToggleBtnState,
-    onClick: (ToggleBtnState) -> Unit
+    onClick: (ToggleBtnState) -> Unit,
+    isAvailable: Boolean = true
 ) {
     val shapePercent = 50
     val allDaysBtnName = stringResource(id = R.string.all_days_title)
@@ -72,7 +73,7 @@ fun ToggleBtnGroup(
                 border = BorderStroke(
                     1.dp, Color.Gray
                 ),
-                colors = if (currentToggleBtnState == entry.value) {
+                colors = if (currentToggleBtnState == entry.value && isAvailable) {
                     ButtonDefaults.outlinedButtonColors(
                         containerColor = MaterialTheme.colorScheme.onSurface.copy(
                             alpha = 0.7f

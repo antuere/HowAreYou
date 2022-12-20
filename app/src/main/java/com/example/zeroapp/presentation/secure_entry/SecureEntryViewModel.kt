@@ -17,7 +17,7 @@ import com.example.zeroapp.presentation.pin_code_creation.PinCodeCirclesState
 import com.example.zeroapp.presentation.base.ui_biometric_dialog.BiometricAuthState
 import com.example.zeroapp.presentation.base.ui_biometric_dialog.BiometricsAvailableState
 import com.example.zeroapp.presentation.base.ui_biometric_dialog.UIBiometricDialog
-import com.example.zeroapp.presentation.base.ui_compose_components.dialog.UIDialogCompose
+import com.example.zeroapp.presentation.base.ui_compose_components.dialog.UIDialog
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -46,8 +46,8 @@ class SecureEntryViewModel @Inject constructor(
 
     private var currentNumbers = mutableListOf<String>()
 
-    private var _uiDialog = MutableStateFlow<UIDialogCompose?>(null)
-    val uiDialog: StateFlow<UIDialogCompose?>
+    private var _uiDialog = MutableStateFlow<UIDialog?>(null)
+    val uiDialog: StateFlow<UIDialog?>
         get() = _uiDialog
 
     private var _userPinCode = MutableStateFlow<String?>(null)
@@ -245,17 +245,17 @@ class SecureEntryViewModel @Inject constructor(
     }
 
     fun onClickSignOut() {
-        _uiDialog.value = UIDialogCompose(
+        _uiDialog.value = UIDialog(
             title = R.string.dialog_sign_out_title,
             desc = R.string.dialog_sign_out_desc,
             icon = R.drawable.ic_log_out,
-            positiveButton = UIDialogCompose.UiButton(
+            positiveButton = UIDialog.UiButton(
                 text = R.string.dialog_sign_out_positive,
                 onClick = {
                     resetAllUserData()
                     _uiDialog.value = null
                 }),
-            negativeButton = UIDialogCompose.UiButton(
+            negativeButton = UIDialog.UiButton(
                 text = R.string.dialog_sign_out_negative,
                 onClick = {
                     _uiDialog.value = null

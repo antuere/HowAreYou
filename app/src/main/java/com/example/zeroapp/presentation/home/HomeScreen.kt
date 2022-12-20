@@ -27,6 +27,7 @@ fun HomeScreen(
     onNavigateToAddDay: () -> Unit,
     onNavigateToDetail: (Long) -> Unit,
     onNavigateToFavorites: () -> Unit,
+    onNavigateToCats: () -> Unit,
     onComposing: (AppBarState, Boolean) -> Unit,
     snackbarHostState: SnackbarHostState,
     homeViewModel: HomeViewModel = hiltViewModel()
@@ -117,6 +118,7 @@ fun HomeScreen(
                 titleText = stringResource(id = R.string.favorites),
             )
             CardWithOnClick(
+                onClick = onNavigateToCats,
                 cardModifier = Modifier
                     .padding(
                         top = dimensionResource(id = R.dimen.padding_small_1),

@@ -9,7 +9,7 @@ import antuere.domain.usecases.days_entities.GetDayByIdUseCase
 import antuere.domain.usecases.days_entities.UpdateDayUseCase
 import antuere.domain.util.Constants
 import com.example.zeroapp.R
-import com.example.zeroapp.presentation.base.ui_compose_components.dialog.UIDialogCompose
+import com.example.zeroapp.presentation.base.ui_compose_components.dialog.UIDialog
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -26,8 +26,8 @@ class DetailViewModel @Inject constructor(
 
     private val dayId = state.get<String>(Constants.DAY_ID_KEY)!!.toLong()
 
-    private var _uiDialog = MutableStateFlow<UIDialogCompose?>(null)
-    val uiDialog: StateFlow<UIDialogCompose?>
+    private var _uiDialog = MutableStateFlow<UIDialog?>(null)
+    val uiDialog: StateFlow<UIDialog?>
         get() = _uiDialog
 
     private val _selectedDay = MutableStateFlow<Day?>(null)
@@ -60,17 +60,17 @@ class DetailViewModel @Inject constructor(
     }
 
     fun onClickDeleteButton() {
-        _uiDialog.value = UIDialogCompose(
+        _uiDialog.value = UIDialog(
             title = R.string.dialog_delete_title,
             desc = R.string.dialog_delete_desc,
             icon = R.drawable.ic_delete_black,
-            positiveButton = UIDialogCompose.UiButton(
+            positiveButton = UIDialog.UiButton(
                 text = R.string.yes,
                 onClick = {
                     deleteDay()
                     _uiDialog.value = null
                 }),
-            negativeButton = UIDialogCompose.UiButton(
+            negativeButton = UIDialog.UiButton(
                 text = R.string.no,
                 onClick = {
                     _uiDialog.value = null

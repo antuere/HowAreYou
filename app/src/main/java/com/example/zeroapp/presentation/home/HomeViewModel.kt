@@ -13,7 +13,7 @@ import antuere.domain.usecases.user_settings.GetSettingsUseCase
 import antuere.domain.usecases.user_settings.SaveSettingsUseCase
 import antuere.domain.util.TimeUtility
 import com.example.zeroapp.R
-import com.example.zeroapp.presentation.base.ui_compose_components.dialog.UIDialogCompose
+import com.example.zeroapp.presentation.base.ui_compose_components.dialog.UIDialog
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -36,8 +36,8 @@ class HomeViewModel @Inject constructor(
 ) :
     ViewModel() {
 
-    private var _uiDialog = MutableStateFlow<UIDialogCompose?>(null)
-    val uiDialog: StateFlow<UIDialogCompose?>
+    private var _uiDialog = MutableStateFlow<UIDialog?>(null)
+    val uiDialog: StateFlow<UIDialog?>
         get() = _uiDialog
 
     private var _lastDay = MutableStateFlow<Day?>(null)
@@ -128,16 +128,16 @@ class HomeViewModel @Inject constructor(
                 myAnalystForSummary.isShowWarningForSummary(_daysForCheck.value)
 
             if (isShowWorriedDialog && _settings.value!!.isShowWorriedDialog) {
-                _uiDialog.value = UIDialogCompose(
+                _uiDialog.value = UIDialog(
                     title = R.string.dialog_warning_title,
                     desc = R.string.dialog_warning_desc,
                     icon = R.drawable.ic_warning_dialog,
-                    positiveButton = UIDialogCompose.UiButton(
+                    positiveButton = UIDialog.UiButton(
                         text = R.string.dialog_warning_positive,
                         onClick = {
                             _uiDialog.value = null
                         }),
-                    negativeButton = UIDialogCompose.UiButton(
+                    negativeButton = UIDialog.UiButton(
                         text = R.string.dialog_warning_negative,
                         onClick = {
                             _isShowSnackBar.value = true

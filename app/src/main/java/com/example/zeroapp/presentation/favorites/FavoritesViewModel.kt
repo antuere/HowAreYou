@@ -5,7 +5,7 @@ import antuere.domain.dto.Day
 import antuere.domain.usecases.days_entities.DeleteDayUseCase
 import antuere.domain.usecases.days_entities.GetFavoritesDaysUseCase
 import com.example.zeroapp.R
-import com.example.zeroapp.presentation.base.ui_compose_components.dialog.UIDialogCompose
+import com.example.zeroapp.presentation.base.ui_compose_components.dialog.UIDialog
 import com.example.zeroapp.presentation.history.NavigateToDetailState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,8 +21,8 @@ class FavoritesViewModel @Inject constructor(
     private val transitionName: String
 ) : ViewModel() {
 
-    private var _uiDialog = MutableStateFlow<UIDialogCompose?>(null)
-    val uiDialog: StateFlow<UIDialogCompose?>
+    private var _uiDialog = MutableStateFlow<UIDialog?>(null)
+    val uiDialog: StateFlow<UIDialog?>
         get() = _uiDialog
 
     private var _listDays = MutableStateFlow<List<Day>>(emptyList())
@@ -61,17 +61,17 @@ class FavoritesViewModel @Inject constructor(
     }
 
     private fun onClickLongSmile() {
-        _uiDialog.value = UIDialogCompose(
+        _uiDialog.value = UIDialog(
             title = R.string.dialog_delete_title,
             desc = R.string.dialog_delete_desc,
             icon = R.drawable.ic_delete_black,
-            positiveButton = UIDialogCompose.UiButton(
+            positiveButton = UIDialog.UiButton(
                 text = R.string.yes,
                 onClick = {
                     deleteDay()
                     _uiDialog.value = null
                 }),
-            negativeButton = UIDialogCompose.UiButton(
+            negativeButton = UIDialog.UiButton(
                 text = R.string.no,
                 onClick = {
                     _uiDialog.value = null
