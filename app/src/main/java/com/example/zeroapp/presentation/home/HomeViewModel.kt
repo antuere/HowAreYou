@@ -164,7 +164,7 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun checkDayTime() {
-        if (TimeUtility.format(Date()) == (_lastDay.value?.dateString ?: "show add button")) {
+        if (TimeUtility.formatDate(Date()) == (_lastDay.value?.dateString ?: "show add button")) {
             val currentDay = _lastDay.value!!
             _fabButtonState.value =
                 FabButtonState.Smile(imageId = currentDay.imageResId, dayId = currentDay.dayId)

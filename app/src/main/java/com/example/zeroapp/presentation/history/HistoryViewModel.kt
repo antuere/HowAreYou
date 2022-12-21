@@ -18,7 +18,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 
@@ -52,13 +51,13 @@ class HistoryViewModel @Inject constructor(
     val navigateToDetailState: StateFlow<NavigateToDetailState?>
         get() = _navigateToDetailState
 
-    private var _toggleBtnState = MutableStateFlow(ToggleBtnState.CURRENT_MONTH)
+    private var _toggleBtnState = MutableStateFlow(ToggleBtnState.ALL_DAYS)
     val toggleBtnState: StateFlow<ToggleBtnState>
         get() = _toggleBtnState
 
-    private var _isFilterSelected = MutableStateFlow(false)
-    val isFilterSelected: StateFlow<Boolean>
-        get() = _isFilterSelected
+    private var _isDaysSelected = MutableStateFlow(false)
+    val isDaysSelected: StateFlow<Boolean>
+        get() = _isDaysSelected
 
     private var _currentJob: JobType? = null
 
@@ -108,34 +107,17 @@ class HistoryViewModel @Inject constructor(
         )
     }
 
-    fun onClickFilterButton() {
-        _uiDatePicker.value = UIDatePicker(
-            title = R.string.date_picker_title,
-            positiveButton = UIDatePicker.UiButtonPositive(
-                onClick = {
-                    val kotlinPair: Pair<Long, Long> = Pair(it.first, it.second)
-                    Timber.i("selected pair is ${kotlinPair.toString()}")
-                    checkedFilterButton(kotlinPair)
-                    _isFilterSelected.value = true
-                    _uiDatePicker.value = null
-                }),
-            negativeButton = UIDatePicker.UiButtonNegative(
-                onClick = {
-                    _uiDatePicker.value = null
-                })
-        )
-    }
+    fun onDaysSelected(pair: Pair<Long, Long>) {
+        _toggleBtnState.value = ToggleBtnState.NONE
+        saveToggleButtonState(_toggleBtnState.value)
+        _isDaysSelected.value = true
 
-    private fun checkedFilterButton(pair: Pair<Long, Long>) {
-        if (_currentJob !is JobType.Filter) {
-            _currentJob?.job?.cancel()
-            Timber.i("selected pair, days is")
-            _currentJob = JobType.Filter(viewModelScope.launch {
-                getSelectedDaysUseCase(pair).cancellable().collectLatest {
-                    _listDays.value = it
-                }
-            })
-        }
+        _currentJob?.job?.cancel()
+        _currentJob = JobType.Filter(viewModelScope.launch {
+            getSelectedDaysUseCase(pair).cancellable().collectLatest {
+                _listDays.value = it
+            }
+        })
     }
 
     fun checkedCurrentMonthButton() {
@@ -178,9 +160,13 @@ class HistoryViewModel @Inject constructor(
 
     fun onClickCheckedItem(state: ToggleBtnState) {
         if (_toggleBtnState.value != state) {
-            viewModelScope.launch {
-                saveToggleBtnUseCase(state)
-            }
+            saveToggleButtonState(state)
+        }
+    }
+
+    private fun saveToggleButtonState(state: ToggleBtnState) {
+        viewModelScope.launch {
+            saveToggleBtnUseCase(state)
         }
     }
 
@@ -193,7 +179,7 @@ class HistoryViewModel @Inject constructor(
     }
 
     fun resetIsFilterSelected() {
-        _isFilterSelected.value = false
+        _isDaysSelected.value = false
     }
 }
 

@@ -19,7 +19,7 @@ buildscript {
         version_dagger_hilt = "2.44"
         version_dagger_hilt_navigation = "1.0.0"
         version_dagger_hilt_compiler = "1.0.0"
-        version_desugar_jdk = "1.0.9"
+        version_desugar_jdk = "1.2.2"
         version_espresso_core = "3.5.0"
         version_fragment = "2.5.1"
         version_firebase = "20.1.0"

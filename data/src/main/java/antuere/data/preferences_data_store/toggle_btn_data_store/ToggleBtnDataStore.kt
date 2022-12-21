@@ -23,12 +23,12 @@ class ToggleBtnDataStore(context: Context, name: String) {
         get() = toggleBtnDataStore.data.map { preferences ->
             when (preferences[CHECKED_BUTTON_HISTORY_KEY] ?: "ALL_DAYS") {
                 ToggleBtnState.ALL_DAYS.name -> ToggleBtnState.ALL_DAYS
-                ToggleBtnState.CURRENT_MONTH.name  -> ToggleBtnState.CURRENT_MONTH
+                ToggleBtnState.CURRENT_MONTH.name -> ToggleBtnState.CURRENT_MONTH
                 ToggleBtnState.LAST_WEEK.name -> ToggleBtnState.LAST_WEEK
+                ToggleBtnState.NONE.name -> ToggleBtnState.NONE
                 else -> ToggleBtnState.ALL_DAYS
             }
         }
-
 
     suspend fun saveToggleButtonState(state: String) {
         toggleBtnDataStore.edit { preferences ->
