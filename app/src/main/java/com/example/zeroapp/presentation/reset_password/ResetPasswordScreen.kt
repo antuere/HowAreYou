@@ -15,18 +15,16 @@ import com.example.zeroapp.R
 import com.example.zeroapp.presentation.base.ui_compose_components.AppBarState
 import com.example.zeroapp.presentation.base.ui_compose_components.text_field.EmailTextField
 import com.example.zeroapp.presentation.reset_password.ui_compose.ResetButton
-import com.example.zeroapp.util.ShowSnackBar
+import com.example.zeroapp.util.ShowToast
 
 @Composable
 fun ResetPasswordScreen(
     onNavigateUp: () -> Unit,
     onComposing: (AppBarState, Boolean) -> Unit,
-    snackbarHostState: SnackbarHostState,
     resetPasswordViewModel: ResetPasswordViewModel = hiltViewModel()
 ) {
     val resetState by resetPasswordViewModel.resetState.collectAsState()
     var userEmail by remember { mutableStateOf("") }
-
 
     LaunchedEffect(key1 = true) {
         onComposing(
@@ -39,25 +37,21 @@ fun ResetPasswordScreen(
         )
     }
 
-//    TODO подумать как сделать элегантней
     resetState?.let { state ->
         when (state) {
             is ResetPasswordState.Successful -> {
-                snackbarHostState.ShowSnackBar(message = stringResource(id = state.res))
+                ShowToast(text = stringResource(id = state.res))
                 onNavigateUp()
-                resetPasswordViewModel.nullifyState()
             }
             is ResetPasswordState.EmptyFields -> {
-                snackbarHostState.ShowSnackBar(message = stringResource(id = R.string.empty_fields))
-                resetPasswordViewModel.nullifyState(true)
+                ShowToast(text = stringResource(id = R.string.empty_fields))
             }
 
             is ResetPasswordState.ErrorFromFireBase -> {
-                snackbarHostState.ShowSnackBar(message = state.message)
-                resetPasswordViewModel.nullifyState(true)
+                ShowToast(text = state.message)
             }
         }
-
+        resetPasswordViewModel.nullifyState()
     }
 
     Column(

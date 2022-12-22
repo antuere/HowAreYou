@@ -8,7 +8,6 @@ import antuere.domain.repository.SettingsRepository
 import antuere.domain.repository.ToggleBtnRepository
 import antuere.domain.usecases.authentication.*
 import antuere.domain.usecases.day_quote.GetDayQuoteLocalUseCase
-import antuere.domain.usecases.day_quote.SaveDayQuoteLocalUseCase
 import antuere.domain.usecases.day_quote.UpdDayQuoteByRemoteUseCase
 import antuere.domain.usecases.days_entities.*
 import antuere.domain.usecases.privacy.*
@@ -72,11 +71,6 @@ class DomainModule {
     @Provides
     fun provideGetQuoteLocalUseCase(quoteRepository: QuoteRepository): GetDayQuoteLocalUseCase {
         return GetDayQuoteLocalUseCase(quoteRepository)
-    }
-
-    @Provides
-    fun provideSaveQuoteLocalUseCase(quoteRepository: QuoteRepository): SaveDayQuoteLocalUseCase {
-        return SaveDayQuoteLocalUseCase(quoteRepository)
     }
 
     @Provides

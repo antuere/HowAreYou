@@ -16,8 +16,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -26,11 +24,9 @@ import com.example.zeroapp.R
 import com.example.zeroapp.presentation.base.ui_compose_components.AppBarState
 import com.example.zeroapp.presentation.base.ui_compose_components.dialog.Dialog
 import com.example.zeroapp.presentation.base.ui_compose_components.DaysListItem
-import com.example.zeroapp.presentation.base.ui_date_picker.UIDatePickerListener
 import com.example.zeroapp.presentation.history.ui_compose.DaysFilterBottomSheet
 import com.example.zeroapp.presentation.history.ui_compose.HistoryHeaderText
 import com.example.zeroapp.presentation.history.ui_compose.ToggleBtnGroup
-import com.example.zeroapp.util.findFragmentActivity
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -66,12 +62,6 @@ fun HistoryScreen(
             bottomSheetState.targetValue == ModalBottomSheetValue.Hidden
         )
     }
-
-    val fragmentActivity = LocalContext.current.findFragmentActivity()
-    val lifecycleOwner = LocalLifecycleOwner.current
-
-    val datePickerListener =
-        UIDatePickerListener(fragmentActivity.supportFragmentManager, historyViewModel)
 
     val uiDialog by historyViewModel.uiDialog.collectAsState()
     val listDays by historyViewModel.listDays.collectAsState()

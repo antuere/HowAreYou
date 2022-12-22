@@ -6,7 +6,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -15,7 +14,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.zeroapp.R
 import com.example.zeroapp.presentation.base.ui_compose_components.AppBarState
 import com.example.zeroapp.presentation.sign_in_methods.ui_compose.ButtonWithIcon
-import com.example.zeroapp.util.ShowSnackBar
+import com.example.zeroapp.util.ShowToast
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 
@@ -25,7 +24,6 @@ fun SignInMethodsScreen(
     onNavigateUp: () -> Unit,
     onNavigateSignInEmail: () -> Unit,
     signInMethodsViewModel: SignInMethodsViewModel = hiltViewModel(),
-    snackbarHostState: SnackbarHostState,
     signInClient: GoogleSignInClient,
 ) {
     val signInState by signInMethodsViewModel.signInState.collectAsState()
@@ -56,7 +54,7 @@ fun SignInMethodsScreen(
                 onNavigateUp()
             }
             is SignInMethodsState.Error -> {
-                snackbarHostState.ShowSnackBar(message = state.message)
+                ShowToast(text = state.message)
             }
         }
         signInMethodsViewModel.nullifyState()

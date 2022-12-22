@@ -18,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.zeroapp.R
@@ -29,8 +30,9 @@ import com.example.zeroapp.presentation.settings.ui_compose.AuthSection
 import com.example.zeroapp.presentation.settings.ui_compose.GeneralSettings
 import com.example.zeroapp.presentation.pin_code_creation.PinCodeCreating
 import com.example.zeroapp.presentation.settings.ui_compose.PrivacySettings
-import com.example.zeroapp.util.ShowSnackBarExperimental
+import com.example.zeroapp.util.ShowToast
 import com.example.zeroapp.util.findFragmentActivity
+import com.example.zeroapp.util.showToastByContext
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -38,11 +40,11 @@ import kotlinx.coroutines.launch
 fun SettingsScreen(
     onComposing: (AppBarState, Boolean) -> Unit,
     onNavigateSignIn: () -> Unit,
-    snackbarHostState: SnackbarHostState,
     settingsViewModel: SettingsViewModel = hiltViewModel()
 ) {
     val fragmentActivity = LocalContext.current.findFragmentActivity()
     val scope = rememberCoroutineScope()
+    val context = LocalContext.current
 
     val settings by settingsViewModel.settings.collectAsState()
     val userPinCode by settingsViewModel.savedPinCode.collectAsState()
@@ -58,18 +60,6 @@ fun SettingsScreen(
         initialValue = ModalBottomSheetValue.Hidden,
     )
 
-    var isShowBiometricAuthSuccessSnackBar by remember {
-        mutableStateOf(false)
-    }
-
-    var isShowNoneEnrollBiometricAuthSnackBar by remember {
-        mutableStateOf(false)
-    }
-
-    var isShowPinCodeSuccessCreatedSnackBar by remember {
-        mutableStateOf(false)
-    }
-
     var isCheckedWorriedDialog by remember {
         mutableStateOf(settings?.isShowWorriedDialog ?: true)
     }
@@ -83,33 +73,13 @@ fun SettingsScreen(
         )
     }
 
-    if (isShowBiometricAuthSuccessSnackBar) {
-        snackbarHostState.ShowSnackBarExperimental(
-            messageId = R.string.biom_auth_create_success,
-            hideSnackbarAfterDelay = { isShowBiometricAuthSuccessSnackBar = false }
-        )
-    }
-
-    if (isShowNoneEnrollBiometricAuthSnackBar) {
-        snackbarHostState.ShowSnackBarExperimental(
-            messageId = R.string.biometric_none_enroll,
-            hideSnackbarAfterDelay = { isShowNoneEnrollBiometricAuthSnackBar = false }
-        )
-    }
-
-    if (isShowPinCodeSuccessCreatedSnackBar) {
-        snackbarHostState.ShowSnackBarExperimental(
-            messageId = R.string.pin_code_create_success,
-            hideSnackbarAfterDelay = { isShowPinCodeSuccessCreatedSnackBar = false })
-    }
-
     var isCheckedPinCode by remember {
         mutableStateOf(
             settings?.isPinCodeEnabled ?: false
         )
     }
 
-    var isCheckedBiometric  by remember {
+    var isCheckedBiometric by remember {
         mutableStateOf(
             settings?.isBiometricEnabled ?: false
         )
@@ -129,7 +99,7 @@ fun SettingsScreen(
                     isUseBiometric = true,
                     isUsePinCode = true
                 )
-                isShowBiometricAuthSuccessSnackBar = true
+                ShowToast(text = stringResource(R.string.biom_auth_create_success))
             }
             BiometricAuthState.ERROR -> {
                 isCheckedBiometric = false
@@ -150,16 +120,19 @@ fun SettingsScreen(
                     }
                     val launcher =
                         rememberLauncherForActivityResult(contract = ActivityResultContracts.StartActivityForResult()) { result ->
-                            if (result.resultCode == Activity.RESULT_OK) {
-                                isShowBiometricAuthSuccessSnackBar = true
-                                isCheckedBiometric = true
+                            isCheckedBiometric = if (result.resultCode == Activity.RESULT_OK) {
+                                showToastByContext(
+                                    context = context,
+                                    resId = R.string.biom_auth_create_success
+                                )
+                                true
                             } else {
-                                isCheckedBiometric = false
+                                false
                             }
                         }
                     launcher.launch(enrollIntent)
                 } else {
-                    isShowNoneEnrollBiometricAuthSnackBar = true
+                    ShowToast(text = stringResource(R.string.biometric_none_enroll))
                     isCheckedBiometric = false
                 }
             }
@@ -177,9 +150,15 @@ fun SettingsScreen(
                     .fillMaxWidth(),
                 contentAlignment = Alignment.Center
             ) {
+                val toastText = stringResource(id = R.string.pin_code_create_success)
                 PinCodeCreating(
                     bottomSheetState = bottomSheetState,
-                    onShowSuccessSnackBar = { isShowPinCodeSuccessCreatedSnackBar = true })
+                    onShowSuccessSnackBar = {
+                        showToastByContext(
+                            context = context,
+                            text = toastText
+                        )
+                    })
             }
         },
     ) {

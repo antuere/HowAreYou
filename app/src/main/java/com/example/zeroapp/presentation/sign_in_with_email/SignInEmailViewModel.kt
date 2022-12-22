@@ -64,19 +64,12 @@ class SignInEmailViewModel @Inject constructor(
         }
     }
 
-    fun nullifyState(withDelay : Boolean = false) {
-        if (withDelay) {
-            viewModelScope.launch {
-                delay(2000)
-                _signInState.value = null
-            }
-        } else {
-            _signInState.value = null
-        }
+    fun nullifyState() {
+        _signInState.value = null
     }
 
     fun resetIsShowLoginProgressIndicator(withDelay: Boolean = false) {
-        if(withDelay){
+        if (withDelay) {
             viewModelScope.launch {
                 delay(250)
                 _isShowLoginProgressIndicator.value = false

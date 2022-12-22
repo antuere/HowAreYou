@@ -6,7 +6,6 @@ import antuere.domain.authentication_manager.ResetPassResultListener
 import antuere.domain.usecases.authentication.ResetPasswordUseCase
 import com.example.zeroapp.R
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -42,15 +41,7 @@ class ResetPasswordViewModel @Inject constructor(
         }
     }
 
-    fun nullifyState(withDelay : Boolean = false) {
-        if (withDelay) {
-            viewModelScope.launch {
-                delay(2000)
-                _resetState.value = null
-            }
-        } else {
-            _resetState.value = null
-        }
+    fun nullifyState() {
+        _resetState.value = null
     }
-
 }

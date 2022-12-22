@@ -12,8 +12,6 @@ import antuere.domain.usecases.user_settings.SaveToggleBtnUseCase
 import antuere.domain.util.TimeUtility
 import com.example.zeroapp.R
 import com.example.zeroapp.presentation.base.ui_compose_components.dialog.UIDialog
-import com.example.zeroapp.presentation.base.ui_date_picker.IUIDatePickerAction
-import com.example.zeroapp.presentation.base.ui_date_picker.UIDatePicker
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
@@ -31,17 +29,13 @@ class HistoryViewModel @Inject constructor(
     private val saveToggleBtnUseCase: SaveToggleBtnUseCase,
     private val transitionName: String,
 ) :
-    ViewModel(), IUIDatePickerAction {
+    ViewModel() {
 
     private var _dayId = 0L
 
     private var _uiDialog = MutableStateFlow<UIDialog?>(null)
     val uiDialog: StateFlow<UIDialog?>
         get() = _uiDialog
-
-    private var _uiDatePicker = MutableStateFlow<UIDatePicker?>(null)
-    override val datePicker: StateFlow<UIDatePicker?>
-        get() = _uiDatePicker
 
     private var _listDays = MutableStateFlow<List<Day>>(emptyList())
     val listDays: StateFlow<List<Day>>

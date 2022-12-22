@@ -55,9 +55,9 @@ class HomeViewModel @Inject constructor(
     val wishText: StateFlow<String>
         get() = _wishText
 
-    private var _isShowSnackBar = MutableStateFlow(false)
-    val isShowSnackBar: StateFlow<Boolean>
-        get() = _isShowSnackBar
+    private var _isShowToast = MutableStateFlow(false)
+    val isShowToast: StateFlow<Boolean>
+        get() = _isShowToast
 
     private var _isShowSplash = MutableStateFlow(true)
     val isShowSplash: StateFlow<Boolean>
@@ -140,7 +140,7 @@ class HomeViewModel @Inject constructor(
                     negativeButton = UIDialog.UiButton(
                         text = R.string.dialog_warning_negative,
                         onClick = {
-                            _isShowSnackBar.value = true
+                            _isShowToast.value = true
                             _uiDialog.value = null
                         }),
                     dismissAction = { _uiDialog.value = null }
@@ -178,6 +178,6 @@ class HomeViewModel @Inject constructor(
     }
 
     fun resetSnackBar() {
-        _isShowSnackBar.value = false
+        _isShowToast.value = false
     }
 }

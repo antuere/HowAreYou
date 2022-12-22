@@ -53,8 +53,6 @@ class SecureEntryViewModel @Inject constructor(
     private var _userPinCode = MutableStateFlow<String?>(null)
 
     private var _biometricAuthState = MutableStateFlow<BiometricAuthState?>(null)
-    val biometricAuthState: StateFlow<BiometricAuthState?>
-        get() = _biometricAuthState
 
     private var _isShowBiometricAuth = MutableStateFlow(false)
     val isShowBiometricAuth: StateFlow<Boolean>
@@ -68,9 +66,9 @@ class SecureEntryViewModel @Inject constructor(
     val settings: StateFlow<Settings?>
         get() = _settings
 
-    private var _isShowErrorSnackBar = MutableStateFlow(false)
-    val isShowErrorSnackBar: StateFlow<Boolean>
-        get() = _isShowErrorSnackBar
+    private var _isShowErrorToast = MutableStateFlow(false)
+    val isShowErrorToast: StateFlow<Boolean>
+        get() = _isShowErrorToast
 
     private var _isNavigateToHomeScreen = MutableStateFlow(false)
     val isNavigateToHomeScreen: StateFlow<Boolean>
@@ -230,7 +228,7 @@ class SecureEntryViewModel @Inject constructor(
         if (pinCode == savedPinCode) {
             _isNavigateToHomeScreen.value = true
         } else {
-            _isShowErrorSnackBar.value = true
+            _isShowErrorToast.value = true
             resetAllPinCodeStates()
         }
     }
@@ -271,17 +269,12 @@ class SecureEntryViewModel @Inject constructor(
         _isShowBiometricAuth.value = true
     }
 
-    fun resetIsShowErrorSnackBar() {
-        _isShowErrorSnackBar.value = false
+    fun resetIsShowErrorToast() {
+        _isShowErrorToast.value = false
     }
 
     fun nullifyBiometricAvailableState() {
         _biometricAvailableState.value = null
-    }
-
-    fun navigateToHomeScreen() {
-        _isNavigateToHomeScreen.value = true
-
     }
 
     fun resetIsNavigateToHomeScreen() {

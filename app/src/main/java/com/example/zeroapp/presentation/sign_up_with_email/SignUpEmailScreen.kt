@@ -19,16 +19,14 @@ import com.example.zeroapp.presentation.base.ui_compose_components.text_field.De
 import com.example.zeroapp.presentation.base.ui_compose_components.text_field.EmailTextField
 import com.example.zeroapp.presentation.base.ui_compose_components.text_field.PasswordTextField
 import com.example.zeroapp.presentation.sign_up_with_email.ui_compose.SignUpButton
-import com.example.zeroapp.util.ShowSnackBar
+import com.example.zeroapp.util.ShowToast
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SignUpEmailScreen(
     modifier: Modifier = Modifier,
     onComposing: (AppBarState, Boolean) -> Unit,
     onNavigateUp: () -> Unit,
     onNavigateSettings: () -> Unit,
-    snackbarHostState: SnackbarHostState,
     signUpEmailViewModel: SignUpEmailViewModel = hiltViewModel()
 ) {
     val isShowRegisterProgressIndicator by signUpEmailViewModel.isShowRegisterProgressIndicator.collectAsState()
@@ -56,25 +54,21 @@ fun SignUpEmailScreen(
         when (state) {
             is SignUpState.Successful -> {
                 onNavigateSettings()
-                signUpEmailViewModel.nullifyState()
                 signUpEmailViewModel.resetIsShowRegisterProgressIndicator(true)
             }
             is SignUpState.EmptyFields -> {
-                snackbarHostState.ShowSnackBar(message = stringResource(id = state.res))
-                signUpEmailViewModel.nullifyState(true)
+                ShowToast(text = stringResource(id = state.res))
             }
             is SignUpState.PasswordsError -> {
-                snackbarHostState.ShowSnackBar(message = stringResource(id = state.res))
-                signUpEmailViewModel.nullifyState(true)
+                ShowToast(text = stringResource(id = state.res))
             }
 
             is SignUpState.ErrorFromFireBase -> {
-                snackbarHostState.ShowSnackBar(message = state.message)
-                signUpEmailViewModel.nullifyState(true)
+                ShowToast(text = state.message)
                 signUpEmailViewModel.resetIsShowRegisterProgressIndicator()
             }
-
         }
+        signUpEmailViewModel.nullifyState()
 
     }
 

@@ -47,7 +47,6 @@ fun DaysFilterBottomSheet(
         mutableStateOf(LocalDate.MIN)
     }
 
-
     val endBtnString = stringResource(R.string.end_date_field)
     var endBtnText by remember {
         mutableStateOf(endBtnString)
@@ -60,7 +59,7 @@ fun DaysFilterBottomSheet(
     val isEnabledConfirmBtn = !startBtnText.contains(" ") && !endBtnText.contains(" ")
 
     Column(
-        modifier = Modifier.fillMaxHeight(0.3F),
+        modifier = Modifier.fillMaxHeight(0.4F),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -70,6 +69,9 @@ fun DaysFilterBottomSheet(
             painter = painterResource(id = R.drawable.ic_horizontal_line),
             contentDescription = null
         )
+        Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_3)))
+
+        Text(text = stringResource(id = R.string.select_days))
         Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_3)))
 
         Row(

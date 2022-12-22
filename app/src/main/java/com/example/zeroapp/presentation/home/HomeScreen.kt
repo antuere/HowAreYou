@@ -20,7 +20,7 @@ import com.example.zeroapp.presentation.base.ui_compose_components.CardDefault
 import com.example.zeroapp.presentation.base.ui_compose_components.CardWithOnClick
 import com.example.zeroapp.presentation.base.ui_compose_components.dialog.Dialog
 import com.example.zeroapp.presentation.base.ui_theme.TealMain
-import com.example.zeroapp.util.ShowSnackBarExperimental
+import com.example.zeroapp.util.ShowToast
 
 @Composable
 fun HomeScreen(
@@ -29,13 +29,12 @@ fun HomeScreen(
     onNavigateToFavorites: () -> Unit,
     onNavigateToCats: () -> Unit,
     onComposing: (AppBarState, Boolean) -> Unit,
-    snackbarHostState: SnackbarHostState,
     homeViewModel: HomeViewModel = hiltViewModel()
 ) {
     val uiDialog by homeViewModel.uiDialog.collectAsState()
     val dayQuote by homeViewModel.dayQuote.collectAsState()
     val wishText by homeViewModel.wishText.collectAsState()
-    val isShowSnackBar by homeViewModel.isShowSnackBar.collectAsState()
+    val isShowToast by homeViewModel.isShowToast.collectAsState()
     val fabBtnState by homeViewModel.fabButtonState.collectAsState()
 
     LaunchedEffect(key1 = true) {
@@ -51,11 +50,9 @@ fun HomeScreen(
         Dialog(dialog = it)
     }
 
-    if (isShowSnackBar) {
-        snackbarHostState.ShowSnackBarExperimental(
-            messageId = R.string.snack_bar_warning_negative,
-            hideSnackbarAfterDelay = { homeViewModel.resetSnackBar() }
-        )
+    if (isShowToast) {
+        ShowToast(text = stringResource(id = R.string.snack_bar_warning_negative) )
+        homeViewModel.resetSnackBar()
     }
 
     Column(

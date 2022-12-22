@@ -17,7 +17,6 @@ class DayRepositoryImpl @Inject constructor(
     private val dayEntityMapper: DayEntityMapper,
 ) : DayRepository {
 
-
     init {
         CoroutineScope(Dispatchers.IO).launch {
             refreshRemoteData()
@@ -28,6 +27,7 @@ class DayRepositoryImpl @Inject constructor(
         val daysFromServer = firebaseRealtimeDB.getDays()
         if (daysFromServer.isNotEmpty()) {
             CoroutineScope(Dispatchers.IO).launch {
+                // TODO нужно потом оптимизировать
                 deleteAllDaysLocal()
                 daysFromServer.forEach { day ->
                     insertLocal(day)

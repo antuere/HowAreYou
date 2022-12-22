@@ -18,7 +18,7 @@ import com.example.zeroapp.presentation.base.ui_compose_components.text_field.Pa
 import com.example.zeroapp.presentation.sign_in_with_email.ui_compose.ForgotPassBtn
 import com.example.zeroapp.presentation.sign_in_with_email.ui_compose.SignInButton
 import com.example.zeroapp.presentation.sign_in_with_email.ui_compose.SignUpHintButton
-import com.example.zeroapp.util.ShowSnackBar
+import com.example.zeroapp.util.ShowToast
 
 @Composable
 fun SignInEmailScreen(
@@ -28,7 +28,6 @@ fun SignInEmailScreen(
     onNavigateSettings: () -> Unit,
     onNavigateSignUp: () -> Unit,
     onNavigateResetPassword: () -> Unit,
-    snackbarHostState: SnackbarHostState,
     signInEmailViewModel: SignInEmailViewModel = hiltViewModel()
 ) {
     val isShowLoginProgressIndicator by signInEmailViewModel.isShowLoginProgressIndicator.collectAsState()
@@ -48,26 +47,22 @@ fun SignInEmailScreen(
         )
     }
 
-    //    TODO подумать как сделать элегантней ч2
     signInState?.let { state ->
         when (state) {
             is SignInState.Successful -> {
                 onNavigateSettings()
-                signInEmailViewModel.nullifyState()
                 signInEmailViewModel.resetIsShowLoginProgressIndicator(true)
             }
             is SignInState.EmptyFields -> {
-                snackbarHostState.ShowSnackBar(message = stringResource(id = R.string.empty_fields))
-                signInEmailViewModel.nullifyState(true)
+                ShowToast(text = stringResource(id = R.string.empty_fields) )
             }
 
             is SignInState.ErrorFromFireBase -> {
-                snackbarHostState.ShowSnackBar(message = state.message)
-                signInEmailViewModel.nullifyState(true)
+                ShowToast(text = state.message)
                 signInEmailViewModel.resetIsShowLoginProgressIndicator()
             }
         }
-
+        signInEmailViewModel.nullifyState()
     }
 
     Column(

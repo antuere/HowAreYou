@@ -144,6 +144,7 @@
     <string name="start_date_field">Start date</string>
     <string name="end_date_field">End date</string>
     <string name="show_selected_days">Show selected days</string>
+    <string name="select_days">Select days</string>
 
     <!-- Wishes for users -->
     <string name="wish_for_users_test">We hope you had another great day, so enjoy! We are waiting for you tomorrow</string>
@@ -174,7 +175,7 @@
     <string name="click_less">Click less</string>
     <string name="click_more">Click more</string>
     <string name="too_many_chars_default">Cannot be more characters</string>
-    <string name="ok">Ok</string>
+    <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
 
 </resources>

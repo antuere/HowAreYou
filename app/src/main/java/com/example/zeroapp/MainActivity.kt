@@ -9,7 +9,6 @@ import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.lifecycleScope
@@ -89,7 +88,6 @@ class MainActivity : FragmentActivity() {
                 }
 
                 val navController = rememberNavController()
-                val snackbarHostState = remember { SnackbarHostState() }
                 var appBarState by remember {
                     mutableStateOf(AppBarState())
                 }
@@ -98,23 +96,23 @@ class MainActivity : FragmentActivity() {
                 }
 
                 Scaffold(
-                    snackbarHost = {
-                        SnackbarHost(snackbarHostState) { data ->
-                            Snackbar(
-                                modifier = Modifier.padding(16.dp),
-                                containerColor = MaterialTheme.colorScheme.onPrimary,
-                                contentColor = MaterialTheme.colorScheme.onSecondary,
-                                shape = SnackbarDefaults.shape,
-                            ) {
-                                Box {
-                                    Text(
-                                        text = data.visuals.message,
-                                        style = MaterialTheme.typography.displaySmall
-                                    )
-                                }
-                            }
-                        }
-                    },
+//                    snackbarHost = {
+//                        SnackbarHost(snackbarHostState) { data ->
+//                            Snackbar(
+//                                modifier = Modifier.padding(16.dp),
+//                                containerColor = MaterialTheme.colorScheme.onPrimary,
+//                                contentColor = MaterialTheme.colorScheme.onSecondary,
+//                                shape = SnackbarDefaults.shape,
+//                            ) {
+//                                Box {
+//                                    Text(
+//                                        text = data.visuals.message,
+//                                        style = MaterialTheme.typography.displaySmall
+//                                    )
+//                                }
+//                            }
+//                        }
+//                    },
                     bottomBar = {
                         if (isShowBottomBar) {
                             BottomNavBar(navController)
@@ -149,7 +147,6 @@ class MainActivity : FragmentActivity() {
                                 onNavigateToAddDay = { navController.navigate(Screen.AddDay.route) },
                                 onNavigateToCats = { navController.navigate(Screen.Cats.route) },
                                 onNavigateToFavorites = { navController.navigate(Screen.Favorites.route) },
-                                snackbarHostState = snackbarHostState
                             )
                         }
 
@@ -214,7 +211,6 @@ class MainActivity : FragmentActivity() {
                                     appBarState = barState
                                     isShowBottomBar = isShow
                                 },
-                                snackbarHostState = snackbarHostState
                             )
                         }
 
@@ -227,7 +223,6 @@ class MainActivity : FragmentActivity() {
                                 onNavigateUp = { navController.navigateUp() },
                                 onNavigateSignInEmail = { navController.navigate(Screen.SignInWithEmail.route) },
                                 signInClient = signInClient,
-                                snackbarHostState = snackbarHostState
                             )
                         }
 
@@ -246,7 +241,6 @@ class MainActivity : FragmentActivity() {
                                 },
                                 onNavigateSignUp = { navController.navigate(Screen.SignUpWithEmail.route) },
                                 onNavigateResetPassword = { navController.navigate(Screen.ResetPassEmail.route) },
-                                snackbarHostState = snackbarHostState
                             )
                         }
 
@@ -263,7 +257,6 @@ class MainActivity : FragmentActivity() {
                                     )
                                 },
                                 onNavigateUp = { navController.navigateUp() },
-                                snackbarHostState = snackbarHostState
                             )
                         }
 
@@ -274,7 +267,6 @@ class MainActivity : FragmentActivity() {
                                     isShowBottomBar = isShow
                                 },
                                 onNavigateUp = { navController.navigateUp() },
-                                snackbarHostState = snackbarHostState
                             )
                         }
 
@@ -285,7 +277,6 @@ class MainActivity : FragmentActivity() {
                                     isShowBottomBar = isShow
                                 },
                                 onNavigateHomeScreen = { navController.navigate(Screen.Home.route) },
-                                snackbarHostState = snackbarHostState
                             )
                         }
                     }

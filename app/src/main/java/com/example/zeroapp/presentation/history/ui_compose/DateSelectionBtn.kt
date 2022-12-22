@@ -18,8 +18,8 @@ fun DateSelectionBtn(
         colors = ButtonDefaults.outlinedButtonColors(
             containerColor = MaterialTheme.colorScheme.onPrimary,
             contentColor = MaterialTheme.colorScheme.onSecondary,
-            disabledContainerColor = MaterialTheme.colorScheme.onSurfaceVariant,
-            disabledContentColor = MaterialTheme.colorScheme.onPrimary,
+            disabledContainerColor = MaterialTheme.colorScheme.onPrimary,
+            disabledContentColor = MaterialTheme.colorScheme.onSecondary,
         ),
         enabled = enabled
     )
