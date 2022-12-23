@@ -5,16 +5,13 @@ import androidx.lifecycle.viewModelScope
 import antuere.domain.dto.Settings
 import antuere.domain.usecases.authentication.SignOutUseCase
 import antuere.domain.usecases.days_entities.DeleteAllDaysLocalUseCase
-import antuere.domain.usecases.privacy.DoneAuthByBiometricUseCase
 import com.example.zeroapp.R
-import antuere.domain.usecases.privacy.DoneAuthByPinUseCase
 import antuere.domain.usecases.user_settings.DeleteAllSettingsUseCase
 import antuere.domain.usecases.user_settings.GetSavedPinCodeUseCase
 import antuere.domain.usecases.user_settings.GetSettingsUseCase
 import antuere.domain.usecases.user_settings.SaveSettingsUseCase
 import com.example.zeroapp.presentation.base.ui_biometric_dialog.IUIBiometricListener
 import com.example.zeroapp.presentation.pin_code_creation.PinCodeCirclesState
-import com.example.zeroapp.presentation.base.ui_biometric_dialog.BiometricAuthState
 import com.example.zeroapp.presentation.base.ui_biometric_dialog.BiometricsAvailableState
 import com.example.zeroapp.presentation.base.ui_biometric_dialog.UIBiometricDialog
 import com.example.zeroapp.presentation.base.ui_compose_components.dialog.UIDialog
@@ -34,8 +31,6 @@ class SecureEntryViewModel @Inject constructor(
     private val deleteAllSettingsUseCase: DeleteAllSettingsUseCase,
     private val deleteAllDaysLocalUseCase: DeleteAllDaysLocalUseCase,
     private val signOutUseCase: SignOutUseCase,
-    private val doneAuthByBiometricUseCase: DoneAuthByBiometricUseCase,
-    private val doneAuthByPinUseCase: DoneAuthByPinUseCase,
     val uiBiometricDialog: UIBiometricDialog
 ) : ViewModel() {
 
@@ -51,8 +46,6 @@ class SecureEntryViewModel @Inject constructor(
         get() = _uiDialog
 
     private var _userPinCode = MutableStateFlow<String?>(null)
-
-    private var _biometricAuthState = MutableStateFlow<BiometricAuthState?>(null)
 
     private var _isShowBiometricAuth = MutableStateFlow(false)
     val isShowBiometricAuth: StateFlow<Boolean>
@@ -83,18 +76,11 @@ class SecureEntryViewModel @Inject constructor(
     val biometricAuthStateListener = object : IUIBiometricListener {
 
         override fun onBiometricAuthFailed() {
-            _biometricAuthState.value = BiometricAuthState.ERROR
         }
 
         override fun onBiometricAuthSuccess() {
             _pinCodeCirclesState.value = PinCodeCirclesState.ALL
 
-            viewModelScope.launch {
-                doneAuthByPinUseCase(Unit)
-                doneAuthByBiometricUseCase(Unit)
-            }
-
-            _biometricAuthState.value = BiometricAuthState.SUCCESS
             saveSettings()
             _isNavigateToHomeScreen.value = true
         }

@@ -62,7 +62,6 @@ fun CardWithQuote(
 @Preview
 @Composable
 fun PreviewCardWithQuote() {
-
     CardWithQuote(
         titleText = "Quote of the day",
         quoteText = "Best quote in the world",

@@ -61,7 +61,7 @@
             android:layout_width="wrap_content"
             android:layout_gravity="center|top"
             android:layout_height="wrap_content"
-            android:text="@string/history_hint"
+            android:text="@string/no_days_all"
             android:textSize="@dimen/textSize_big_0"
             android:layout_margin="@dimen/margin_normal"
             app:layout_constraintBottom_toBottomOf="parent"

@@ -1,4 +1,4 @@
-package com.example.zeroapp.presentation.base.ui_compose_components
+package com.example.zeroapp.presentation.base.ui_compose_components.top_bar
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.RowScope

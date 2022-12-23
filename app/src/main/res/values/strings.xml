@@ -139,12 +139,18 @@
     <string name="all_days_desc">Show all days</string>
     <string name="month_days_desc">Show days of this current month</string>
     <string name="week_days_desc">Show days of this current week</string>
-    <string name="history_hint">Add your first day and come back!</string>
     <string name="date_picker_title">Select days</string>
     <string name="start_date_field">Start date</string>
     <string name="end_date_field">End date</string>
     <string name="show_selected_days">Show selected days</string>
     <string name="select_days">Select days</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="close_filter">Close filter</string>
+    <string name="no_days_all">Add your first day and come back!</string>
+    <string name="no_days_week">There are no entries yet for the current week, let\'s fix it!</string>
+    <string name="no_days_month">There are no entries yet for the current month, let\'s fix it!</string>
+    <string name="no_days_filter">There are no entries for the selected dates</string>
 
     <!-- Wishes for users -->
     <string name="wish_for_users_test">We hope you had another great day, so enjoy! We are waiting for you tomorrow</string>
@@ -175,7 +181,5 @@
     <string name="click_less">Click less</string>
     <string name="click_more">Click more</string>
     <string name="too_many_chars_default">Cannot be more characters</string>
-    <string name="ok">OK</string>
-    <string name="cancel">Cancel</string>
 
 </resources>

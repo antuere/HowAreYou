@@ -22,4 +22,10 @@ class ToggleBtnRepositoryImpl @Inject constructor(
         withContext(Dispatchers.IO) {
             toggleBtnDataStore.saveToggleButtonState(state.name)
         }
+
+    override suspend fun resetToggleButtonState() {
+        withContext(Dispatchers.IO) {
+            toggleBtnDataStore.resetToggleButtonState()
+        }
+    }
 }

@@ -177,7 +177,7 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun resetSnackBar() {
+    fun resetToast() {
         _isShowToast.value = false
     }
 }

@@ -14,10 +14,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.zeroapp.R
-import com.example.zeroapp.presentation.base.ui_compose_components.AppBarState
+import com.example.zeroapp.presentation.base.ui_compose_components.top_bar.AppBarState
 import com.example.zeroapp.presentation.home.ui_compose.CardWithQuote
-import com.example.zeroapp.presentation.base.ui_compose_components.CardDefault
-import com.example.zeroapp.presentation.base.ui_compose_components.CardWithOnClick
+import com.example.zeroapp.presentation.base.ui_compose_components.card.CardDefault
+import com.example.zeroapp.presentation.base.ui_compose_components.card.CardWithOnClick
 import com.example.zeroapp.presentation.base.ui_compose_components.dialog.Dialog
 import com.example.zeroapp.presentation.base.ui_theme.TealMain
 import com.example.zeroapp.util.ShowToast
@@ -52,7 +52,7 @@ fun HomeScreen(
 
     if (isShowToast) {
         ShowToast(text = stringResource(id = R.string.snack_bar_warning_negative) )
-        homeViewModel.resetSnackBar()
+        homeViewModel.resetToast()
     }
 
     Column(

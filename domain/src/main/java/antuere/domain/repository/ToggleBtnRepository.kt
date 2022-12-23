@@ -9,4 +9,6 @@ interface ToggleBtnRepository {
 
     suspend fun saveToggleButtonState(state : ToggleBtnState)
 
+    suspend fun resetToggleButtonState()
+
 }

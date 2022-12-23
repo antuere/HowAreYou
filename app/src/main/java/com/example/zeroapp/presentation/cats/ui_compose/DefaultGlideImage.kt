@@ -8,7 +8,6 @@ import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.zeroapp.R
-import timber.log.Timber
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable

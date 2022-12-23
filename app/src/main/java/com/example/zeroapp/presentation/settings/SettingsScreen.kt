@@ -1,6 +1,5 @@
 package com.example.zeroapp.presentation.settings
 
-import android.app.Activity
 import android.content.Intent
 import android.provider.Settings
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -24,7 +23,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.zeroapp.R
 import com.example.zeroapp.presentation.base.ui_biometric_dialog.BiometricAuthState
 import com.example.zeroapp.presentation.base.ui_biometric_dialog.BiometricsAvailableState
-import com.example.zeroapp.presentation.base.ui_compose_components.AppBarState
+import com.example.zeroapp.presentation.base.ui_compose_components.top_bar.AppBarState
 import com.example.zeroapp.presentation.base.ui_compose_components.dialog.Dialog
 import com.example.zeroapp.presentation.settings.ui_compose.AuthSection
 import com.example.zeroapp.presentation.settings.ui_compose.GeneralSettings
@@ -119,18 +118,10 @@ fun SettingsScreen(
                         )
                     }
                     val launcher =
-                        rememberLauncherForActivityResult(contract = ActivityResultContracts.StartActivityForResult()) { result ->
-                            isCheckedBiometric = if (result.resultCode == Activity.RESULT_OK) {
-                                showToastByContext(
-                                    context = context,
-                                    resId = R.string.biom_auth_create_success
-                                )
-                                true
-                            } else {
-                                false
-                            }
-                        }
-                    launcher.launch(enrollIntent)
+                        rememberLauncherForActivityResult(contract = ActivityResultContracts.StartActivityForResult()){}
+                    SideEffect {
+                        launcher.launch(enrollIntent)
+                    }
                 } else {
                     ShowToast(text = stringResource(R.string.biometric_none_enroll))
                     isCheckedBiometric = false

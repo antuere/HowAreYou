@@ -1,24 +1,27 @@
-package com.example.zeroapp.presentation.sign_in_with_email.ui_compose
+package com.example.zeroapp.presentation.base.ui_compose_components.buttons
 
-import androidx.compose.material3.Button
+import androidx.annotation.StringRes
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.example.zeroapp.R
 
 @Composable
-fun SignInButton(
+fun DefaultTextButton(
     modifier: Modifier = Modifier,
+    @StringRes labelId: Int,
     onClick: () -> Unit
 ) {
-    Button(
+    TextButton(
         modifier = modifier,
-        onClick = { onClick() }) {
+        onClick = { onClick() },
+    ) {
         Text(
-            text = stringResource(id = R.string.sign_in),
-            color = MaterialTheme.colorScheme.onPrimary
+            text = stringResource(id = labelId),
+            color = MaterialTheme.colorScheme.onSecondary
         )
     }
 }

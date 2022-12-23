@@ -13,12 +13,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.zeroapp.R
-import com.example.zeroapp.presentation.base.ui_compose_components.AppBarState
+import com.example.zeroapp.presentation.base.ui_compose_components.top_bar.AppBarState
 import com.example.zeroapp.presentation.base.ui_compose_components.IconApp
+import com.example.zeroapp.presentation.base.ui_compose_components.buttons.DefaultButton
 import com.example.zeroapp.presentation.base.ui_compose_components.text_field.DefaultTextField
 import com.example.zeroapp.presentation.base.ui_compose_components.text_field.EmailTextField
 import com.example.zeroapp.presentation.base.ui_compose_components.text_field.PasswordTextField
-import com.example.zeroapp.presentation.sign_up_with_email.ui_compose.SignUpButton
 import com.example.zeroapp.util.ShowToast
 
 @Composable
@@ -49,7 +49,6 @@ fun SignUpEmailScreen(
         )
     }
 
-    //    TODO подумать как сделать элегантней ч3
     signUpState?.let { state ->
         when (state) {
             is SignUpState.Successful -> {
@@ -119,8 +118,9 @@ fun SignUpEmailScreen(
                 onValueChange = { userConfirmedPassword = it })
             Spacer(modifier = Modifier.weight(1F))
 
-            SignUpButton(
+            DefaultButton(
                 modifier = modifier.padding(bottom = dimensionResource(id = R.dimen.padding_large_1)),
+                labelId = R.string.sign_up,
                 onClick = {
                     signUpEmailViewModel.onClickSignUp(
                         email = userEmail,

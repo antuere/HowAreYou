@@ -1,7 +1,6 @@
 package com.example.zeroapp.di
 
 import antuere.domain.authentication_manager.AuthenticationManager
-import antuere.domain.privacy_manager.PrivacyManager
 import antuere.domain.repository.DayRepository
 import antuere.domain.repository.QuoteRepository
 import antuere.domain.repository.SettingsRepository
@@ -10,7 +9,6 @@ import antuere.domain.usecases.authentication.*
 import antuere.domain.usecases.day_quote.GetDayQuoteLocalUseCase
 import antuere.domain.usecases.day_quote.UpdDayQuoteByRemoteUseCase
 import antuere.domain.usecases.days_entities.*
-import antuere.domain.usecases.privacy.*
 import antuere.domain.usecases.user_settings.*
 import dagger.Module
 import dagger.Provides
@@ -96,6 +94,11 @@ class DomainModule {
     @Provides
     fun provideSaveToggleBtnStateUseCase(toggleBtnRepository: ToggleBtnRepository): SaveToggleBtnUseCase {
         return SaveToggleBtnUseCase(toggleBtnRepository)
+    }
+
+    @Provides
+    fun provideResetToggleBtnStateUseCase(toggleBtnRepository: ToggleBtnRepository): ResetToggleBtnUseCase {
+        return ResetToggleBtnUseCase(toggleBtnRepository)
     }
 
     @Provides
@@ -192,36 +195,5 @@ class DomainModule {
     fun provideSignInByGoogleUseCase(authenticationManager: AuthenticationManager): SignInByGoogleUseCase {
         return SignInByGoogleUseCase(authenticationManager)
     }
-
-    @Provides
-    fun provideDoneAuthByPinUseCase(privacyManager: PrivacyManager): DoneAuthByPinUseCase {
-        return DoneAuthByPinUseCase(privacyManager)
-    }
-
-    @Provides
-    fun provideDoneAuthByBiometricUseCase(privacyManager: PrivacyManager): DoneAuthByBiometricUseCase {
-        return DoneAuthByBiometricUseCase(privacyManager)
-    }
-
-    @Provides
-    fun provideResetAuthByPinUseCase(privacyManager: PrivacyManager): ResetAuthByPinUseCase {
-        return ResetAuthByPinUseCase(privacyManager)
-    }
-
-    @Provides
-    fun provideResetAuthByBiometricUseCase(privacyManager: PrivacyManager): ResetAuthByBiometricUseCase {
-        return ResetAuthByBiometricUseCase(privacyManager)
-    }
-
-    @Provides
-    fun provideCheckAuthByPinUseCase(privacyManager: PrivacyManager): CheckAuthByPinUseCase {
-        return CheckAuthByPinUseCase(privacyManager)
-    }
-
-    @Provides
-    fun provideCheckAuthByBiometricUseCase(privacyManager: PrivacyManager): CheckAuthByBiometricUseCase {
-        return CheckAuthByBiometricUseCase(privacyManager)
-    }
-
 
 }

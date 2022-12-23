@@ -12,8 +12,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.zeroapp.R
-import com.example.zeroapp.presentation.base.ui_compose_components.AppBarState
-import com.example.zeroapp.presentation.sign_in_methods.ui_compose.ButtonWithIcon
+import com.example.zeroapp.presentation.base.ui_compose_components.top_bar.AppBarState
+import com.example.zeroapp.presentation.base.ui_compose_components.buttons.ButtonWithIcon
 import com.example.zeroapp.util.ShowToast
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient

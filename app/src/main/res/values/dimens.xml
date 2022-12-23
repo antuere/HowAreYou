@@ -51,6 +51,11 @@
 
     <dimen name="textLine_height_default">16sp</dimen>
 
+
+    <!-- Buttons -->
+    <dimen name="default_elevation">4dp</dimen>
+    <dimen name="pressed_elevation">1dp</dimen>
+
     <dimen name="button_width">60dp</dimen>
     <dimen name="button_height">60dp</dimen>
 

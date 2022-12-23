@@ -26,11 +26,11 @@ fun DaysListItem(
 ) {
     Card(
         modifier = modifier
+            .padding(dimensionResource(id = R.dimen.padding_small_0))
             .combinedClickable(
                 onClick = { onClick(day) },
                 onLongClick = { onLongClick(day) }
-            )
-            .padding(dimensionResource(id = R.dimen.padding_small_0)),
+            ),
         shape = MaterialTheme.shapes.large,
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),

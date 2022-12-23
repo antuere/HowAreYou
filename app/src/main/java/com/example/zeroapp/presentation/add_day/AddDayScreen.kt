@@ -15,7 +15,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.zeroapp.R
-import com.example.zeroapp.presentation.base.ui_compose_components.AppBarState
+import com.example.zeroapp.presentation.base.ui_compose_components.top_bar.AppBarState
 import com.example.zeroapp.presentation.base.ui_compose_components.text_field.DefaultTextField
 import com.example.zeroapp.presentation.base.ui_theme.PlayfairDisplay
 
@@ -37,13 +37,17 @@ fun AddDayScreen(
     }
 
     var dayDesc by remember { mutableStateOf("") }
-    val smileImages = listOf(
-        antuere.data.R.drawable.smile_sad,
-        antuere.data.R.drawable.smile_none,
-        antuere.data.R.drawable.smile_low,
-        antuere.data.R.drawable.smile_happy,
-        antuere.data.R.drawable.smile_very_happy
-    )
+    val smileImages by remember {
+        mutableStateOf(
+            listOf(
+                antuere.data.R.drawable.smile_sad,
+                antuere.data.R.drawable.smile_none,
+                antuere.data.R.drawable.smile_low,
+                antuere.data.R.drawable.smile_happy,
+                antuere.data.R.drawable.smile_very_happy
+            )
+        )
+    }
 
     Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
         Spacer(modifier = Modifier.weight(0.15F))

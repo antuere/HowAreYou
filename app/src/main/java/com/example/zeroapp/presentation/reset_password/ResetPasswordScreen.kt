@@ -12,9 +12,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.zeroapp.R
-import com.example.zeroapp.presentation.base.ui_compose_components.AppBarState
+import com.example.zeroapp.presentation.base.ui_compose_components.top_bar.AppBarState
+import com.example.zeroapp.presentation.base.ui_compose_components.buttons.DefaultButton
 import com.example.zeroapp.presentation.base.ui_compose_components.text_field.EmailTextField
-import com.example.zeroapp.presentation.reset_password.ui_compose.ResetButton
 import com.example.zeroapp.util.ShowToast
 
 @Composable
@@ -72,8 +72,9 @@ fun ResetPasswordScreen(
 
         Spacer(modifier = Modifier.weight(1F))
 
-        ResetButton(
+        DefaultButton(
             modifier = Modifier.padding(bottom = dimensionResource(id = R.dimen.padding_large_1)),
+            labelId = R.string.reset_password,
             onClick = { resetPasswordViewModel.onClickResetPassword(userEmail) }
         )
     }

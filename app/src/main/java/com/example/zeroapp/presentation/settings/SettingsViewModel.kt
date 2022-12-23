@@ -6,7 +6,6 @@ import antuere.domain.dto.Settings
 import antuere.domain.usecases.authentication.SignOutUseCase
 import antuere.domain.usecases.days_entities.DeleteAllDaysLocalUseCase
 import antuere.domain.usecases.days_entities.GetLastDayUseCase
-import antuere.domain.usecases.privacy.*
 import antuere.domain.usecases.user_settings.*
 import antuere.domain.util.Constants
 import com.example.zeroapp.R
@@ -17,12 +16,10 @@ import com.example.zeroapp.presentation.base.ui_biometric_dialog.BiometricAuthSt
 import com.example.zeroapp.presentation.base.ui_compose_components.dialog.UIDialog
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -34,10 +31,8 @@ class SettingsViewModel @Inject constructor(
     private val getUserNicknameUseCase: GetUserNicknameUseCase,
     private val resetPinCodeUseCase: ResetPinCodeUseCase,
     private val resetUserNicknameUseCase: ResetUserNicknameUseCase,
+    private val resetToggleBtnUseCase: ResetToggleBtnUseCase,
     private val signOutUseCase: SignOutUseCase,
-    private val doneAuthByBiometricUseCase: DoneAuthByBiometricUseCase,
-    private val resetAuthByBiometricUseCase: ResetAuthByBiometricUseCase,
-    private val resetAuthByPinUseCase: ResetAuthByPinUseCase,
     private val deleteAllDaysLocalUseCase: DeleteAllDaysLocalUseCase,
     val uiBiometricDialog: UIBiometricDialog
 ) : ViewModel() {
@@ -83,9 +78,6 @@ class SettingsViewModel @Inject constructor(
         }
 
         override fun onBiometricAuthSuccess() {
-            viewModelScope.launch {
-                doneAuthByBiometricUseCase(Unit)
-            }
             _biometricAuthState.value = BiometricAuthState.SUCCESS
         }
 
@@ -147,6 +139,7 @@ class SettingsViewModel @Inject constructor(
                 deleteAllDaysLocalUseCase(Unit)
             }
             signOutUseCase(Unit)
+            resetToggleBtnUseCase(Unit)
             resetUserNicknameUseCase(Unit)
         }
     }
@@ -162,7 +155,6 @@ class SettingsViewModel @Inject constructor(
     private fun getSavedPinCode() {
         viewModelScope.launch(Dispatchers.IO) {
             getSavedPinCodeUseCase(Unit).collectLatest {
-                Timber.i("NPE error in VM : pin is $it")
                 _savedPinCode.value = it
             }
         }
@@ -187,7 +179,6 @@ class SettingsViewModel @Inject constructor(
 
     fun resetBiometricAuthAndSaveSettings(isUseBiometric: Boolean, isUsePinCode: Boolean) {
         viewModelScope.launch {
-            resetAuthByBiometricUseCase(Unit)
             nullifyBiometricAuthState()
             checkBiometricsAvailable()
             saveSettings(isUseBiometric, isUsePinCode)
@@ -196,9 +187,6 @@ class SettingsViewModel @Inject constructor(
 
     fun resetPinCodeAuth() {
         viewModelScope.launch {
-            resetAuthByPinUseCase(Unit)
-            delay(100)
-
             resetPinCodeUseCase(Unit)
         }
     }

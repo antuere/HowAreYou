@@ -15,7 +15,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.zeroapp.R
-import com.example.zeroapp.presentation.base.ui_compose_components.AppBarState
+import com.example.zeroapp.presentation.base.ui_compose_components.top_bar.AppBarState
 import com.example.zeroapp.presentation.base.ui_compose_components.dialog.Dialog
 
 @Composable
@@ -56,6 +56,8 @@ fun DetailScreen(
                             Icon(
                                 painter = if (isFavoriteDay) painterResource(id = R.drawable.ic_baseline_favorite)
                                 else painterResource(id = R.drawable.ic_baseline_favorite_border),
+
+                            //  TODO добавить описание всех картинок в проект
                                 contentDescription = null
                             )
                         }

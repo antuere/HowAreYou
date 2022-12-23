@@ -5,5 +5,5 @@ enum class ToggleBtnState {
     ALL_DAYS,
     LAST_WEEK,
     CURRENT_MONTH,
-    NONE
+    FILTER_SELECTED
 }

@@ -11,13 +11,12 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.zeroapp.R
-import com.example.zeroapp.presentation.base.ui_compose_components.AppBarState
+import com.example.zeroapp.presentation.base.ui_compose_components.top_bar.AppBarState
 import com.example.zeroapp.presentation.base.ui_compose_components.IconApp
+import com.example.zeroapp.presentation.base.ui_compose_components.buttons.DefaultButton
+import com.example.zeroapp.presentation.base.ui_compose_components.buttons.DefaultTextButton
 import com.example.zeroapp.presentation.base.ui_compose_components.text_field.EmailTextField
 import com.example.zeroapp.presentation.base.ui_compose_components.text_field.PasswordTextField
-import com.example.zeroapp.presentation.sign_in_with_email.ui_compose.ForgotPassBtn
-import com.example.zeroapp.presentation.sign_in_with_email.ui_compose.SignInButton
-import com.example.zeroapp.presentation.sign_in_with_email.ui_compose.SignUpHintButton
 import com.example.zeroapp.util.ShowToast
 
 @Composable
@@ -54,7 +53,7 @@ fun SignInEmailScreen(
                 signInEmailViewModel.resetIsShowLoginProgressIndicator(true)
             }
             is SignInState.EmptyFields -> {
-                ShowToast(text = stringResource(id = R.string.empty_fields) )
+                ShowToast(text = stringResource(id = R.string.empty_fields))
             }
 
             is SignInState.ErrorFromFireBase -> {
@@ -91,23 +90,26 @@ fun SignInEmailScreen(
                 onValueChange = { userPassword = it })
             Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_2)))
 
-            ForgotPassBtn(
+            DefaultTextButton(
                 modifier = Modifier
                     .padding(end = dimensionResource(id = R.dimen.padding_normal_3))
                     .align(Alignment.End),
+                labelId = R.string.reset_password_hint,
                 onClick = { onNavigateResetPassword() })
             Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_11)))
 
-            SignInButton(
+            DefaultButton(
                 modifier = Modifier
                     .padding(horizontal = dimensionResource(id = R.dimen.padding_normal_3))
                     .fillMaxWidth(),
+                labelId = R.string.sign_in,
                 onClick = { signInEmailViewModel.onClickSignIn(userEmail, userPassword) }
             )
             Spacer(modifier = Modifier.weight(1F))
 
-            SignUpHintButton(
+            DefaultTextButton(
                 modifier = modifier.padding(bottom = dimensionResource(id = R.dimen.padding_large_1)),
+                labelId = R.string.don_have_acc,
                 onClick = { onNavigateSignUp() }
             )
             Spacer(modifier = Modifier.weight(1F))

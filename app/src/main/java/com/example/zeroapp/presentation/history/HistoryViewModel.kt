@@ -102,7 +102,7 @@ class HistoryViewModel @Inject constructor(
     }
 
     fun onDaysSelected(pair: Pair<Long, Long>) {
-        _toggleBtnState.value = ToggleBtnState.NONE
+        _toggleBtnState.value = ToggleBtnState.FILTER_SELECTED
         saveToggleButtonState(_toggleBtnState.value)
         _isDaysSelected.value = true
 

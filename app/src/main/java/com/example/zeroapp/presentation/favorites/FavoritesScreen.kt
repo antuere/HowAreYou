@@ -15,7 +15,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.zeroapp.R
-import com.example.zeroapp.presentation.base.ui_compose_components.AppBarState
+import com.example.zeroapp.presentation.base.ui_compose_components.top_bar.AppBarState
 import com.example.zeroapp.presentation.base.ui_compose_components.dialog.Dialog
 import com.example.zeroapp.presentation.base.ui_compose_components.DaysListItem
 
@@ -48,11 +48,11 @@ fun FavoritesScreen(
         favoritesViewModel.doneNavigateToDetail()
     }
 
-    Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Top) {
-        uiDialog?.let {
-            Dialog(dialog = it)
-        }
+    uiDialog?.let {
+        Dialog(dialog = it)
+    }
 
+    Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Top) {
         LazyVerticalGrid(
             columns = GridCells.Fixed(3),
             modifier = Modifier.fillMaxSize()

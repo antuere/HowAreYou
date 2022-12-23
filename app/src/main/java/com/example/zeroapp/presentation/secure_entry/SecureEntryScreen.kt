@@ -18,7 +18,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.zeroapp.R
 import com.example.zeroapp.presentation.base.ui_biometric_dialog.BiometricsAvailableState
-import com.example.zeroapp.presentation.base.ui_compose_components.AppBarState
+import com.example.zeroapp.presentation.base.ui_compose_components.top_bar.AppBarState
 import com.example.zeroapp.presentation.base.ui_compose_components.IconApp
 import com.example.zeroapp.presentation.base.ui_compose_components.NumericKeyPad
 import com.example.zeroapp.presentation.base.ui_compose_components.dialog.Dialog
@@ -52,7 +52,6 @@ fun SecureEntryScreen(
     val biometricsAvailableState by secureEntryViewModel.biometricAvailableState.collectAsState()
     val pinCodeCirclesState by secureEntryViewModel.pinCodeCirclesState.collectAsState()
 
-
     uiDialog?.let {
         Dialog(dialog = it)
     }
@@ -81,12 +80,11 @@ fun SecureEntryScreen(
                         )
                     }
                     val launcher =
-                        rememberLauncherForActivityResult(contract = ActivityResultContracts.StartActivityForResult()) { result ->
-                            if (result.resultCode == Activity.RESULT_OK) {
-                                onNavigateHomeScreen()
-                            }
+                        rememberLauncherForActivityResult(contract = ActivityResultContracts.StartActivityForResult()) {
                         }
-                    launcher.launch(enrollIntent)
+                    SideEffect {
+                        launcher.launch(enrollIntent)
+                    }
                 } else {
                     ShowToast(text = stringResource(id = R.string.biometric_none_enroll))
                 }

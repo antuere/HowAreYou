@@ -19,10 +19,10 @@ import antuere.domain.dto.Settings
 import antuere.domain.usecases.user_settings.GetSettingsUseCase
 import antuere.domain.util.Constants
 import com.example.zeroapp.presentation.add_day.AddDayScreen
-import com.example.zeroapp.presentation.base.ui_compose_components.AppBarState
+import com.example.zeroapp.presentation.base.ui_compose_components.top_bar.AppBarState
 import com.example.zeroapp.presentation.base.ui_compose_components.Screen
 import com.example.zeroapp.presentation.base.ui_compose_components.BottomNavBar
-import com.example.zeroapp.presentation.base.ui_compose_components.DefaultTopAppBar
+import com.example.zeroapp.presentation.base.ui_compose_components.top_bar.DefaultTopAppBar
 import com.example.zeroapp.presentation.home.HomeViewModel
 import com.example.zeroapp.presentation.base.ui_theme.HowAreYouTheme
 import com.example.zeroapp.presentation.cats.CatsScreen

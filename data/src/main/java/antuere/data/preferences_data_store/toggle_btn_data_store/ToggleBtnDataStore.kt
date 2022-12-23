@@ -25,7 +25,7 @@ class ToggleBtnDataStore(context: Context, name: String) {
                 ToggleBtnState.ALL_DAYS.name -> ToggleBtnState.ALL_DAYS
                 ToggleBtnState.CURRENT_MONTH.name -> ToggleBtnState.CURRENT_MONTH
                 ToggleBtnState.LAST_WEEK.name -> ToggleBtnState.LAST_WEEK
-                ToggleBtnState.NONE.name -> ToggleBtnState.NONE
+                ToggleBtnState.FILTER_SELECTED.name -> ToggleBtnState.FILTER_SELECTED
                 else -> ToggleBtnState.ALL_DAYS
             }
         }
@@ -33,6 +33,12 @@ class ToggleBtnDataStore(context: Context, name: String) {
     suspend fun saveToggleButtonState(state: String) {
         toggleBtnDataStore.edit { preferences ->
             preferences[CHECKED_BUTTON_HISTORY_KEY] = state
+        }
+    }
+
+    suspend fun resetToggleButtonState() {
+        toggleBtnDataStore.edit { preferences ->
+            preferences.remove(CHECKED_BUTTON_HISTORY_KEY)
         }
     }
 

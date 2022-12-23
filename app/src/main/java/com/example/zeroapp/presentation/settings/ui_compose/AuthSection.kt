@@ -10,6 +10,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import antuere.domain.util.Constants
 import com.example.zeroapp.R
@@ -49,8 +50,13 @@ fun AuthSection(
             )
             Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_4)))
 
-            Button(
+            ElevatedButton(
                 onClick = { onClickSignIn() },
+                colors = ButtonDefaults.buttonColors(),
+                elevation = ButtonDefaults.buttonElevation(
+                    defaultElevation = dimensionResource(id = R.dimen.default_elevation),
+                    pressedElevation = dimensionResource(id = R.dimen.pressed_elevation)
+                ),
                 modifier = modifier.align(Alignment.CenterHorizontally)
             ) {
                 Text(

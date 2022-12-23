@@ -1,4 +1,4 @@
-package com.example.zeroapp.presentation.base.ui_compose_components
+package com.example.zeroapp.presentation.base.ui_compose_components.card
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.ColumnScope
