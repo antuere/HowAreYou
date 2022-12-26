@@ -15,4 +15,3 @@ class SignUpUseCase(private val authenticationManager: AuthenticationManager) : 
         )
     }
 }
-

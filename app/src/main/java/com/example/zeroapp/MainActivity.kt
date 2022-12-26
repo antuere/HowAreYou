@@ -3,6 +3,7 @@ package com.example.zeroapp
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.animation.*
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.filled.*
@@ -12,9 +13,6 @@ import androidx.compose.ui.Modifier
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
 import antuere.domain.dto.Settings
 import antuere.domain.usecases.user_settings.GetSettingsUseCase
 import antuere.domain.util.Constants
@@ -37,7 +35,15 @@ import com.example.zeroapp.presentation.sign_in_with_email.SignInEmailScreen
 import com.example.zeroapp.presentation.settings.SettingsScreen
 import com.example.zeroapp.presentation.sign_in_methods.SignInMethodsScreen
 import com.example.zeroapp.presentation.sign_up_with_email.SignUpEmailScreen
+import com.example.zeroapp.presentation.base.materialFadeThroughIn
+import com.example.zeroapp.presentation.base.materialFadeThroughOut
+import com.example.zeroapp.presentation.base.materialSlideIn
+import com.example.zeroapp.presentation.base.materialSlideOut
+import com.google.accompanist.navigation.animation.AnimatedNavHost
+import com.google.accompanist.navigation.animation.composable
+import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.material.transition.MaterialFadeThrough
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
@@ -63,6 +69,7 @@ class MainActivity : FragmentActivity() {
 
     private var settings: Settings? = null
 
+    @OptIn(ExperimentalAnimationApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Timber.plant(Timber.DebugTree())
@@ -87,7 +94,7 @@ class MainActivity : FragmentActivity() {
                     startDestination = Screen.Home.route
                 }
 
-                val navController = rememberNavController()
+                val navController = rememberAnimatedNavController()
                 var appBarState by remember {
                     mutableStateOf(AppBarState())
                 }
@@ -128,13 +135,22 @@ class MainActivity : FragmentActivity() {
                             )
                         }
                     }) { innerPadding ->
-                    NavHost(
+                    AnimatedNavHost(
                         modifier = Modifier.padding(innerPadding),
                         navController = navController,
                         startDestination = startDestination
                     ) {
 
-                        composable(route = Screen.Home.route) {
+                        composable(
+                            route = Screen.Home.route,
+                            enterTransition = {
+                                materialFadeThroughIn()
+                            },
+                            exitTransition = {
+                                materialFadeThroughOut()
+                            }
+                        ) {
+                            MaterialFadeThrough()
                             startDestination = Screen.Home.route
                             HomeScreen(
                                 onComposing = { barState: AppBarState, isShow: Boolean ->
@@ -183,7 +199,11 @@ class MainActivity : FragmentActivity() {
                             )
                         }
 
-                        composable(route = Screen.History.route) {
+                        composable(
+                            route = Screen.History.route,
+                            enterTransition = { materialFadeThroughIn() },
+                            exitTransition = { materialFadeThroughOut() }
+                        ) {
                             HistoryScreen(
                                 onComposing = { barState: AppBarState, isShow: Boolean ->
                                     appBarState = barState
@@ -204,7 +224,11 @@ class MainActivity : FragmentActivity() {
                                 onNavigateUp = { navController.navigateUp() })
                         }
 
-                        composable(route = Screen.Settings.route) {
+                        composable(
+                            route = Screen.Settings.route,
+                            enterTransition = { materialFadeThroughIn() },
+                            exitTransition = { materialFadeThroughOut() }
+                        ) {
                             SettingsScreen(
                                 onNavigateSignIn = { navController.navigate(Screen.SignInMethods.route) },
                                 onComposing = { barState: AppBarState, isShow: Boolean ->
@@ -214,7 +238,9 @@ class MainActivity : FragmentActivity() {
                             )
                         }
 
-                        composable(route = Screen.SignInMethods.route) {
+                        composable(
+                            route = Screen.SignInMethods.route,
+                        ) {
                             SignInMethodsScreen(
                                 onComposing = { barState: AppBarState, isShow: Boolean ->
                                     appBarState = barState
@@ -226,7 +252,12 @@ class MainActivity : FragmentActivity() {
                             )
                         }
 
-                        composable(route = Screen.SignInWithEmail.route) {
+                        composable(
+                            route = Screen.SignInWithEmail.route,
+                            enterTransition = { materialSlideIn(true) },
+                            exitTransition = { materialSlideOut(true) },
+                            popEnterTransition = { materialSlideIn(false) }
+                        ) {
                             SignInEmailScreen(
                                 onComposing = { barState: AppBarState, isShow: Boolean ->
                                     appBarState = barState
@@ -244,7 +275,11 @@ class MainActivity : FragmentActivity() {
                             )
                         }
 
-                        composable(route = Screen.SignUpWithEmail.route) {
+                        composable(
+                            route = Screen.SignUpWithEmail.route,
+                            enterTransition = { materialSlideIn(true) },
+                            exitTransition = { materialSlideOut(true) }
+                        ) {
                             SignUpEmailScreen(
                                 onComposing = { barState: AppBarState, isShow: Boolean ->
                                     appBarState = barState
@@ -260,7 +295,11 @@ class MainActivity : FragmentActivity() {
                             )
                         }
 
-                        composable(route = Screen.ResetPassEmail.route) {
+                        composable(
+                            route = Screen.ResetPassEmail.route,
+                            enterTransition = { materialSlideIn(true) },
+                            exitTransition = { materialSlideOut(true) }
+                        ) {
                             ResetPasswordScreen(
                                 onComposing = { barState: AppBarState, isShow: Boolean ->
                                     appBarState = barState

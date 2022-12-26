@@ -1,6 +1,11 @@
 package com.example.zeroapp.presentation.detail
 
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -10,6 +15,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.sp
@@ -17,6 +23,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.zeroapp.R
 import com.example.zeroapp.presentation.base.ui_compose_components.top_bar.AppBarState
 import com.example.zeroapp.presentation.base.ui_compose_components.dialog.Dialog
+import kotlinx.coroutines.launch
 
 @Composable
 fun DetailScreen(
@@ -24,19 +31,29 @@ fun DetailScreen(
     onNavigateUp: () -> Unit,
     detailViewModel: DetailViewModel = hiltViewModel()
 ) {
+    val scope = rememberCoroutineScope()
     val uiDialog by detailViewModel.uiDialog.collectAsState()
     val selectedDay by detailViewModel.selectedDay.collectAsState()
     val navigateToHistory by detailViewModel.navigateToHistory.collectAsState()
+    val rotation = remember { Animatable(initialValue = 360f) }
 
-    if (navigateToHistory) {
-        onNavigateUp()
-        detailViewModel.navigateDone()
+    val interactionSource = remember { MutableInteractionSource() }
+    val isPressed by interactionSource.collectIsPressedAsState()
+    val scaleDeleteBtn by animateFloatAsState(if (isPressed) 0.75f else 1f)
+
+
+    LaunchedEffect(navigateToHistory) {
+        if (navigateToHistory) {
+            onNavigateUp()
+            detailViewModel.navigateDone()
+        }
     }
-    
-    uiDialog?.let { 
+
+
+    uiDialog?.let {
         Dialog(dialog = it)
     }
-    
+
     selectedDay?.let { day ->
         var isFavoriteDay by remember {
             mutableStateOf(day.isFavorite)
@@ -50,18 +67,34 @@ fun DetailScreen(
                     navigationOnClick = { onNavigateUp() },
                     actions = {
                         IconButton(onClick = {
+                            scope.launch {
+                                rotation.animateTo(
+                                    targetValue = if (isFavoriteDay) 0f else 360f,
+                                    animationSpec = tween(durationMillis = 450),
+                                )
+                            }
                             detailViewModel.onClickFavoriteButton()
                             isFavoriteDay = isFavoriteDay.not()
                         }) {
                             Icon(
+                                modifier = Modifier.graphicsLayer {
+                                    rotationY = rotation.value
+                                },
                                 painter = if (isFavoriteDay) painterResource(id = R.drawable.ic_baseline_favorite)
                                 else painterResource(id = R.drawable.ic_baseline_favorite_border),
 
-                            //  TODO добавить описание всех картинок в проект
+                                //  TODO добавить описание всех картинок в проект
                                 contentDescription = null
                             )
                         }
-                        IconButton(onClick = { detailViewModel.onClickDeleteButton() }) {
+                        IconButton(
+                            modifier = Modifier.graphicsLayer {
+                                scaleX = scaleDeleteBtn
+                                scaleY = scaleDeleteBtn
+                            },
+                            onClick = { detailViewModel.onClickDeleteButton() },
+                            interactionSource = interactionSource
+                        ) {
                             Icon(
                                 painter = painterResource(id = R.drawable.ic_delete),
                                 contentDescription = null
@@ -72,7 +105,6 @@ fun DetailScreen(
                 false
             )
         }
-
 
         Column(
             modifier = Modifier.fillMaxSize(),

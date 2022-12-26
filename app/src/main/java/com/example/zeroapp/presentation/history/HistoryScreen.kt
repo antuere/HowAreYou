@@ -1,5 +1,8 @@
 package com.example.zeroapp.presentation.history
 
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -17,6 +20,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -44,55 +48,52 @@ fun HistoryScreen(
         initialValue = ModalBottomSheetValue.Hidden,
     )
     val scope = rememberCoroutineScope()
-
-    LaunchedEffect(bottomSheetState.targetValue) {
-        onComposing(
-            AppBarState(
-                titleId = R.string.history,
-                actions = {
-                    IconButton(onClick = {
-                        scope.launch {
-                            bottomSheetState.animateTo(ModalBottomSheetValue.Expanded)
-                        }
-                    }) {
-                        Icon(
-                            imageVector = Icons.Rounded.FilterList,
-                            contentDescription = null
-                        )
-                    }
-                }
-            ),
-            bottomSheetState.targetValue == ModalBottomSheetValue.Hidden
-        )
-    }
-
     val uiDialog by historyViewModel.uiDialog.collectAsState()
     val listDays by historyViewModel.listDays.collectAsState()
-    val isFilterSelected by historyViewModel.isDaysSelected.collectAsState()
     val toggleBtnState by historyViewModel.toggleBtnState.collectAsState()
+    val cellsAmount by historyViewModel.cellsAmount.collectAsState()
     val navigateToDetailState by historyViewModel.navigateToDetailState.collectAsState()
 
     var isShowToggleBtnGroup by remember {
         mutableStateOf(true)
     }
 
-    var cellsAmount = when (toggleBtnState) {
-        ToggleBtnState.ALL_DAYS -> {
-            historyViewModel.checkedAllDaysButton()
-            4
-        }
-        ToggleBtnState.CURRENT_MONTH -> {
-            historyViewModel.checkedCurrentMonthButton()
-            3
-        }
-        ToggleBtnState.LAST_WEEK -> {
-            historyViewModel.checkedLastWeekButton()
-            2
-        }
-        ToggleBtnState.FILTER_SELECTED -> {
-            isShowToggleBtnGroup = false
-            3
-        }
+    val interactionSource = remember { MutableInteractionSource() }
+    val isPressed by interactionSource.collectIsPressedAsState()
+    val scaleFilterBtn by animateFloatAsState(if (isPressed) 0.75f else 1f)
+
+    uiDialog?.let {
+        Dialog(dialog = it)
+    }
+
+    LaunchedEffect(bottomSheetState.targetValue) {
+        onComposing(
+            AppBarState(
+                titleId = R.string.history,
+                actions = {
+                    if (isShowToggleBtnGroup) {
+                        IconButton(
+                            modifier = Modifier.graphicsLayer {
+                                scaleY = scaleFilterBtn
+                                scaleX = scaleFilterBtn
+                            },
+                            onClick = {
+                                scope.launch {
+                                    bottomSheetState.animateTo(ModalBottomSheetValue.Expanded)
+                                }
+                            },
+                            interactionSource = interactionSource
+                        ) {
+                            Icon(
+                                imageVector = Icons.Rounded.FilterList,
+                                contentDescription = null
+                            )
+                        }
+                    }
+                }
+            ),
+            bottomSheetState.targetValue == ModalBottomSheetValue.Hidden
+        )
     }
 
     LaunchedEffect(navigateToDetailState) {
@@ -104,102 +105,101 @@ fun HistoryScreen(
         }
     }
 
-    uiDialog?.let {
-        Dialog(dialog = it)
+    LaunchedEffect(toggleBtnState) {
+        if (toggleBtnState == ToggleBtnState.FILTER_SELECTED) {
+            isShowToggleBtnGroup = false
+        }
     }
 
-    if (isFilterSelected) {
-        cellsAmount = 3
-        historyViewModel.resetIsFilterSelected()
-    }
-
-    ModalBottomSheetLayout(
-        sheetState = bottomSheetState,
-        sheetShape = RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp),
-        sheetContent = {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                contentAlignment = Alignment.Center
-            ) {
-                DaysFilterBottomSheet(
-                    bottomSheetState = bottomSheetState,
-                    onDaysSelected = { historyViewModel.onDaysSelected(it) })
-            }
-        }) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize(),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-
-            if (toggleBtnState == ToggleBtnState.FILTER_SELECTED) {
-                Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_1)))
-                OutlinedButtonWithIcon(
-                    onClick = {
-                        isShowToggleBtnGroup = true
-                        historyViewModel.onClickCheckedItem(ToggleBtnState.CURRENT_MONTH)
-                    },
-                    isIconInStart = false,
-                    labelId = R.string.close_filter,
-                    iconId = R.drawable.ic_round_close
-                )
-            }
-
-            if (isShowToggleBtnGroup) {
-                ToggleBtnGroup(
-                    modifier = Modifier.padding(top = dimensionResource(id = R.dimen.padding_small_2)),
-                    currentToggleBtnState = toggleBtnState,
-                    onClick = { historyViewModel.onClickCheckedItem(it) },
-                )
-            }
-
-            if (listDays.isEmpty()) {
-                when (toggleBtnState) {
-                    ToggleBtnState.ALL_DAYS -> {
-                        isShowToggleBtnGroup = false
-                        Text(text = stringResource(R.string.no_days_all))
-                    }
-                    ToggleBtnState.CURRENT_MONTH -> {
-                        isShowToggleBtnGroup = true
-                        Spacer(modifier = Modifier.weight(1F))
-                        Text(text = stringResource(R.string.no_days_month))
-                        Spacer(modifier = Modifier.weight(1F))
-
-                    }
-                    ToggleBtnState.LAST_WEEK -> {
-                        isShowToggleBtnGroup = true
-                        Spacer(modifier = Modifier.weight(1F))
-                        Text(text = stringResource(R.string.no_days_week))
-                        Spacer(modifier = Modifier.weight(1F))
-                    }
-                    ToggleBtnState.FILTER_SELECTED -> {
-                        Spacer(modifier = Modifier.weight(1F))
-                        Text(text = stringResource(R.string.no_days_filter))
-                        Spacer(modifier = Modifier.weight(1F))
-                    }
-                }
-            } else {
-                HistoryHeaderText(
+    listDays?.let { days ->
+        ModalBottomSheetLayout(
+            sheetState = bottomSheetState,
+            sheetShape = RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp),
+            sheetContent = {
+                Box(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = dimensionResource(id = R.dimen.padding_normal_0)),
-                    dayList = listDays,
-                    myAnalystForHistory = myAnalystForHistory
-                )
-
-                LazyVerticalGrid(
-                    columns = GridCells.Fixed(cellsAmount),
-                    modifier = Modifier.fillMaxSize()
+                        .fillMaxWidth(),
+                    contentAlignment = Alignment.Center
                 ) {
-                    items(listDays) { day ->
-                        DaysListItem(
-                            day = day,
-                            onClick = { historyViewModel.onClickDay(it) },
-                            onLongClick = { historyViewModel.onClickLongDay(it) },
-                        )
+                    DaysFilterBottomSheet(
+                        bottomSheetState = bottomSheetState,
+                        onDaysSelected = { historyViewModel.onDaysSelected(it) })
+                }
+            }) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize(),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
 
+                if (toggleBtnState == ToggleBtnState.FILTER_SELECTED) {
+                    Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_1)))
+                    OutlinedButtonWithIcon(
+                        onClick = {
+                            isShowToggleBtnGroup = true
+                            historyViewModel.onClickCheckedItem(ToggleBtnState.CURRENT_MONTH)
+                        },
+                        isIconInStart = false,
+                        labelId = R.string.close_filter,
+                        iconId = R.drawable.ic_round_close
+                    )
+                }
+
+                if (isShowToggleBtnGroup) {
+                    ToggleBtnGroup(
+                        modifier = Modifier.padding(top = dimensionResource(id = R.dimen.padding_small_2)),
+                        currentToggleBtnState = toggleBtnState,
+                        onClick = { historyViewModel.onClickCheckedItem(it) },
+                    )
+                }
+
+                if (days.isEmpty()) {
+                    when (toggleBtnState) {
+                        ToggleBtnState.ALL_DAYS -> {
+                            isShowToggleBtnGroup = false
+                            Text(text = stringResource(R.string.no_days_all))
+                        }
+                        ToggleBtnState.CURRENT_MONTH -> {
+                            isShowToggleBtnGroup = true
+                            Spacer(modifier = Modifier.weight(1F))
+                            Text(text = stringResource(R.string.no_days_month))
+                            Spacer(modifier = Modifier.weight(1F))
+
+                        }
+                        ToggleBtnState.LAST_WEEK -> {
+                            isShowToggleBtnGroup = true
+                            Spacer(modifier = Modifier.weight(1F))
+                            Text(text = stringResource(R.string.no_days_week))
+                            Spacer(modifier = Modifier.weight(1F))
+                        }
+                        ToggleBtnState.FILTER_SELECTED -> {
+                            Spacer(modifier = Modifier.weight(1F))
+                            Text(text = stringResource(R.string.no_days_filter))
+                            Spacer(modifier = Modifier.weight(1F))
+                        }
+                    }
+                } else {
+                    HistoryHeaderText(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = dimensionResource(id = R.dimen.padding_normal_0)),
+                        dayList = days,
+                        myAnalystForHistory = myAnalystForHistory
+                    )
+
+                    LazyVerticalGrid(
+                        columns = GridCells.Fixed(cellsAmount),
+                        modifier = Modifier.fillMaxSize()
+                    ) {
+                        items(days) { day ->
+                            DaysListItem(
+                                day = day,
+                                onClick = { historyViewModel.onClickDay(it) },
+                                onLongClick = { historyViewModel.onClickLongDay(it) },
+                            )
+
+                        }
                     }
                 }
             }

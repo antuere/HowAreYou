@@ -61,12 +61,14 @@ fun SecureEntryScreen(
         secureEntryViewModel.resetIsShowErrorToast()
     }
 
-    if (isShowBiometricAuth) {
-        uiBiometricDialog.startBiometricAuth(
-            biometricListener = secureEntryViewModel.biometricAuthStateListener,
-            activity = fragmentActivity
-        )
-        secureEntryViewModel.resetIsShowBiometricAuth()
+    LaunchedEffect(isShowBiometricAuth) {
+        if (isShowBiometricAuth) {
+            uiBiometricDialog.startBiometricAuth(
+                biometricListener = secureEntryViewModel.biometricAuthStateListener,
+                activity = fragmentActivity
+            )
+            secureEntryViewModel.resetIsShowBiometricAuth()
+        }
     }
 
     biometricsAvailableState?.let { availableState ->
@@ -94,9 +96,11 @@ fun SecureEntryScreen(
         secureEntryViewModel.nullifyBiometricAvailableState()
     }
 
-    if (isNavigateToHomeScreen) {
-        onNavigateHomeScreen()
-        secureEntryViewModel.resetIsNavigateToHomeScreen()
+    LaunchedEffect(isNavigateToHomeScreen) {
+        if (isNavigateToHomeScreen) {
+            onNavigateHomeScreen()
+            secureEntryViewModel.resetIsNavigateToHomeScreen()
+        }
     }
 
     Column(

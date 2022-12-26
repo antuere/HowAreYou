@@ -60,7 +60,6 @@ fun SignInMethodsScreen(
         signInMethodsViewModel.nullifyState()
     }
 
-
     Column(
         modifier = Modifier
             .fillMaxSize(),

@@ -41,11 +41,13 @@ fun FavoritesScreen(
     val uiDialog by favoritesViewModel.uiDialog.collectAsState()
     val navigateToDetailState by favoritesViewModel.navigateToDetailState.collectAsState()
 
-    navigateToDetailState?.let { state ->
-        if (state.navigateToDetail) {
-            onNavigateToDetail(state.dayId!!)
+    LaunchedEffect(navigateToDetailState) {
+        navigateToDetailState?.let { state ->
+            if (state.navigateToDetail) {
+                onNavigateToDetail(state.dayId!!)
+            }
+            favoritesViewModel.doneNavigateToDetail()
         }
-        favoritesViewModel.doneNavigateToDetail()
     }
 
     uiDialog?.let {

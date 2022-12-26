@@ -1,5 +1,7 @@
 package com.example.zeroapp.presentation.settings.ui_compose
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
@@ -11,6 +13,9 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.sp
 import com.example.zeroapp.R
+import com.example.zeroapp.presentation.base.materialFadeIn
+import com.example.zeroapp.presentation.base.materialFadeOut
+import com.example.zeroapp.presentation.base.materialFadeThroughIn
 
 @Composable
 fun PrivacySettings(
@@ -44,7 +49,9 @@ fun PrivacySettings(
             checkChanged = checkChangePinCode
         )
 
-        if (isShowBiometricSetting) {
+        AnimatedVisibility(
+            visible = isShowBiometricSetting,
+        ) {
             Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_1)))
             SettingItem(
                 modifier = Modifier.padding(
@@ -57,7 +64,6 @@ fun PrivacySettings(
                 checkChanged = checkChangeBiometric
             )
         }
-
         Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_4)))
         Divider(modifier = modifier.fillMaxWidth(), color = MaterialTheme.colorScheme.onSecondary)
 

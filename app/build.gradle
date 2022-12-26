@@ -82,7 +82,7 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-extensions:$version_lifecycle_extensions"
 
     //Compose
-    def composeBom = platform('androidx.compose:compose-bom:2022.10.00')
+    def composeBom = platform('androidx.compose:compose-bom:2022.11.00')
     implementation composeBom
     androidTestImplementation composeBom
     implementation "androidx.compose.ui:ui-graphics:$version_compose"
@@ -113,6 +113,12 @@ dependencies {
     implementation "androidx.navigation:navigation-fragment-ktx:$version_navigation"
     implementation "androidx.navigation:navigation-ui-ktx:$version_navigation"
     implementation "androidx.navigation:navigation-compose:$version_navigation"
+
+    // Accompanist
+    implementation "com.google.accompanist:accompanist-navigation-animation:$version_accompanist"
+
+    // Shared elements transition
+    implementation "com.mxalbert.sharedelements:shared-elements:$version_shared_elements_transition"
 
     // Preferences DataStore
     implementation "androidx.datastore:datastore-preferences:$version_data_store"

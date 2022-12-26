@@ -14,6 +14,7 @@ import com.example.zeroapp.R
 import com.example.zeroapp.presentation.base.ui_compose_components.dialog.UIDialog
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -37,8 +38,8 @@ class HistoryViewModel @Inject constructor(
     val uiDialog: StateFlow<UIDialog?>
         get() = _uiDialog
 
-    private var _listDays = MutableStateFlow<List<Day>>(emptyList())
-    val listDays: StateFlow<List<Day>>
+    private var _listDays = MutableStateFlow<List<Day>?>(null)
+    val listDays: StateFlow<List<Day>?>
         get() = _listDays
 
     private var _navigateToDetailState = MutableStateFlow<NavigateToDetailState?>(null)
@@ -49,9 +50,9 @@ class HistoryViewModel @Inject constructor(
     val toggleBtnState: StateFlow<ToggleBtnState>
         get() = _toggleBtnState
 
-    private var _isDaysSelected = MutableStateFlow(false)
-    val isDaysSelected: StateFlow<Boolean>
-        get() = _isDaysSelected
+    private var _cellsAmount = MutableStateFlow(4)
+    val cellsAmount: StateFlow<Int>
+        get() = _cellsAmount
 
     private var _currentJob: JobType? = null
 
@@ -104,7 +105,6 @@ class HistoryViewModel @Inject constructor(
     fun onDaysSelected(pair: Pair<Long, Long>) {
         _toggleBtnState.value = ToggleBtnState.FILTER_SELECTED
         saveToggleButtonState(_toggleBtnState.value)
-        _isDaysSelected.value = true
 
         _currentJob?.job?.cancel()
         _currentJob = JobType.Filter(viewModelScope.launch {
@@ -114,7 +114,7 @@ class HistoryViewModel @Inject constructor(
         })
     }
 
-    fun checkedCurrentMonthButton() {
+    private fun checkedCurrentMonthButton() {
         if (_currentJob !is JobType.Month) {
             _currentJob?.job?.cancel()
 
@@ -122,12 +122,14 @@ class HistoryViewModel @Inject constructor(
                 getCertainDaysUseCase(TimeUtility.getCurrentMonthTime()).cancellable()
                     .collectLatest {
                         _listDays.value = it
+                        _toggleBtnState.value = ToggleBtnState.CURRENT_MONTH
+                        _cellsAmount.value = 3
                     }
             })
         }
     }
 
-    fun checkedLastWeekButton() {
+    private fun checkedLastWeekButton() {
         if (_currentJob !is JobType.Week) {
             _currentJob?.job?.cancel()
 
@@ -135,45 +137,61 @@ class HistoryViewModel @Inject constructor(
                 getCertainDaysUseCase(TimeUtility.getCurrentWeekTime()).cancellable()
                     .collectLatest {
                         _listDays.value = it
+                        _toggleBtnState.value = ToggleBtnState.LAST_WEEK
+                        _cellsAmount.value = 2
                     }
             })
         }
     }
 
-    fun checkedAllDaysButton() {
+    private fun checkedAllDaysButton() {
         if (_currentJob !is JobType.AllDays) {
             _currentJob?.job?.cancel()
 
             _currentJob = JobType.AllDays(viewModelScope.launch {
                 getAllDaysUseCase(Unit).cancellable().collectLatest {
                     _listDays.value = it
+                    _toggleBtnState.value = ToggleBtnState.ALL_DAYS
+                    _cellsAmount.value = 4
                 }
             })
         }
     }
 
-    fun onClickCheckedItem(state: ToggleBtnState) {
-        if (_toggleBtnState.value != state) {
-            saveToggleButtonState(state)
-        }
-    }
-
     private fun saveToggleButtonState(state: ToggleBtnState) {
-        viewModelScope.launch {
-            saveToggleBtnUseCase(state)
+        if (_toggleBtnState.value != state) {
+            viewModelScope.launch {
+                delay(150)
+                saveToggleBtnUseCase(state)
+            }
         }
     }
 
     private fun getToggleButtonState() {
         viewModelScope.launch(Dispatchers.IO) {
             getToggleBtnStateUseCase(Unit).collectLatest {
+                onClickCheckedItem(it)
                 _toggleBtnState.value = it
             }
         }
     }
 
-    fun resetIsFilterSelected() {
-        _isDaysSelected.value = false
+    fun onClickCheckedItem(state: ToggleBtnState) {
+        when (state) {
+            ToggleBtnState.ALL_DAYS -> {
+                checkedAllDaysButton()
+            }
+            ToggleBtnState.CURRENT_MONTH -> {
+                checkedCurrentMonthButton()
+            }
+            ToggleBtnState.LAST_WEEK -> {
+                checkedLastWeekButton()
+            }
+            ToggleBtnState.FILTER_SELECTED -> {
+                _cellsAmount.value = 3
+            }
+        }
+        saveToggleButtonState(state)
     }
 }
 
