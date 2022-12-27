@@ -31,7 +31,9 @@ fun DetailScreen(
     onNavigateUp: () -> Unit,
     detailViewModel: DetailViewModel = hiltViewModel()
 ) {
+
     val scope = rememberCoroutineScope()
+
     val uiDialog by detailViewModel.uiDialog.collectAsState()
     val selectedDay by detailViewModel.selectedDay.collectAsState()
     val navigateToHistory by detailViewModel.navigateToHistory.collectAsState()
@@ -48,7 +50,6 @@ fun DetailScreen(
             detailViewModel.navigateDone()
         }
     }
-
 
     uiDialog?.let {
         Dialog(dialog = it)
@@ -137,6 +138,4 @@ fun DetailScreen(
             )
         }
     }
-
-
 }

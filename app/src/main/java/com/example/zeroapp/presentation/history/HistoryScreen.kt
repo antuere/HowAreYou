@@ -1,6 +1,9 @@
 package com.example.zeroapp.presentation.history
 
+import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.*
@@ -36,7 +39,7 @@ import com.example.zeroapp.presentation.history.ui_compose.HistoryHeaderText
 import com.example.zeroapp.presentation.history.ui_compose.ToggleBtnGroup
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterialApi::class, ExperimentalFoundationApi::class)
 @Composable
 fun HistoryScreen(
     onNavigateToDetail: (Long) -> Unit,
@@ -48,11 +51,14 @@ fun HistoryScreen(
         initialValue = ModalBottomSheetValue.Hidden,
     )
     val scope = rememberCoroutineScope()
+    val rotation = remember { Animatable(initialValue = 360f) }
+
     val uiDialog by historyViewModel.uiDialog.collectAsState()
     val listDays by historyViewModel.listDays.collectAsState()
     val toggleBtnState by historyViewModel.toggleBtnState.collectAsState()
     val cellsAmount by historyViewModel.cellsAmount.collectAsState()
     val navigateToDetailState by historyViewModel.navigateToDetailState.collectAsState()
+    val isShowAnimation by historyViewModel.isShowAnimation.collectAsState()
 
     var isShowToggleBtnGroup by remember {
         mutableStateOf(true)
@@ -108,6 +114,14 @@ fun HistoryScreen(
     LaunchedEffect(toggleBtnState) {
         if (toggleBtnState == ToggleBtnState.FILTER_SELECTED) {
             isShowToggleBtnGroup = false
+        }
+
+        if (isShowAnimation) {
+            rotation.animateTo(
+                targetValue = if (rotation.value == 360F) 0f else 360f,
+                animationSpec = tween(durationMillis = 300),
+            )
+            historyViewModel.resetIsShowAnimation()
         }
     }
 
@@ -183,7 +197,10 @@ fun HistoryScreen(
                     HistoryHeaderText(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(vertical = dimensionResource(id = R.dimen.padding_normal_0)),
+                            .padding(vertical = dimensionResource(id = R.dimen.padding_normal_0))
+                            .graphicsLayer {
+                                rotationX = rotation.value
+                            },
                         dayList = days,
                         myAnalystForHistory = myAnalystForHistory
                     )
@@ -192,8 +209,16 @@ fun HistoryScreen(
                         columns = GridCells.Fixed(cellsAmount),
                         modifier = Modifier.fillMaxSize()
                     ) {
-                        items(days) { day ->
+                        items(
+                            items = days,
+                            key = { it.dayId }
+                        ) { day ->
                             DaysListItem(
+                                modifier = Modifier.animateItemPlacement(
+                                    animationSpec = tween(
+                                        durationMillis = 300
+                                    )
+                                ),
                                 day = day,
                                 onClick = { historyViewModel.onClickDay(it) },
                                 onLongClick = { historyViewModel.onClickLongDay(it) },

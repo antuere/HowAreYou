@@ -1,4 +1,4 @@
-package com.example.zeroapp.presentation.base.ui_compose_components
+package com.example.zeroapp.presentation.base.ui_compose_components.bottom_bar
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.History
@@ -10,24 +10,32 @@ import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.saveable.autoSaver
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.example.zeroapp.presentation.base.ui_compose_components.Screen
 import com.example.zeroapp.presentation.base.ui_theme.Gray800
 import com.example.zeroapp.presentation.base.ui_theme.TealMain
 import com.example.zeroapp.presentation.base.ui_theme.Typography
+import com.example.zeroapp.R
 
 
 @Composable
 fun BottomNavBar(navController: NavController) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
-
-    val iconsTitle = listOf("Home", "History", "Settings")
     val destinations = listOf(Screen.Home, Screen.History, Screen.Settings)
+
+    val iconsTitle = listOf(
+        stringResource(id = R.string.home ),
+        stringResource(id = R.string.history),
+        stringResource(id = R.string.settings)
+    )
 
     val iconsOutline =
         listOf(Icons.Outlined.Home, Icons.Outlined.History, Icons.Outlined.Settings)

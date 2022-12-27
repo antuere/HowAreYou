@@ -23,7 +23,7 @@ fun materialFadeThroughIn(duration: Int = 200): EnterTransition {
     return scaleIn(
         initialScale = 0.92F,
         animationSpec = tween(duration)
-    ) + fadeIn(animationSpec = tween(duration))
+    ) + fadeIn(animationSpec = tween(duration/2))
 }
 
 @ExperimentalAnimationApi
@@ -31,7 +31,7 @@ fun materialFadeThroughOut(duration: Int = 200): ExitTransition {
     return scaleOut(
         targetScale = 0.92F,
         animationSpec = tween(duration)
-    ) + fadeOut(animationSpec = tween(duration))
+    ) + fadeOut(animationSpec = tween(duration/2))
 }
 
 @ExperimentalAnimationApi

@@ -8,6 +8,7 @@ plugins {
 }
 
 android {
+
     signingConfigs {
         release {
             storeFile file('C:\\Users\\AntuE\\AndroidStudioProjects\\HowAreYou\\keyStore\\keyStoreApp.jks')
@@ -116,9 +117,6 @@ dependencies {
 
     // Accompanist
     implementation "com.google.accompanist:accompanist-navigation-animation:$version_accompanist"
-
-    // Shared elements transition
-    implementation "com.mxalbert.sharedelements:shared-elements:$version_shared_elements_transition"
 
     // Preferences DataStore
     implementation "androidx.datastore:datastore-preferences:$version_data_store"

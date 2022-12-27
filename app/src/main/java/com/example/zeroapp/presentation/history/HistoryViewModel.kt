@@ -54,6 +54,10 @@ class HistoryViewModel @Inject constructor(
     val cellsAmount: StateFlow<Int>
         get() = _cellsAmount
 
+    private var _isShowAnimation = MutableStateFlow(false)
+    val isShowAnimation: StateFlow<Boolean>
+        get() = _isShowAnimation
+
     private var _currentJob: JobType? = null
 
     init {
@@ -75,7 +79,6 @@ class HistoryViewModel @Inject constructor(
     fun doneNavigateToDetail() {
         _navigateToDetailState.value!!.navigateToDetail = false
     }
-
 
     private fun deleteDay() {
         viewModelScope.launch {
@@ -104,6 +107,8 @@ class HistoryViewModel @Inject constructor(
 
     fun onDaysSelected(pair: Pair<Long, Long>) {
         _toggleBtnState.value = ToggleBtnState.FILTER_SELECTED
+        _isShowAnimation.value = true
+
         saveToggleButtonState(_toggleBtnState.value)
 
         _currentJob?.job?.cancel()
@@ -191,7 +196,13 @@ class HistoryViewModel @Inject constructor(
                 _cellsAmount.value = 3
             }
         }
+        _isShowAnimation.value = true
         saveToggleButtonState(state)
+
+    }
+
+    fun resetIsShowAnimation(){
+        _isShowAnimation.value = false
     }
 }
 
