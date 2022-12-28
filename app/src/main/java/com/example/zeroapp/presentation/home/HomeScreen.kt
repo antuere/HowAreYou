@@ -27,6 +27,7 @@ fun HomeScreen(
     onNavigateToAddDay: () -> Unit,
     onNavigateToDetail: (Long) -> Unit,
     onNavigateToFavorites: () -> Unit,
+    onNavigateToMentalTips: () -> Unit,
     onNavigateToCats: () -> Unit,
     onComposing: (AppBarState, Boolean) -> Unit,
     homeViewModel: HomeViewModel = hiltViewModel()
@@ -51,7 +52,7 @@ fun HomeScreen(
     }
 
     if (isShowToast) {
-        ShowToast(text = stringResource(id = R.string.snack_bar_warning_negative) )
+        ShowToast(text = stringResource(id = R.string.snack_bar_warning_negative))
         homeViewModel.resetToast()
     }
 
@@ -79,6 +80,7 @@ fun HomeScreen(
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             CardWithOnClick(
+                onClick = onNavigateToMentalTips,
                 cardModifier = Modifier
                     .padding(
                         top = dimensionResource(id = R.dimen.padding_small_1),

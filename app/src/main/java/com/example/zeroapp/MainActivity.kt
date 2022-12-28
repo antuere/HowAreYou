@@ -14,6 +14,7 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.lifecycleScope
 import antuere.domain.dto.Settings
+import antuere.domain.dto.mental_tips.MentalTipsCategory
 import antuere.domain.usecases.user_settings.GetSettingsUseCase
 import antuere.domain.util.Constants
 import com.example.zeroapp.presentation.add_day.AddDayScreen
@@ -30,6 +31,7 @@ import com.example.zeroapp.presentation.favorites.FavoritesScreen
 import com.example.zeroapp.presentation.history.HistoryScreen
 import com.example.zeroapp.presentation.history.MyAnalystForHistory
 import com.example.zeroapp.presentation.home.HomeScreen
+import com.example.zeroapp.presentation.mental_tips.MentalTipsScreen
 import com.example.zeroapp.presentation.reset_password.ResetPasswordScreen
 import com.example.zeroapp.presentation.secure_entry.SecureEntryScreen
 import com.example.zeroapp.presentation.sign_in_with_email.SignInEmailScreen
@@ -118,186 +120,200 @@ class MainActivity : FragmentActivity() {
                         navController = navController,
                         startDestination = startDestination
                     ) {
-                            composable(
-                                route = Screen.Home.route,
-                                enterTransition = { materialFadeThroughIn() },
-                                exitTransition = { materialFadeThroughOut() },
-                            ) {
-                                startDestination = Screen.Home.route
-                                HomeScreen(
-                                    onComposing = { barState: AppBarState, isShow: Boolean ->
-                                        appBarState = barState
-                                        isShowBottomBar = isShow
-                                    },
-                                    onNavigateToDetail = {
-                                        navController.navigate(Screen.Detail.route + "/$it")
-                                    },
-                                    onNavigateToAddDay = { navController.navigate(Screen.AddDay.route) },
-                                    onNavigateToCats = { navController.navigate(Screen.Cats.route) },
-                                    onNavigateToFavorites = { navController.navigate(Screen.Favorites.route) },
-                                )
-                            }
+                        composable(
+                            route = Screen.Home.route,
+                            enterTransition = { materialFadeThroughIn() },
+                            exitTransition = { materialFadeThroughOut() },
+                        ) {
+                            startDestination = Screen.Home.route
+                            HomeScreen(
+                                onComposing = { barState: AppBarState, isShow: Boolean ->
+                                    appBarState = barState
+                                    isShowBottomBar = isShow
+                                },
+                                onNavigateToDetail = { navController.navigate(Screen.Detail.route + "/$it") },
+                                onNavigateToAddDay = { navController.navigate(Screen.AddDay.route) },
+                                onNavigateToCats = { navController.navigate(Screen.Cats.route) },
+                                onNavigateToFavorites = { navController.navigate(Screen.Favorites.route) },
+                                onNavigateToMentalTips = { navController.navigate(Screen.MentalTips.route) }
+                            )
+                        }
 
-                            composable(
-                                route = Screen.Favorites.route,
-                                enterTransition = { materialFadeThroughIn() },
-                                exitTransition = { materialFadeThroughOut() }
-                            ) {
-                                FavoritesScreen(
-                                    onComposing = { barState: AppBarState, isShow: Boolean ->
-                                        appBarState = barState
-                                        isShowBottomBar = isShow
-                                    },
-                                    onNavigateToDetail = {
-                                        navController.navigate(Screen.Detail.route + "/$it")
-                                    },
-                                    onNavigateUp = { navController.navigateUp() },
-                                )
-                            }
+                        composable(
+                            route = Screen.Favorites.route,
+                            enterTransition = { materialFadeThroughIn() },
+                            exitTransition = { materialFadeThroughOut() }
+                        ) {
+                            FavoritesScreen(
+                                onComposing = { barState: AppBarState, isShow: Boolean ->
+                                    appBarState = barState
+                                    isShowBottomBar = isShow
+                                },
+                                onNavigateToDetail = {
+                                    navController.navigate(Screen.Detail.route + "/$it")
+                                },
+                                onNavigateUp = { navController.navigateUp() },
+                            )
+                        }
 
-                            composable(
-                                route = Screen.Cats.route,
-                                enterTransition = { materialFadeThroughIn() },
-                                exitTransition = { materialFadeThroughOut() }
-                            ) {
-                                CatsScreen(
-                                    onComposing = { barState: AppBarState, isShow: Boolean ->
-                                        appBarState = barState
-                                        isShowBottomBar = isShow
-                                    },
-                                    onNavigateUp = { navController.navigateUp() },
-                                )
-                            }
+                        composable(
+                            route = Screen.Cats.route,
+                            enterTransition = { materialFadeThroughIn() },
+                            exitTransition = { materialFadeThroughOut() }
+                        ) {
+                            CatsScreen(
+                                onComposing = { barState: AppBarState, isShow: Boolean ->
+                                    appBarState = barState
+                                    isShowBottomBar = isShow
+                                },
+                                onNavigateUp = { navController.navigateUp() },
+                            )
+                        }
 
-                            composable(
-                                route = Screen.AddDay.route,
-                                enterTransition = { materialFadeThroughIn() },
-                                exitTransition = { materialFadeThroughOut() }
-                            ) {
-                                AddDayScreen(
-                                    onComposing = { barState: AppBarState, isShow: Boolean ->
-                                        appBarState = barState
-                                        isShowBottomBar = isShow
-                                    },
-                                    onNavigateUp = { navController.navigateUp() },
-                                )
-                            }
+                        composable(
+                            route = Screen.MentalTips.route,
+                            enterTransition = { materialFadeThroughIn() },
+                            exitTransition = { materialFadeThroughOut() }
+                        ) {
+                            MentalTipsScreen(
+                                onComposing = { barState: AppBarState, isShow: Boolean ->
+                                    appBarState = barState
+                                    isShowBottomBar = isShow
+                                },
+                                onNavigateUp = { navController.navigateUp() }
+                            )
 
-                            composable(
-                                route = Screen.History.route,
-                                enterTransition = { materialFadeThroughIn() },
-                                exitTransition = { materialFadeThroughOut() },
-                            ) {
-                                HistoryScreen(
-                                    onComposing = { barState: AppBarState, isShow: Boolean ->
-                                        appBarState = barState
-                                        isShowBottomBar = isShow
-                                    },
-                                    myAnalystForHistory = myAnalystForHistory,
-                                    onNavigateToDetail = {
-                                        navController.navigate(Screen.Detail.route + "/$it")
-                                    })
-                            }
+                        }
 
-                            composable(
-                                route = Screen.Detail.route + "/{${Constants.DAY_ID_KEY}}",
-                                enterTransition = { materialFadeThroughIn() },
-                                exitTransition = { materialFadeThroughOut() }
-                            ) {
-                                DetailScreen(
-                                    onComposing = { barState: AppBarState, isShow: Boolean ->
-                                        appBarState = barState
-                                        isShowBottomBar = isShow
-                                    },
-                                    onNavigateUp = { navController.navigateUp() })
-                            }
+                        composable(
+                            route = Screen.AddDay.route,
+                            enterTransition = { materialFadeThroughIn() },
+                            exitTransition = { materialFadeThroughOut() }
+                        ) {
+                            AddDayScreen(
+                                onComposing = { barState: AppBarState, isShow: Boolean ->
+                                    appBarState = barState
+                                    isShowBottomBar = isShow
+                                },
+                                onNavigateUp = { navController.navigateUp() },
+                            )
+                        }
 
-                            composable(
-                                route = Screen.Settings.route,
-                                enterTransition = { materialFadeThroughIn() },
-                                exitTransition = { materialFadeThroughOut() }
-                            ) {
-                                SettingsScreen(
-                                    onNavigateSignIn = { navController.navigate(Screen.SignInMethods.route) },
-                                    onComposing = { barState: AppBarState, isShow: Boolean ->
-                                        appBarState = barState
-                                        isShowBottomBar = isShow
-                                    },
-                                )
-                            }
+                        composable(
+                            route = Screen.History.route,
+                            enterTransition = { materialFadeThroughIn() },
+                            exitTransition = { materialFadeThroughOut() },
+                        ) {
+                            HistoryScreen(
+                                onComposing = { barState: AppBarState, isShow: Boolean ->
+                                    appBarState = barState
+                                    isShowBottomBar = isShow
+                                },
+                                myAnalystForHistory = myAnalystForHistory,
+                                onNavigateToDetail = {
+                                    navController.navigate(Screen.Detail.route + "/$it")
+                                })
+                        }
 
-                            composable(
-                                route = Screen.SignInMethods.route,
-                                enterTransition = { materialFadeThroughIn() },
-                                exitTransition = { materialFadeThroughOut() }
-                            ) {
-                                SignInMethodsScreen(
-                                    onComposing = { barState: AppBarState, isShow: Boolean ->
-                                        appBarState = barState
-                                        isShowBottomBar = isShow
-                                    },
-                                    onNavigateUp = { navController.navigateUp() },
-                                    onNavigateSignInEmail = { navController.navigate(Screen.SignInWithEmail.route) },
-                                    signInClient = signInClient,
-                                )
-                            }
+                        composable(
+                            route = Screen.Detail.route + "/{${Constants.DAY_ID_KEY}}",
+                            enterTransition = { materialFadeThroughIn() },
+                            exitTransition = { materialFadeThroughOut() }
+                        ) {
+                            DetailScreen(
+                                onComposing = { barState: AppBarState, isShow: Boolean ->
+                                    appBarState = barState
+                                    isShowBottomBar = isShow
+                                },
+                                onNavigateUp = { navController.navigateUp() })
+                        }
 
-                            composable(
-                                route = Screen.SignInWithEmail.route,
-                                enterTransition = { materialSlideIn(true) },
-                                exitTransition = { materialSlideOut(true) },
-                                popEnterTransition = { materialSlideIn(false) }
-                            ) {
-                                SignInEmailScreen(
-                                    onComposing = { barState: AppBarState, isShow: Boolean ->
-                                        appBarState = barState
-                                        isShowBottomBar = isShow
-                                    },
-                                    onNavigateUp = { navController.navigateUp() },
-                                    onNavigateSettings = {
-                                        navController.popBackStack(
-                                            Screen.Settings.route,
-                                            false
-                                        )
-                                    },
-                                    onNavigateSignUp = { navController.navigate(Screen.SignUpWithEmail.route) },
-                                    onNavigateResetPassword = { navController.navigate(Screen.ResetPassEmail.route) },
-                                )
-                            }
+                        composable(
+                            route = Screen.Settings.route,
+                            enterTransition = { materialFadeThroughIn() },
+                            exitTransition = { materialFadeThroughOut() }
+                        ) {
+                            SettingsScreen(
+                                onNavigateSignIn = { navController.navigate(Screen.SignInMethods.route) },
+                                onComposing = { barState: AppBarState, isShow: Boolean ->
+                                    appBarState = barState
+                                    isShowBottomBar = isShow
+                                },
+                            )
+                        }
 
-                            composable(
-                                route = Screen.SignUpWithEmail.route,
-                                enterTransition = { materialSlideIn(true) },
-                                exitTransition = { materialSlideOut(true) }
-                            ) {
-                                SignUpEmailScreen(
-                                    onComposing = { barState: AppBarState, isShow: Boolean ->
-                                        appBarState = barState
-                                        isShowBottomBar = isShow
-                                    },
-                                    onNavigateSettings = {
-                                        navController.popBackStack(
-                                            Screen.Settings.route,
-                                            false
-                                        )
-                                    },
-                                    onNavigateUp = { navController.navigateUp() },
-                                )
-                            }
+                        composable(
+                            route = Screen.SignInMethods.route,
+                            enterTransition = { materialFadeThroughIn() },
+                            exitTransition = { materialFadeThroughOut() }
+                        ) {
+                            SignInMethodsScreen(
+                                onComposing = { barState: AppBarState, isShow: Boolean ->
+                                    appBarState = barState
+                                    isShowBottomBar = isShow
+                                },
+                                onNavigateUp = { navController.navigateUp() },
+                                onNavigateSignInEmail = { navController.navigate(Screen.SignInWithEmail.route) },
+                                signInClient = signInClient,
+                            )
+                        }
 
-                            composable(
-                                route = Screen.ResetPassEmail.route,
-                                enterTransition = { materialSlideIn(true) },
-                                exitTransition = { materialSlideOut(true) }
-                            ) {
-                                ResetPasswordScreen(
-                                    onComposing = { barState: AppBarState, isShow: Boolean ->
-                                        appBarState = barState
-                                        isShowBottomBar = isShow
-                                    },
-                                    onNavigateUp = { navController.navigateUp() },
-                                )
-                            }
+                        composable(
+                            route = Screen.SignInWithEmail.route,
+                            enterTransition = { materialSlideIn(true) },
+                            exitTransition = { materialSlideOut(true) },
+                            popEnterTransition = { materialSlideIn(false) }
+                        ) {
+                            SignInEmailScreen(
+                                onComposing = { barState: AppBarState, isShow: Boolean ->
+                                    appBarState = barState
+                                    isShowBottomBar = isShow
+                                },
+                                onNavigateUp = { navController.navigateUp() },
+                                onNavigateSettings = {
+                                    navController.popBackStack(
+                                        Screen.Settings.route,
+                                        false
+                                    )
+                                },
+                                onNavigateSignUp = { navController.navigate(Screen.SignUpWithEmail.route) },
+                                onNavigateResetPassword = { navController.navigate(Screen.ResetPassEmail.route) },
+                            )
+                        }
+
+                        composable(
+                            route = Screen.SignUpWithEmail.route,
+                            enterTransition = { materialSlideIn(true) },
+                            exitTransition = { materialSlideOut(true) }
+                        ) {
+                            SignUpEmailScreen(
+                                onComposing = { barState: AppBarState, isShow: Boolean ->
+                                    appBarState = barState
+                                    isShowBottomBar = isShow
+                                },
+                                onNavigateSettings = {
+                                    navController.popBackStack(
+                                        Screen.Settings.route,
+                                        false
+                                    )
+                                },
+                                onNavigateUp = { navController.navigateUp() },
+                            )
+                        }
+
+                        composable(
+                            route = Screen.ResetPassEmail.route,
+                            enterTransition = { materialSlideIn(true) },
+                            exitTransition = { materialSlideOut(true) }
+                        ) {
+                            ResetPasswordScreen(
+                                onComposing = { barState: AppBarState, isShow: Boolean ->
+                                    appBarState = barState
+                                    isShowBottomBar = isShow
+                                },
+                                onNavigateUp = { navController.navigateUp() },
+                            )
+                        }
 
                         composable(route = Screen.SecureEntry.route) {
                             SecureEntryScreen(

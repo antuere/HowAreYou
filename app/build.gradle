@@ -117,6 +117,8 @@ dependencies {
 
     // Accompanist
     implementation "com.google.accompanist:accompanist-navigation-animation:$version_accompanist"
+    implementation "com.google.accompanist:accompanist-pager:$version_accompanist"
+    implementation "com.google.accompanist:accompanist-pager-indicators:$version_accompanist"
 
     // Preferences DataStore
     implementation "androidx.datastore:datastore-preferences:$version_data_store"

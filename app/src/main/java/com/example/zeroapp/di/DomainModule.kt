@@ -1,14 +1,12 @@
 package com.example.zeroapp.di
 
 import antuere.domain.authentication_manager.AuthenticationManager
-import antuere.domain.repository.DayRepository
-import antuere.domain.repository.QuoteRepository
-import antuere.domain.repository.SettingsRepository
-import antuere.domain.repository.ToggleBtnRepository
+import antuere.domain.repository.*
 import antuere.domain.usecases.authentication.*
 import antuere.domain.usecases.day_quote.GetDayQuoteLocalUseCase
 import antuere.domain.usecases.day_quote.UpdDayQuoteByRemoteUseCase
 import antuere.domain.usecases.days_entities.*
+import antuere.domain.usecases.mental_tips.GetMentalTipsCategoriesUseCase
 import antuere.domain.usecases.user_settings.*
 import dagger.Module
 import dagger.Provides
@@ -194,6 +192,11 @@ class DomainModule {
     @Provides
     fun provideSignInByGoogleUseCase(authenticationManager: AuthenticationManager): SignInByGoogleUseCase {
         return SignInByGoogleUseCase(authenticationManager)
+    }
+
+    @Provides
+    fun provideGetMentalTipsCategoriesUseCase(mentalTipsRepository: MentalTipsRepository): GetMentalTipsCategoriesUseCase {
+        return GetMentalTipsCategoriesUseCase(mentalTipsRepository)
     }
 
 }

@@ -51,6 +51,7 @@ fun HistoryScreen(
         initialValue = ModalBottomSheetValue.Hidden,
     )
     val scope = rememberCoroutineScope()
+
     val rotation = remember { Animatable(initialValue = 360f) }
 
     val uiDialog by historyViewModel.uiDialog.collectAsState()
@@ -211,14 +212,14 @@ fun HistoryScreen(
                     ) {
                         items(
                             items = days,
-                            key = { it.dayId }
                         ) { day ->
                             DaysListItem(
-                                modifier = Modifier.animateItemPlacement(
-                                    animationSpec = tween(
-                                        durationMillis = 300
-                                    )
-                                ),
+                                modifier = Modifier
+                                    .animateItemPlacement(
+                                        animationSpec = tween(
+                                            durationMillis = 200
+                                        )
+                                    ),
                                 day = day,
                                 onClick = { historyViewModel.onClickDay(it) },
                                 onLongClick = { historyViewModel.onClickLongDay(it) },

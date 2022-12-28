@@ -1,0 +1,9 @@
+<resources>
+    <!-- Categories names -->
+    <string name="current_times">Current times tips</string>
+    <string name="you_self">Get you self tips</string>
+    <string name="family">Family tips</string>
+    <string name="relationship">Relation ship tips</string>
+    <string name="friends">Friends tips</string>
+
+</resources>

@@ -46,40 +46,51 @@ fun CatsScreen(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Spacer(modifier = Modifier.weight(0.1F))
+        Spacer(modifier = Modifier.weight(0.05F))
 
         Text(
             text = stringResource(id = R.string.title_cats),
             fontSize = dimensionResource(id = R.dimen.textSize_big_0).value.sp,
             fontFamily = PlayfairDisplay
         )
-        Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_5)))
+        Spacer(modifier = Modifier.weight(0.05F))
 
-        Row(modifier = Modifier.weight(0.5F)) {
+        Row(modifier = Modifier.wrapContentHeight()) {
             DefaultGlideImage(
-                modifier = Modifier.weight(1F).padding(start = 5.dp),
+                modifier = Modifier
+                    .weight(1F)
+                    .padding(start = 8.dp),
                 url = urlList[0],
                 contentDescription = "cat"
             )
             DefaultGlideImage(
-                modifier = Modifier.weight(1F).padding(horizontal = 5.dp),
+                modifier = Modifier
+                    .weight(1F)
+                    .padding(horizontal = 8.dp),
                 url = urlList[1],
                 contentDescription = "cat"
             )
         }
-        Row(modifier = Modifier.weight(0.5F)) {
+        Spacer(modifier = Modifier.weight(0.025F))
+
+        Row(modifier = Modifier.wrapContentHeight()) {
             DefaultGlideImage(
-                modifier = Modifier.weight(1F).padding(start = 5.dp),
+                modifier = Modifier
+                    .weight(1F)
+                    .padding(start = 8.dp),
                 url = urlList[2],
                 contentDescription = "cat"
             )
             DefaultGlideImage(
-                modifier = Modifier.weight(1F).padding(horizontal = 5.dp),
+                modifier = Modifier
+                    .weight(1F)
+                    .padding(horizontal = 8.dp),
                 url = urlList[3],
                 contentDescription = "cat"
             )
         }
-        Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_1)))
+
+        Spacer(modifier = Modifier.weight(0.05F))
 
         Button(
             modifier = Modifier.fillMaxWidth(0.7F),
@@ -89,6 +100,6 @@ fun CatsScreen(
                 color = MaterialTheme.colorScheme.onPrimary
             )
         }
-        Spacer(modifier = Modifier.weight(0.1F))
+        Spacer(modifier = Modifier.weight(0.05F))
     }
 }

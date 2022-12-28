@@ -28,7 +28,6 @@ class HistoryViewModel @Inject constructor(
     private val getCertainDaysUseCase: GetCertainDaysUseCase,
     private val getToggleBtnStateUseCase: GetToggleBtnStateUseCase,
     private val saveToggleBtnUseCase: SaveToggleBtnUseCase,
-    private val transitionName: String,
 ) :
     ViewModel() {
 
@@ -126,8 +125,8 @@ class HistoryViewModel @Inject constructor(
             _currentJob = JobType.Month(viewModelScope.launch {
                 getCertainDaysUseCase(TimeUtility.getCurrentMonthTime()).cancellable()
                     .collectLatest {
-                        _listDays.value = it
                         _toggleBtnState.value = ToggleBtnState.CURRENT_MONTH
+                        _listDays.value = it
                         _cellsAmount.value = 3
                     }
             })
@@ -141,8 +140,8 @@ class HistoryViewModel @Inject constructor(
             _currentJob = JobType.Week(viewModelScope.launch {
                 getCertainDaysUseCase(TimeUtility.getCurrentWeekTime()).cancellable()
                     .collectLatest {
-                        _listDays.value = it
                         _toggleBtnState.value = ToggleBtnState.LAST_WEEK
+                        _listDays.value = it
                         _cellsAmount.value = 2
                     }
             })
@@ -155,8 +154,8 @@ class HistoryViewModel @Inject constructor(
 
             _currentJob = JobType.AllDays(viewModelScope.launch {
                 getAllDaysUseCase(Unit).cancellable().collectLatest {
-                    _listDays.value = it
                     _toggleBtnState.value = ToggleBtnState.ALL_DAYS
+                    _listDays.value = it
                     _cellsAmount.value = 4
                 }
             })

@@ -24,6 +24,7 @@ import com.example.zeroapp.R
 import com.example.zeroapp.presentation.base.ui_compose_components.top_bar.AppBarState
 import com.example.zeroapp.presentation.base.ui_compose_components.dialog.Dialog
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 @Composable
 fun DetailScreen(
@@ -31,18 +32,14 @@ fun DetailScreen(
     onNavigateUp: () -> Unit,
     detailViewModel: DetailViewModel = hiltViewModel()
 ) {
-
     val scope = rememberCoroutineScope()
 
     val uiDialog by detailViewModel.uiDialog.collectAsState()
     val selectedDay by detailViewModel.selectedDay.collectAsState()
     val navigateToHistory by detailViewModel.navigateToHistory.collectAsState()
-    val rotation = remember { Animatable(initialValue = 360f) }
-
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed by interactionSource.collectIsPressedAsState()
     val scaleDeleteBtn by animateFloatAsState(if (isPressed) 0.75f else 1f)
-
 
     LaunchedEffect(navigateToHistory) {
         if (navigateToHistory) {
@@ -56,9 +53,12 @@ fun DetailScreen(
     }
 
     selectedDay?.let { day ->
+
         var isFavoriteDay by remember {
             mutableStateOf(day.isFavorite)
         }
+
+        val rotation = remember { Animatable(initialValue = if (isFavoriteDay) 360f else 0f) }
 
         LaunchedEffect(isFavoriteDay) {
             onComposing(
@@ -69,13 +69,14 @@ fun DetailScreen(
                     actions = {
                         IconButton(onClick = {
                             scope.launch {
+                                detailViewModel.onClickFavoriteButton()
+                                isFavoriteDay = isFavoriteDay.not()
+
                                 rotation.animateTo(
-                                    targetValue = if (isFavoriteDay) 0f else 360f,
+                                    targetValue = if (!isFavoriteDay) 0f else 360f,
                                     animationSpec = tween(durationMillis = 450),
                                 )
                             }
-                            detailViewModel.onClickFavoriteButton()
-                            isFavoriteDay = isFavoriteDay.not()
                         }) {
                             Icon(
                                 modifier = Modifier.graphicsLayer {

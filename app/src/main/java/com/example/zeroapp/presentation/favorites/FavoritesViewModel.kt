@@ -18,7 +18,6 @@ import javax.inject.Inject
 class FavoritesViewModel @Inject constructor(
     getFavoritesDaysUseCase: GetFavoritesDaysUseCase,
     private val deleteDayUseCase: DeleteDayUseCase,
-    private val transitionName: String
 ) : ViewModel() {
 
     private var _uiDialog = MutableStateFlow<UIDialog?>(null)

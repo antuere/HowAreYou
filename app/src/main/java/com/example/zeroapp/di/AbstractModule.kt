@@ -2,16 +2,10 @@ package com.example.zeroapp.di
 
 import antuere.data.remote.authentication_manager.AuthenticationManagerImpl
 import antuere.data.remote.remote_day_database.FirebaseRealtimeDB
-import antuere.data.repository.DayRepositoryImpl
-import antuere.data.repository.QuoteRepositoryImpl
-import antuere.data.repository.SettingsRepositoryImpl
-import antuere.data.repository.ToggleBtnRepositoryImpl
+import antuere.data.repository.*
 import antuere.domain.authentication_manager.AuthenticationManager
 import antuere.domain.remote_db.RemoteDbApi
-import antuere.domain.repository.DayRepository
-import antuere.domain.repository.QuoteRepository
-import antuere.domain.repository.SettingsRepository
-import antuere.domain.repository.ToggleBtnRepository
+import antuere.domain.repository.*
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -39,12 +33,17 @@ abstract class AbstractModule {
     @Singleton
     abstract fun bindSettingsRepository(settingsRepositoryImpl: SettingsRepositoryImpl): SettingsRepository
 
-    @Binds
-    @Singleton
-    abstract fun bindAuthManager(authenticationManagerImpl: AuthenticationManagerImpl) : AuthenticationManager
 
     @Binds
     @Singleton
-    abstract fun bindRemoteDbApi(firebaseRealtimeDB: FirebaseRealtimeDB) : RemoteDbApi
+    abstract fun bindMentalTipsRepository(mentalTipsRepositoryImpl: MentalTipsRepositoryImpl): MentalTipsRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindAuthManager(authenticationManagerImpl: AuthenticationManagerImpl): AuthenticationManager
+
+    @Binds
+    @Singleton
+    abstract fun bindRemoteDbApi(firebaseRealtimeDB: FirebaseRealtimeDB): RemoteDbApi
 
 }
