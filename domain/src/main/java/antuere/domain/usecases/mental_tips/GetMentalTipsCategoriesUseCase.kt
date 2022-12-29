@@ -7,7 +7,6 @@ import antuere.domain.usecases.UseCaseDefault
 class GetMentalTipsCategoriesUseCase(private val mentalTipsRepository: MentalTipsRepository) :
     UseCaseDefault<List<MentalTipsCategory>, Unit> {
 
-
     override suspend fun invoke(param: Unit): List<MentalTipsCategory> {
         return mentalTipsRepository.getMentalTipsCategories()
     }

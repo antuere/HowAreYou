@@ -14,7 +14,6 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.lifecycleScope
 import antuere.domain.dto.Settings
-import antuere.domain.dto.mental_tips.MentalTipsCategory
 import antuere.domain.usecases.user_settings.GetSettingsUseCase
 import antuere.domain.util.Constants
 import com.example.zeroapp.presentation.add_day.AddDayScreen
@@ -32,6 +31,7 @@ import com.example.zeroapp.presentation.history.HistoryScreen
 import com.example.zeroapp.presentation.history.MyAnalystForHistory
 import com.example.zeroapp.presentation.home.HomeScreen
 import com.example.zeroapp.presentation.mental_tips.MentalTipsScreen
+import com.example.zeroapp.presentation.mental_tips_categories.MentalTipsCategoriesScreen
 import com.example.zeroapp.presentation.reset_password.ResetPasswordScreen
 import com.example.zeroapp.presentation.secure_entry.SecureEntryScreen
 import com.example.zeroapp.presentation.sign_in_with_email.SignInEmailScreen
@@ -135,7 +135,7 @@ class MainActivity : FragmentActivity() {
                                 onNavigateToAddDay = { navController.navigate(Screen.AddDay.route) },
                                 onNavigateToCats = { navController.navigate(Screen.Cats.route) },
                                 onNavigateToFavorites = { navController.navigate(Screen.Favorites.route) },
-                                onNavigateToMentalTips = { navController.navigate(Screen.MentalTips.route) }
+                                onNavigateToMentalTips = { navController.navigate(Screen.MentalTipsCategories.route) }
                             )
                         }
 
@@ -171,19 +171,35 @@ class MainActivity : FragmentActivity() {
                         }
 
                         composable(
-                            route = Screen.MentalTips.route,
+                            route = Screen.MentalTipsCategories.route,
                             enterTransition = { materialFadeThroughIn() },
-                            exitTransition = { materialFadeThroughOut() }
+                            exitTransition = { materialFadeThroughOut() },
+                            popEnterTransition = { materialSlideIn(false) }
+                        ) {
+                            MentalTipsCategoriesScreen(
+                                onComposing = { barState: AppBarState, isShow: Boolean ->
+                                    appBarState = barState
+                                    isShowBottomBar = isShow
+                                },
+                                onNavigateUp = { navController.navigateUp() },
+                                onNavigateToMentalTip = { navController.navigate(Screen.MentalTips.route + "/$it") }
+                            )
+                        }
+
+                        composable(
+                            route = Screen.MentalTips.route + "/{${Constants.CATEGORY_KEY}}",
+                            enterTransition = { materialSlideIn(true) },
+                            exitTransition = { materialSlideOut(true) },
                         ) {
                             MentalTipsScreen(
                                 onComposing = { barState: AppBarState, isShow: Boolean ->
                                     appBarState = barState
                                     isShowBottomBar = isShow
                                 },
-                                onNavigateUp = { navController.navigateUp() }
+                                onNavigateUp = { navController.navigateUp() },
                             )
-
                         }
+
 
                         composable(
                             route = Screen.AddDay.route,

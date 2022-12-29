@@ -32,6 +32,11 @@
     <string name="home">Home</string>
     <string name="mental_tips">Mental tips</string>
     <string name="login_methods">Sign in methods</string>
+    <string name="current_time_tips">Current time</string>
+    <string name="youself_tips">Yourself</string>
+    <string name="family_tips">Family</string>
+    <string name="relationship_tips">Relationship</string>
+    <string name="friends_tips">Friends</string>
     <string name="login">Sign in</string>
     <string name="register">Sign up</string>
     <string name="register_google_title">Register with Google</string>
@@ -175,6 +180,7 @@
     <string name="october">October</string>
     <string name="november">November</string>
     <string name="december">December</string>
+
 
     <!-- Other -->
     <string name="leak_canary_test_class_name">assertk.Assert</string>

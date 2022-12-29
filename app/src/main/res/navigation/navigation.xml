@@ -131,7 +131,7 @@
     </fragment>
     <fragment
             android:id="@+id/mentalTipsFragment"
-            android:name="com.example.zeroapp.presentation.mental_tips.MentalTipsFragment"
+            android:name="com.example.zeroapp.presentation.mental_tips_categories.MentalTipsFragment"
             android:label="@string/mental_tips"
             tools:layout="@layout/fragment_mental_tips" />
 </navigation>

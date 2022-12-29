@@ -1,10 +1,10 @@
 package antuere.domain.util
 
-import antuere.domain.dto.mental_tips.MentalTipsCategory
 
 object Constants {
     const val USER_NOT_AUTH = "user not auth yet"
     const val DAY_ID_KEY = "dayIdKey"
+    const val CATEGORY_KEY = "category key"
 
     const val CURRENT_TIMES_CATEGORY = "current_times_category"
     const val YOU_SELF_CATEGORY = "you_self_category"

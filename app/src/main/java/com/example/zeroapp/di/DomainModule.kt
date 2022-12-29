@@ -7,6 +7,7 @@ import antuere.domain.usecases.day_quote.GetDayQuoteLocalUseCase
 import antuere.domain.usecases.day_quote.UpdDayQuoteByRemoteUseCase
 import antuere.domain.usecases.days_entities.*
 import antuere.domain.usecases.mental_tips.GetMentalTipsCategoriesUseCase
+import antuere.domain.usecases.mental_tips.GetMentalTipsUseCase
 import antuere.domain.usecases.user_settings.*
 import dagger.Module
 import dagger.Provides
@@ -197,6 +198,11 @@ class DomainModule {
     @Provides
     fun provideGetMentalTipsCategoriesUseCase(mentalTipsRepository: MentalTipsRepository): GetMentalTipsCategoriesUseCase {
         return GetMentalTipsCategoriesUseCase(mentalTipsRepository)
+    }
+
+    @Provides
+    fun provideGetMentalTipsUseCase(mentalTipsRepository: MentalTipsRepository): GetMentalTipsUseCase {
+        return GetMentalTipsUseCase(mentalTipsRepository)
     }
 
 }
