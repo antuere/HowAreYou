@@ -6,7 +6,38 @@
     <string name="relationship">Relationship tips</string>
     <string name="friends">Friends tips</string>
 
-    <!-- Mental tips -->
+    <!-- Mental tips title -->
+    <string name="mental_tip_title_current_time_0">Changes</string>
+    <string name="mental_tip_title_current_time_1">Calmness</string>
+    <string name="mental_tip_title_current_time_2">Acceptance</string>
+    <string name="mental_tip_title_current_time_3">Control</string>
+    <string name="mental_tip_title_current_time_4">Mistakes</string>
+    <string name="mental_tip_title_current_time_5">Panic</string>
+
+    <string name="mental_tip_title_youself_0">Sleep</string>
+    <string name="mental_tip_title_youself_1">Negative</string>
+    <string name="mental_tip_title_youself_2">Monotonous days</string>
+    <string name="mental_tip_title_youself_3">Loneliness</string>
+    <string name="mental_tip_title_youself_4">Sport</string>
+
+    <string name="mental_tip_title_family_0">Communication</string>
+    <string name="mental_tip_title_family_1">Boundaries</string>
+    <string name="mental_tip_title_family_2">Reconciliation</string>
+    <string name="mental_tip_title_family_3">Concern</string>
+
+    <string name="mental_tip_title_relationship_0">Reciprocity</string>
+    <string name="mental_tip_title_relationship_1">Equality</string>
+    <string name="mental_tip_title_relationship_2">Self-sufficient</string>
+    <string name="mental_tip_title_relationship_3">Support</string>
+    <string name="mental_tip_title_relationship_4">Harmony</string>
+    <string name="mental_tip_title_relationship_5">Healthy relationship</string>
+
+    <string name="mental_tip_title_friends_0">Duality</string>
+    <string name="mental_tip_title_friends_1">Honest</string>
+    <string name="mental_tip_title_friends_2">Respect</string>
+    <string name="mental_tip_title_friends_3">Treasure</string>
+
+    <!-- Mental tips desc -->
     <string name="mental_tip_current_time_0">
         When events happen that destroy the conditional norm, it is impossible not to think about them, questions arise that have no answers. Also, the set of needs and habits changes, the attitude to money, free time and everything else - this is normal.
     </string>
@@ -17,82 +48,73 @@
        At this time, it is important to recognize that now everything is not the way we are used to, which means that we cannot expect the same behavior from ourselves and others. If we accept the fact that changes are taking place, we may be able to decide what to do next.
     </string>
     <string name="mental_tip_current_time_3">
-       Here we must admit that not everything is under our control: there are things that we cannot control.
-       It is better to focus on what we can control, while it is important not to be too strict with ourselves. That is, to understand your condition and sometimes allow yourself to forget or lose something, even let some things go on without our participation.
+        Here we must admit that not everything is under our control: there are things that we cannot control.It is better to focus on what we can control, while it is important not to be too strict with ourselves. That is, to understand your condition and sometimes allow yourself to forget or lose something, even let some things go on without our participation.
     </string>
     <string name="mental_tip_current_time_4">
-    Anxiety depletes the resources needed for the effective operation of memory, and leads to the fact that a person overly concentrates on mistakes.When we allow ourselves to make mistakes and observe our feelings, we can study our reaction and draw conclusions. Including understanding that mistakes don\'t automatically make us bad.
+        Anxiety depletes the resources needed for the effective operation of memory, and leads to the fact that a person overly concentrates on mistakes.When we allow ourselves to make mistakes and observe our feelings, we can study our reaction and draw conclusions. Including understanding that mistakes don\'t automatically make us bad.
     </string>
     <string name="mental_tip_current_time_5">
-    In difficult times, panic attacks, severe fear, even panic attacks appear or increase.
-    You need to allow yourself to live the panic without doing anything with it, just watching.
-    You can't die from a panic attack, it doesn't cause physical harm. However, you can start to be afraid of the panic itself, which will only worsen the situation
+        In difficult times, panic attacks, severe fear, even panic attacks appear or increase.You need to allow yourself to live the panic without doing anything with it, just watching.You can\'t die from a panic attack, it doesn\'t cause physical harm. However, you can start to be afraid of the panic itself, which will only worsen the situation
     </string>
 
     <string name="mental_tip_youself_0">
-    Sleep is the most important factor affecting a person\'s vital activity. Without it, no one can not only feel good, but also think soberly. Therefore, try to get enough sleep and start solving difficult tasks only when you are rested.
+        Sleep is the most important factor affecting a person\'s vital activity. Without it, no one can not only feel good, but also think soberly. Therefore, try to get enough sleep and start solving difficult tasks only when you are rested.
     </string>
     <string name="mental_tip_youself_1">
-    Do not accumulate resentments and negative emotions in yourself. It is not necessary to deliberately tighten your black stripe, revel in your suffering. Try to put it all in the past as soon as possible.
+        Do not accumulate resentments and negative emotions in yourself. It is not necessary to deliberately tighten your black stripe, revel in your suffering. Try to put it all in the past as soon as possible.
     </string>
     <string name="mental_tip_youself_2">
-    Monotonous gray everyday life contributes to the accumulation of internal fatigue and the emergence of depression. Bring variety to your life: meet friends, go to the theater, cinema, concerts and exhibitions
+        Monotonous gray everyday life contributes to the accumulation of internal fatigue and the emergence of depression. Bring variety to your life: meet friends, go to the theater, cinema, concerts and exhibitions
     </string>
     <string name="mental_tip_youself_3">
-    Be alone.
-    It has been proven that most people feel better after 20-30 minutes of solitude. It is important to give yourself the opportunity to be quiet for a while and be alone, just relax
+        Be alone. It has been proven that most people feel better after 20-30 minutes of solitude. It is important to give yourself the opportunity to be quiet for a while and be alone, just relax
     </string>
     <string name="mental_tip_youself_4">
-    Do physical exercises.
-    When you do sports, not only a lot of good things happen in your body at the physical level, but also substances that affect mood are produced. Endorphins are a great thing! Fall for this source of pleasure at least sometimes.
+        Do physical exercises. When you do sports, not only a lot of good things happen in your body at the physical level, but also substances that affect mood are produced. Endorphins are a great thing! Fall for this source of pleasure at least sometimes.
     </string>
 
     <string name="mental_tip_family_0">
-    If we consider communication with the family from the point of view of psychology, then we can talk about how important it is for children. If this is a healthy relationship, then everyone needs it, because it improves mood, gives support, etc. Nevertheless, with unhealthy relationships and the inability to establish communication, it is better to really give up this connection.
+        If we consider communication with the family from the point of view of psychology, then we can talk about how important it is for children. If this is a healthy relationship, then everyone needs it, because it improves mood, gives support, etc. Nevertheless, with unhealthy relationships and the inability to establish communication, it is better to really give up this connection.
     </string>
     <string name="mental_tip_family_1">
-    Learn to protect your personal boundaries and respect others\'. Do not let your relatives influence your life, attitude or emotional state. It is necessary to learn how to defend your position, say "no" and protect your interests. At the same time, it is important to do this so as not to offend another person.
+        Learn to protect your personal boundaries and respect others\'. Do not let your relatives influence your life, attitude or emotional state. It is necessary to learn how to defend your position, say "no" and protect your interests. At the same time, it is important to do this so as not to offend another person.
     </string>
     <string name="mental_tip_family_2">
-    Do not run away from a conflict situation, but resolve it. Sometimes the best idea may seem to be an instant interruption of communication. First, you should try to understand the conflict, otherwise you will not be able to build effective communication further.
+        Do not run away from a conflict situation, but resolve it. Sometimes the best idea may seem to be an instant interruption of communication. First, you should try to understand the conflict, otherwise you will not be able to build effective communication further.
     </string>
     <string name="mental_tip_family_3">
-    Be polite and be interested in the lives of your loved ones. Due to the modern rhythm of life, sometimes there is not enough time for communication and meetings with relatives. It is important to always take a minute to find out how your loved ones are doing.
+        Be polite and be interested in the lives of your loved ones. Due to the modern rhythm of life, sometimes there is not enough time for communication and meetings with relatives. It is important to always take a minute to find out how your loved ones are doing.
     </string>
 
     <string name="mental_tip_relationship_0">
-    Mutual feelings and sympathy
-    The attitude from the past that "it will be tolerated-it will be loved" will not help to create resource relationships. Rather, it will be the opposite — the forces will be spent on maintaining such a relationship, and the result will be unsatisfactory.
+        Mutual feelings and sympathy. The attitude from the past that "it will be tolerated-it will be loved" will not help to create resource relationships. Rather, it will be the opposite — the forces will be spent on maintaining such a relationship, and the result will be unsatisfactory.
     </string>
     <string name="mental_tip_relationship_1">
-    The emphasis on a patriarchal or matriarchal system of relations is no longer effective. The separation of people by gender builds fences between people. Equality of men and women, mutual respect, refusal to switch to personalities — that\'s what's important.
+        The emphasis on a patriarchal or matriarchal system of relations is no longer effective. The separation of people by gender builds fences between people. Equality of men and women, mutual respect, refusal to switch to personalities — that\'s what\'s important.
     </string>
     <string name="mental_tip_relationship_2">
-    A person must remain self-sufficient. You should not lose yourself in a relationship and lose yourself as a person and an expert in your business. On the contrary, it is important to learn how to use the emotional uplift from communicating with each other to develop yourself and your skills in any issue
+        A person must remain self-sufficient. You should not lose yourself in a relationship and lose yourself as a person and an expert in your business. On the contrary, it is important to learn how to use the emotional uplift from communicating with each other to develop yourself and your skills in any issue
     </string>
     <string name="mental_tip_relationship_3">
-    In any matters, it is important to be fans of each other — to support the partner and, if possible, help him move on. The absence of such emotions suggests that these relationships are likely to last for a short time.
+        In any matters, it is important to be fans of each other — to support the partner and, if possible, help him move on. The absence of such emotions suggests that these relationships are likely to last for a short time.
     </string>
     <string name="mental_tip_relationship_4">
-    Manipulative relationships lack harmony. They lead to conflicts within the family and to abuse, and ultimately give nothing but pain and frustration.
+        Manipulative relationships lack harmony. They lead to conflicts within the family and to abuse, and ultimately give nothing but pain and frustration.
     </string>
     <string name="mental_tip_relationship_5">
-    In a healthy relationship, there is no place for self-affirmation at someone else\'s expense. Determine who you are — a tyrant or a victim, and work out your behavior with a therapist.
+        In a healthy relationship, there is no place for self-affirmation at someone else\'s expense. Determine who you are — a tyrant or a victim, and work out your behavior with a therapist.
     </string>
 
     <string name="mental_tip_friends_0">
-    We grow thanks to our good and bad life experiences. And we are grateful when in difficult moments of our life there is someone who is ready to support us.
-    It is not always easy to cope with difficult life moments that arise in relationships between friends. However, if you are able to go through these trials, your friendship will become stronger and deeper. Don't give up on your friends and their support!
+        We grow thanks to our good and bad life experiences. And we are grateful when in difficult moments of our life there is someone who is ready to support us.It is not always easy to cope with difficult life moments that arise in relationships between friends. However, if you are able to go through these trials, your friendship will become stronger and deeper. Don\'t give up on your friends and their support!
     </string>
     <string name="mental_tip_friends_1">
-    Being honest to the end is one of the hardest parts of the process called friendship. People do not always want to hear the truth about themselves or their actions. But this is exactly what you should expect from a real friend.
-    It is necessary to call a spade a spade – even if it is difficult. Because it is not so important how exactly your friend will react at the moment – but if he is a real friend, then such a person should appreciate the fact that you are honest with him
+        Being honest to the end is one of the hardest parts of the process called friendship. People do not always want to hear the truth about themselves or their actions. But this is exactly what you should expect from a real friend.It is necessary to call a spade a spade – even if it is difficult. Because it is not so important how exactly your friend will react at the moment – but if he is a real friend, then such a person should appreciate the fact that you are honest with him
     </string>
     <string name="mental_tip_friends_2">
-    There is no doubt that the best relationships are built on mutual interest. However, being a good friend means respecting the boundary where your mutual interests end. To maintain friendly relations, it is necessary to learn to recognize this boundary in time.
+        There is no doubt that the best relationships are built on mutual interest. However, being a good friend means respecting the boundary where your mutual interests end. To maintain friendly relations, it is necessary to learn to recognize this boundary in time.
     </string>
     <string name="mental_tip_friends_3">
-    It doesn\'t matter how long you\'ve been friends. It also doesn\'t matter how strong you think your friendship is. You should never take such a relationship for granted, which you got absolutely for nothing.
-    Do not allow yourself to underestimate friendship, because it is a real value and your wealth that should be cherished.
+        It doesn\'t matter how long you\'ve been friends. It also doesn\'t matter how strong you think your friendship is. You should never take such a relationship for granted, which you got absolutely for nothing. Do not allow yourself to underestimate friendship, because it is a real value and your wealth that should be cherished.
     </string>
 </resources>

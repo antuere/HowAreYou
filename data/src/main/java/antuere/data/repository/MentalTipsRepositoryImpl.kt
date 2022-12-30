@@ -5,7 +5,6 @@ import antuere.domain.dto.mental_tips.MentalTip
 import antuere.domain.dto.mental_tips.MentalTipsCategory
 import antuere.domain.dto.mental_tips.TipsCategoryName
 import antuere.domain.repository.MentalTipsRepository
-import antuere.domain.util.Constants
 import javax.inject.Inject
 
 class MentalTipsRepositoryImpl @Inject constructor() : MentalTipsRepository {
@@ -52,21 +51,141 @@ class MentalTipsRepositoryImpl @Inject constructor() : MentalTipsRepository {
 }
 
 private val mentalTipsCurrentTimes = listOf(
-    MentalTip(imageRes = R.drawable.current_times, textRes = R.string.current_times)
+    MentalTip(
+        imageRes = R.drawable.tips_current_times_0,
+        titleRes = R.string.mental_tip_title_current_time_0,
+        textRes = R.string.mental_tip_current_time_0
+    ),
+    MentalTip(
+        imageRes = R.drawable.tips_current_times_1,
+        titleRes = R.string.mental_tip_title_current_time_1,
+        textRes = R.string.mental_tip_current_time_1
+    ),
+    MentalTip(
+        imageRes = R.drawable.tips_current_times_2,
+        titleRes = R.string.mental_tip_title_current_time_2,
+        textRes = R.string.mental_tip_current_time_2
+    ),
+    MentalTip(
+        imageRes = R.drawable.tips_current_times_3,
+        titleRes = R.string.mental_tip_title_current_time_3,
+        textRes = R.string.mental_tip_current_time_3
+    ),
+    MentalTip(
+        imageRes = R.drawable.tips_current_times_4,
+        titleRes = R.string.mental_tip_title_current_time_4,
+        textRes = R.string.mental_tip_current_time_4
+    ),
+    MentalTip(
+        imageRes = R.drawable.tips_current_times_5,
+        titleRes = R.string.mental_tip_title_current_time_5,
+        textRes = R.string.mental_tip_current_time_5
+    )
 )
 
 private val mentalTipsYouSelf = listOf(
-    MentalTip(imageRes = R.drawable.you_self, textRes = R.string.you_self)
+    MentalTip(
+        imageRes = R.drawable.tips_youself_0,
+        titleRes = R.string.mental_tip_title_youself_0,
+        textRes = R.string.mental_tip_youself_0
+    ),
+    MentalTip(
+        imageRes = R.drawable.tips_youself_1,
+        titleRes = R.string.mental_tip_title_youself_1,
+        textRes = R.string.mental_tip_youself_1
+    ),
+    MentalTip(
+        imageRes = R.drawable.tips_youself_2,
+        titleRes = R.string.mental_tip_title_youself_2,
+        textRes = R.string.mental_tip_youself_2
+    ),
+    MentalTip(
+        imageRes = R.drawable.tips_youself_3,
+        titleRes = R.string.mental_tip_title_youself_3,
+        textRes = R.string.mental_tip_youself_3
+    ),
+    MentalTip(
+        imageRes = R.drawable.tips_youself_4,
+        titleRes = R.string.mental_tip_title_youself_4,
+        textRes = R.string.mental_tip_youself_4
+    )
 )
 
 private val mentalTipsFamily = listOf(
-    MentalTip(imageRes = R.drawable.family, textRes = R.string.family)
+    MentalTip(
+        imageRes = R.drawable.tips_family_0,
+        titleRes = R.string.mental_tip_title_family_0,
+        textRes = R.string.mental_tip_family_0
+    ),
+    MentalTip(
+        imageRes = R.drawable.tips_family_1,
+        titleRes = R.string.mental_tip_title_family_1,
+        textRes = R.string.mental_tip_family_1
+    ),
+    MentalTip(
+        imageRes = R.drawable.tips_family_2,
+        titleRes = R.string.mental_tip_title_family_2,
+        textRes = R.string.mental_tip_family_2
+    ),
+    MentalTip(
+        imageRes = R.drawable.tips_family_3,
+        titleRes = R.string.mental_tip_title_family_3,
+        textRes = R.string.mental_tip_family_3
+    )
 )
 
 private val mentalTipsRelationship = listOf(
-    MentalTip(imageRes = R.drawable.relationship, textRes = R.string.relationship)
+    MentalTip(
+        imageRes = R.drawable.tips_relationship_0,
+        titleRes = R.string.mental_tip_title_relationship_0,
+        textRes = R.string.mental_tip_relationship_0
+    ),
+    MentalTip(
+        imageRes = R.drawable.tips_relationship_1,
+        titleRes = R.string.mental_tip_title_relationship_1,
+        textRes = R.string.mental_tip_relationship_1
+    ),
+    MentalTip(
+        imageRes = R.drawable.tips_relationship_2,
+        titleRes = R.string.mental_tip_title_relationship_2,
+        textRes = R.string.mental_tip_relationship_2
+    ),
+    MentalTip(
+        imageRes = R.drawable.tips_relationship_3,
+        titleRes = R.string.mental_tip_title_relationship_3,
+        textRes = R.string.mental_tip_relationship_3
+    ),
+    MentalTip(
+        imageRes = R.drawable.tips_relationship_4,
+        titleRes = R.string.mental_tip_title_relationship_4,
+        textRes = R.string.mental_tip_relationship_4
+    ),
+    MentalTip(
+        imageRes = R.drawable.tips_relationship_5,
+        titleRes = R.string.mental_tip_title_relationship_5,
+        textRes = R.string.mental_tip_relationship_5
+    ),
 )
 
 private val mentalTipsFriends = listOf(
-    MentalTip(imageRes = R.drawable.friends, textRes = R.string.friends)
+    MentalTip(
+        imageRes = R.drawable.tips_friends_0,
+        titleRes = R.string.mental_tip_title_friends_0,
+        textRes = R.string.mental_tip_friends_0
+    ),
+    MentalTip(
+        imageRes = R.drawable.tips_friends_1,
+        titleRes = R.string.mental_tip_title_friends_1,
+        textRes = R.string.mental_tip_friends_1
+    ),
+    MentalTip(
+        imageRes = R.drawable.tips_friends_2,
+        titleRes = R.string.mental_tip_title_friends_2,
+        textRes = R.string.mental_tip_friends_2
+    ),
+    MentalTip(
+        imageRes = R.drawable.tips_friends_3,
+        titleRes = R.string.mental_tip_title_friends_3,
+        textRes = R.string.mental_tip_friends_3
+    ),
 )
