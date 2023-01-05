@@ -4,9 +4,7 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.animation.*
-import androidx.compose.animation.core.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -125,7 +123,9 @@ class MainActivity : FragmentActivity() {
                             enterTransition = { materialFadeThroughIn() },
                             exitTransition = { materialFadeThroughOut() },
                         ) {
-                            startDestination = Screen.Home.route
+                            if (startDestination != Screen.Home.route) {
+                                startDestination = Screen.Home.route
+                            }
                             HomeScreen(
                                 onComposing = { barState: AppBarState, isShow: Boolean ->
                                     appBarState = barState
@@ -331,7 +331,11 @@ class MainActivity : FragmentActivity() {
                             )
                         }
 
-                        composable(route = Screen.SecureEntry.route) {
+                        composable(
+                            route = Screen.SecureEntry.route,
+                            enterTransition = { materialFadeThroughIn() },
+                            exitTransition = { materialFadeThroughOut() },
+                        ) {
                             SecureEntryScreen(
                                 onComposing = { barState: AppBarState, isShow: Boolean ->
                                     appBarState = barState

@@ -1,6 +1,5 @@
 package com.example.zeroapp.presentation.secure_entry
 
-import android.app.Activity
 import android.content.Intent
 import android.provider.Settings
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -114,7 +113,7 @@ fun SecureEntryScreen(
         Text(text = stringResource(id = R.string.enter_a_pin))
         Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_5)))
 
-        PinCirclesIndicates(pinCodeCirclesState)
+        PinCirclesIndicates(pinCodeCirclesState = pinCodeCirclesState)
         Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_11)))
 
         NumericKeyPad(

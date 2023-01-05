@@ -212,6 +212,7 @@ fun HistoryScreen(
                     ) {
                         items(
                             items = days,
+                            key = { it.dayId }
                         ) { day ->
                             DaysListItem(
                                 modifier = Modifier
@@ -224,7 +225,6 @@ fun HistoryScreen(
                                 onClick = { historyViewModel.onClickDay(it) },
                                 onLongClick = { historyViewModel.onClickLongDay(it) },
                             )
-
                         }
                     }
                 }

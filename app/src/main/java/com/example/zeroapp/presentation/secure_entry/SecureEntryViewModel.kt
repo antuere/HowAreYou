@@ -16,6 +16,7 @@ import com.example.zeroapp.presentation.base.ui_biometric_dialog.BiometricsAvail
 import com.example.zeroapp.presentation.base.ui_biometric_dialog.UIBiometricDialog
 import com.example.zeroapp.presentation.base.ui_compose_components.dialog.UIDialog
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -73,13 +74,15 @@ class SecureEntryViewModel @Inject constructor(
 
     private var savedPinCode: String? = null
 
+    private var wrongPinAnimationJob: Job? = null
+
     val biometricAuthStateListener = object : IUIBiometricListener {
 
         override fun onBiometricAuthFailed() {
         }
 
         override fun onBiometricAuthSuccess() {
-            _pinCodeCirclesState.value = PinCodeCirclesState.ALL
+            _pinCodeCirclesState.value = PinCodeCirclesState.FOURTH
 
             saveSettings()
             _isNavigateToHomeScreen.value = true
@@ -174,6 +177,8 @@ class SecureEntryViewModel @Inject constructor(
     }
 
     private fun checkPassword(list: List<String>) {
+        wrongPinAnimationJob?.cancel()
+
         when (list.size) {
             1 -> {
                 num1 = list[0]
@@ -214,8 +219,16 @@ class SecureEntryViewModel @Inject constructor(
         if (pinCode == savedPinCode) {
             _isNavigateToHomeScreen.value = true
         } else {
-            _isShowErrorToast.value = true
-            resetAllPinCodeStates()
+            wrongPinAnimationJob = viewModelScope.launch {
+                _isShowErrorToast.value = true
+                _pinCodeCirclesState.value = PinCodeCirclesState.WRONG_PIN
+                _userPinCode.value = null
+                currentNumbers.clear()
+
+                delay(500)
+
+                _pinCodeCirclesState.value = PinCodeCirclesState.NONE
+            }
         }
     }
 
