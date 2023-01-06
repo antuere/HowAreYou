@@ -3,18 +3,14 @@ package com.example.zeroapp.util
 import android.app.Activity
 import android.content.Context
 import android.content.ContextWrapper
-import androidx.annotation.StringRes
 import androidx.compose.animation.core.*
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.debugInspectorInfo
-import androidx.compose.ui.res.stringResource
 import androidx.fragment.app.FragmentActivity
 import kotlinx.coroutines.delay
 
@@ -42,15 +38,14 @@ fun SnackbarHostState.ShowSnackBar(
 }
 
 @Composable
-fun SnackbarHostState.ShowSnackBarAdvance(
-    @StringRes messageId: Int,
-    delayValue: Long = 2000,
+fun SnackbarHostState.ShowSnackBarWithDelay(
+    message: String,
+    delayValue: Long = 500,
     hideSnackbarAfterDelay: () -> Unit
 ) {
-    val message = stringResource(id = messageId)
 
     LaunchedEffect(this) {
-        this@ShowSnackBarAdvance.showSnackbar(
+        this@ShowSnackBarWithDelay.showSnackbar(
             message = message,
             duration = SnackbarDuration.Short
         )
@@ -80,5 +75,104 @@ fun Modifier.shake() = composed(
     },
     inspectorInfo = debugInspectorInfo {
         name = "shake"
+    }
+)
+
+fun Modifier.animateScaleOnce() = composed(
+    factory = {
+        var isAnimated by remember {
+            mutableStateOf(true)
+        }
+
+        val scale by animateFloatAsState(
+            targetValue = if (isAnimated) 1.2f else 1f,
+            animationSpec = repeatable(
+                iterations = 2,
+                animation = tween(durationMillis = 100),
+                repeatMode = RepeatMode.Reverse
+            ),
+        )
+
+//        val transitionY by animateFloatAsState(
+//            targetValue = if (isAnimated) 15f else 0f,
+//            animationSpec = repeatable(
+//                iterations = 1,
+//                animation = tween(durationMillis = 100),
+//                repeatMode = RepeatMode.Reverse
+//            ),
+//        )
+        LaunchedEffect(key1 = isAnimated) {
+            delay(200)
+            isAnimated = false
+        }
+
+        Modifier.graphicsLayer {
+//            translationY = if (isAnimated) -transitionY else 0f
+            scaleX = if(isAnimated) scale else 1f
+            scaleY = if(isAnimated) scale else 1f
+        }
+    },
+    inspectorInfo = debugInspectorInfo {
+        name = "animateScaleOnce"
+    }
+)
+
+fun Modifier.animateScaleDownOnce() = composed(
+    factory = {
+        var isAnimated by remember {
+            mutableStateOf(true)
+        }
+
+        val scale by animateFloatAsState(
+            targetValue = if (isAnimated) 0.8f else 1f,
+            animationSpec = repeatable(
+                iterations = 2,
+                animation = tween(durationMillis = 100),
+                repeatMode = RepeatMode.Reverse
+            ),
+        )
+
+        LaunchedEffect(key1 = isAnimated) {
+            delay(200)
+            isAnimated = false
+        }
+
+        Modifier.graphicsLayer {
+            scaleX = if(isAnimated) scale else 1f
+            scaleY = if(isAnimated) scale else 1f
+        }
+    },
+    inspectorInfo = debugInspectorInfo {
+        name = "animateScaleDownOnce"
+    }
+)
+
+fun Modifier.animateScaleUpOnce() = composed(
+    factory = {
+        var isAnimated by remember {
+            mutableStateOf(true)
+        }
+
+        val scale by animateFloatAsState(
+            targetValue = if (isAnimated) 1.2f else 1f,
+            animationSpec = repeatable(
+                iterations = 2,
+                animation = tween(durationMillis = 100),
+                repeatMode = RepeatMode.Reverse
+            ),
+        )
+
+        LaunchedEffect(key1 = isAnimated) {
+            delay(200)
+            isAnimated = false
+        }
+
+        Modifier.graphicsLayer {
+            scaleX = if(isAnimated) scale else 1f
+            scaleY = if(isAnimated) scale else 1f
+        }
+    },
+    inspectorInfo = debugInspectorInfo {
+        name = "animateScaleUpOnce"
     }
 )

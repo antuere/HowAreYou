@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.lifecycleScope
@@ -90,6 +91,7 @@ class MainActivity : FragmentActivity() {
                     startDestination = Screen.Home.route
                 }
                 val navController = rememberAnimatedNavController()
+                val snackbarHostState = remember { SnackbarHostState() }
                 var appBarState by remember {
                     mutableStateOf(AppBarState())
                 }
@@ -98,6 +100,23 @@ class MainActivity : FragmentActivity() {
                 }
 
                 Scaffold(
+                    snackbarHost = {
+                        SnackbarHost(snackbarHostState) { data ->
+                            Snackbar(
+                                modifier = Modifier.padding(16.dp),
+                                containerColor = MaterialTheme.colorScheme.onPrimary,
+                                contentColor = MaterialTheme.colorScheme.onSecondary,
+                                shape = ShapeDefaults.Large,
+                            ) {
+                                Box {
+                                    Text(
+                                        text = data.visuals.message,
+                                        style = MaterialTheme.typography.displaySmall
+                                    )
+                                }
+                            }
+                        }
+                    },
                     bottomBar = {
                         if (isShowBottomBar) {
                             BottomNavBar(navController)
@@ -131,6 +150,7 @@ class MainActivity : FragmentActivity() {
                                     appBarState = barState
                                     isShowBottomBar = isShow
                                 },
+                                snackbarHostState = snackbarHostState,
                                 onNavigateToDetail = { navController.navigate(Screen.Detail.route + "/$it") },
                                 onNavigateToAddDay = { navController.navigate(Screen.AddDay.route) },
                                 onNavigateToCats = { navController.navigate(Screen.Cats.route) },
@@ -250,11 +270,12 @@ class MainActivity : FragmentActivity() {
                             exitTransition = { materialFadeThroughOut() }
                         ) {
                             SettingsScreen(
-                                onNavigateSignIn = { navController.navigate(Screen.SignInMethods.route) },
                                 onComposing = { barState: AppBarState, isShow: Boolean ->
                                     appBarState = barState
                                     isShowBottomBar = isShow
                                 },
+                                snackbarHostState = snackbarHostState,
+                                onNavigateSignIn = { navController.navigate(Screen.SignInMethods.route) },
                             )
                         }
 
@@ -268,6 +289,7 @@ class MainActivity : FragmentActivity() {
                                     appBarState = barState
                                     isShowBottomBar = isShow
                                 },
+                                snackbarHostState = snackbarHostState,
                                 onNavigateUp = { navController.navigateUp() },
                                 onNavigateSignInEmail = { navController.navigate(Screen.SignInWithEmail.route) },
                                 signInClient = signInClient,
@@ -285,6 +307,7 @@ class MainActivity : FragmentActivity() {
                                     appBarState = barState
                                     isShowBottomBar = isShow
                                 },
+                                snackbarHostState = snackbarHostState,
                                 onNavigateUp = { navController.navigateUp() },
                                 onNavigateSettings = {
                                     navController.popBackStack(
@@ -307,6 +330,7 @@ class MainActivity : FragmentActivity() {
                                     appBarState = barState
                                     isShowBottomBar = isShow
                                 },
+                                snackbarHostState = snackbarHostState,
                                 onNavigateSettings = {
                                     navController.popBackStack(
                                         Screen.Settings.route,
@@ -327,6 +351,7 @@ class MainActivity : FragmentActivity() {
                                     appBarState = barState
                                     isShowBottomBar = isShow
                                 },
+                                snackbarHostState = snackbarHostState,
                                 onNavigateUp = { navController.navigateUp() },
                             )
                         }
@@ -341,6 +366,7 @@ class MainActivity : FragmentActivity() {
                                     appBarState = barState
                                     isShowBottomBar = isShow
                                 },
+                                snackbarHostState = snackbarHostState,
                                 onNavigateHomeScreen = { navController.navigate(Screen.Home.route) },
                             )
                         }

@@ -29,9 +29,8 @@ import com.example.zeroapp.presentation.settings.ui_compose.AuthSection
 import com.example.zeroapp.presentation.settings.ui_compose.GeneralSettings
 import com.example.zeroapp.presentation.pin_code_creation.PinCodeCreating
 import com.example.zeroapp.presentation.settings.ui_compose.PrivacySettings
-import com.example.zeroapp.util.ShowToast
+import com.example.zeroapp.util.ShowSnackBarWithDelay
 import com.example.zeroapp.util.findFragmentActivity
-import com.example.zeroapp.util.showToastByContext
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -39,11 +38,11 @@ import kotlinx.coroutines.launch
 fun SettingsScreen(
     onComposing: (AppBarState, Boolean) -> Unit,
     onNavigateSignIn: () -> Unit,
+    snackbarHostState: SnackbarHostState,
     settingsViewModel: SettingsViewModel = hiltViewModel()
 ) {
     val fragmentActivity = LocalContext.current.findFragmentActivity()
     val scope = rememberCoroutineScope()
-    val context = LocalContext.current
 
     val settings by settingsViewModel.settings.collectAsState()
     val userPinCode by settingsViewModel.savedPinCode.collectAsState()
@@ -61,6 +60,18 @@ fun SettingsScreen(
 
     var isCheckedWorriedDialog by remember {
         mutableStateOf(settings?.isShowWorriedDialog ?: true)
+    }
+
+    var isShowBiometricAuthSuccessSnackBar by remember {
+        mutableStateOf(false)
+    }
+
+    var isShowNoneEnrollBiometricAuthSnackBar by remember {
+        mutableStateOf(false)
+    }
+
+    var isShowPinCodeSuccessCreatedSnackBar by remember {
+        mutableStateOf(false)
     }
 
     LaunchedEffect(bottomSheetState.targetValue) {
@@ -90,6 +101,25 @@ fun SettingsScreen(
         }
     }
 
+    if (isShowBiometricAuthSuccessSnackBar) {
+        snackbarHostState.ShowSnackBarWithDelay(
+            message = stringResource(id = R.string.biom_auth_create_success),
+            hideSnackbarAfterDelay = { isShowBiometricAuthSuccessSnackBar = false }
+        )
+    }
+    if (isShowNoneEnrollBiometricAuthSnackBar) {
+        snackbarHostState.ShowSnackBarWithDelay(
+            message = stringResource(id = R.string.biometric_none_enroll),
+            hideSnackbarAfterDelay = { isShowNoneEnrollBiometricAuthSnackBar = false }
+        )
+    }
+
+    if (isShowPinCodeSuccessCreatedSnackBar) {
+        snackbarHostState.ShowSnackBarWithDelay(
+            message = stringResource(id = R.string.pin_code_create_success),
+            hideSnackbarAfterDelay = { isShowPinCodeSuccessCreatedSnackBar = false })
+    }
+
     biometricAuthState?.let { biomAuthState ->
         when (biomAuthState) {
             BiometricAuthState.SUCCESS -> {
@@ -98,7 +128,7 @@ fun SettingsScreen(
                     isUseBiometric = true,
                     isUsePinCode = true
                 )
-                ShowToast(text = stringResource(R.string.biom_auth_create_success))
+                isShowBiometricAuthSuccessSnackBar = true
             }
             BiometricAuthState.ERROR -> {
                 isCheckedBiometric = false
@@ -118,12 +148,12 @@ fun SettingsScreen(
                         )
                     }
                     val launcher =
-                        rememberLauncherForActivityResult(contract = ActivityResultContracts.StartActivityForResult()){}
+                        rememberLauncherForActivityResult(contract = ActivityResultContracts.StartActivityForResult()) {}
                     SideEffect {
                         launcher.launch(enrollIntent)
                     }
                 } else {
-                    ShowToast(text = stringResource(R.string.biometric_none_enroll))
+                    isShowNoneEnrollBiometricAuthSnackBar = true
                     isCheckedBiometric = false
                 }
             }
@@ -141,15 +171,9 @@ fun SettingsScreen(
                     .fillMaxWidth(),
                 contentAlignment = Alignment.Center
             ) {
-                val toastText = stringResource(id = R.string.pin_code_create_success)
                 PinCodeCreating(
                     bottomSheetState = bottomSheetState,
-                    onShowSuccessSnackBar = {
-                        showToastByContext(
-                            context = context,
-                            text = toastText
-                        )
-                    })
+                    onShowSuccessSnackBar = { isShowPinCodeSuccessCreatedSnackBar = true })
             }
         },
     ) {

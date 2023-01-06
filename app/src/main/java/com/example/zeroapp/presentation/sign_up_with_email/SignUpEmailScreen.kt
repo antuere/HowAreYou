@@ -19,7 +19,7 @@ import com.example.zeroapp.presentation.base.ui_compose_components.buttons.Defau
 import com.example.zeroapp.presentation.base.ui_compose_components.text_field.DefaultTextField
 import com.example.zeroapp.presentation.base.ui_compose_components.text_field.EmailTextField
 import com.example.zeroapp.presentation.base.ui_compose_components.text_field.PasswordTextField
-import com.example.zeroapp.util.ShowToast
+import com.example.zeroapp.util.ShowSnackBarWithDelay
 
 @Composable
 fun SignUpEmailScreen(
@@ -27,6 +27,7 @@ fun SignUpEmailScreen(
     onComposing: (AppBarState, Boolean) -> Unit,
     onNavigateUp: () -> Unit,
     onNavigateSettings: () -> Unit,
+    snackbarHostState: SnackbarHostState,
     signUpEmailViewModel: SignUpEmailViewModel = hiltViewModel()
 ) {
     val isShowRegisterProgressIndicator by signUpEmailViewModel.isShowRegisterProgressIndicator.collectAsState()
@@ -49,25 +50,38 @@ fun SignUpEmailScreen(
         )
     }
 
+    //    TODO вынести в launched effect
     signUpState?.let { state ->
         when (state) {
             is SignUpState.Successful -> {
                 onNavigateSettings()
                 signUpEmailViewModel.resetIsShowRegisterProgressIndicator(true)
+                signUpEmailViewModel.nullifyState()
             }
             is SignUpState.EmptyFields -> {
-                ShowToast(text = stringResource(id = state.res))
+                snackbarHostState.ShowSnackBarWithDelay(
+                    message = stringResource(id = state.res)
+                ) {
+                    signUpEmailViewModel.nullifyState()
+                }
             }
             is SignUpState.PasswordsError -> {
-                ShowToast(text = stringResource(id = state.res))
+                snackbarHostState.ShowSnackBarWithDelay(
+                    message = stringResource(id = state.res)
+                ) {
+                    signUpEmailViewModel.nullifyState()
+                }
             }
 
             is SignUpState.ErrorFromFireBase -> {
-                ShowToast(text = state.message)
+                snackbarHostState.ShowSnackBarWithDelay(
+                    message = state.message
+                ) {
+                    signUpEmailViewModel.nullifyState()
+                }
                 signUpEmailViewModel.resetIsShowRegisterProgressIndicator()
             }
         }
-        signUpEmailViewModel.nullifyState()
 
     }
 

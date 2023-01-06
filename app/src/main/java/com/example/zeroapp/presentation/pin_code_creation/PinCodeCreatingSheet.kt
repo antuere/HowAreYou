@@ -15,7 +15,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.zeroapp.R
-import com.example.zeroapp.presentation.base.ui_compose_components.NumericKeyPad
+import com.example.zeroapp.presentation.base.ui_compose_components.pin_code.NumericKeyPad
 import com.example.zeroapp.presentation.base.ui_compose_components.pin_code.PinCirclesIndicates
 import kotlinx.coroutines.launch
 

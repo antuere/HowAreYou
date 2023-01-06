@@ -60,9 +60,9 @@ class SecureEntryViewModel @Inject constructor(
     val settings: StateFlow<Settings?>
         get() = _settings
 
-    private var _isShowErrorToast = MutableStateFlow(false)
-    val isShowErrorToast: StateFlow<Boolean>
-        get() = _isShowErrorToast
+    private var _isShowErrorMessage = MutableStateFlow(false)
+    val isShowErrorMessage: StateFlow<Boolean>
+        get() = _isShowErrorMessage
 
     private var _isNavigateToHomeScreen = MutableStateFlow(false)
     val isNavigateToHomeScreen: StateFlow<Boolean>
@@ -82,7 +82,7 @@ class SecureEntryViewModel @Inject constructor(
         }
 
         override fun onBiometricAuthSuccess() {
-            _pinCodeCirclesState.value = PinCodeCirclesState.FOURTH
+            _pinCodeCirclesState.value = PinCodeCirclesState.CORRECT_PIN
 
             saveSettings()
             _isNavigateToHomeScreen.value = true
@@ -218,9 +218,10 @@ class SecureEntryViewModel @Inject constructor(
     private fun validateEnteredPinCode(pinCode: String) {
         if (pinCode == savedPinCode) {
             _isNavigateToHomeScreen.value = true
+            _pinCodeCirclesState.value = PinCodeCirclesState.CORRECT_PIN
         } else {
             wrongPinAnimationJob = viewModelScope.launch {
-                _isShowErrorToast.value = true
+                _isShowErrorMessage.value = true
                 _pinCodeCirclesState.value = PinCodeCirclesState.WRONG_PIN
                 _userPinCode.value = null
                 currentNumbers.clear()
@@ -268,8 +269,8 @@ class SecureEntryViewModel @Inject constructor(
         _isShowBiometricAuth.value = true
     }
 
-    fun resetIsShowErrorToast() {
-        _isShowErrorToast.value = false
+    fun resetIsShowError() {
+        _isShowErrorMessage.value = false
     }
 
     fun nullifyBiometricAvailableState() {

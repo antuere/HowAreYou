@@ -15,12 +15,14 @@ import com.example.zeroapp.R
 import com.example.zeroapp.presentation.base.ui_compose_components.top_bar.AppBarState
 import com.example.zeroapp.presentation.base.ui_compose_components.buttons.DefaultButton
 import com.example.zeroapp.presentation.base.ui_compose_components.text_field.EmailTextField
-import com.example.zeroapp.util.ShowToast
+import com.example.zeroapp.util.ShowSnackBar
+import com.example.zeroapp.util.ShowSnackBarWithDelay
 
 @Composable
 fun ResetPasswordScreen(
     onNavigateUp: () -> Unit,
     onComposing: (AppBarState, Boolean) -> Unit,
+    snackbarHostState: SnackbarHostState,
     resetPasswordViewModel: ResetPasswordViewModel = hiltViewModel()
 ) {
     val resetState by resetPasswordViewModel.resetState.collectAsState()
@@ -37,21 +39,30 @@ fun ResetPasswordScreen(
         )
     }
 
+    //    TODO вынести в launched effect
     resetState?.let { state ->
         when (state) {
             is ResetPasswordState.Successful -> {
-                ShowToast(text = stringResource(id = state.res))
+                snackbarHostState.ShowSnackBar(message = stringResource(id = state.res))
                 onNavigateUp()
+                resetPasswordViewModel.nullifyState()
             }
             is ResetPasswordState.EmptyFields -> {
-                ShowToast(text = stringResource(id = R.string.empty_fields))
+                snackbarHostState.ShowSnackBarWithDelay(
+                    message = stringResource(id = state.res)
+                ) {
+                    resetPasswordViewModel.nullifyState()
+                }
             }
 
             is ResetPasswordState.ErrorFromFireBase -> {
-                ShowToast(text = state.message)
+                snackbarHostState.ShowSnackBarWithDelay(
+                    message = state.message
+                ) {
+                    resetPasswordViewModel.nullifyState()
+                }
             }
         }
-        resetPasswordViewModel.nullifyState()
     }
 
     Column(

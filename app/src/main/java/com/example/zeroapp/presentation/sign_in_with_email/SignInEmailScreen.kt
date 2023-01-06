@@ -17,7 +17,7 @@ import com.example.zeroapp.presentation.base.ui_compose_components.buttons.Defau
 import com.example.zeroapp.presentation.base.ui_compose_components.buttons.DefaultTextButton
 import com.example.zeroapp.presentation.base.ui_compose_components.text_field.EmailTextField
 import com.example.zeroapp.presentation.base.ui_compose_components.text_field.PasswordTextField
-import com.example.zeroapp.util.ShowToast
+import com.example.zeroapp.util.ShowSnackBarWithDelay
 
 @Composable
 fun SignInEmailScreen(
@@ -27,6 +27,7 @@ fun SignInEmailScreen(
     onNavigateSettings: () -> Unit,
     onNavigateSignUp: () -> Unit,
     onNavigateResetPassword: () -> Unit,
+    snackbarHostState: SnackbarHostState,
     signInEmailViewModel: SignInEmailViewModel = hiltViewModel()
 ) {
     val isShowLoginProgressIndicator by signInEmailViewModel.isShowLoginProgressIndicator.collectAsState()
@@ -46,22 +47,27 @@ fun SignInEmailScreen(
         )
     }
 
+    //    TODO вынести в launched effect
     signInState?.let { state ->
         when (state) {
             is SignInState.Successful -> {
                 onNavigateSettings()
                 signInEmailViewModel.resetIsShowLoginProgressIndicator(true)
+                signInEmailViewModel.nullifyState()
             }
             is SignInState.EmptyFields -> {
-                ShowToast(text = stringResource(id = R.string.empty_fields))
+                snackbarHostState.ShowSnackBarWithDelay(
+                    message = stringResource(id = R.string.empty_fields),
+                    hideSnackbarAfterDelay = { signInEmailViewModel.nullifyState() })
             }
 
             is SignInState.ErrorFromFireBase -> {
-                ShowToast(text = state.message)
+                snackbarHostState.ShowSnackBarWithDelay(
+                    message = state.message,
+                    hideSnackbarAfterDelay = { signInEmailViewModel.nullifyState() })
                 signInEmailViewModel.resetIsShowLoginProgressIndicator()
             }
         }
-        signInEmailViewModel.nullifyState()
     }
 
     Column(
