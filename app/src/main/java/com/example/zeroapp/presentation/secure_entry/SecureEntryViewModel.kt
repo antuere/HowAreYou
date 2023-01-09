@@ -10,6 +10,7 @@ import antuere.domain.usecases.user_settings.DeleteAllSettingsUseCase
 import antuere.domain.usecases.user_settings.GetSavedPinCodeUseCase
 import antuere.domain.usecases.user_settings.GetSettingsUseCase
 import antuere.domain.usecases.user_settings.SaveSettingsUseCase
+import com.example.zeroapp.presentation.base.ui_text.UiText
 import com.example.zeroapp.presentation.base.ui_biometric_dialog.IUIBiometricListener
 import com.example.zeroapp.presentation.pin_code_creation.PinCodeCirclesState
 import com.example.zeroapp.presentation.base.ui_biometric_dialog.BiometricsAvailableState
@@ -46,8 +47,6 @@ class SecureEntryViewModel @Inject constructor(
     val uiDialog: StateFlow<UIDialog?>
         get() = _uiDialog
 
-    private var _userPinCode = MutableStateFlow<String?>(null)
-
     private var _isShowBiometricAuth = MutableStateFlow(false)
     val isShowBiometricAuth: StateFlow<Boolean>
         get() = _isShowBiometricAuth
@@ -73,6 +72,7 @@ class SecureEntryViewModel @Inject constructor(
         get() = _biometricAvailableState
 
     private var savedPinCode: String? = null
+    private var userPinCode = MutableStateFlow<String?>(null)
 
     private var wrongPinAnimationJob: Job? = null
 
@@ -89,7 +89,8 @@ class SecureEntryViewModel @Inject constructor(
         }
 
         override fun noneEnrolled() {
-            _biometricAvailableState.value = BiometricsAvailableState.NoneEnrolled
+            _biometricAvailableState.value =
+                BiometricsAvailableState.NoneEnrolled(UiText.StringResource(R.string.biometric_none_enroll))
         }
     }
 
@@ -195,9 +196,9 @@ class SecureEntryViewModel @Inject constructor(
             4 -> {
                 num4 = list[3]
                 _pinCodeCirclesState.value = PinCodeCirclesState.FOURTH
-                _userPinCode.value = num1 + num2 + num3 + num4
+                userPinCode.value = num1 + num2 + num3 + num4
 
-                validateEnteredPinCode(_userPinCode.value!!)
+                validateEnteredPinCode(userPinCode.value!!)
             }
             else -> throw IllegalArgumentException("Too much list size")
         }
@@ -223,7 +224,7 @@ class SecureEntryViewModel @Inject constructor(
             wrongPinAnimationJob = viewModelScope.launch {
                 _isShowErrorMessage.value = true
                 _pinCodeCirclesState.value = PinCodeCirclesState.WRONG_PIN
-                _userPinCode.value = null
+                userPinCode.value = null
                 currentNumbers.clear()
 
                 delay(500)
@@ -235,7 +236,7 @@ class SecureEntryViewModel @Inject constructor(
 
     fun resetAllPinCodeStates() {
         viewModelScope.launch {
-            _userPinCode.value = null
+            userPinCode.value = null
             currentNumbers.clear()
             _pinCodeCirclesState.value = PinCodeCirclesState.NONE
         }

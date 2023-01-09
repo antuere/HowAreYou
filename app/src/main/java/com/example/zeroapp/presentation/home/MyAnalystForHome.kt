@@ -1,26 +1,25 @@
 package com.example.zeroapp.presentation.home
 
-import android.content.Context
 import antuere.domain.dto.Day
 import com.example.zeroapp.R
+import com.example.zeroapp.presentation.base.ui_text.UiText
 
-class MyAnalystForHome(private val context: Context) {
+class MyAnalystForHome {
 
     companion object {
         const val DEFAULT_WISH = -1
     }
 
-    fun getWishStringForSummary(id: Int): String {
+    fun getWishStringForSummary(id: Int): UiText {
         return when (id) {
-            antuere.data.R.drawable.smile_very_happy -> context.getString(R.string.wish_for_users_very_happy)
-            antuere.data.R.drawable.smile_happy -> context.getString(R.string.wish_for_users_happy)
-            antuere.data.R.drawable.smile_low -> context.getString(R.string.wish_for_users_low)
-            antuere.data.R.drawable.smile_none -> context.getString(R.string.wish_for_users_none)
-            antuere.data.R.drawable.smile_sad -> context.getString(R.string.wish_for_users_sad)
-            else -> context.getString(R.string.wish_for_users_plug)
+            antuere.data.R.drawable.smile_very_happy -> UiText.StringResource(R.string.wish_for_users_very_happy)
+            antuere.data.R.drawable.smile_happy -> UiText.StringResource(R.string.wish_for_users_happy)
+            antuere.data.R.drawable.smile_low -> UiText.StringResource(R.string.wish_for_users_low)
+            antuere.data.R.drawable.smile_none -> UiText.StringResource(R.string.wish_for_users_none)
+            antuere.data.R.drawable.smile_sad -> UiText.StringResource(R.string.wish_for_users_sad)
+            else -> UiText.StringResource(R.string.wish_for_users_plug)
         }
     }
-
 
     fun isShowWarningForSummary(days: List<Day>): Boolean {
         if (days.isEmpty()) return false

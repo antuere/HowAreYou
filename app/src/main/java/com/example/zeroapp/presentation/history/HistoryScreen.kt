@@ -43,7 +43,8 @@ import kotlinx.coroutines.launch
 @Composable
 fun HistoryScreen(
     onNavigateToDetail: (Long) -> Unit,
-    onComposing: (AppBarState, Boolean) -> Unit,
+    updateAppBar: (AppBarState) -> Unit,
+    dismissSnackbar: () -> Unit,
     historyViewModel: HistoryViewModel = hiltViewModel(),
     myAnalystForHistory: MyAnalystForHistory
 ) {
@@ -73,8 +74,12 @@ fun HistoryScreen(
         Dialog(dialog = it)
     }
 
+    LaunchedEffect(true){
+        dismissSnackbar()
+    }
+
     LaunchedEffect(bottomSheetState.targetValue) {
-        onComposing(
+        updateAppBar(
             AppBarState(
                 titleId = R.string.history,
                 actions = {
@@ -97,10 +102,11 @@ fun HistoryScreen(
                             )
                         }
                     }
-                }
+                },
+                isVisibleBottomBar = bottomSheetState.targetValue == ModalBottomSheetValue.Hidden
             ),
-            bottomSheetState.targetValue == ModalBottomSheetValue.Hidden
-        )
+
+            )
     }
 
     LaunchedEffect(navigateToDetailState) {
@@ -147,7 +153,6 @@ fun HistoryScreen(
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-
                 if (toggleBtnState == ToggleBtnState.FILTER_SELECTED) {
                     Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_1)))
                     OutlinedButtonWithIcon(

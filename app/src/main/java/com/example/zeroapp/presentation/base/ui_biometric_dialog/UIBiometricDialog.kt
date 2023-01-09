@@ -8,6 +8,7 @@ import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import com.example.zeroapp.R
+import com.example.zeroapp.presentation.base.ui_text.UiText
 import java.util.concurrent.Executor
 
 
@@ -49,9 +50,9 @@ class UIBiometricDialog(private val context: Context) {
                     BiometricsAvailableState.NoHardware
                 }
                 BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED -> {
-                    BiometricsAvailableState.NoneEnrolled
+                    BiometricsAvailableState.NoneEnrolled(UiText.StringResource(R.string.biometric_none_enroll))
                 }
-                else -> BiometricsAvailableState.SomeError(R.string.biometric_unknown_error)
+                else -> BiometricsAvailableState.SomeError(UiText.StringResource(R.string.biometric_unknown_error))
 
             }
         return result

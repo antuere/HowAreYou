@@ -9,6 +9,7 @@ import antuere.domain.usecases.days_entities.GetLastDayUseCase
 import antuere.domain.usecases.user_settings.*
 import antuere.domain.util.Constants
 import com.example.zeroapp.R
+import com.example.zeroapp.presentation.base.ui_text.UiText
 import com.example.zeroapp.presentation.base.ui_biometric_dialog.BiometricsAvailableState
 import com.example.zeroapp.presentation.base.ui_biometric_dialog.IUIBiometricListener
 import com.example.zeroapp.presentation.base.ui_biometric_dialog.UIBiometricDialog
@@ -74,15 +75,17 @@ class SettingsViewModel @Inject constructor(
     val biometricAuthStateListener = object : IUIBiometricListener {
 
         override fun onBiometricAuthFailed() {
-            _biometricAuthState.value = BiometricAuthState.ERROR
+            _biometricAuthState.value = BiometricAuthState.Error
         }
 
         override fun onBiometricAuthSuccess() {
-            _biometricAuthState.value = BiometricAuthState.SUCCESS
+            _biometricAuthState.value =
+                BiometricAuthState.Success(UiText.StringResource(R.string.biom_auth_create_success))
         }
 
         override fun noneEnrolled() {
-            _biometricAvailableState.value = BiometricsAvailableState.NoneEnrolled
+            _biometricAvailableState.value =
+                BiometricsAvailableState.NoneEnrolled(UiText.StringResource(R.string.biometric_none_enroll))
         }
     }
 

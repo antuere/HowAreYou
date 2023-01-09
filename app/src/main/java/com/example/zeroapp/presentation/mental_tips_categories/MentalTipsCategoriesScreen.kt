@@ -21,21 +21,21 @@ import com.example.zeroapp.presentation.mental_tips_categories.ui_compose.Catego
 fun MentalTipsCategoriesScreen(
     onNavigateUp: () -> Unit,
     onNavigateToMentalTip: (String) -> Unit,
-    onComposing: (AppBarState, Boolean) -> Unit,
+    updateAppBar: (AppBarState) -> Unit,
     mentalTipsViewModel: MentalTipsCategoriesViewModel = hiltViewModel()
 ) {
+    val listCategories by mentalTipsViewModel.listMentalTipsCategories.collectAsState()
+
     LaunchedEffect(true) {
-        onComposing(
+        updateAppBar(
             AppBarState(
                 titleId = R.string.mental_tips,
                 navigationIcon = Icons.Filled.ArrowBack,
-                navigationOnClick = { onNavigateUp() }
-            ),
-            false
+                navigationOnClick = { onNavigateUp() },
+                isVisibleBottomBar = false
+            )
         )
     }
-
-    val listCategories by mentalTipsViewModel.listMentalTipsCategories.collectAsState()
 
     Column(
         modifier = Modifier

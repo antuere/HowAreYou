@@ -7,6 +7,7 @@ import antuere.domain.usecases.user_settings.SaveUserNicknameUseCase
 import antuere.domain.usecases.authentication.SetUserNicknameOnServerUseCase
 import antuere.domain.usecases.authentication.SignUpUseCase
 import com.example.zeroapp.R
+import com.example.zeroapp.presentation.base.ui_text.UiText
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -37,7 +38,7 @@ class SignUpEmailViewModel @Inject constructor(
         }
 
         override fun registerFailed(message: String) {
-            _signUpState.value = SignUpState.ErrorFromFireBase(message)
+            _signUpState.value = SignUpState.ErrorFromFireBase(UiText.DefaultString(message))
         }
     }
 
@@ -69,11 +70,13 @@ class SignUpEmailViewModel @Inject constructor(
             if (password == confirmPassword) {
                 true
             } else {
-                _signUpState.value = SignUpState.PasswordsError(R.string.passwords_error)
+                _signUpState.value =
+                    SignUpState.PasswordsError(UiText.StringResource(R.string.passwords_error))
                 false
             }
         } else {
-            _signUpState.value = SignUpState.EmptyFields(R.string.empty_fields)
+            _signUpState.value =
+                SignUpState.EmptyFields(UiText.StringResource(R.string.empty_fields))
             false
         }
     }

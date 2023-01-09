@@ -20,7 +20,6 @@ import com.example.zeroapp.presentation.base.ui_compose_components.card.CardDefa
 import com.example.zeroapp.presentation.base.ui_compose_components.card.CardWithOnClick
 import com.example.zeroapp.presentation.base.ui_compose_components.dialog.Dialog
 import com.example.zeroapp.presentation.base.ui_theme.TealMain
-import com.example.zeroapp.util.ShowSnackBarWithDelay
 
 @Composable
 fun HomeScreen(
@@ -29,8 +28,9 @@ fun HomeScreen(
     onNavigateToFavorites: () -> Unit,
     onNavigateToMentalTips: () -> Unit,
     onNavigateToCats: () -> Unit,
-    onComposing: (AppBarState, Boolean) -> Unit,
-    snackbarHostState: SnackbarHostState,
+    updateAppBar: (AppBarState) -> Unit,
+    showSnackbar: (String) -> Unit,
+    dismissSnackbar: () -> Unit,
     homeViewModel: HomeViewModel = hiltViewModel()
 ) {
     val uiDialog by homeViewModel.uiDialog.collectAsState()
@@ -39,24 +39,27 @@ fun HomeScreen(
     val isShowMessage by homeViewModel.isShowMessage.collectAsState()
     val fabBtnState by homeViewModel.fabButtonState.collectAsState()
 
-    LaunchedEffect(key1 = true) {
-        onComposing(
-            AppBarState(
-                titleId = R.string.home
-            ),
-            true
-        )
-    }
+    val warningMessage = stringResource(id = R.string.snack_bar_warning_negative)
 
     uiDialog?.let {
         Dialog(dialog = it)
     }
 
-    if (isShowMessage) {
-        snackbarHostState.ShowSnackBarWithDelay(
-            message = stringResource(id = R.string.snack_bar_warning_negative),
-            hideSnackbarAfterDelay = { homeViewModel.resetMessage() }
+    LaunchedEffect(true) {
+        updateAppBar(
+            AppBarState(
+                titleId = R.string.home,
+                isVisibleBottomBar = true
+            ),
         )
+        dismissSnackbar()
+    }
+
+    LaunchedEffect(isShowMessage) {
+        if (isShowMessage) {
+            showSnackbar(warningMessage)
+            homeViewModel.resetMessage()
+        }
     }
 
     Column(
@@ -141,7 +144,7 @@ fun HomeScreen(
                 start = dimensionResource(id = R.dimen.padding_normal_1),
                 end = dimensionResource(id = R.dimen.padding_normal_1)
             ),
-            titleText = wishText,
+            titleText = wishText.asString(),
             textAlignment = Alignment.TopStart
         ) {
             Spacer(modifier = Modifier.weight(1F))

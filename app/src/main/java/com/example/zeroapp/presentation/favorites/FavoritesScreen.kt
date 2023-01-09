@@ -23,17 +23,17 @@ import com.example.zeroapp.presentation.base.ui_compose_components.DaysListItem
 fun FavoritesScreen(
     onNavigateToDetail: (Long) -> Unit,
     onNavigateUp: () -> Unit,
-    onComposing: (AppBarState, Boolean) -> Unit,
+    updateAppBar: (AppBarState) -> Unit,
     favoritesViewModel: FavoritesViewModel = hiltViewModel()
 ) {
     LaunchedEffect(true) {
-        onComposing(
+        updateAppBar(
             AppBarState(
                 titleId = R.string.favorites,
                 navigationIcon = Icons.Filled.ArrowBack,
-                navigationOnClick = { onNavigateUp() }
+                navigationOnClick = { onNavigateUp() },
+                isVisibleBottomBar = false
             ),
-            false
         )
     }
 

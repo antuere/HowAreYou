@@ -7,7 +7,9 @@ import androidx.compose.animation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.fragment.app.FragmentActivity
@@ -17,9 +19,15 @@ import antuere.domain.usecases.user_settings.GetSettingsUseCase
 import antuere.domain.util.Constants
 import com.example.zeroapp.presentation.add_day.AddDayScreen
 import com.example.zeroapp.presentation.base.*
+import com.example.zeroapp.presentation.base.ui_animations.materialFadeThroughIn
+import com.example.zeroapp.presentation.base.ui_animations.materialFadeThroughOut
+import com.example.zeroapp.presentation.base.ui_animations.materialSlideIn
+import com.example.zeroapp.presentation.base.ui_animations.materialSlideOut
+import com.example.zeroapp.presentation.base.ui_compose_components.AppState
 import com.example.zeroapp.presentation.base.ui_compose_components.top_bar.AppBarState
 import com.example.zeroapp.presentation.base.ui_compose_components.Screen
 import com.example.zeroapp.presentation.base.ui_compose_components.bottom_bar.BottomNavBar
+import com.example.zeroapp.presentation.base.ui_compose_components.rememberAppState
 import com.example.zeroapp.presentation.base.ui_compose_components.top_bar.DefaultTopAppBar
 import com.example.zeroapp.presentation.home.HomeViewModel
 import com.example.zeroapp.presentation.base.ui_theme.HowAreYouTheme
@@ -39,7 +47,6 @@ import com.example.zeroapp.presentation.sign_in_methods.SignInMethodsScreen
 import com.example.zeroapp.presentation.sign_up_with_email.SignUpEmailScreen
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
-import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
@@ -90,40 +97,44 @@ class MainActivity : FragmentActivity() {
                 if (!settings!!.isPinCodeEnabled && !settings!!.isBiometricEnabled) {
                     startDestination = Screen.Home.route
                 }
-                val navController = rememberAnimatedNavController()
-                val snackbarHostState = remember { SnackbarHostState() }
-                var appBarState by remember {
-                    mutableStateOf(AppBarState())
-                }
-                var isShowBottomBar by remember {
-                    mutableStateOf(true)
-                }
+
+                val appState: AppState by rememberAppState()
+                val appBarState by appState.appBarState
+                val navController = appState.navController
 
                 Scaffold(
                     snackbarHost = {
-                        SnackbarHost(snackbarHostState) { data ->
-                            Snackbar(
+                        SnackbarHost(appState.snackbarHostState) { data ->
+                            Card(
                                 modifier = Modifier.padding(16.dp),
-                                containerColor = MaterialTheme.colorScheme.onPrimary,
-                                contentColor = MaterialTheme.colorScheme.onSecondary,
                                 shape = ShapeDefaults.Large,
+                                elevation = CardDefaults.cardElevation(4.dp),
+                                colors = CardDefaults.cardColors(
+                                    containerColor = MaterialTheme.colorScheme.onPrimary,
+                                    contentColor = MaterialTheme.colorScheme.onSecondary,
+                                )
                             ) {
-                                Box {
+                                Box(
+                                    modifier = Modifier
+                                        .padding(16.dp)
+                                        .align(Alignment.CenterHorizontally),
+                                ) {
                                     Text(
                                         text = data.visuals.message,
-                                        style = MaterialTheme.typography.displaySmall
+                                        style = MaterialTheme.typography.displaySmall,
+                                        textAlign = TextAlign.Center
                                     )
                                 }
                             }
                         }
                     },
                     bottomBar = {
-                        if (isShowBottomBar) {
+                        if (appBarState.isVisibleBottomBar) {
                             BottomNavBar(navController)
                         }
                     },
                     topBar = {
-                        if (appBarState.isVisible) {
+                        if (appBarState.isVisibleTopBar) {
                             DefaultTopAppBar(
                                 titleId = appBarState.titleId,
                                 navigationIcon = appBarState.navigationIcon,
@@ -146,11 +157,15 @@ class MainActivity : FragmentActivity() {
                                 startDestination = Screen.Home.route
                             }
                             HomeScreen(
-                                onComposing = { barState: AppBarState, isShow: Boolean ->
-                                    appBarState = barState
-                                    isShowBottomBar = isShow
+                                updateAppBar = { barState: AppBarState ->
+                                    appState.appBarState.value = barState
                                 },
-                                snackbarHostState = snackbarHostState,
+                                showSnackbar = { message: String ->
+                                    appState.showSnackbar(message)
+                                },
+                                dismissSnackbar = {
+                                    appState.dismissSnackbar()
+                                },
                                 onNavigateToDetail = { navController.navigate(Screen.Detail.route + "/$it") },
                                 onNavigateToAddDay = { navController.navigate(Screen.AddDay.route) },
                                 onNavigateToCats = { navController.navigate(Screen.Cats.route) },
@@ -165,9 +180,8 @@ class MainActivity : FragmentActivity() {
                             exitTransition = { materialFadeThroughOut() }
                         ) {
                             FavoritesScreen(
-                                onComposing = { barState: AppBarState, isShow: Boolean ->
-                                    appBarState = barState
-                                    isShowBottomBar = isShow
+                                updateAppBar = { barState: AppBarState ->
+                                    appState.appBarState.value = barState
                                 },
                                 onNavigateToDetail = {
                                     navController.navigate(Screen.Detail.route + "/$it")
@@ -182,9 +196,8 @@ class MainActivity : FragmentActivity() {
                             exitTransition = { materialFadeThroughOut() }
                         ) {
                             CatsScreen(
-                                onComposing = { barState: AppBarState, isShow: Boolean ->
-                                    appBarState = barState
-                                    isShowBottomBar = isShow
+                                updateAppBar = { barState: AppBarState ->
+                                    appState.appBarState.value = barState
                                 },
                                 onNavigateUp = { navController.navigateUp() },
                             )
@@ -197,9 +210,8 @@ class MainActivity : FragmentActivity() {
                             popEnterTransition = { materialSlideIn(false) }
                         ) {
                             MentalTipsCategoriesScreen(
-                                onComposing = { barState: AppBarState, isShow: Boolean ->
-                                    appBarState = barState
-                                    isShowBottomBar = isShow
+                                updateAppBar = { barState: AppBarState ->
+                                    appState.appBarState.value = barState
                                 },
                                 onNavigateUp = { navController.navigateUp() },
                                 onNavigateToMentalTip = { navController.navigate(Screen.MentalTips.route + "/$it") }
@@ -212,14 +224,12 @@ class MainActivity : FragmentActivity() {
                             exitTransition = { materialSlideOut(true) },
                         ) {
                             MentalTipsScreen(
-                                onComposing = { barState: AppBarState, isShow: Boolean ->
-                                    appBarState = barState
-                                    isShowBottomBar = isShow
+                                updateAppBar = { barState: AppBarState ->
+                                    appState.appBarState.value = barState
                                 },
                                 onNavigateUp = { navController.navigateUp() },
                             )
                         }
-
 
                         composable(
                             route = Screen.AddDay.route,
@@ -227,9 +237,8 @@ class MainActivity : FragmentActivity() {
                             exitTransition = { materialFadeThroughOut() }
                         ) {
                             AddDayScreen(
-                                onComposing = { barState: AppBarState, isShow: Boolean ->
-                                    appBarState = barState
-                                    isShowBottomBar = isShow
+                                updateAppBar = { barState: AppBarState ->
+                                    appState.appBarState.value = barState
                                 },
                                 onNavigateUp = { navController.navigateUp() },
                             )
@@ -241,9 +250,11 @@ class MainActivity : FragmentActivity() {
                             exitTransition = { materialFadeThroughOut() },
                         ) {
                             HistoryScreen(
-                                onComposing = { barState: AppBarState, isShow: Boolean ->
-                                    appBarState = barState
-                                    isShowBottomBar = isShow
+                                updateAppBar = { barState: AppBarState ->
+                                    appState.appBarState.value = barState
+                                },
+                                dismissSnackbar = {
+                                    appState.dismissSnackbar()
                                 },
                                 myAnalystForHistory = myAnalystForHistory,
                                 onNavigateToDetail = {
@@ -257,9 +268,8 @@ class MainActivity : FragmentActivity() {
                             exitTransition = { materialFadeThroughOut() }
                         ) {
                             DetailScreen(
-                                onComposing = { barState: AppBarState, isShow: Boolean ->
-                                    appBarState = barState
-                                    isShowBottomBar = isShow
+                                updateAppBar = { barState: AppBarState ->
+                                    appState.appBarState.value = barState
                                 },
                                 onNavigateUp = { navController.navigateUp() })
                         }
@@ -270,11 +280,12 @@ class MainActivity : FragmentActivity() {
                             exitTransition = { materialFadeThroughOut() }
                         ) {
                             SettingsScreen(
-                                onComposing = { barState: AppBarState, isShow: Boolean ->
-                                    appBarState = barState
-                                    isShowBottomBar = isShow
+                                updateAppBar = { barState: AppBarState ->
+                                    appState.appBarState.value = barState
                                 },
-                                snackbarHostState = snackbarHostState,
+                                showSnackbar = { message: String ->
+                                    appState.showSnackbar(message)
+                                },
                                 onNavigateSignIn = { navController.navigate(Screen.SignInMethods.route) },
                             )
                         }
@@ -285,11 +296,12 @@ class MainActivity : FragmentActivity() {
                             exitTransition = { materialFadeThroughOut() }
                         ) {
                             SignInMethodsScreen(
-                                onComposing = { barState: AppBarState, isShow: Boolean ->
-                                    appBarState = barState
-                                    isShowBottomBar = isShow
+                                updateAppBar = { barState: AppBarState ->
+                                    appState.appBarState.value = barState
                                 },
-                                snackbarHostState = snackbarHostState,
+                                showSnackbar = { message: String ->
+                                    appState.showSnackbar(message)
+                                },
                                 onNavigateUp = { navController.navigateUp() },
                                 onNavigateSignInEmail = { navController.navigate(Screen.SignInWithEmail.route) },
                                 signInClient = signInClient,
@@ -303,11 +315,12 @@ class MainActivity : FragmentActivity() {
                             popEnterTransition = { materialSlideIn(false) }
                         ) {
                             SignInEmailScreen(
-                                onComposing = { barState: AppBarState, isShow: Boolean ->
-                                    appBarState = barState
-                                    isShowBottomBar = isShow
+                                updateAppBar = { barState: AppBarState ->
+                                    appState.appBarState.value = barState
                                 },
-                                snackbarHostState = snackbarHostState,
+                                showSnackbar = { message: String ->
+                                    appState.showSnackbar(message)
+                                },
                                 onNavigateUp = { navController.navigateUp() },
                                 onNavigateSettings = {
                                     navController.popBackStack(
@@ -326,11 +339,12 @@ class MainActivity : FragmentActivity() {
                             exitTransition = { materialSlideOut(true) }
                         ) {
                             SignUpEmailScreen(
-                                onComposing = { barState: AppBarState, isShow: Boolean ->
-                                    appBarState = barState
-                                    isShowBottomBar = isShow
+                                updateAppBar = { barState: AppBarState ->
+                                    appState.appBarState.value = barState
                                 },
-                                snackbarHostState = snackbarHostState,
+                                showSnackbar = { message: String ->
+                                    appState.showSnackbar(message)
+                                },
                                 onNavigateSettings = {
                                     navController.popBackStack(
                                         Screen.Settings.route,
@@ -347,11 +361,12 @@ class MainActivity : FragmentActivity() {
                             exitTransition = { materialSlideOut(true) }
                         ) {
                             ResetPasswordScreen(
-                                onComposing = { barState: AppBarState, isShow: Boolean ->
-                                    appBarState = barState
-                                    isShowBottomBar = isShow
+                                updateAppBar = { barState: AppBarState ->
+                                    appState.appBarState.value = barState
                                 },
-                                snackbarHostState = snackbarHostState,
+                                showSnackbar = { message: String ->
+                                    appState.showSnackbar(message)
+                                },
                                 onNavigateUp = { navController.navigateUp() },
                             )
                         }
@@ -362,11 +377,12 @@ class MainActivity : FragmentActivity() {
                             exitTransition = { materialFadeThroughOut() },
                         ) {
                             SecureEntryScreen(
-                                onComposing = { barState: AppBarState, isShow: Boolean ->
-                                    appBarState = barState
-                                    isShowBottomBar = isShow
+                                updateAppBar = { barState: AppBarState ->
+                                    appState.appBarState.value = barState
                                 },
-                                snackbarHostState = snackbarHostState,
+                                showSnackbar = { message: String ->
+                                    appState.showSnackbar(message)
+                                },
                                 onNavigateHomeScreen = { navController.navigate(Screen.Home.route) },
                             )
                         }

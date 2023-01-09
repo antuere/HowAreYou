@@ -6,7 +6,6 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.biometric.BiometricManager
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.*
@@ -23,27 +22,27 @@ import com.example.zeroapp.presentation.base.ui_compose_components.IconApp
 import com.example.zeroapp.presentation.base.ui_compose_components.pin_code.NumericKeyPad
 import com.example.zeroapp.presentation.base.ui_compose_components.dialog.Dialog
 import com.example.zeroapp.presentation.base.ui_compose_components.pin_code.PinCirclesIndicates
-import com.example.zeroapp.util.ShowSnackBarWithDelay
 import com.example.zeroapp.util.findFragmentActivity
 
 
 @Composable
 fun SecureEntryScreen(
-    onComposing: (AppBarState, Boolean) -> Unit,
+    updateAppBar: (AppBarState) -> Unit,
+    showSnackbar: (String) -> Unit,
     onNavigateHomeScreen: () -> Unit,
-    snackbarHostState: SnackbarHostState,
     secureEntryViewModel: SecureEntryViewModel = hiltViewModel()
 ) {
-    LaunchedEffect(key1 = true) {
-        onComposing(
+    LaunchedEffect(true) {
+        updateAppBar(
             AppBarState(
-                isVisible = false
-            ),
-            false
+                isVisibleTopBar = false,
+                isVisibleBottomBar = false
+            )
         )
     }
 
     val fragmentActivity = LocalContext.current.findFragmentActivity()
+    val context = LocalContext.current
 
     val uiBiometricDialog = secureEntryViewModel.uiBiometricDialog
     val uiDialog by secureEntryViewModel.uiDialog.collectAsState()
@@ -53,26 +52,14 @@ fun SecureEntryScreen(
     val biometricsAvailableState by secureEntryViewModel.biometricAvailableState.collectAsState()
     val pinCodeCirclesState by secureEntryViewModel.pinCodeCirclesState.collectAsState()
 
-    var isShowNoneEnrollBiometricAuthSnackBar by remember {
-        mutableStateOf(false)
-    }
 
     uiDialog?.let {
         Dialog(dialog = it)
     }
 
-    if (isShowNoneEnrollBiometricAuthSnackBar) {
-        snackbarHostState.ShowSnackBarWithDelay(
-            message = stringResource(id = R.string.biometric_none_enroll),
-            hideSnackbarAfterDelay = { isShowNoneEnrollBiometricAuthSnackBar = false }
-        )
-    }
-
     if (isShowPinCodeError) {
-        snackbarHostState.ShowSnackBarWithDelay(
-            message = stringResource(id = R.string.wrong_pin_code),
-            hideSnackbarAfterDelay = { secureEntryViewModel.resetIsShowError() }
-        )
+        showSnackbar(stringResource(id = R.string.wrong_pin_code))
+        secureEntryViewModel.resetIsShowError()
     }
 
     LaunchedEffect(isShowBiometricAuth) {
@@ -102,7 +89,7 @@ fun SecureEntryScreen(
                         launcher.launch(enrollIntent)
                     }
                 } else {
-                    isShowNoneEnrollBiometricAuthSnackBar = true
+                    showSnackbar(availableState.message.asString(context))
                 }
             }
             else -> {}

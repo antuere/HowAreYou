@@ -1,5 +1,8 @@
 package com.example.zeroapp.presentation.base.ui_compose_components.bottom_bar
 
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.Home
@@ -10,8 +13,10 @@ import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.saveable.autoSaver
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -49,7 +54,16 @@ fun BottomNavBar(navController: NavController) {
             val isSelected =
                 currentDestination?.hierarchy?.any { it.route == destinations[index].route } == true
 
+            val interactionSource = remember { MutableInteractionSource() }
+            val isPressed by interactionSource.collectIsPressedAsState()
+            val scaleMenuItem by animateFloatAsState(if (isPressed) 0.95f else 1f)
+
             NavigationBarItem(
+                modifier = Modifier.graphicsLayer {
+                    scaleY = scaleMenuItem
+                    scaleX = scaleMenuItem
+                },
+                interactionSource = interactionSource,
                 icon = {
                     Icon(
                         imageVector = if (isSelected) iconsFilled[index] else iconsOutline[index],

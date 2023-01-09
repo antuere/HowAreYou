@@ -24,11 +24,10 @@ import com.example.zeroapp.R
 import com.example.zeroapp.presentation.base.ui_compose_components.top_bar.AppBarState
 import com.example.zeroapp.presentation.base.ui_compose_components.dialog.Dialog
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 @Composable
 fun DetailScreen(
-    onComposing: (AppBarState, Boolean) -> Unit,
+    updateAppBar: (AppBarState) -> Unit,
     onNavigateUp: () -> Unit,
     detailViewModel: DetailViewModel = hiltViewModel()
 ) {
@@ -61,7 +60,7 @@ fun DetailScreen(
         val rotation = remember { Animatable(initialValue = if (isFavoriteDay) 360f else 0f) }
 
         LaunchedEffect(isFavoriteDay) {
-            onComposing(
+            updateAppBar(
                 AppBarState(
                     titleId = R.string.about_day,
                     navigationIcon = Icons.Filled.ArrowBack,
@@ -102,9 +101,9 @@ fun DetailScreen(
                                 contentDescription = null
                             )
                         }
-                    }
-                ),
-                false
+                    },
+                    isVisibleBottomBar = false
+                )
             )
         }
 

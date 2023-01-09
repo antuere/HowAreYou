@@ -8,6 +8,7 @@ import antuere.domain.usecases.authentication.SignInUseCase
 import antuere.domain.usecases.days_entities.RefreshRemoteDataUseCase
 import antuere.domain.usecases.user_settings.SaveUserNicknameUseCase
 import com.example.zeroapp.R
+import com.example.zeroapp.presentation.base.ui_text.UiText
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -38,7 +39,7 @@ class SignInEmailViewModel @Inject constructor(
         }
 
         override fun loginFailed(message: String) {
-            _signInState.value = SignInState.ErrorFromFireBase(message)
+            _signInState.value = SignInState.ErrorFromFireBase(UiText.DefaultString(message))
         }
 
     }
@@ -60,7 +61,8 @@ class SignInEmailViewModel @Inject constructor(
                 signInUseCase(firebaseLoginListener, email, password)
             }
         } else {
-            _signInState.value = SignInState.EmptyFields(R.string.empty_fields)
+            _signInState.value =
+                SignInState.EmptyFields(UiText.StringResource(R.string.empty_fields))
         }
     }
 

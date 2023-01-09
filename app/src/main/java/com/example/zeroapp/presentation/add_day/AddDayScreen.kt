@@ -21,18 +21,18 @@ import com.example.zeroapp.presentation.base.ui_theme.PlayfairDisplay
 
 @Composable
 fun AddDayScreen(
-    onComposing: (AppBarState, Boolean) -> Unit,
+    updateAppBar: (AppBarState) -> Unit,
     onNavigateUp: () -> Unit,
     addDayViewModel: AddDayViewModel = hiltViewModel()
 ) {
     LaunchedEffect(key1 = true) {
-        onComposing(
+        updateAppBar(
             AppBarState(
                 titleId = R.string.today,
                 navigationIcon = Icons.Filled.ArrowBack,
-                navigationOnClick = { onNavigateUp() }
-            ),
-            false
+                navigationOnClick = { onNavigateUp() },
+                isVisibleBottomBar = false
+            )
         )
     }
 

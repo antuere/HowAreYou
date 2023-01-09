@@ -6,7 +6,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -15,17 +14,16 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.zeroapp.R
 import com.example.zeroapp.presentation.base.ui_compose_components.top_bar.AppBarState
 import com.example.zeroapp.presentation.base.ui_compose_components.buttons.ButtonWithIcon
-import com.example.zeroapp.util.ShowSnackBar
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 
 @Composable
 fun SignInMethodsScreen(
-    onComposing: (AppBarState, Boolean) -> Unit,
+    updateAppBar: (AppBarState) -> Unit,
+    showSnackbar: (String) -> Unit,
     onNavigateUp: () -> Unit,
     onNavigateSignInEmail: () -> Unit,
     signInClient: GoogleSignInClient,
-    snackbarHostState: SnackbarHostState,
     signInMethodsViewModel: SignInMethodsViewModel = hiltViewModel()
 ) {
     val signInState by signInMethodsViewModel.signInState.collectAsState()
@@ -38,28 +36,29 @@ fun SignInMethodsScreen(
             }
         }
 
-    LaunchedEffect(key1 = true) {
-        onComposing(
+    LaunchedEffect(true) {
+        updateAppBar(
             AppBarState(
                 titleId = R.string.login_methods,
                 navigationIcon = Icons.Filled.ArrowBack,
-                navigationOnClick = { onNavigateUp() }
-            ),
-            false
+                navigationOnClick = { onNavigateUp() },
+                isVisibleBottomBar = false
+            )
         )
     }
 
-
-    signInState?.let { state ->
-        when (state) {
-            is SignInMethodsState.UserAuthorized -> {
-                onNavigateUp()
+    LaunchedEffect(signInState){
+        signInState?.let { state ->
+            when (state) {
+                is SignInMethodsState.UserAuthorized -> {
+                    onNavigateUp()
+                }
+                is SignInMethodsState.Error -> {
+                    showSnackbar(state.message)
+                }
             }
-            is SignInMethodsState.Error -> {
-                snackbarHostState.ShowSnackBar(message = state.message)
-            }
+            signInMethodsViewModel.nullifyState()
         }
-        signInMethodsViewModel.nullifyState()
     }
 
     Column(

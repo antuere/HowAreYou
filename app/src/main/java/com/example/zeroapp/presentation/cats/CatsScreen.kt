@@ -24,18 +24,18 @@ import com.example.zeroapp.presentation.base.ui_theme.PlayfairDisplay
 
 @Composable
 fun CatsScreen(
-    onComposing: (AppBarState, Boolean) -> Unit,
+    updateAppBar: (AppBarState) -> Unit,
     onNavigateUp: () -> Unit,
     catsViewModel: CatsViewModel = hiltViewModel()
 ) {
     LaunchedEffect(key1 = true) {
-        onComposing(
+        updateAppBar(
             AppBarState(
                 titleId = R.string.cats,
                 navigationIcon = Icons.Filled.ArrowBack,
-                navigationOnClick = { onNavigateUp() }
+                navigationOnClick = { onNavigateUp() },
+                isVisibleBottomBar = false
             ),
-            false
         )
     }
 

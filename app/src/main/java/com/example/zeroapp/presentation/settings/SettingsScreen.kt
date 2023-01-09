@@ -29,20 +29,20 @@ import com.example.zeroapp.presentation.settings.ui_compose.AuthSection
 import com.example.zeroapp.presentation.settings.ui_compose.GeneralSettings
 import com.example.zeroapp.presentation.pin_code_creation.PinCodeCreating
 import com.example.zeroapp.presentation.settings.ui_compose.PrivacySettings
-import com.example.zeroapp.util.ShowSnackBarWithDelay
 import com.example.zeroapp.util.findFragmentActivity
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun SettingsScreen(
-    onComposing: (AppBarState, Boolean) -> Unit,
+    updateAppBar: (AppBarState) -> Unit,
+    showSnackbar: (String) -> Unit,
     onNavigateSignIn: () -> Unit,
-    snackbarHostState: SnackbarHostState,
     settingsViewModel: SettingsViewModel = hiltViewModel()
 ) {
     val fragmentActivity = LocalContext.current.findFragmentActivity()
     val scope = rememberCoroutineScope()
+    val context = LocalContext.current
 
     val settings by settingsViewModel.settings.collectAsState()
     val userPinCode by settingsViewModel.savedPinCode.collectAsState()
@@ -52,34 +52,26 @@ fun SettingsScreen(
     val biometricsAvailableState by settingsViewModel.biometricAvailableState.collectAsState()
     val biometricAuthState by settingsViewModel.biometricAuthState.collectAsState()
 
+    val messagePinCodeSetSuccess = stringResource(id = R.string.pin_code_create_success)
     val paddingNormal = dimensionResource(id = R.dimen.padding_normal_3)
 
     val bottomSheetState = rememberModalBottomSheetState(
         initialValue = ModalBottomSheetValue.Hidden,
     )
 
+    val launcher =
+        rememberLauncherForActivityResult(contract = ActivityResultContracts.StartActivityForResult()) {}
+
     var isCheckedWorriedDialog by remember {
         mutableStateOf(settings?.isShowWorriedDialog ?: true)
     }
 
-    var isShowBiometricAuthSuccessSnackBar by remember {
-        mutableStateOf(false)
-    }
-
-    var isShowNoneEnrollBiometricAuthSnackBar by remember {
-        mutableStateOf(false)
-    }
-
-    var isShowPinCodeSuccessCreatedSnackBar by remember {
-        mutableStateOf(false)
-    }
-
     LaunchedEffect(bottomSheetState.targetValue) {
-        onComposing(
+        updateAppBar(
             AppBarState(
-                titleId = R.string.settings
+                titleId = R.string.settings,
+                isVisibleBottomBar = bottomSheetState.targetValue == ModalBottomSheetValue.Hidden
             ),
-            bottomSheetState.targetValue == ModalBottomSheetValue.Hidden
         )
     }
 
@@ -95,71 +87,55 @@ fun SettingsScreen(
         )
     }
 
-    if (bottomSheetState.isVisible) {
-        userPinCode?.let { pin ->
-            isCheckedPinCode = pin.length == 4
-        }
-    }
-
-    if (isShowBiometricAuthSuccessSnackBar) {
-        snackbarHostState.ShowSnackBarWithDelay(
-            message = stringResource(id = R.string.biom_auth_create_success),
-            hideSnackbarAfterDelay = { isShowBiometricAuthSuccessSnackBar = false }
-        )
-    }
-    if (isShowNoneEnrollBiometricAuthSnackBar) {
-        snackbarHostState.ShowSnackBarWithDelay(
-            message = stringResource(id = R.string.biometric_none_enroll),
-            hideSnackbarAfterDelay = { isShowNoneEnrollBiometricAuthSnackBar = false }
-        )
-    }
-
-    if (isShowPinCodeSuccessCreatedSnackBar) {
-        snackbarHostState.ShowSnackBarWithDelay(
-            message = stringResource(id = R.string.pin_code_create_success),
-            hideSnackbarAfterDelay = { isShowPinCodeSuccessCreatedSnackBar = false })
-    }
-
-    biometricAuthState?.let { biomAuthState ->
-        when (biomAuthState) {
-            BiometricAuthState.SUCCESS -> {
-                isCheckedBiometric = true
-                settingsViewModel.saveSettings(
-                    isUseBiometric = true,
-                    isUsePinCode = true
-                )
-                isShowBiometricAuthSuccessSnackBar = true
-            }
-            BiometricAuthState.ERROR -> {
-                isCheckedBiometric = false
+    SideEffect {
+        if (bottomSheetState.isVisible) {
+            userPinCode?.let { pin ->
+                isCheckedPinCode = pin.length == 4
             }
         }
-        settingsViewModel.nullifyBiometricAuthState()
     }
 
-    biometricsAvailableState?.let { availableState ->
-        when (availableState) {
-            is BiometricsAvailableState.NoneEnrolled -> {
-                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
-                    val enrollIntent = Intent(Settings.ACTION_BIOMETRIC_ENROLL).apply {
-                        putExtra(
-                            Settings.EXTRA_BIOMETRIC_AUTHENTICATORS_ALLOWED,
-                            BiometricManager.Authenticators.BIOMETRIC_STRONG or BiometricManager.Authenticators.BIOMETRIC_WEAK
-                        )
-                    }
-                    val launcher =
-                        rememberLauncherForActivityResult(contract = ActivityResultContracts.StartActivityForResult()) {}
-                    SideEffect {
-                        launcher.launch(enrollIntent)
-                    }
-                } else {
-                    isShowNoneEnrollBiometricAuthSnackBar = true
+    LaunchedEffect(biometricAuthState) {
+        biometricAuthState?.let { biomAuthState ->
+            when (biomAuthState) {
+                is BiometricAuthState.Success -> {
+                    isCheckedBiometric = true
+                    settingsViewModel.saveSettings(
+                        isUseBiometric = true,
+                        isUsePinCode = true
+                    )
+                    showSnackbar(biomAuthState.message.asString(context))
+                }
+                BiometricAuthState.Error -> {
                     isCheckedBiometric = false
                 }
             }
-            else -> {}
+            settingsViewModel.nullifyBiometricAuthState()
         }
-        settingsViewModel.nullifyBiometricAvailableState()
+    }
+
+    LaunchedEffect(biometricsAvailableState) {
+        biometricsAvailableState?.let { availableState ->
+            when (availableState) {
+                is BiometricsAvailableState.NoneEnrolled -> {
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
+                        val enrollIntent = Intent(Settings.ACTION_BIOMETRIC_ENROLL).apply {
+                            putExtra(
+                                Settings.EXTRA_BIOMETRIC_AUTHENTICATORS_ALLOWED,
+                                BiometricManager.Authenticators.BIOMETRIC_STRONG or BiometricManager.Authenticators.BIOMETRIC_WEAK
+                            )
+                        }
+                        launcher.launch(enrollIntent)
+
+                    } else {
+                        showSnackbar(availableState.message.asString(context))
+                        isCheckedBiometric = false
+                    }
+                }
+                else -> {}
+            }
+            settingsViewModel.nullifyBiometricAvailableState()
+        }
     }
 
     ModalBottomSheetLayout(
@@ -173,7 +149,7 @@ fun SettingsScreen(
             ) {
                 PinCodeCreating(
                     bottomSheetState = bottomSheetState,
-                    onShowSuccessSnackBar = { isShowPinCodeSuccessCreatedSnackBar = true })
+                    onShowSuccessSnackBar = { showSnackbar(messagePinCodeSetSuccess) })
             }
         },
     ) {
@@ -192,7 +168,13 @@ fun SettingsScreen(
                 onClickSignIn = { onNavigateSignIn() },
                 onClickSignOut = { settingsViewModel.onClickSignOut() })
 
-            settings?.let {
+            settings?.let { savedSettings ->
+                LaunchedEffect(true) {
+                    isCheckedWorriedDialog = savedSettings.isShowWorriedDialog
+                    isCheckedPinCode = savedSettings.isPinCodeEnabled
+                    isCheckedBiometric = savedSettings.isBiometricEnabled
+                }
+
                 GeneralSettings(
                     modifier = Modifier.padding(
                         horizontal = paddingNormal

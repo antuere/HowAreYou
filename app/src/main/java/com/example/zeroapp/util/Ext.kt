@@ -4,8 +4,6 @@ import android.app.Activity
 import android.content.Context
 import android.content.ContextWrapper
 import androidx.compose.animation.core.*
-import androidx.compose.material3.SnackbarDuration
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
@@ -24,36 +22,6 @@ fun Context.findFragmentActivity(): FragmentActivity {
     throw IllegalStateException("no activity")
 }
 
-@Composable
-fun SnackbarHostState.ShowSnackBar(
-    message: String,
-    duration: SnackbarDuration = SnackbarDuration.Short
-) {
-    LaunchedEffect(this) {
-        this@ShowSnackBar.showSnackbar(
-            message = message,
-            duration = duration
-        )
-    }
-}
-
-@Composable
-fun SnackbarHostState.ShowSnackBarWithDelay(
-    message: String,
-    delayValue: Long = 500,
-    hideSnackbarAfterDelay: () -> Unit
-) {
-
-    LaunchedEffect(this) {
-        this@ShowSnackBarWithDelay.showSnackbar(
-            message = message,
-            duration = SnackbarDuration.Short
-        )
-        delay(delayValue)
-        hideSnackbarAfterDelay()
-    }
-}
-
 fun Modifier.shake() = composed(
     factory = {
         val infiniteTransition = rememberInfiniteTransition()
@@ -66,7 +34,6 @@ fun Modifier.shake() = composed(
                 repeatMode = RepeatMode.Reverse
             )
         )
-
 
         Modifier.graphicsLayer {
             scaleX = scale
@@ -133,7 +100,7 @@ fun Modifier.animateScaleDownOnce() = composed(
         )
 
         LaunchedEffect(key1 = isAnimated) {
-            delay(200)
+            delay(175)
             isAnimated = false
         }
 

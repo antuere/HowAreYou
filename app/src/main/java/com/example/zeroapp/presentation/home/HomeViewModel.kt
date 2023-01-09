@@ -13,6 +13,7 @@ import antuere.domain.usecases.user_settings.GetSettingsUseCase
 import antuere.domain.usecases.user_settings.SaveSettingsUseCase
 import antuere.domain.util.TimeUtility
 import com.example.zeroapp.R
+import com.example.zeroapp.presentation.base.ui_text.UiText
 import com.example.zeroapp.presentation.base.ui_compose_components.dialog.UIDialog
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -32,7 +33,7 @@ class HomeViewModel @Inject constructor(
     private val getDaysByLimitUseCase: GetDaysByLimitUseCase,
     private val getSettingsUseCase: GetSettingsUseCase,
     private val saveSettingsUseCase: SaveSettingsUseCase,
-    private val myAnalystForSummary: MyAnalystForHome
+    private val myAnalystForHome: MyAnalystForHome
 ) :
     ViewModel() {
 
@@ -51,8 +52,8 @@ class HomeViewModel @Inject constructor(
         get() = _fabButtonState
 
     private var _wishText =
-        MutableStateFlow(myAnalystForSummary.getWishStringForSummary(MyAnalystForHome.DEFAULT_WISH))
-    val wishText: StateFlow<String>
+        MutableStateFlow(myAnalystForHome.getWishStringForSummary(MyAnalystForHome.DEFAULT_WISH))
+    val wishText: StateFlow<UiText>
         get() = _wishText
 
     private var _isShowMessage = MutableStateFlow(false)
@@ -63,10 +64,8 @@ class HomeViewModel @Inject constructor(
     val isShowSplash: StateFlow<Boolean>
         get() = _isShowSplash
 
-
     private var _settings = MutableStateFlow<Settings?>(null)
     private var _daysForCheck = MutableStateFlow<List<Day>>(emptyList())
-
 
     init {
         updateDayQuoteByRemote()
@@ -125,7 +124,7 @@ class HomeViewModel @Inject constructor(
             delay(500)
 
             val isShowWorriedDialog =
-                myAnalystForSummary.isShowWarningForSummary(_daysForCheck.value)
+                myAnalystForHome.isShowWarningForSummary(_daysForCheck.value)
 
             if (isShowWorriedDialog && _settings.value!!.isShowWorriedDialog) {
                 _uiDialog.value = UIDialog(
@@ -169,11 +168,11 @@ class HomeViewModel @Inject constructor(
             _fabButtonState.value =
                 FabButtonState.Smile(imageId = currentDay.imageResId, dayId = currentDay.dayId)
             _wishText.value =
-                myAnalystForSummary.getWishStringForSummary(currentDay.imageResId)
+                myAnalystForHome.getWishStringForSummary(currentDay.imageResId)
         } else {
             _fabButtonState.value = FabButtonState.Add
             _wishText.value =
-                myAnalystForSummary.getWishStringForSummary(MyAnalystForHome.DEFAULT_WISH)
+                myAnalystForHome.getWishStringForSummary(MyAnalystForHome.DEFAULT_WISH)
         }
     }
 

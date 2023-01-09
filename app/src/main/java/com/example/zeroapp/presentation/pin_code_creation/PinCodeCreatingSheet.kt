@@ -50,7 +50,7 @@ fun PinCodeCreating(
     }
 
     if (isPinCodeCreated) {
-        LaunchedEffect(key1 = true) {
+        LaunchedEffect(true) {
             onShowSuccessSnackBar()
             bottomSheetState.hide()
         }

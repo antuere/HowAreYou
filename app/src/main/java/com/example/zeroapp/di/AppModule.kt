@@ -41,8 +41,8 @@ object AppModule {
     }
 
     @Provides
-    fun provideMyAnalystForSummary(@ApplicationContext context: Context): MyAnalystForHome {
-        return MyAnalystForHome(context)
+    fun provideMyAnalystForHome(): MyAnalystForHome {
+        return MyAnalystForHome()
     }
 
     @Provides

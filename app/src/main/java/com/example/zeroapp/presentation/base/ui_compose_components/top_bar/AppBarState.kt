@@ -7,9 +7,10 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import com.example.zeroapp.R
 
 data class AppBarState(
-    @StringRes val titleId: Int = R.string.home,
-    val navigationIcon: ImageVector? = null,
-    val navigationOnClick: () -> Unit = {},
-    val actions: (@Composable RowScope.() -> Unit) = {},
-    var isVisible : Boolean = true
+    @StringRes var titleId: Int = R.string.home,
+    var navigationIcon: ImageVector? = null,
+    var navigationOnClick: () -> Unit = {},
+    var actions: (@Composable RowScope.() -> Unit) = {},
+    var isVisibleTopBar : Boolean = true,
+    var isVisibleBottomBar : Boolean = true
 )

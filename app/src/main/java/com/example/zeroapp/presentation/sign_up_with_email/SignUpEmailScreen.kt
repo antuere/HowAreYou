@@ -8,6 +8,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
@@ -19,17 +20,18 @@ import com.example.zeroapp.presentation.base.ui_compose_components.buttons.Defau
 import com.example.zeroapp.presentation.base.ui_compose_components.text_field.DefaultTextField
 import com.example.zeroapp.presentation.base.ui_compose_components.text_field.EmailTextField
 import com.example.zeroapp.presentation.base.ui_compose_components.text_field.PasswordTextField
-import com.example.zeroapp.util.ShowSnackBarWithDelay
 
 @Composable
 fun SignUpEmailScreen(
     modifier: Modifier = Modifier,
-    onComposing: (AppBarState, Boolean) -> Unit,
+    updateAppBar: (AppBarState) -> Unit,
+    showSnackbar: (String) -> Unit,
     onNavigateUp: () -> Unit,
     onNavigateSettings: () -> Unit,
-    snackbarHostState: SnackbarHostState,
     signUpEmailViewModel: SignUpEmailViewModel = hiltViewModel()
 ) {
+    val context = LocalContext.current
+
     val isShowRegisterProgressIndicator by signUpEmailViewModel.isShowRegisterProgressIndicator.collectAsState()
     val signUpState by signUpEmailViewModel.signUpState.collectAsState()
 
@@ -38,51 +40,39 @@ fun SignUpEmailScreen(
     var userPassword by remember { mutableStateOf("") }
     var userConfirmedPassword by remember { mutableStateOf("") }
 
-
-    LaunchedEffect(key1 = true) {
-        onComposing(
+    LaunchedEffect(true) {
+        updateAppBar(
             AppBarState(
                 titleId = R.string.sign_up,
                 navigationIcon = Icons.Filled.ArrowBack,
-                navigationOnClick = { onNavigateUp() }
+                navigationOnClick = { onNavigateUp() },
+                isVisibleBottomBar = false
             ),
-            false
         )
     }
 
-    //    TODO вынести в launched effect
-    signUpState?.let { state ->
-        when (state) {
-            is SignUpState.Successful -> {
-                onNavigateSettings()
-                signUpEmailViewModel.resetIsShowRegisterProgressIndicator(true)
-                signUpEmailViewModel.nullifyState()
-            }
-            is SignUpState.EmptyFields -> {
-                snackbarHostState.ShowSnackBarWithDelay(
-                    message = stringResource(id = state.res)
-                ) {
-                    signUpEmailViewModel.nullifyState()
-                }
-            }
-            is SignUpState.PasswordsError -> {
-                snackbarHostState.ShowSnackBarWithDelay(
-                    message = stringResource(id = state.res)
-                ) {
-                    signUpEmailViewModel.nullifyState()
-                }
-            }
+    LaunchedEffect(signUpState){
+        signUpState?.let { state ->
+            when (state) {
+                is SignUpState.Successful -> {
+                    onNavigateSettings()
+                    signUpEmailViewModel.resetIsShowRegisterProgressIndicator(true)
 
-            is SignUpState.ErrorFromFireBase -> {
-                snackbarHostState.ShowSnackBarWithDelay(
-                    message = state.message
-                ) {
-                    signUpEmailViewModel.nullifyState()
                 }
-                signUpEmailViewModel.resetIsShowRegisterProgressIndicator()
+                is SignUpState.EmptyFields -> {
+                    showSnackbar(state.message.asString(context))
+                }
+                is SignUpState.PasswordsError -> {
+                    showSnackbar(state.message.asString(context))
+                }
+
+                is SignUpState.ErrorFromFireBase -> {
+                    showSnackbar(state.message.asString(context))
+                    signUpEmailViewModel.resetIsShowRegisterProgressIndicator()
+                }
             }
+            signUpEmailViewModel.nullifyState()
         }
-
     }
 
     Column(

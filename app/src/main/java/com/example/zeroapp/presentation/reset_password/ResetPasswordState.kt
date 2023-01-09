@@ -1,13 +1,13 @@
 package com.example.zeroapp.presentation.reset_password
 
-import androidx.annotation.StringRes
+import com.example.zeroapp.presentation.base.ui_text.UiText
 
 
-sealed class ResetPasswordState {
+sealed class ResetPasswordState(val message: UiText) {
 
-    data class Successful(@StringRes val  res: Int) : ResetPasswordState()
+    class Successful(message: UiText) : ResetPasswordState(message)
 
-    data class EmptyFields(@StringRes val res: Int) : ResetPasswordState()
+    class EmptyFields(message: UiText) : ResetPasswordState(message)
 
-    data class ErrorFromFireBase(var message: String) : ResetPasswordState()
+    class ErrorFromFireBase(message: UiText) : ResetPasswordState(message)
 }

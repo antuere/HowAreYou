@@ -1,4 +1,4 @@
-package com.example.zeroapp.presentation.base
+package com.example.zeroapp.presentation.base.ui_animations
 
 import androidx.compose.animation.*
 import androidx.compose.animation.core.LinearEasing

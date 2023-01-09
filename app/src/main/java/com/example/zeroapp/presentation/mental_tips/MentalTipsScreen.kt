@@ -23,21 +23,21 @@ import kotlin.math.absoluteValue
 @Composable
 fun MentalTipsScreen(
     onNavigateUp: () -> Unit,
-    onComposing: (AppBarState, Boolean) -> Unit,
+    updateAppBar: (AppBarState) -> Unit,
     mentalTipsViewModel: MentalTipsViewModel = hiltViewModel()
 ) {
     val pagerState = rememberPagerState()
     val titleId by mentalTipsViewModel.screenLabelId.collectAsState()
     val listMentalTips by mentalTipsViewModel.listMentalTips.collectAsState()
 
-    LaunchedEffect(key1 = true) {
-        onComposing(
+    LaunchedEffect(true) {
+        updateAppBar(
             AppBarState(
                 titleId = titleId,
                 navigationIcon = Icons.Filled.ArrowBack,
-                navigationOnClick = { onNavigateUp() }
+                navigationOnClick = { onNavigateUp() },
+                isVisibleBottomBar = false
             ),
-            false
         )
     }
 
