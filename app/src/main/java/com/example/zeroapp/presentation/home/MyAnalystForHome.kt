@@ -4,11 +4,9 @@ import antuere.domain.dto.Day
 import com.example.zeroapp.R
 import com.example.zeroapp.presentation.base.ui_text.UiText
 
-class MyAnalystForHome {
+object MyAnalystForHome {
 
-    companion object {
-        const val DEFAULT_WISH = -1
-    }
+    const val DEFAULT_WISH = -1
 
     fun getWishStringForSummary(id: Int): UiText {
         return when (id) {

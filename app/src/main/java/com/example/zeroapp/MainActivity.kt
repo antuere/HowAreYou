@@ -25,17 +25,18 @@ import com.example.zeroapp.presentation.base.ui_animations.materialSlideIn
 import com.example.zeroapp.presentation.base.ui_animations.materialSlideOut
 import com.example.zeroapp.presentation.base.ui_compose_components.AppState
 import com.example.zeroapp.presentation.base.ui_compose_components.top_bar.AppBarState
-import com.example.zeroapp.presentation.base.ui_compose_components.Screen
-import com.example.zeroapp.presentation.base.ui_compose_components.bottom_bar.BottomNavBar
+import com.example.zeroapp.presentation.base.navigation.Screen
+import com.example.zeroapp.presentation.base.ui_compose_components.bottom_nav_bar.DefaultBottomNavBar
 import com.example.zeroapp.presentation.base.ui_compose_components.rememberAppState
-import com.example.zeroapp.presentation.base.ui_compose_components.top_bar.DefaultTopAppBar
+import com.example.zeroapp.presentation.base.ui_compose_components.top_bar.DefaultTopBar
 import com.example.zeroapp.presentation.home.HomeViewModel
 import com.example.zeroapp.presentation.base.ui_theme.HowAreYouTheme
 import com.example.zeroapp.presentation.cats.CatsScreen
 import com.example.zeroapp.presentation.detail.DetailScreen
 import com.example.zeroapp.presentation.favorites.FavoritesScreen
+import com.example.zeroapp.presentation.help_for_you.HelpForYouScreen
+import com.example.zeroapp.presentation.helplines.HelplinesScreen
 import com.example.zeroapp.presentation.history.HistoryScreen
-import com.example.zeroapp.presentation.history.MyAnalystForHistory
 import com.example.zeroapp.presentation.home.HomeScreen
 import com.example.zeroapp.presentation.mental_tips.MentalTipsScreen
 import com.example.zeroapp.presentation.mental_tips_categories.MentalTipsCategoriesScreen
@@ -64,9 +65,6 @@ class MainActivity : FragmentActivity() {
 
     @Inject
     lateinit var getSettingsUseCase: GetSettingsUseCase
-
-    @Inject
-    lateinit var myAnalystForHistory: MyAnalystForHistory
 
     @Inject
     lateinit var signInClient: GoogleSignInClient
@@ -130,12 +128,12 @@ class MainActivity : FragmentActivity() {
                     },
                     bottomBar = {
                         if (appBarState.isVisibleBottomBar) {
-                            BottomNavBar(navController)
+                            DefaultBottomNavBar(navController)
                         }
                     },
                     topBar = {
                         if (appBarState.isVisibleTopBar) {
-                            DefaultTopAppBar(
+                            DefaultTopBar(
                                 titleId = appBarState.titleId,
                                 navigationIcon = appBarState.navigationIcon,
                                 navigationOnClick = appBarState.navigationOnClick,
@@ -166,11 +164,12 @@ class MainActivity : FragmentActivity() {
                                 dismissSnackbar = {
                                     appState.dismissSnackbar()
                                 },
-                                onNavigateToDetail = { navController.navigate(Screen.Detail.route + "/$it") },
-                                onNavigateToAddDay = { navController.navigate(Screen.AddDay.route) },
-                                onNavigateToCats = { navController.navigate(Screen.Cats.route) },
+                                onNavigateToMentalTips = { navController.navigate(Screen.MentalTipsCategories.route) },
                                 onNavigateToFavorites = { navController.navigate(Screen.Favorites.route) },
-                                onNavigateToMentalTips = { navController.navigate(Screen.MentalTipsCategories.route) }
+                                onNavigateToHelpForYou = { navController.navigate(Screen.HelpForYou.route) },
+                                onNavigateToCats = { navController.navigate(Screen.Cats.route) },
+                                onNavigateToDetail = { navController.navigate(Screen.Detail.route + "/$it") },
+                                onNavigateToAddDay = { navController.navigate(Screen.AddDay.route) }
                             )
                         }
 
@@ -196,6 +195,34 @@ class MainActivity : FragmentActivity() {
                             exitTransition = { materialFadeThroughOut() }
                         ) {
                             CatsScreen(
+                                updateAppBar = { barState: AppBarState ->
+                                    appState.appBarState.value = barState
+                                },
+                                onNavigateUp = { navController.navigateUp() },
+                            )
+                        }
+
+                        composable(
+                            route = Screen.HelpForYou.route,
+                            enterTransition = { materialFadeThroughIn() },
+                            exitTransition = { materialFadeThroughOut() },
+                            popEnterTransition = { materialSlideIn(false) }
+                        ) {
+                            HelpForYouScreen(
+                                updateAppBar = { barState: AppBarState ->
+                                    appState.appBarState.value = barState
+                                },
+                                onNavigateUp = { navController.navigateUp() },
+                                onNavigateToHelplines = { navController.navigate(Screen.Helplines.route) }
+                            )
+                        }
+
+                        composable(
+                            route = Screen.Helplines.route,
+                            enterTransition = { materialSlideIn(true) },
+                            exitTransition = { materialSlideOut(true) },
+                        ) {
+                            HelplinesScreen(
                                 updateAppBar = { barState: AppBarState ->
                                     appState.appBarState.value = barState
                                 },
@@ -244,6 +271,7 @@ class MainActivity : FragmentActivity() {
                             )
                         }
 
+
                         composable(
                             route = Screen.History.route,
                             enterTransition = { materialFadeThroughIn() },
@@ -256,7 +284,6 @@ class MainActivity : FragmentActivity() {
                                 dismissSnackbar = {
                                     appState.dismissSnackbar()
                                 },
-                                myAnalystForHistory = myAnalystForHistory,
                                 onNavigateToDetail = {
                                     navController.navigate(Screen.Detail.route + "/$it")
                                 })

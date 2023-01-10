@@ -46,7 +46,6 @@ fun HistoryScreen(
     updateAppBar: (AppBarState) -> Unit,
     dismissSnackbar: () -> Unit,
     historyViewModel: HistoryViewModel = hiltViewModel(),
-    myAnalystForHistory: MyAnalystForHistory
 ) {
     val bottomSheetState = rememberModalBottomSheetState(
         initialValue = ModalBottomSheetValue.Hidden,
@@ -207,8 +206,7 @@ fun HistoryScreen(
                             .graphicsLayer {
                                 rotationX = rotation.value
                             },
-                        dayList = days,
-                        myAnalystForHistory = myAnalystForHistory
+                        dayList = days
                     )
 
                     LazyVerticalGrid(

@@ -10,10 +10,8 @@ import com.example.zeroapp.R
 import antuere.data.preferences_data_store.quote_data_store.QuoteDataStore
 import antuere.data.preferences_data_store.settings_data_store.SettingsDataStore
 import com.example.zeroapp.util.ResourcesProvider
-import com.example.zeroapp.presentation.history.MyAnalystForHistory
 import antuere.data.preferences_data_store.toggle_btn_data_store.ToggleBtnDataStore
 import antuere.data.remote.NetworkInfo
-import com.example.zeroapp.presentation.home.MyAnalystForHome
 import com.example.zeroapp.presentation.base.ui_biometric_dialog.UIBiometricDialog
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -33,16 +31,6 @@ object AppModule {
     @Provides
     fun provideTransitionName(@ApplicationContext context: Context): String {
         return context.getString(R.string.transition_name)
-    }
-
-    @Provides
-    fun provideMyAnalystForHistory(@ApplicationContext context: Context): MyAnalystForHistory {
-        return MyAnalystForHistory(context)
-    }
-
-    @Provides
-    fun provideMyAnalystForHome(): MyAnalystForHome {
-        return MyAnalystForHome()
     }
 
     @Provides

@@ -1,10 +1,12 @@
-package com.example.zeroapp.presentation.base.ui_compose_components
+package com.example.zeroapp.presentation.base.navigation
 
 sealed class Screen(val route: String) {
     object Home : Screen("home_screen")
     object AddDay : Screen("add_day_screen")
     object Favorites : Screen("favorites_screen")
     object Cats : Screen("cats_screen")
+    object HelpForYou : Screen("help_for_you_screen")
+    object Helplines : Screen("helplines_screen")
     object MentalTipsCategories : Screen("mental_tips_categories_screen")
     object MentalTips : Screen("mental_tips_screen")
     object History : Screen("history_screen")

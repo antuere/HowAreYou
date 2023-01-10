@@ -89,20 +89,20 @@
     <string name="biometric_auth_desc">Lets verify you finger</string>
     <string name="biometric_auth_negative_btn">Cancel</string>
 
-    <!-- Methods for login fragment -->
+    <!-- Methods for login screen -->
     <string name="login_email">Sign in with email</string>
     <string name="login_google">Sign in with Google</string>
 
-    <!-- Add day fragment -->
+    <!-- Add day screen -->
     <string name="how_are_you_today">How are you today?</string>
     <string name="desc_you_day">Describe your day in a nutshell</string>
     <string name="too_many_chars_100">Cannot be more than 100 characters</string>
 
-    <!-- Cats fragment -->
+    <!-- Cats screen -->
     <string name="getCats">Update cute cats!</string>
     <string name="title_cats">What could be better than cats?</string>
 
-    <!-- Settings fragment -->
+    <!-- Settings screen -->
     <string name="settings_privacy_text">Privacy</string>
     <string name="settings_general_text">General</string>
     <string name="sign_in_advice">For a better experience sign in.</string>
@@ -125,22 +125,27 @@
     <string name="biometric_none_enroll">First, set the biometrics in the device settings</string>
 
 
-    <!-- Home fragment -->
+    <!-- Home screen -->
     <string name="snack_bar_warning_negative">Pay attention to the cards above, we hope this will help you at least a little.</string>
 
-    <!-- Secure entry fragment -->
+    <!-- Secure entry screen -->
     <string name="enter_a_pin">Enter PIN code</string>
     <string name="clear_pin">Clear</string>
     <string name="wrong_pin_code">Wrong PIN</string>
 
-
-    <!-- Favorites fragment -->
+    <!-- Favorites screen -->
     <string name="fav_hint">Add your first favorite day and come back!</string>
 
-    <!-- Detail fragment -->
+    <!-- Detail screen -->
     <string name="about_day">About past day</string>
 
-    <!-- History fragment -->
+    <!-- HelpForYou screen -->
+    <string name="help_for_you_title_card">Sometimes life\'s problems unsettle us and cause complete confusion, so we recommend turning to the help of others. A consultation with a specialist will help you overcome a difficult period.</string>
+    <string name="helplines">Helplines</string>
+    <string name="telegram_chat">Telegram chat</string>
+    <string name="email_chat">Email chat</string>
+
+    <!-- History screen -->
     <string name="all_days_desc">Show all days</string>
     <string name="month_days_desc">Show days of this current month</string>
     <string name="week_days_desc">Show days of this current week</string>
@@ -166,7 +171,6 @@
     <string name="wish_for_users_none">We are sad when you are sad. Maybe we can help, pay attention to the cards above</string>
     <string name="wish_for_users_sad">Bad day? There is no way out of only one place :) We would be very happy if the cards above can make your day a little better</string>
 
-
     <!-- Months -->
     <string name="january">January</string>
     <string name="february">February</string>
@@ -180,7 +184,6 @@
     <string name="october">October</string>
     <string name="november">November</string>
     <string name="december">December</string>
-
 
     <!-- Other -->
     <string name="leak_canary_test_class_name">assertk.Assert</string>

@@ -21,7 +21,7 @@ class AppState(
             val job = snackbarScope.launch {
                 snackbarHostState.showSnackbar(
                     message = message,
-                    duration = SnackbarDuration.Short
+                    duration = SnackbarDuration.Indefinite
                 )
             }
             delay(duration)

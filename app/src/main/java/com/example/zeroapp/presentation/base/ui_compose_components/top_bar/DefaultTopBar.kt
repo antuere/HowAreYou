@@ -9,7 +9,7 @@ import androidx.compose.ui.res.stringResource
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DefaultTopAppBar(
+fun DefaultTopBar(
     @StringRes titleId: Int,
     navigationIcon: ImageVector? = null,
     navigationOnClick: () -> Unit = {},

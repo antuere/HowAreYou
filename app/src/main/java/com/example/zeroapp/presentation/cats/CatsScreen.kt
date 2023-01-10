@@ -28,7 +28,7 @@ fun CatsScreen(
     onNavigateUp: () -> Unit,
     catsViewModel: CatsViewModel = hiltViewModel()
 ) {
-    LaunchedEffect(key1 = true) {
+    LaunchedEffect(true) {
         updateAppBar(
             AppBarState(
                 titleId = R.string.cats,

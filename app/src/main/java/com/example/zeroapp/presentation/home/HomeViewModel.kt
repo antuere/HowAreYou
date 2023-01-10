@@ -33,7 +33,6 @@ class HomeViewModel @Inject constructor(
     private val getDaysByLimitUseCase: GetDaysByLimitUseCase,
     private val getSettingsUseCase: GetSettingsUseCase,
     private val saveSettingsUseCase: SaveSettingsUseCase,
-    private val myAnalystForHome: MyAnalystForHome
 ) :
     ViewModel() {
 
@@ -52,7 +51,7 @@ class HomeViewModel @Inject constructor(
         get() = _fabButtonState
 
     private var _wishText =
-        MutableStateFlow(myAnalystForHome.getWishStringForSummary(MyAnalystForHome.DEFAULT_WISH))
+        MutableStateFlow(MyAnalystForHome.getWishStringForSummary(MyAnalystForHome.DEFAULT_WISH))
     val wishText: StateFlow<UiText>
         get() = _wishText
 
@@ -124,7 +123,7 @@ class HomeViewModel @Inject constructor(
             delay(500)
 
             val isShowWorriedDialog =
-                myAnalystForHome.isShowWarningForSummary(_daysForCheck.value)
+                MyAnalystForHome.isShowWarningForSummary(_daysForCheck.value)
 
             if (isShowWorriedDialog && _settings.value!!.isShowWorriedDialog) {
                 _uiDialog.value = UIDialog(
@@ -168,11 +167,11 @@ class HomeViewModel @Inject constructor(
             _fabButtonState.value =
                 FabButtonState.Smile(imageId = currentDay.imageResId, dayId = currentDay.dayId)
             _wishText.value =
-                myAnalystForHome.getWishStringForSummary(currentDay.imageResId)
+                MyAnalystForHome.getWishStringForSummary(currentDay.imageResId)
         } else {
             _fabButtonState.value = FabButtonState.Add
             _wishText.value =
-                myAnalystForHome.getWishStringForSummary(MyAnalystForHome.DEFAULT_WISH)
+                MyAnalystForHome.getWishStringForSummary(MyAnalystForHome.DEFAULT_WISH)
         }
     }
 

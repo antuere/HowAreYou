@@ -28,8 +28,7 @@ class HistoryViewModel @Inject constructor(
     private val getCertainDaysUseCase: GetCertainDaysUseCase,
     private val getToggleBtnStateUseCase: GetToggleBtnStateUseCase,
     private val saveToggleBtnUseCase: SaveToggleBtnUseCase,
-) :
-    ViewModel() {
+) : ViewModel() {
 
     private var _dayId = 0L
 

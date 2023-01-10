@@ -23,14 +23,15 @@ import com.example.zeroapp.presentation.base.ui_theme.TealMain
 
 @Composable
 fun HomeScreen(
-    onNavigateToAddDay: () -> Unit,
-    onNavigateToDetail: (Long) -> Unit,
-    onNavigateToFavorites: () -> Unit,
-    onNavigateToMentalTips: () -> Unit,
-    onNavigateToCats: () -> Unit,
     updateAppBar: (AppBarState) -> Unit,
-    showSnackbar: (String) -> Unit,
     dismissSnackbar: () -> Unit,
+    showSnackbar: (String) -> Unit,
+    onNavigateToMentalTips: () -> Unit,
+    onNavigateToHelpForYou: () -> Unit,
+    onNavigateToFavorites: () -> Unit,
+    onNavigateToCats: () -> Unit,
+    onNavigateToDetail: (Long) -> Unit,
+    onNavigateToAddDay: () -> Unit,
     homeViewModel: HomeViewModel = hiltViewModel()
 ) {
     val uiDialog by homeViewModel.uiDialog.collectAsState()
@@ -96,6 +97,7 @@ fun HomeScreen(
                 titleText = stringResource(id = R.string.mental_tips)
             )
             CardWithOnClick(
+                onClick = onNavigateToHelpForYou,
                 cardModifier = Modifier
                     .padding(
                         top = dimensionResource(id = R.dimen.padding_small_1),

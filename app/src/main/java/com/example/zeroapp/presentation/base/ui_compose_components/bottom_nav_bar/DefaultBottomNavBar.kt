@@ -1,4 +1,4 @@
-package com.example.zeroapp.presentation.base.ui_compose_components.bottom_bar
+package com.example.zeroapp.presentation.base.ui_compose_components.bottom_nav_bar
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -23,7 +23,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.example.zeroapp.presentation.base.ui_compose_components.Screen
+import com.example.zeroapp.presentation.base.navigation.Screen
 import com.example.zeroapp.presentation.base.ui_theme.Gray800
 import com.example.zeroapp.presentation.base.ui_theme.TealMain
 import com.example.zeroapp.presentation.base.ui_theme.Typography
@@ -31,7 +31,7 @@ import com.example.zeroapp.R
 
 
 @Composable
-fun BottomNavBar(navController: NavController) {
+fun DefaultBottomNavBar(navController: NavController) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
     val destinations = listOf(Screen.Home, Screen.History, Screen.Settings)
