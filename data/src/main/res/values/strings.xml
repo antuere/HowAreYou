@@ -121,6 +121,22 @@
     <!-- Countries for helplines -->
     <string name="russia">Russia</string>
     <string name="usa">USA</string>
-    <string name="italia">Italia</string>
+    <string name="italy">Italy</string>
+
+    <!-- Helplines -->
+    <string name="helpline_rus_0">Anton helps</string>
+    <string name="helpline_rus_1">Dad helps</string>
+    <string name="helpline_rus_2">Randoms</string>
+    <string name="helpline_rus_3">Again randoms</string>
+
+    <string name="helpline_usa_0">WTF HELP</string>
+    <string name="helpline_usa_1">Timyraty</string>
+    <string name="helpline_usa_2">Just psycho</string>
+
+    <string name="helpline_ita_0">Pizza</string>
+    <string name="helpline_ita_1">Pasta help best</string>
+    <string name="helpline_ita_2">Ferrari best help</string>
+    <string name="helpline_ita_3">Just random text</string>
+    <string name="helpline_ita_4">Def help</string>
 
 </resources>

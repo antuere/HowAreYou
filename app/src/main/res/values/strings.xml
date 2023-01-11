@@ -145,6 +145,10 @@
     <string name="telegram_chat">Telegram chat</string>
     <string name="email_chat">Email chat</string>
 
+    <!-- Helplines screen -->
+    <string name="country">Country</string>
+    <string name="notSupportedCountry">The country is not supported yet</string>
+
     <!-- History screen -->
     <string name="all_days_desc">Show all days</string>
     <string name="month_days_desc">Show days of this current month</string>

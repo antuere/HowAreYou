@@ -3,8 +3,11 @@ package com.example.zeroapp.util
 import android.content.Context
 import android.widget.Toast
 import androidx.annotation.StringRes
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.ime
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 
 @Composable
 fun ShowToast(text: String, duration: Int = Toast.LENGTH_SHORT) {
@@ -27,3 +30,10 @@ fun showToastByContext(
 
     Toast.makeText(context, toastText, duration).show()
 }
+
+@Composable
+fun isKeyboardVisible(): Boolean {
+    return WindowInsets.ime.getBottom(LocalDensity.current) > 0
+}
+
+

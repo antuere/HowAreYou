@@ -119,6 +119,7 @@ dependencies {
     implementation "com.google.accompanist:accompanist-navigation-animation:$version_accompanist"
     implementation "com.google.accompanist:accompanist-pager:$version_accompanist"
     implementation "com.google.accompanist:accompanist-pager-indicators:$version_accompanist"
+    implementation "com.google.accompanist:accompanist-systemuicontroller:$version_accompanist"
 
     // Preferences DataStore
     implementation "androidx.datastore:datastore-preferences:$version_data_store"
@@ -127,7 +128,7 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version_coroutine"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$version_coroutine_android"
 
-    //FireBase
+    // FireBase
     implementation "com.google.firebase:firebase-storage-ktx:$version_firebase"
     implementation "com.google.firebase:firebase-database-ktx:$version_firebase"
     implementation "com.google.firebase:firebase-auth-ktx:$version_firebase_auth"

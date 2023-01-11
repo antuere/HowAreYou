@@ -4,14 +4,17 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.animation.*
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.core.view.WindowCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.lifecycleScope
 import antuere.domain.dto.Settings
@@ -31,6 +34,7 @@ import com.example.zeroapp.presentation.base.ui_compose_components.rememberAppSt
 import com.example.zeroapp.presentation.base.ui_compose_components.top_bar.DefaultTopBar
 import com.example.zeroapp.presentation.home.HomeViewModel
 import com.example.zeroapp.presentation.base.ui_theme.HowAreYouTheme
+import com.example.zeroapp.presentation.base.ui_theme.White
 import com.example.zeroapp.presentation.cats.CatsScreen
 import com.example.zeroapp.presentation.detail.DetailScreen
 import com.example.zeroapp.presentation.favorites.FavoritesScreen
@@ -48,6 +52,7 @@ import com.example.zeroapp.presentation.sign_in_methods.SignInMethodsScreen
 import com.example.zeroapp.presentation.sign_up_with_email.SignUpEmailScreen
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
@@ -75,6 +80,7 @@ class MainActivity : FragmentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Timber.plant(Timber.DebugTree())
+        WindowCompat.setDecorFitsSystemWindows(window, false)
 
         lifecycleScope.launch(Dispatchers.IO) {
             settings = getSettingsUseCase(Unit).first()
@@ -99,6 +105,19 @@ class MainActivity : FragmentActivity() {
                 val appState: AppState by rememberAppState()
                 val appBarState by appState.appBarState
                 val navController = appState.navController
+
+                val systemUiController = rememberSystemUiController()
+                val isUseDarkIcons =
+                    !(isSystemInDarkTheme() || (!isSystemInDarkTheme() && appBarState.isVisibleBottomBar))
+                val colorNavBarColor =
+                    if (appBarState.isVisibleBottomBar) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onPrimary
+
+                SideEffect {
+                    systemUiController.setNavigationBarColor(
+                        color = colorNavBarColor,
+                        darkIcons = isUseDarkIcons
+                    )
+                }
 
                 Scaffold(
                     snackbarHost = {

@@ -40,6 +40,10 @@ abstract class AbstractModule {
 
     @Binds
     @Singleton
+    abstract fun bindHelplinesRepository(helplinesRepositoryImpl: HelplinesRepositoryImpl): HelplinesRepository
+
+    @Binds
+    @Singleton
     abstract fun bindAuthManager(authenticationManagerImpl: AuthenticationManagerImpl): AuthenticationManager
 
     @Binds
