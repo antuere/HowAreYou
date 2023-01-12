@@ -11,6 +11,7 @@ import antuere.domain.util.Constants
 import com.example.zeroapp.R
 import com.example.zeroapp.presentation.base.ui_compose_components.dialog.UIDialog
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -43,7 +44,7 @@ class DetailViewModel @Inject constructor(
     }
 
     private fun getDay() {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             _selectedDay.value = getDayByIdUseCase(dayId)
         }
     }

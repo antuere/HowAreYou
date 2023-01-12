@@ -147,7 +147,7 @@
 
     <!-- Helplines screen -->
     <string name="country">Country</string>
-    <string name="notSupportedCountry">The country is not supported yet</string>
+    <string name="notSupportedCountry">Not found in supported countries</string>
 
     <!-- History screen -->
     <string name="all_days_desc">Show all days</string>
@@ -188,6 +188,11 @@
     <string name="october">October</string>
     <string name="november">November</string>
     <string name="december">December</string>
+
+    <!-- Countries for helplines -->
+    <string name="russia">Russia</string>
+    <string name="usa">USA</string>
+    <string name="italy">Italy</string>
 
     <!-- Other -->
     <string name="leak_canary_test_class_name">assertk.Assert</string>

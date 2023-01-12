@@ -21,6 +21,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -65,6 +66,8 @@ class SettingsViewModel @Inject constructor(
     private var isShowDialogSignOut = false
 
     init {
+        Timber.i("animation error : in vm id is ${this.hashCode()}")
+
         getSettings()
         getSavedPinCode()
         getUserNickname()

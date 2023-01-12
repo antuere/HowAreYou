@@ -2,10 +2,7 @@ package antuere.data.preferences_data_store.settings_data_store
 
 import android.content.Context
 import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.core.booleanPreferencesKey
-import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.core.stringPreferencesKey
+import androidx.datastore.preferences.core.*
 import androidx.datastore.preferences.preferencesDataStore
 import antuere.data.preferences_data_store.settings_data_store.entities.SettingsEntity
 import antuere.domain.util.Constants
@@ -23,6 +20,7 @@ class SettingsDataStore(context: Context, name: String) {
         val SETTINGS_PIN_CODE_KEY = booleanPreferencesKey("pin_code_auth")
         val SETTINGS_PIN_CODE_SAVED_KEY = stringPreferencesKey("password_pin_code")
         val SETTINGS_WORRIED_DIALOG_KEY = booleanPreferencesKey("worried_dialog")
+        val SELECTED_COUNTRY_ID = intPreferencesKey("selected_country")
     }
 
     val settings: Flow<SettingsEntity>
@@ -47,6 +45,11 @@ class SettingsDataStore(context: Context, name: String) {
             preferences[USER_NICKNAME] ?: Constants.USER_NOT_AUTH
         }
 
+    val selectedCountryId: Flow<Int>
+        get() = settingsDataStore.data.map { preferences ->
+            preferences[SELECTED_COUNTRY_ID] ?: 1
+        }
+
     suspend fun saveSettings(settings: SettingsEntity) {
         settingsDataStore.edit { preferences ->
             preferences[SETTINGS_BIOMETRIC_KEY] = settings.isBiometricEnabled
@@ -64,6 +67,12 @@ class SettingsDataStore(context: Context, name: String) {
     suspend fun savePinCode(pinCode: String) {
         settingsDataStore.edit { preferences ->
             preferences[SETTINGS_PIN_CODE_SAVED_KEY] = pinCode
+        }
+    }
+
+    suspend fun saveCountryId(countryId: Int) {
+        settingsDataStore.edit { preferences ->
+            preferences[SELECTED_COUNTRY_ID] = countryId
         }
     }
 
@@ -88,4 +97,6 @@ class SettingsDataStore(context: Context, name: String) {
             preferences.remove(USER_NICKNAME)
         }
     }
+
+
 }

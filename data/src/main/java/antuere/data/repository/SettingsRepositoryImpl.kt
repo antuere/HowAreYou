@@ -3,6 +3,7 @@ package antuere.data.repository
 import antuere.data.preferences_data_store.settings_data_store.SettingsDataStore
 import antuere.data.preferences_data_store.settings_data_store.mapping.SettingsEntityMapper
 import antuere.domain.dto.Settings
+import antuere.domain.dto.helplines.SupportedCountry
 import antuere.domain.repository.SettingsRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -22,10 +23,19 @@ class SettingsRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun getSelectedCountryId(): Flow<Int> {
+        return settingsDataStore.selectedCountryId
+    }
+
     override suspend fun saveSettings(settings: Settings) = withContext(Dispatchers.IO) {
         val settingsEntity = settingsEntityMapper.mapFromDomainModel(settings)
         settingsDataStore.saveSettings(settingsEntity)
     }
+
+    override suspend fun saveSelectedCountryId(supportedCountry: SupportedCountry) =
+        withContext(Dispatchers.IO) {
+            settingsDataStore.saveCountryId(supportedCountry.id)
+        }
 
     override suspend fun saveUserNickname(nickname: String) = withContext(Dispatchers.IO) {
         settingsDataStore.saveUserNickName(nickname)

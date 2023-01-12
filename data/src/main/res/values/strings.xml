@@ -118,11 +118,6 @@
         It doesn\'t matter how long you\'ve been friends. It also doesn\'t matter how strong you think your friendship is. You should never take such a relationship for granted, which you got absolutely for nothing. Do not allow yourself to underestimate friendship, because it is a real value and your wealth that should be cherished.
     </string>
 
-    <!-- Countries for helplines -->
-    <string name="russia">Russia</string>
-    <string name="usa">USA</string>
-    <string name="italy">Italy</string>
-
     <!-- Helplines -->
     <string name="helpline_rus_0">Anton helps</string>
     <string name="helpline_rus_1">Dad helps</string>

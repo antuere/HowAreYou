@@ -8,6 +8,7 @@ import antuere.domain.repository.DayRepository
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import timber.log.Timber
 import javax.inject.Inject
 
 
@@ -18,12 +19,14 @@ class DayRepositoryImpl @Inject constructor(
 ) : DayRepository {
 
     init {
+        Timber.i("view models error : init day rep")
         CoroutineScope(Dispatchers.IO).launch {
             refreshRemoteData()
         }
     }
 
     override suspend fun refreshRemoteData() {
+        Timber.i("view models error : refresh remote data")
         val daysFromServer = firebaseRealtimeDB.getDays()
         if (daysFromServer.isNotEmpty()) {
             CoroutineScope(Dispatchers.IO).launch {
@@ -92,9 +95,9 @@ class DayRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getDayById(id: Long): Day? = withContext(Dispatchers.IO) {
+    override suspend fun getDayById(id: Long): Day? {
         val dayEntity = dayDataBaseRoom.dayDatabaseDao.getDayById(id)
-        dayEntity?.let(dayEntityMapper::mapToDomainModel)
+        return dayEntity?.let(dayEntityMapper::mapToDomainModel)
     }
 
     override suspend fun deleteDay(id: Long): Unit = withContext(Dispatchers.IO) {

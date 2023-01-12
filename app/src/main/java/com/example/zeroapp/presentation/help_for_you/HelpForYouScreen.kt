@@ -22,6 +22,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.zeroapp.R
 import com.example.zeroapp.presentation.base.ui_compose_components.card.CardWithIcons
 import com.example.zeroapp.presentation.base.ui_compose_components.top_bar.AppBarState
+import timber.log.Timber
 
 @Composable
 fun HelpForYouScreen(
@@ -30,6 +31,7 @@ fun HelpForYouScreen(
     onNavigateToHelplines : () -> Unit,
     helpForYouViewModel: HelpForYouViewModel = hiltViewModel()
 ) {
+    Timber.i("animation error : in compose helpfory screen model id is ${helpForYouViewModel.hashCode()}")
     LaunchedEffect(true) {
         updateAppBar(
             AppBarState(

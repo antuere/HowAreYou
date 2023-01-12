@@ -10,10 +10,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import antuere.domain.dto.helplines.SupportedCountry
 import com.example.zeroapp.R
+import com.example.zeroapp.util.getName
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ExposedDropdownMenu(
+fun CountrySelectionMenu(
     modifier: Modifier = Modifier,
     countries: List<SupportedCountry>,
     selectedCountry: SupportedCountry,
@@ -21,7 +22,7 @@ fun ExposedDropdownMenu(
 ) {
     val focusManager = LocalFocusManager.current
 
-    val selectedCountryName = stringResource(id = selectedCountry.nameRes)
+    val selectedCountryName = selectedCountry.getName()
     var expanded by remember { mutableStateOf(false) }
 
     var selectedCountryText by remember { mutableStateOf(selectedCountryName) }
@@ -46,13 +47,14 @@ fun ExposedDropdownMenu(
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
             keyboardActions = KeyboardActions(onDone = {
                 focusManager.clearFocus()
+                selectedCountryText = selectedCountryName
                 expanded = false
             }),
             trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
         )
         val filteringCountries =
             countries.filter {
-                stringResource(id = it.nameRes).contains(
+                it.getName().contains(
                     selectedCountryText,
                     ignoreCase = true
                 )
@@ -68,7 +70,7 @@ fun ExposedDropdownMenu(
         ) {
             if (filteringCountries.isNotEmpty()) {
                 filteringCountries.forEach { selectionCountry ->
-                    val countryName = stringResource(id = selectionCountry.nameRes)
+                    val countryName = selectionCountry.getName()
 
                     DropdownMenuItem(
                         text = { Text(countryName) },

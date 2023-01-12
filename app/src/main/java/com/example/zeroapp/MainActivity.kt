@@ -16,7 +16,11 @@ import androidx.compose.ui.unit.dp
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
 import androidx.fragment.app.FragmentActivity
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.get
 import antuere.domain.dto.Settings
 import antuere.domain.usecases.user_settings.GetSettingsUseCase
 import antuere.domain.util.Constants
@@ -40,6 +44,7 @@ import com.example.zeroapp.presentation.detail.DetailScreen
 import com.example.zeroapp.presentation.favorites.FavoritesScreen
 import com.example.zeroapp.presentation.help_for_you.HelpForYouScreen
 import com.example.zeroapp.presentation.helplines.HelplinesScreen
+import com.example.zeroapp.presentation.helplines.HelplinesViewModel
 import com.example.zeroapp.presentation.history.HistoryScreen
 import com.example.zeroapp.presentation.home.HomeScreen
 import com.example.zeroapp.presentation.mental_tips.MentalTipsScreen
@@ -105,6 +110,7 @@ class MainActivity : FragmentActivity() {
                 val appState: AppState by rememberAppState()
                 val appBarState by appState.appBarState
                 val navController = appState.navController
+                val backStackEntry by navController.currentBackStackEntryAsState()
 
                 val systemUiController = rememberSystemUiController()
                 val isUseDarkIcons =
@@ -289,7 +295,6 @@ class MainActivity : FragmentActivity() {
                                 onNavigateUp = { navController.navigateUp() },
                             )
                         }
-
 
                         composable(
                             route = Screen.History.route,

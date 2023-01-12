@@ -31,6 +31,7 @@ import com.example.zeroapp.presentation.pin_code_creation.PinCodeCreating
 import com.example.zeroapp.presentation.settings.ui_compose.PrivacySettings
 import com.example.zeroapp.util.findFragmentActivity
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -40,6 +41,7 @@ fun SettingsScreen(
     onNavigateSignIn: () -> Unit,
     settingsViewModel: SettingsViewModel = hiltViewModel()
 ) {
+
     val fragmentActivity = LocalContext.current.findFragmentActivity()
     val scope = rememberCoroutineScope()
     val context = LocalContext.current

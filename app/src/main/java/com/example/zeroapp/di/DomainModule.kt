@@ -157,6 +157,16 @@ class DomainModule {
     }
 
     @Provides
+    fun provideGetSelectedCountryIdUseCase(settingsRepository: SettingsRepository): GetSelectedCountryIdUseCase {
+        return GetSelectedCountryIdUseCase(settingsRepository)
+    }
+
+    @Provides
+    fun provideSaveSelectedCountryIdUseCase(settingsRepository: SettingsRepository): SaveSelectedCountryIdUseCase {
+        return SaveSelectedCountryIdUseCase(settingsRepository)
+    }
+
+    @Provides
     fun provideCheckCurrentAuthUseCase(authenticationManager: AuthenticationManager): CheckCurrentAuthUseCase {
         return CheckCurrentAuthUseCase(authenticationManager)
     }

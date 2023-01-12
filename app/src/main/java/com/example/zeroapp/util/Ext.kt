@@ -9,7 +9,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.debugInspectorInfo
+import androidx.compose.ui.res.stringResource
 import androidx.fragment.app.FragmentActivity
+import antuere.domain.dto.helplines.SupportedCountry
+import com.example.zeroapp.R
 import kotlinx.coroutines.delay
 
 
@@ -75,8 +78,8 @@ fun Modifier.animateScaleOnce() = composed(
 
         Modifier.graphicsLayer {
 //            translationY = if (isAnimated) -transitionY else 0f
-            scaleX = if(isAnimated) scale else 1f
-            scaleY = if(isAnimated) scale else 1f
+            scaleX = if (isAnimated) scale else 1f
+            scaleY = if (isAnimated) scale else 1f
         }
     },
     inspectorInfo = debugInspectorInfo {
@@ -105,8 +108,8 @@ fun Modifier.animateScaleDownOnce() = composed(
         }
 
         Modifier.graphicsLayer {
-            scaleX = if(isAnimated) scale else 1f
-            scaleY = if(isAnimated) scale else 1f
+            scaleX = if (isAnimated) scale else 1f
+            scaleY = if (isAnimated) scale else 1f
         }
     },
     inspectorInfo = debugInspectorInfo {
@@ -135,11 +138,20 @@ fun Modifier.animateScaleUpOnce() = composed(
         }
 
         Modifier.graphicsLayer {
-            scaleX = if(isAnimated) scale else 1f
-            scaleY = if(isAnimated) scale else 1f
+            scaleX = if (isAnimated) scale else 1f
+            scaleY = if (isAnimated) scale else 1f
         }
     },
     inspectorInfo = debugInspectorInfo {
         name = "animateScaleUpOnce"
     }
 )
+
+@Composable
+fun SupportedCountry.getName(): String {
+    return when (this) {
+        is SupportedCountry.Italy -> stringResource(id = R.string.italy)
+        is SupportedCountry.Russia -> stringResource(id = R.string.russia)
+        is SupportedCountry.USA -> stringResource(id = R.string.usa)
+    }
+}
