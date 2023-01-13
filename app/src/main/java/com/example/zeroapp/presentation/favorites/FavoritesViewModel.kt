@@ -6,7 +6,6 @@ import antuere.domain.usecases.days_entities.DeleteDayUseCase
 import antuere.domain.usecases.days_entities.GetFavoritesDaysUseCase
 import com.example.zeroapp.R
 import com.example.zeroapp.presentation.base.ui_compose_components.dialog.UIDialog
-import com.example.zeroapp.presentation.history.NavigateToDetailState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -28,9 +27,9 @@ class FavoritesViewModel @Inject constructor(
     val listDays: StateFlow<List<Day>>
         get() = _listDays
 
-    private var _navigateToDetailState = MutableStateFlow<NavigateToDetailState?>(null)
-    val navigateToDetailState: StateFlow<NavigateToDetailState?>
-        get() = _navigateToDetailState
+//    private var _navigateToDetailState = MutableStateFlow<NavigateToDetailState?>(null)
+//    val navigateToDetailState: StateFlow<NavigateToDetailState?>
+//        get() = _navigateToDetailState
 
     private var _dayId = 0L
 
@@ -43,10 +42,10 @@ class FavoritesViewModel @Inject constructor(
     }
 
     fun onClickDay(day: Day) {
-        _navigateToDetailState.value = NavigateToDetailState(
-            dayId = day.dayId,
-            navigateToDetail = true
-        )
+//        _navigateToDetailState.value = NavigateToDetailState(
+//            dayId = day.dayId,
+//            navigateToDetail = true
+//        )
     }
 
     fun onClickLongDay(day: Day) {
@@ -56,7 +55,7 @@ class FavoritesViewModel @Inject constructor(
 
 
     fun doneNavigateToDetail() {
-        _navigateToDetailState.value!!.navigateToDetail = false
+//        _navigateToDetailState.value!!.navigateToDetail = false
     }
 
     private fun onClickLongSmile() {

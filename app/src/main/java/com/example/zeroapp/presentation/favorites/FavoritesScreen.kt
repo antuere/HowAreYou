@@ -39,20 +39,20 @@ fun FavoritesScreen(
 
     val listDays by favoritesViewModel.listDays.collectAsState()
     val uiDialog by favoritesViewModel.uiDialog.collectAsState()
-    val navigateToDetailState by favoritesViewModel.navigateToDetailState.collectAsState()
+//    val navigateToDetailState by favoritesViewModel.navigateToDetailState.collectAsState()
 
-    LaunchedEffect(navigateToDetailState) {
-        navigateToDetailState?.let { state ->
-            if (state.navigateToDetail) {
-                onNavigateToDetail(state.dayId!!)
-            }
-            favoritesViewModel.doneNavigateToDetail()
-        }
-    }
+//    LaunchedEffect(navigateToDetailState) {
+//        navigateToDetailState?.let { state ->
+//            if (state.navigateToDetail) {
+//                onNavigateToDetail(state.dayId!!)
+//            }
+//            favoritesViewModel.doneNavigateToDetail()
+//        }
+//    }
 
-    uiDialog?.let {
-        Dialog(dialog = it)
-    }
+//    uiDialog?.let {
+//        Dialog(dialog = it)
+//    }
 
     Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Top) {
         LazyVerticalGrid(

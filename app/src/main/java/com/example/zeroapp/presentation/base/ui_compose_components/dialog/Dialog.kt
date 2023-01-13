@@ -8,13 +8,18 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 
+//TODO убрать дефолтную лямбду closeDialog после полного рефактора
 @Composable
 fun Dialog(
     dialog: UIDialog,
-    iconColor: Color = Color.Black
+    iconColor: Color = Color.Black,
+    closeDialog: () -> Unit = {},
 ) {
     AlertDialog(
-        onDismissRequest = dialog.dismissAction,
+        onDismissRequest = {
+            dialog.dismissAction()
+            closeDialog()
+        },
         icon = {
             Icon(
                 painterResource(id = dialog.icon),
@@ -33,7 +38,8 @@ fun Dialog(
         confirmButton = {
             TextButton(
                 onClick = {
-                    dialog.positiveButton.onClick.invoke()
+                    dialog.positiveButton.onClick()
+                    closeDialog()
                 }
             ) {
                 Text(
@@ -45,7 +51,8 @@ fun Dialog(
         dismissButton = {
             TextButton(
                 onClick = {
-                    dialog.negativeButton.onClick.invoke()
+                    dialog.negativeButton.onClick()
+                    closeDialog()
                 }
             ) {
                 Text(

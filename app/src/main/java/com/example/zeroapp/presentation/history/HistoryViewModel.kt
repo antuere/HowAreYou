@@ -12,11 +12,20 @@ import antuere.domain.usecases.user_settings.SaveToggleBtnUseCase
 import antuere.domain.util.TimeUtility
 import com.example.zeroapp.R
 import com.example.zeroapp.presentation.base.ui_compose_components.dialog.UIDialog
+import com.example.zeroapp.presentation.base.ui_text.UiText
+import com.example.zeroapp.presentation.history.state.HistorySideEffect
+import com.example.zeroapp.presentation.history.state.HistoryState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import org.orbitmvi.orbit.Container
+import org.orbitmvi.orbit.ContainerHost
+import org.orbitmvi.orbit.syntax.simple.intent
+import org.orbitmvi.orbit.syntax.simple.postSideEffect
+import org.orbitmvi.orbit.syntax.simple.reduce
+import org.orbitmvi.orbit.viewmodel.container
 import javax.inject.Inject
 
 
@@ -28,33 +37,34 @@ class HistoryViewModel @Inject constructor(
     private val getCertainDaysUseCase: GetCertainDaysUseCase,
     private val getToggleBtnStateUseCase: GetToggleBtnStateUseCase,
     private val saveToggleBtnUseCase: SaveToggleBtnUseCase,
-) : ViewModel() {
+) : ContainerHost<HistoryState, HistorySideEffect>, ViewModel() {
 
-    private var _dayId = 0L
+    override val container: Container<HistoryState, HistorySideEffect> =
+        container(HistoryState.Loading)
 
-    private var _uiDialog = MutableStateFlow<UIDialog?>(null)
-    val uiDialog: StateFlow<UIDialog?>
-        get() = _uiDialog
+//    private var _uiDialog = MutableStateFlow<UIDialog?>(null)
+//    val uiDialog: StateFlow<UIDialog?>
+//        get() = _uiDialog
 
-    private var _listDays = MutableStateFlow<List<Day>?>(null)
-    val listDays: StateFlow<List<Day>?>
-        get() = _listDays
+//    private var _listDays = MutableStateFlow<List<Day>?>(null)
+//    val listDays: StateFlow<List<Day>?>
+//        get() = _listDays
 
-    private var _navigateToDetailState = MutableStateFlow<NavigateToDetailState?>(null)
-    val navigateToDetailState: StateFlow<NavigateToDetailState?>
-        get() = _navigateToDetailState
+//    private var _navigateToDetailState = MutableStateFlow<NavigateToDetailState?>(null)
+//    val navigateToDetailState: StateFlow<NavigateToDetailState?>
+//        get() = _navigateToDetailState
 
-    private var _toggleBtnState = MutableStateFlow(ToggleBtnState.ALL_DAYS)
-    val toggleBtnState: StateFlow<ToggleBtnState>
-        get() = _toggleBtnState
+//    private var _toggleBtnState = MutableStateFlow(ToggleBtnState.ALL_DAYS)
+//    val toggleBtnState: StateFlow<ToggleBtnState>
+//        get() = _toggleBtnState
+//
+//    private var _cellsAmount = MutableStateFlow(4)
+//    val cellsAmount: StateFlow<Int>
+//        get() = _cellsAmount
 
-    private var _cellsAmount = MutableStateFlow(4)
-    val cellsAmount: StateFlow<Int>
-        get() = _cellsAmount
-
-    private var _isShowAnimation = MutableStateFlow(false)
-    val isShowAnimation: StateFlow<Boolean>
-        get() = _isShowAnimation
+//    private var _isShowAnimation = MutableStateFlow(false)
+//    val isShowAnimation: StateFlow<Boolean>
+//        get() = _isShowAnimation
 
     private var _currentJob: JobType? = null
 
@@ -62,111 +72,150 @@ class HistoryViewModel @Inject constructor(
         getToggleButtonState()
     }
 
-    fun onClickDay(day: Day) {
-        _navigateToDetailState.value = NavigateToDetailState(
-            dayId = day.dayId,
-            navigateToDetail = true
+    fun onClickDay(day: Day) = intent {
+        postSideEffect(
+            HistorySideEffect.NavigationToDayDetail(
+                dayId = day.dayId
+            )
         )
     }
 
     fun onClickLongDay(day: Day) {
-        _dayId = day.dayId
-        onClickLongSmile()
+        onClickLongSmile(day)
     }
 
-    fun doneNavigateToDetail() {
-        _navigateToDetailState.value!!.navigateToDetail = false
-    }
+//    fun doneNavigateToDetail() {
+//        _navigateToDetailState.value!!.navigateToDetail = false
+//    }
 
-    private fun deleteDay() {
+    private fun deleteDay(dayId: Long) {
         viewModelScope.launch {
-            deleteDayUseCase(_dayId)
+            deleteDayUseCase(dayId)
         }
     }
 
-    private fun onClickLongSmile() {
-        _uiDialog.value = UIDialog(
+    private fun onClickLongSmile(day: Day) = intent {
+        val uiDialog = UIDialog(
             title = R.string.dialog_delete_title,
             desc = R.string.dialog_delete_desc,
             icon = R.drawable.ic_delete_black,
             positiveButton = UIDialog.UiButton(
                 text = R.string.yes,
                 onClick = {
-                    deleteDay()
-                    _uiDialog.value = null
+                    deleteDay(day.dayId)
                 }),
             negativeButton = UIDialog.UiButton(
                 text = R.string.no,
-                onClick = {
-                    _uiDialog.value = null
-                })
+                onClick = {})
         )
+        postSideEffect(HistorySideEffect.Dialog(uiDialog))
     }
 
-    fun onDaysSelected(pair: Pair<Long, Long>) {
-        _toggleBtnState.value = ToggleBtnState.FILTER_SELECTED
-        _isShowAnimation.value = true
-
-        saveToggleButtonState(_toggleBtnState.value)
+    fun onDaysSelected(pair: Pair<Long, Long>) = intent {
+        postSideEffect(HistorySideEffect.AnimationToggleGroup)
 
         _currentJob?.job?.cancel()
         _currentJob = JobType.Filter(viewModelScope.launch {
-            getSelectedDaysUseCase(pair).cancellable().collectLatest {
-                _listDays.value = it
+            getSelectedDaysUseCase(pair).cancellable().collectLatest { days ->
+                reduce {
+                    if (days.isEmpty()) {
+                        return@reduce HistoryState.Empty.FromFilter(
+                            message = UiText.StringResource(R.string.no_days_filter)
+                        )
+                    } else {
+                        return@reduce HistoryState.Loaded.FilterSelected(
+                            days = days,
+                            cellsAmount = 3
+                        )
+                    }
+                }
             }
         })
     }
 
-    private fun checkedCurrentMonthButton() {
+    private fun checkedCurrentMonthButton() = intent {
         if (_currentJob !is JobType.Month) {
             _currentJob?.job?.cancel()
 
             _currentJob = JobType.Month(viewModelScope.launch {
                 getCertainDaysUseCase(TimeUtility.getCurrentMonthTime()).cancellable()
-                    .collectLatest {
-                        _toggleBtnState.value = ToggleBtnState.CURRENT_MONTH
-                        _listDays.value = it
-                        _cellsAmount.value = 3
+                    .collectLatest { days ->
+                        reduce {
+                            val toggleBtnState = ToggleBtnState.CURRENT_MONTH
+
+                            if (days.isEmpty()) {
+                                return@reduce HistoryState.Empty.FromToggleGroup(
+                                    message = UiText.StringResource(R.string.no_days_month),
+                                    toggleBtnState = toggleBtnState
+                                )
+                            } else {
+                                return@reduce HistoryState.Loaded.Default(
+                                    days = days,
+                                    toggleBtnState = toggleBtnState,
+                                    cellsAmount = 3
+                                )
+                            }
+                        }
                     }
             })
         }
     }
 
-    private fun checkedLastWeekButton() {
+    private fun checkedLastWeekButton() = intent {
         if (_currentJob !is JobType.Week) {
             _currentJob?.job?.cancel()
 
             _currentJob = JobType.Week(viewModelScope.launch {
                 getCertainDaysUseCase(TimeUtility.getCurrentWeekTime()).cancellable()
-                    .collectLatest {
-                        _toggleBtnState.value = ToggleBtnState.LAST_WEEK
-                        _listDays.value = it
-                        _cellsAmount.value = 2
+                    .collectLatest { days ->
+                        reduce {
+                            val toggleBtnState = ToggleBtnState.LAST_WEEK
+
+                            if (days.isEmpty()) {
+                                return@reduce HistoryState.Empty.FromToggleGroup(
+                                    message = UiText.StringResource(R.string.no_days_week),
+                                    toggleBtnState = toggleBtnState
+                                )
+                            } else {
+                                return@reduce HistoryState.Loaded.Default(
+                                    days = days,
+                                    toggleBtnState = toggleBtnState,
+                                    cellsAmount = 2
+                                )
+                            }
+                        }
                     }
             })
         }
     }
 
-    private fun checkedAllDaysButton() {
+    private fun checkedAllDaysButton() = intent {
         if (_currentJob !is JobType.AllDays) {
             _currentJob?.job?.cancel()
 
             _currentJob = JobType.AllDays(viewModelScope.launch {
-                getAllDaysUseCase(Unit).cancellable().collectLatest {
-                    _toggleBtnState.value = ToggleBtnState.ALL_DAYS
-                    _listDays.value = it
-                    _cellsAmount.value = 4
+                getAllDaysUseCase(Unit).cancellable().collectLatest { days ->
+                    reduce {
+                        if (days.isEmpty()) return@reduce HistoryState.Empty.NoEntriesYet(
+                            UiText.StringResource(R.string.no_days_all)
+                        )
+                        else {
+                            return@reduce HistoryState.Loaded.Default(
+                                days = days,
+                                toggleBtnState = ToggleBtnState.ALL_DAYS,
+                                cellsAmount = 4
+                            )
+                        }
+                    }
                 }
             })
         }
     }
 
-    private fun saveToggleButtonState(state: ToggleBtnState) {
-        if (_toggleBtnState.value != state) {
-            viewModelScope.launch {
-                delay(150)
-                saveToggleBtnUseCase(state)
-            }
+    private fun saveToggleButtonState(toggleBtnState: ToggleBtnState) = intent {
+        viewModelScope.launch {
+            delay(150)
+            saveToggleBtnUseCase(toggleBtnState)
         }
     }
 
@@ -174,12 +223,13 @@ class HistoryViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             getToggleBtnStateUseCase(Unit).collectLatest {
                 onClickCheckedItem(it)
-                _toggleBtnState.value = it
             }
         }
     }
 
-    fun onClickCheckedItem(state: ToggleBtnState) {
+    fun onClickCheckedItem(state: ToggleBtnState) = intent {
+        postSideEffect(HistorySideEffect.AnimationToggleGroup)
+
         when (state) {
             ToggleBtnState.ALL_DAYS -> {
                 checkedAllDaysButton()
@@ -190,18 +240,13 @@ class HistoryViewModel @Inject constructor(
             ToggleBtnState.LAST_WEEK -> {
                 checkedLastWeekButton()
             }
-            ToggleBtnState.FILTER_SELECTED -> {
-                _cellsAmount.value = 3
-            }
         }
-        _isShowAnimation.value = true
         saveToggleButtonState(state)
-
     }
 
-    fun resetIsShowAnimation(){
-        _isShowAnimation.value = false
-    }
+//    fun resetIsShowAnimation() {
+//        _isShowAnimation.value = false
+//    }
 }
 
 

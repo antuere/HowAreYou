@@ -34,6 +34,7 @@ import com.example.zeroapp.presentation.base.ui_compose_components.AppState
 import com.example.zeroapp.presentation.base.ui_compose_components.top_bar.AppBarState
 import com.example.zeroapp.presentation.base.navigation.Screen
 import com.example.zeroapp.presentation.base.ui_compose_components.bottom_nav_bar.DefaultBottomNavBar
+import com.example.zeroapp.presentation.base.ui_compose_components.dialog.UIDialogListener
 import com.example.zeroapp.presentation.base.ui_compose_components.rememberAppState
 import com.example.zeroapp.presentation.base.ui_compose_components.top_bar.DefaultTopBar
 import com.example.zeroapp.presentation.home.HomeViewModel
@@ -110,7 +111,11 @@ class MainActivity : FragmentActivity() {
                 val appState: AppState by rememberAppState()
                 val appBarState by appState.appBarState
                 val navController = appState.navController
-                val backStackEntry by navController.currentBackStackEntryAsState()
+
+                val uiDialogListener by remember {
+                    mutableStateOf(UIDialogListener())
+                }
+                uiDialogListener.SetupDialogListener()
 
                 val systemUiController = rememberSystemUiController()
                 val isUseDarkIcons =
@@ -310,7 +315,11 @@ class MainActivity : FragmentActivity() {
                                 },
                                 onNavigateToDetail = {
                                     navController.navigate(Screen.Detail.route + "/$it")
-                                })
+                                },
+                                showDialog = {
+                                    uiDialogListener.showDialog(it)
+                                }
+                            )
                         }
 
                         composable(

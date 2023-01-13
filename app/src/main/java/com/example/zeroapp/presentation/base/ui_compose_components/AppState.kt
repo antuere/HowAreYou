@@ -5,6 +5,9 @@ import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.*
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.DialogHost
+import com.example.zeroapp.presentation.base.ui_compose_components.dialog.Dialog
+import com.example.zeroapp.presentation.base.ui_compose_components.dialog.UIDialog
 import com.example.zeroapp.presentation.base.ui_compose_components.top_bar.AppBarState
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import kotlinx.coroutines.*
@@ -27,7 +30,6 @@ class AppState(
             delay(duration)
             job.cancel()
         }
-
     }
 
     fun dismissSnackbar() {

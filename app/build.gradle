@@ -147,6 +147,10 @@ dependencies {
     implementation "androidx.room:room-runtime:$version_room"
     kapt "androidx.room:room-compiler:$version_room"
 
+    // Orbit MVI
+    implementation("org.orbit-mvi:orbit-viewmodel:$version_orbit_mvi")
+    implementation("org.orbit-mvi:orbit-compose:$version_orbit_mvi")
+
     // Test
     testImplementation "junit:junit:$version_junit"
     androidTestImplementation "androidx.test.ext:$version_junit_ext"

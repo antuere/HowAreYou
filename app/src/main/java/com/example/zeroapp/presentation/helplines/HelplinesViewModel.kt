@@ -7,14 +7,22 @@ import antuere.domain.dto.helplines.SupportedCountry
 import antuere.domain.usecases.helplines.GetSupportedCountriesUseCase
 import antuere.domain.usecases.user_settings.GetSelectedCountryIdUseCase
 import antuere.domain.usecases.user_settings.SaveSelectedCountryIdUseCase
+import com.example.zeroapp.presentation.helplines.state.HelplinesSideEffect
+import com.example.zeroapp.presentation.helplines.state.HelplinesState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.orbitmvi.orbit.Container
+import org.orbitmvi.orbit.ContainerHost
+import org.orbitmvi.orbit.syntax.simple.intent
+import org.orbitmvi.orbit.syntax.simple.reduce
+import org.orbitmvi.orbit.viewmodel.container
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -23,35 +31,31 @@ class HelplinesViewModel @Inject constructor(
     getSupportedCountriesUseCase: GetSupportedCountriesUseCase,
     getSelectedCountryIdUseCase: GetSelectedCountryIdUseCase,
     val saveSelectedCountryIdUseCase: SaveSelectedCountryIdUseCase
-) : ViewModel() {
+) : ContainerHost<HelplinesState, HelplinesSideEffect>, ViewModel() {
 
-    private var _countries = MutableStateFlow<List<SupportedCountry>>(emptyList())
-    val countries: StateFlow<List<SupportedCountry>>
-        get() = _countries
-
-    private var _selectedCountry = MutableStateFlow<SupportedCountry?>(null)
-    val selectedCountry: StateFlow<SupportedCountry?>
-        get() = _selectedCountry
-
+    override val container: Container<HelplinesState, HelplinesSideEffect> =
+        container(HelplinesState.Loading)
 
     init {
-        viewModelScope.launch {
-            _countries.value = getSupportedCountriesUseCase(Unit)
+        intent {
+            viewModelScope.launch(Dispatchers.IO){
+                val supportedCountries = getSupportedCountriesUseCase(Unit)
+                val selectedCountryId = getSelectedCountryIdUseCase(Unit).first()
+                val selectedCountry = supportedCountries.find { it.id == selectedCountryId }!!
 
-            withContext(Dispatchers.IO){
-                getSelectedCountryIdUseCase(Unit).collectLatest { id ->
-                    _selectedCountry.value = _countries.value.find { it.id == id }!!
+                reduce {
+                    HelplinesState.Loaded(supportedCountries, selectedCountry)
                 }
             }
         }
     }
 
-    fun onCountrySelected(country: SupportedCountry) {
-        _selectedCountry.value = country
-
+    fun onCountrySelected(country: SupportedCountry) = intent {
+        reduce {
+            (state as HelplinesState.Loaded).copy(selectedCountry = country)
+        }
         viewModelScope.launch {
             saveSelectedCountryIdUseCase(country)
         }
     }
-
 }

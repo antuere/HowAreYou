@@ -13,12 +13,10 @@ fun HistoryHeaderText(
     modifier: Modifier = Modifier,
     dayList: List<Day>,
 ) {
-    if (dayList.isNotEmpty()) {
-        val firstDate = TimeUtility.parseLongToCalendar(dayList.first().dayId)
-        val lastDate = TimeUtility.parseLongToCalendar(dayList.last().dayId)
+    val firstDate = TimeUtility.parseLongToCalendar(dayList.first().dayId)
+    val lastDate = TimeUtility.parseLongToCalendar(dayList.last().dayId)
 
-        val title = MyAnalystForHistory.getHeaderForHistory(firstDate, lastDate)
+    val title = MyAnalystForHistory.getHeaderForHistory(firstDate, lastDate)
 
-        Text(text = title, modifier = modifier, textAlign = TextAlign.Center)
-    }
+    Text(text = title, modifier = modifier, textAlign = TextAlign.Center)
 }
