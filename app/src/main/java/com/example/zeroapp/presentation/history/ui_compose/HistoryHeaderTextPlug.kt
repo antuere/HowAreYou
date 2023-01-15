@@ -7,23 +7,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.style.TextAlign
-import antuere.domain.dto.Day
-import antuere.domain.util.TimeUtility
 import com.example.zeroapp.R
-import com.example.zeroapp.presentation.history.MyAnalystForHistory
+import com.example.zeroapp.presentation.base.ui_text.UiText
 
 @Composable
-fun HistoryHeaderText(
+fun HistoryHeaderTextPlug(
     modifier: Modifier = Modifier,
-    dayList: List<Day>,
+    plugText: UiText
 ) {
-    val firstDate = TimeUtility.parseLongToCalendar(dayList.first().dayId)
-    val lastDate = TimeUtility.parseLongToCalendar(dayList.last().dayId)
-
-    val title = MyAnalystForHistory.getHeaderForHistory(firstDate, lastDate)
-
     Text(
-        text = title,
+        text = plugText.asString(),
         modifier = modifier
             .fillMaxWidth()
             .padding(vertical = dimensionResource(id = R.dimen.padding_normal_0)),

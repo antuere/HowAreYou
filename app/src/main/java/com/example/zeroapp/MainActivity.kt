@@ -62,6 +62,7 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -88,7 +89,7 @@ class MainActivity : FragmentActivity() {
         Timber.plant(Timber.DebugTree())
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
-        lifecycleScope.launch(Dispatchers.IO) {
+        val job = lifecycleScope.launch(Dispatchers.IO) {
             settings = getSettingsUseCase(Unit).first()
         }
 
@@ -100,14 +101,17 @@ class MainActivity : FragmentActivity() {
             }
         }
 
+        var startDestination = Screen.SecureEntry.route
+        lifecycleScope.launch(Dispatchers.Main){
+            job.join()
+            if (!settings!!.isPinCodeEnabled && !settings!!.isBiometricEnabled) {
+                startDestination = Screen.Home.route
+            }
+        }
+
+
         setContent {
             HowAreYouTheme {
-                var startDestination = Screen.SecureEntry.route
-
-                if (!settings!!.isPinCodeEnabled && !settings!!.isBiometricEnabled) {
-                    startDestination = Screen.Home.route
-                }
-
                 val appState: AppState by rememberAppState()
                 val appBarState by appState.appBarState
                 val navController = appState.navController

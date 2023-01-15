@@ -28,7 +28,7 @@ buildscript {
         version_firebase_auth_services = "20.3.0"
         version_firebase_ui = "7.2.0"
         version_google_services = "4.3.14"
-        version_gradle = '7.3.1'
+        version_gradle = '7.4.0'
         version_gradle_navigation = "2.5.2"
         version_glide = "4.14.2"
         version_glide_сompose = "1.0.0-alpha.1"
@@ -47,7 +47,7 @@ buildscript {
         version_profile_installer = "1.3.0-alpha02"
         version_room = "2.4.3"
         version_splash_screen = "1.0.0"
-        version_shared_elements_transition = "0.1.0-SNAPSHOT"
+        version_shimmer = "1.0.3"
         version_timber = "5.0.1"
         version_uiautomator = "2.2.0"
     }
@@ -66,12 +66,12 @@ buildscript {
 }
 
 plugins {
-    id 'com.android.application' version '7.3.1' apply false
-    id 'com.android.library' version '7.3.1' apply false
+    id 'com.android.application' version '7.4.0' apply false
+    id 'com.android.library' version '7.4.0' apply false
     id 'org.jetbrains.kotlin.android' version '1.7.20' apply false
     id 'org.jetbrains.kotlin.jvm' version '1.7.20' apply false
     id 'com.google.dagger.hilt.android' version "2.44" apply false
-    id 'com.android.test' version '7.3.1' apply false
+    id 'com.android.test' version '7.4.0' apply false
 }
 
 task clean(type: Delete) {

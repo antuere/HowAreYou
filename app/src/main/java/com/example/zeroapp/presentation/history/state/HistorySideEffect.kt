@@ -8,5 +8,5 @@ sealed interface HistorySideEffect {
 
     data class Dialog(val uiDialog: UIDialog) : HistorySideEffect
 
-    object AnimationToggleGroup : HistorySideEffect
+    object AnimationHistoryHeader : HistorySideEffect
 }

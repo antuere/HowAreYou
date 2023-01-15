@@ -49,7 +49,9 @@ fun ToggleBtnGroup(
                             .zIndex(if (currentToggleBtnState == entry.value) 1f else 0f)
                 },
                 onClick = {
-                    onClick(entry.value)
+                    if (currentToggleBtnState != entry.value) {
+                        onClick(entry.value)
+                    }
                 },
                 shape = when (index) {
                     // left outer button

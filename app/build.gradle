@@ -168,6 +168,9 @@ dependencies {
     implementation "com.github.bumptech.glide:compose:$version_glide_сompose"
     kapt "com.github.bumptech.glide:compiler:$version_glide"
 
+    // Shimmer
+    implementation "com.valentinilk.shimmer:compose-shimmer:$version_shimmer"
+
     // DatePicker
     implementation "io.github.vanpra.compose-material-dialogs:datetime:$version_date_picker"
     coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:$version_desugar_jdk"

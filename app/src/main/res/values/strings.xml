@@ -160,6 +160,7 @@
     <string name="select_days">Select days</string>
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
+    <string name="loading">Loading</string>
     <string name="close_filter">Close filter</string>
     <string name="no_days_all">Add your first day and come back!</string>
     <string name="no_days_week">There are no entries yet for the current week, let\'s fix it!</string>

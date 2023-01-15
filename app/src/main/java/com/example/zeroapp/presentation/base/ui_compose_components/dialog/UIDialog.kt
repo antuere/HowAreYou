@@ -15,7 +15,7 @@ data class UIDialog(
 
     data class UiButton(
         @StringRes val text: Int,
-        val onClick: () -> Unit
+        val onClick: () -> Unit = {}
     )
 
 }

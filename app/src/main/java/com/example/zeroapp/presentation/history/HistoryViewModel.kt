@@ -17,7 +17,6 @@ import com.example.zeroapp.presentation.history.state.HistorySideEffect
 import com.example.zeroapp.presentation.history.state.HistoryState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.Container
@@ -40,33 +39,9 @@ class HistoryViewModel @Inject constructor(
 ) : ContainerHost<HistoryState, HistorySideEffect>, ViewModel() {
 
     override val container: Container<HistoryState, HistorySideEffect> =
-        container(HistoryState.Loading)
+        container(HistoryState.Loading.Default)
 
-//    private var _uiDialog = MutableStateFlow<UIDialog?>(null)
-//    val uiDialog: StateFlow<UIDialog?>
-//        get() = _uiDialog
-
-//    private var _listDays = MutableStateFlow<List<Day>?>(null)
-//    val listDays: StateFlow<List<Day>?>
-//        get() = _listDays
-
-//    private var _navigateToDetailState = MutableStateFlow<NavigateToDetailState?>(null)
-//    val navigateToDetailState: StateFlow<NavigateToDetailState?>
-//        get() = _navigateToDetailState
-
-//    private var _toggleBtnState = MutableStateFlow(ToggleBtnState.ALL_DAYS)
-//    val toggleBtnState: StateFlow<ToggleBtnState>
-//        get() = _toggleBtnState
-//
-//    private var _cellsAmount = MutableStateFlow(4)
-//    val cellsAmount: StateFlow<Int>
-//        get() = _cellsAmount
-
-//    private var _isShowAnimation = MutableStateFlow(false)
-//    val isShowAnimation: StateFlow<Boolean>
-//        get() = _isShowAnimation
-
-    private var _currentJob: JobType? = null
+    private var currentJob: JobType? = null
 
     init {
         getToggleButtonState()
@@ -84,10 +59,6 @@ class HistoryViewModel @Inject constructor(
         onClickLongSmile(day)
     }
 
-//    fun doneNavigateToDetail() {
-//        _navigateToDetailState.value!!.navigateToDetail = false
-//    }
-
     private fun deleteDay(dayId: Long) {
         viewModelScope.launch {
             deleteDayUseCase(dayId)
@@ -104,18 +75,16 @@ class HistoryViewModel @Inject constructor(
                 onClick = {
                     deleteDay(day.dayId)
                 }),
-            negativeButton = UIDialog.UiButton(
-                text = R.string.no,
-                onClick = {})
+            negativeButton = UIDialog.UiButton(text = R.string.no)
         )
         postSideEffect(HistorySideEffect.Dialog(uiDialog))
     }
 
     fun onDaysSelected(pair: Pair<Long, Long>) = intent {
-        postSideEffect(HistorySideEffect.AnimationToggleGroup)
+        postSideEffect(HistorySideEffect.AnimationHistoryHeader)
 
-        _currentJob?.job?.cancel()
-        _currentJob = JobType.Filter(viewModelScope.launch {
+        currentJob?.job?.cancel()
+        currentJob = JobType.Filter(viewModelScope.launch {
             getSelectedDaysUseCase(pair).cancellable().collectLatest { days ->
                 reduce {
                     if (days.isEmpty()) {
@@ -123,10 +92,7 @@ class HistoryViewModel @Inject constructor(
                             message = UiText.StringResource(R.string.no_days_filter)
                         )
                     } else {
-                        return@reduce HistoryState.Loaded.FilterSelected(
-                            days = days,
-                            cellsAmount = 3
-                        )
+                        return@reduce HistoryState.Loaded.FilterSelected(days = days)
                     }
                 }
             }
@@ -134,10 +100,10 @@ class HistoryViewModel @Inject constructor(
     }
 
     private fun checkedCurrentMonthButton() = intent {
-        if (_currentJob !is JobType.Month) {
-            _currentJob?.job?.cancel()
+        if (currentJob !is JobType.Month) {
+            currentJob?.job?.cancel()
 
-            _currentJob = JobType.Month(viewModelScope.launch {
+            currentJob = JobType.Month(viewModelScope.launch {
                 getCertainDaysUseCase(TimeUtility.getCurrentMonthTime()).cancellable()
                     .collectLatest { days ->
                         reduce {
@@ -162,10 +128,10 @@ class HistoryViewModel @Inject constructor(
     }
 
     private fun checkedLastWeekButton() = intent {
-        if (_currentJob !is JobType.Week) {
-            _currentJob?.job?.cancel()
+        if (currentJob !is JobType.Week) {
+            currentJob?.job?.cancel()
 
-            _currentJob = JobType.Week(viewModelScope.launch {
+            currentJob = JobType.Week(viewModelScope.launch {
                 getCertainDaysUseCase(TimeUtility.getCurrentWeekTime()).cancellable()
                     .collectLatest { days ->
                         reduce {
@@ -190,10 +156,10 @@ class HistoryViewModel @Inject constructor(
     }
 
     private fun checkedAllDaysButton() = intent {
-        if (_currentJob !is JobType.AllDays) {
-            _currentJob?.job?.cancel()
+        if (currentJob !is JobType.AllDays) {
+            currentJob?.job?.cancel()
 
-            _currentJob = JobType.AllDays(viewModelScope.launch {
+            currentJob = JobType.AllDays(viewModelScope.launch {
                 getAllDaysUseCase(Unit).cancellable().collectLatest { days ->
                     reduce {
                         if (days.isEmpty()) return@reduce HistoryState.Empty.NoEntriesYet(
@@ -214,39 +180,52 @@ class HistoryViewModel @Inject constructor(
 
     private fun saveToggleButtonState(toggleBtnState: ToggleBtnState) = intent {
         viewModelScope.launch {
-            delay(150)
             saveToggleBtnUseCase(toggleBtnState)
         }
     }
 
     private fun getToggleButtonState() {
         viewModelScope.launch(Dispatchers.IO) {
-            getToggleBtnStateUseCase(Unit).collectLatest {
-                onClickCheckedItem(it)
-            }
+            val savedState = getToggleBtnStateUseCase(Unit).first()
+            getDaysByToggleState(state = savedState)
         }
     }
 
-    fun onClickCheckedItem(state: ToggleBtnState) = intent {
-        postSideEffect(HistorySideEffect.AnimationToggleGroup)
+    fun onClickCheckedItem(btnState: ToggleBtnState) = intent {
+        getDaysByToggleState(btnState)
+        saveToggleButtonState(btnState)
+    }
 
+    private fun getDaysByToggleState(state: ToggleBtnState) = intent {
+        postSideEffect(HistorySideEffect.AnimationHistoryHeader)
         when (state) {
             ToggleBtnState.ALL_DAYS -> {
+                reduce {
+                    HistoryState.Loading.ItemsShimmer(
+                        cellsAmount = 4,
+                        toggleBtnState = state
+                    )
+                }
                 checkedAllDaysButton()
             }
             ToggleBtnState.CURRENT_MONTH -> {
+                reduce {
+                    HistoryState.Loading.ItemsShimmer(
+                        cellsAmount = 3,
+                        toggleBtnState = state
+                    )
+                }
                 checkedCurrentMonthButton()
             }
             ToggleBtnState.LAST_WEEK -> {
+                reduce {
+                    HistoryState.Loading.ItemsShimmer(
+                        cellsAmount = 2,
+                        toggleBtnState = state
+                    )
+                }
                 checkedLastWeekButton()
             }
         }
-        saveToggleButtonState(state)
     }
-
-//    fun resetIsShowAnimation() {
-//        _isShowAnimation.value = false
-//    }
 }
-
-
