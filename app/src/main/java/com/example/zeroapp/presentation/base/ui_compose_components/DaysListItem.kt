@@ -61,7 +61,6 @@ private fun TestDaysListItem() {
         imageResId = antuere.data.R.drawable.smile_happy,
         dayText = "Test text",
         dateString = "29.11.2022",
-        transitionName = "noup",
         isFavorite = false
     )
 

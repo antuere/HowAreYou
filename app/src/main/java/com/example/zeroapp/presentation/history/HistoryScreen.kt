@@ -22,6 +22,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.unit.dp
@@ -39,10 +40,12 @@ import com.example.zeroapp.presentation.history.ui_compose.DaysFilterBottomSheet
 import com.example.zeroapp.presentation.history.ui_compose.HistoryHeaderText
 import com.example.zeroapp.presentation.history.ui_compose.HistoryHeaderTextPlug
 import com.example.zeroapp.presentation.history.ui_compose.ToggleBtnGroup
+import com.example.zeroapp.util.shimmer
 import com.valentinilk.shimmer.shimmer
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
+import timber.log.Timber
 
 @OptIn(ExperimentalMaterialApi::class, ExperimentalFoundationApi::class)
 @Composable
@@ -129,7 +132,7 @@ fun HistoryScreen(
             }
         }) {
 
-        Crossfade(targetState = viewState, animationSpec = tween(200)) { state ->
+        Crossfade(targetState = viewState, animationSpec = tween(300)) { state ->
             Column(
                 modifier = Modifier
                     .fillMaxSize(),
@@ -166,10 +169,18 @@ fun HistoryScreen(
                     }
                     is HistoryState.Empty.NoEntriesYet -> {
 
+                       LaunchedEffect(true) {
+                           updateAppBar(
+                               AppBarState(
+                                   titleId = R.string.history,
+                                   isVisibleBottomBar = true
+                               ),
+                           )
+                       }
+
                         Text(state.message.asString())
                     }
                     is HistoryState.Loaded.Default -> {
-
                         ToggleBtnGroup(
                             modifier = Modifier.padding(top = dimensionResource(id = R.dimen.padding_small_2)),
                             currentToggleBtnState = state.toggleBtnState,
@@ -248,11 +259,7 @@ fun HistoryScreen(
                         }
                     }
 
-                    is HistoryState.Loading.Default -> {
-                        FullScreenProgressIndicator()
-                    }
-                    is HistoryState.Loading.ItemsShimmer -> {
-
+                    is HistoryState.LoadingShimmer -> {
                         ToggleBtnGroup(
                             modifier = Modifier.padding(top = dimensionResource(id = R.dimen.padding_small_2)),
                             currentToggleBtnState = state.toggleBtnState,
@@ -275,13 +282,12 @@ fun HistoryScreen(
                                 Card(
                                     modifier = Modifier
                                         .padding(dimensionResource(id = R.dimen.padding_small_0))
-                                        .shimmer(),
+                                        .shimmer(500),
                                     shape = MaterialTheme.shapes.large,
-                                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
-                                    elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+                                    colors = CardDefaults.cardColors(containerColor = Color.LightGray.copy(alpha = 0.7F))
                                 ) {
                                     Box(
-                                        modifier = Modifier.size(85.dp)
+                                        modifier = Modifier.aspectRatio(state.aspectRatioForItem)
                                     )
                                 }
                             }

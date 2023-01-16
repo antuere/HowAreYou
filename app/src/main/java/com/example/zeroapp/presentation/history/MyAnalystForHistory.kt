@@ -1,9 +1,11 @@
 package com.example.zeroapp.presentation.history
 
+import android.content.Context
 import androidx.compose.runtime.Composable
 import com.example.zeroapp.R
 import com.example.zeroapp.presentation.base.ui_text.UiText
-import java.util.Calendar
+import timber.log.Timber
+import java.util.*
 
 object MyAnalystForHistory {
 
@@ -25,27 +27,30 @@ object MyAnalystForHistory {
         }
     }
 
-    @Composable
-    fun getHeaderForHistory(firstDay: Calendar, lastDay: Calendar): String {
+    fun getHeaderForHistory(firstDay: Calendar, lastDay: Calendar, context: Context): String {
+
+        firstDay.timeZone = TimeZone.getTimeZone("UTC")
+        lastDay.timeZone = TimeZone.getTimeZone("UTC")
+
+        Timber.i("date errors : recompose get Header}")
 
         if (firstDay == lastDay) {
             val day = firstDay.get(Calendar.DAY_OF_MONTH)
-            val month = getMonthTitle(firstDay.get(Calendar.MONTH)).asString()
+            val month = getMonthTitle(firstDay.get(Calendar.MONTH)).asString(context)
             val year = firstDay.get(Calendar.YEAR)
 
             return "$day $month $year"
         } else {
 
             val dayFirst = firstDay.get(Calendar.DAY_OF_MONTH)
-            val monthFirst = getMonthTitle(firstDay.get(Calendar.MONTH)).asString()
+            val monthFirst = getMonthTitle(firstDay.get(Calendar.MONTH)).asString(context)
             val yearFirst = firstDay.get(Calendar.YEAR)
 
             val dayLast = lastDay.get(Calendar.DAY_OF_MONTH)
-            val monthLast = getMonthTitle(lastDay.get(Calendar.MONTH)).asString()
+            val monthLast = getMonthTitle(lastDay.get(Calendar.MONTH)).asString(context)
             val yearLast = lastDay.get(Calendar.YEAR)
 
             return "$dayLast $monthLast $yearLast - $dayFirst $monthFirst $yearFirst"
         }
-
     }
 }

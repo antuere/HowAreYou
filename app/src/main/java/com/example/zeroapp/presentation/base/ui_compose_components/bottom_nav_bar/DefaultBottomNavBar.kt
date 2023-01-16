@@ -1,5 +1,6 @@
 package com.example.zeroapp.presentation.base.ui_compose_components.bottom_nav_bar
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
@@ -17,6 +18,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -28,6 +30,7 @@ import com.example.zeroapp.presentation.base.ui_theme.Gray800
 import com.example.zeroapp.presentation.base.ui_theme.TealMain
 import com.example.zeroapp.presentation.base.ui_theme.Typography
 import com.example.zeroapp.R
+import com.example.zeroapp.util.findFragmentActivity
 
 
 @Composable
@@ -36,8 +39,10 @@ fun DefaultBottomNavBar(navController: NavController) {
     val currentDestination = navBackStackEntry?.destination
     val destinations = listOf(Screen.Home, Screen.History, Screen.Settings)
 
+    val activity = LocalContext.current.findFragmentActivity()
+
     val iconsTitle = listOf(
-        stringResource(id = R.string.home ),
+        stringResource(id = R.string.home),
         stringResource(id = R.string.history),
         stringResource(id = R.string.settings)
     )
@@ -53,6 +58,10 @@ fun DefaultBottomNavBar(navController: NavController) {
         iconsTitle.forEachIndexed { index, dest ->
             val isSelected =
                 currentDestination?.hierarchy?.any { it.route == destinations[index].route } == true
+
+            BackHandler(isSelected) {
+                activity.finish()
+            }
 
             val interactionSource = remember { MutableInteractionSource() }
             val isPressed by interactionSource.collectIsPressedAsState()

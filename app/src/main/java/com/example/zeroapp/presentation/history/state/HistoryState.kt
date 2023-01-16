@@ -7,14 +7,13 @@ import com.example.zeroapp.presentation.base.ui_text.UiText
 
 sealed interface HistoryState {
 
-    sealed interface Loading : HistoryState {
-        object Default : Loading
-        data class ItemsShimmer(
-            val cellsAmount: Int,
-            val toggleBtnState: ToggleBtnState,
-            val dateTextPlug: UiText = UiText.StringResource(R.string.loading)
-        ) : Loading
-    }
+    data class LoadingShimmer(
+        val cellsAmount: Int = 3,
+        val aspectRatioForItem: Float = 1F,
+        val toggleBtnState: ToggleBtnState = ToggleBtnState.CURRENT_MONTH,
+        val dateTextPlug: UiText = UiText.StringResource(R.string.loading)
+    ) : HistoryState
+
 
     sealed class Empty(message: UiText) : HistoryState {
         class NoEntriesYet(val message: UiText) : Empty(message)
@@ -25,7 +24,6 @@ sealed interface HistoryState {
     }
 
     sealed interface Loaded : HistoryState {
-
         data class Default(
             val days: List<Day>,
             val toggleBtnState: ToggleBtnState,

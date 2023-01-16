@@ -20,24 +20,39 @@ object TimeUtility {
     }
 
     fun formatDate(date: Date, format: String = DEFAULT_FORMAT): String {
-        return SimpleDateFormat(format, Locale.US).format(date)
+        val sdf = SimpleDateFormat(format, Locale.getDefault())
+        return sdf.format(date)
     }
 
     fun formatLocalDate(localDate: LocalDate, format: String = DOT_FORMAT): String {
         return DateTimeFormatter.ofPattern(format).format(localDate)
     }
 
-    fun getTimeInMilliseconds(localDate: LocalDate) : Long {
+    fun getTimeInMilliseconds(localDate: LocalDate): Long {
+//        val offset = TimeZone.getDefault().rawOffset
+
+//        return if (offset > 0) {
+//            localDate.toEpochDay() * 86400000 - offset
+//        } else {
+//            localDate.toEpochDay() * 86400000 + offset
+//        }
         return localDate.toEpochDay() * 86400000
+
     }
 
     fun parseCurrentTime(format: String = DEFAULT_FORMAT): Date {
-        return SimpleDateFormat(format, Locale.US).parse(formatCurrentTime())
+        val sdf = SimpleDateFormat(format, Locale.getDefault())
+        sdf.timeZone = TimeZone.getTimeZone("UTC")
+
+        return sdf.parse(formatCurrentTime())
     }
 
     fun parse(date: Date, format: String = DEFAULT_FORMAT): Date {
         val currentFormat = formatDate(date)
-        return SimpleDateFormat(format, Locale.US).parse(currentFormat)
+        val sdf = SimpleDateFormat(format, Locale.getDefault())
+        sdf.timeZone = TimeZone.getTimeZone("UTC")
+
+        return sdf.parse(currentFormat)
     }
 
     fun getDayOfMonth(): String {
@@ -45,7 +60,7 @@ object TimeUtility {
     }
 
     fun getCurrentMonthTime(): Long {
-        val calendarTemp = Calendar.getInstance(Locale.US)
+        val calendarTemp = Calendar.getInstance(TimeZone.getDefault())
         calendarTemp.set(Calendar.DAY_OF_MONTH, 1)
 
         val resultDate = parse(calendarTemp.time)
@@ -53,7 +68,7 @@ object TimeUtility {
     }
 
     fun getCurrentWeekTime(): Long {
-        val calendarTemp = Calendar.getInstance(Locale.US)
+        val calendarTemp = Calendar.getInstance(TimeZone.getDefault())
         calendarTemp.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY)
 
         val resultDate = parse(calendarTemp.time)
@@ -61,9 +76,9 @@ object TimeUtility {
     }
 
     fun parseLongToCalendar(timeInMillis: Long): Calendar {
-        val calendar = Calendar.getInstance(Locale.US)
-        calendar.timeInMillis = timeInMillis
-        return calendar
+        val calendarTemp = Calendar.getInstance(TimeZone.getDefault())
+        calendarTemp.timeInMillis = timeInMillis
+        return calendarTemp
     }
 
 }

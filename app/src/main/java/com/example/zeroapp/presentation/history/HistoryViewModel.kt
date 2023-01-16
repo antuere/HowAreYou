@@ -25,6 +25,7 @@ import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
+import timber.log.Timber
 import javax.inject.Inject
 
 
@@ -39,7 +40,7 @@ class HistoryViewModel @Inject constructor(
 ) : ContainerHost<HistoryState, HistorySideEffect>, ViewModel() {
 
     override val container: Container<HistoryState, HistorySideEffect> =
-        container(HistoryState.Loading.Default)
+        container(HistoryState.LoadingShimmer())
 
     private var currentJob: JobType? = null
 
@@ -83,16 +84,17 @@ class HistoryViewModel @Inject constructor(
     fun onDaysSelected(pair: Pair<Long, Long>) = intent {
         postSideEffect(HistorySideEffect.AnimationHistoryHeader)
 
+        Timber.i("date errors : days selected is ${pair.toString()}")
         currentJob?.job?.cancel()
         currentJob = JobType.Filter(viewModelScope.launch {
             getSelectedDaysUseCase(pair).cancellable().collectLatest { days ->
                 reduce {
                     if (days.isEmpty()) {
-                        return@reduce HistoryState.Empty.FromFilter(
+                        HistoryState.Empty.FromFilter(
                             message = UiText.StringResource(R.string.no_days_filter)
                         )
                     } else {
-                        return@reduce HistoryState.Loaded.FilterSelected(days = days)
+                        HistoryState.Loaded.FilterSelected(days = days)
                     }
                 }
             }
@@ -106,16 +108,15 @@ class HistoryViewModel @Inject constructor(
             currentJob = JobType.Month(viewModelScope.launch {
                 getCertainDaysUseCase(TimeUtility.getCurrentMonthTime()).cancellable()
                     .collectLatest { days ->
+                        val toggleBtnState = ToggleBtnState.CURRENT_MONTH
                         reduce {
-                            val toggleBtnState = ToggleBtnState.CURRENT_MONTH
-
                             if (days.isEmpty()) {
-                                return@reduce HistoryState.Empty.FromToggleGroup(
+                                HistoryState.Empty.FromToggleGroup(
                                     message = UiText.StringResource(R.string.no_days_month),
                                     toggleBtnState = toggleBtnState
                                 )
                             } else {
-                                return@reduce HistoryState.Loaded.Default(
+                                HistoryState.Loaded.Default(
                                     days = days,
                                     toggleBtnState = toggleBtnState,
                                     cellsAmount = 3
@@ -134,16 +135,16 @@ class HistoryViewModel @Inject constructor(
             currentJob = JobType.Week(viewModelScope.launch {
                 getCertainDaysUseCase(TimeUtility.getCurrentWeekTime()).cancellable()
                     .collectLatest { days ->
-                        reduce {
-                            val toggleBtnState = ToggleBtnState.LAST_WEEK
+                        val toggleBtnState = ToggleBtnState.LAST_WEEK
 
+                        reduce {
                             if (days.isEmpty()) {
-                                return@reduce HistoryState.Empty.FromToggleGroup(
+                                HistoryState.Empty.FromToggleGroup(
                                     message = UiText.StringResource(R.string.no_days_week),
                                     toggleBtnState = toggleBtnState
                                 )
                             } else {
-                                return@reduce HistoryState.Loaded.Default(
+                                HistoryState.Loaded.Default(
                                     days = days,
                                     toggleBtnState = toggleBtnState,
                                     cellsAmount = 2
@@ -162,11 +163,12 @@ class HistoryViewModel @Inject constructor(
             currentJob = JobType.AllDays(viewModelScope.launch {
                 getAllDaysUseCase(Unit).cancellable().collectLatest { days ->
                     reduce {
-                        if (days.isEmpty()) return@reduce HistoryState.Empty.NoEntriesYet(
-                            UiText.StringResource(R.string.no_days_all)
-                        )
-                        else {
-                            return@reduce HistoryState.Loaded.Default(
+                        if (days.isEmpty()) {
+                            HistoryState.Empty.NoEntriesYet(
+                                UiText.StringResource(R.string.no_days_all)
+                            )
+                        } else {
+                            HistoryState.Loaded.Default(
                                 days = days,
                                 toggleBtnState = ToggleBtnState.ALL_DAYS,
                                 cellsAmount = 4
@@ -194,15 +196,16 @@ class HistoryViewModel @Inject constructor(
     fun onClickCheckedItem(btnState: ToggleBtnState) = intent {
         getDaysByToggleState(btnState)
         saveToggleButtonState(btnState)
+        postSideEffect(HistorySideEffect.AnimationHistoryHeader)
     }
 
     private fun getDaysByToggleState(state: ToggleBtnState) = intent {
-        postSideEffect(HistorySideEffect.AnimationHistoryHeader)
         when (state) {
             ToggleBtnState.ALL_DAYS -> {
                 reduce {
-                    HistoryState.Loading.ItemsShimmer(
+                    HistoryState.LoadingShimmer(
                         cellsAmount = 4,
+                        aspectRatioForItem = 3.5f / 4f,
                         toggleBtnState = state
                     )
                 }
@@ -210,8 +213,9 @@ class HistoryViewModel @Inject constructor(
             }
             ToggleBtnState.CURRENT_MONTH -> {
                 reduce {
-                    HistoryState.Loading.ItemsShimmer(
+                    HistoryState.LoadingShimmer(
                         cellsAmount = 3,
+                        aspectRatioForItem = 1F,
                         toggleBtnState = state
                     )
                 }
@@ -219,8 +223,9 @@ class HistoryViewModel @Inject constructor(
             }
             ToggleBtnState.LAST_WEEK -> {
                 reduce {
-                    HistoryState.Loading.ItemsShimmer(
+                    HistoryState.LoadingShimmer(
                         cellsAmount = 2,
+                        aspectRatioForItem = 2F,
                         toggleBtnState = state
                     )
                 }

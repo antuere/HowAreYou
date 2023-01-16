@@ -19,7 +19,6 @@ class DayRepositoryImpl @Inject constructor(
 ) : DayRepository {
 
     init {
-        Timber.i("view models error : init day rep")
         CoroutineScope(Dispatchers.IO).launch {
             refreshRemoteData()
         }
