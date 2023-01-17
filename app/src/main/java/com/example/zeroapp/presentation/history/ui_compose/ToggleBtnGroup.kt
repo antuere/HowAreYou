@@ -13,28 +13,22 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import antuere.domain.dto.ToggleBtnState
 import com.example.zeroapp.R
+import com.example.zeroapp.presentation.base.ui_text.UiText
 
 @Composable
 fun ToggleBtnGroup(
     modifier: Modifier = Modifier,
+    toggleButtons: Map<UiText, ToggleBtnState>,
     currentToggleBtnState: ToggleBtnState,
     onClick: (ToggleBtnState) -> Unit,
-) {
+    ) {
     val shapePercent = 50
-    val allDaysBtnName = stringResource(id = R.string.all_days_title)
-    val weekBtnName = stringResource(id = R.string.last_week_title)
-    val monthBtnName = stringResource(id = R.string.current_month_title)
 
-    val toggleList = mapOf(
-        weekBtnName to ToggleBtnState.LAST_WEEK,
-        monthBtnName to ToggleBtnState.CURRENT_MONTH,
-        allDaysBtnName to ToggleBtnState.ALL_DAYS,
-    )
     Row(
         modifier = modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.Center
     ) {
-        toggleList.entries.forEachIndexed { index, entry ->
+        toggleButtons.entries.forEachIndexed { index, entry ->
             OutlinedButton(
                 modifier = when (index) {
                     0 ->
@@ -62,7 +56,7 @@ fun ToggleBtnGroup(
                         bottomEndPercent = 0
                     )
                     // right outer button
-                    toggleList.size - 1 -> RoundedCornerShape(
+                    toggleButtons.size - 1 -> RoundedCornerShape(
                         topStartPercent = 0,
                         topEndPercent = shapePercent,
                         bottomStartPercent = 0,
@@ -88,7 +82,7 @@ fun ToggleBtnGroup(
                 },
             ) {
                 Text(
-                    text = entry.key,
+                    text = entry.key.asString(),
                     modifier = Modifier.padding(horizontal = 8.dp)
                 )
             }

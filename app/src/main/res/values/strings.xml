@@ -134,7 +134,7 @@
     <string name="wrong_pin_code">Wrong PIN</string>
 
     <!-- Favorites screen -->
-    <string name="fav_hint">Add your first favorite day and come back!</string>
+    <string name="favorites_hint">Add your first favorite day and come back!</string>
 
     <!-- Detail screen -->
     <string name="about_day">About past day</string>
@@ -176,19 +176,19 @@
     <string name="wish_for_users_none">We are sad when you are sad. Maybe we can help, pay attention to the cards above</string>
     <string name="wish_for_users_sad">Bad day? There is no way out of only one place :) We would be very happy if the cards above can make your day a little better</string>
 
-    <!-- Months -->
-    <string name="january">January</string>
-    <string name="february">February</string>
-    <string name="march">March</string>
-    <string name="april">April</string>
-    <string name="may">May</string>
-    <string name="june">June</string>
-    <string name="july">July</string>
-    <string name="august">August</string>
-    <string name="september">September</string>
-    <string name="october">October</string>
-    <string name="november">November</string>
-    <string name="december">December</string>
+    <!-- Headers for history -->
+    <string name="january">%1$d January %2$d</string>
+    <string name="february">%1$d February %2$d</string>
+    <string name="march">%1$d March %2$d</string>
+    <string name="april">%1$d April %2$d</string>
+    <string name="may">%1$d May %2$d</string>
+    <string name="june">%1$d June %2$d</string>
+    <string name="july">%1$d July %2$d</string>
+    <string name="august">%1$d August %2$d</string>
+    <string name="september">%1$d September %2$d</string>
+    <string name="october">%1$d October %2$d</string>
+    <string name="november">%1$d November %2$d</string>
+    <string name="december">%1$d December %2$d</string>
 
     <!-- Countries for helplines -->
     <string name="russia">Russia</string>

@@ -23,8 +23,8 @@ class SettingsRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getSelectedCountryId(): Flow<Int> {
-        return settingsDataStore.selectedCountryId
+    override suspend fun getSelectedCountryId(): Flow<Int> = withContext(Dispatchers.IO) {
+        settingsDataStore.selectedCountryId
     }
 
     override suspend fun saveSettings(settings: Settings) = withContext(Dispatchers.IO) {

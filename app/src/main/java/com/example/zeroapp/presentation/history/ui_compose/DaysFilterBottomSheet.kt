@@ -51,6 +51,7 @@ fun DaysFilterBottomSheet(
     var endBtnText by remember {
         mutableStateOf(endBtnString)
     }
+
     var endDate by remember {
         mutableStateOf(LocalDate.now())
     }

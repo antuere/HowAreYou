@@ -56,17 +56,7 @@ class HistoryViewModel @Inject constructor(
         )
     }
 
-    fun onClickLongDay(day: Day) {
-        onClickLongSmile(day)
-    }
-
-    private fun deleteDay(dayId: Long) {
-        viewModelScope.launch {
-            deleteDayUseCase(dayId)
-        }
-    }
-
-    private fun onClickLongSmile(day: Day) = intent {
+    fun onClickLongDay(day: Day) = intent {
         val uiDialog = UIDialog(
             title = R.string.dialog_delete_title,
             desc = R.string.dialog_delete_desc,
@@ -81,10 +71,15 @@ class HistoryViewModel @Inject constructor(
         postSideEffect(HistorySideEffect.Dialog(uiDialog))
     }
 
+    fun onClickCheckedItem(btnState: ToggleBtnState) = intent {
+        getDaysByToggleState(btnState)
+        saveToggleButtonState(btnState)
+        postSideEffect(HistorySideEffect.AnimationHistoryHeader)
+    }
+
     fun onDaysSelected(pair: Pair<Long, Long>) = intent {
         postSideEffect(HistorySideEffect.AnimationHistoryHeader)
 
-        Timber.i("date errors : days selected is ${pair.toString()}")
         currentJob?.job?.cancel()
         currentJob = JobType.Filter(viewModelScope.launch {
             getSelectedDaysUseCase(pair).cancellable().collectLatest { days ->
@@ -94,7 +89,10 @@ class HistoryViewModel @Inject constructor(
                             message = UiText.StringResource(R.string.no_days_filter)
                         )
                     } else {
-                        HistoryState.Loaded.FilterSelected(days = days)
+                        HistoryState.Loaded.FilterSelected(
+                            dayList = days,
+                            textHeadline = HelperForHistory.getHeaderForHistory(days)
+                        )
                     }
                 }
             }
@@ -117,9 +115,10 @@ class HistoryViewModel @Inject constructor(
                                 )
                             } else {
                                 HistoryState.Loaded.Default(
-                                    days = days,
+                                    dayList = days,
                                     toggleBtnState = toggleBtnState,
-                                    cellsAmount = 3
+                                    cellsAmountForGrid = 3,
+                                    textHeadline = HelperForHistory.getHeaderForHistory(days)
                                 )
                             }
                         }
@@ -145,9 +144,10 @@ class HistoryViewModel @Inject constructor(
                                 )
                             } else {
                                 HistoryState.Loaded.Default(
-                                    days = days,
+                                    dayList = days,
                                     toggleBtnState = toggleBtnState,
-                                    cellsAmount = 2
+                                    cellsAmountForGrid = 2,
+                                    textHeadline = HelperForHistory.getHeaderForHistory(days)
                                 )
                             }
                         }
@@ -169,9 +169,10 @@ class HistoryViewModel @Inject constructor(
                             )
                         } else {
                             HistoryState.Loaded.Default(
-                                days = days,
+                                dayList = days,
                                 toggleBtnState = ToggleBtnState.ALL_DAYS,
-                                cellsAmount = 4
+                                cellsAmountForGrid = 4,
+                                textHeadline = HelperForHistory.getHeaderForHistory(days)
                             )
                         }
                     }
@@ -191,12 +192,6 @@ class HistoryViewModel @Inject constructor(
             val savedState = getToggleBtnStateUseCase(Unit).first()
             getDaysByToggleState(state = savedState)
         }
-    }
-
-    fun onClickCheckedItem(btnState: ToggleBtnState) = intent {
-        getDaysByToggleState(btnState)
-        saveToggleButtonState(btnState)
-        postSideEffect(HistorySideEffect.AnimationHistoryHeader)
     }
 
     private fun getDaysByToggleState(state: ToggleBtnState) = intent {
@@ -231,6 +226,12 @@ class HistoryViewModel @Inject constructor(
                 }
                 checkedLastWeekButton()
             }
+        }
+    }
+
+    private fun deleteDay(dayId: Long) {
+        viewModelScope.launch {
+            deleteDayUseCase(dayId)
         }
     }
 }

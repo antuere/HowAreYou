@@ -15,12 +15,18 @@ import com.example.zeroapp.presentation.base.ui_biometric_dialog.IUIBiometricLis
 import com.example.zeroapp.presentation.base.ui_biometric_dialog.UIBiometricDialog
 import com.example.zeroapp.presentation.base.ui_biometric_dialog.BiometricAuthState
 import com.example.zeroapp.presentation.base.ui_compose_components.dialog.UIDialog
+import com.example.zeroapp.presentation.settings.state.SettingsSideEffect
+import com.example.zeroapp.presentation.settings.state.SettingsState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import org.orbitmvi.orbit.Container
+import org.orbitmvi.orbit.ContainerHost
+import org.orbitmvi.orbit.compose.collectAsState
+import org.orbitmvi.orbit.syntax.simple.intent
+import org.orbitmvi.orbit.syntax.simple.reduce
+import org.orbitmvi.orbit.viewmodel.container
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -37,37 +43,38 @@ class SettingsViewModel @Inject constructor(
     private val signOutUseCase: SignOutUseCase,
     private val deleteAllDaysLocalUseCase: DeleteAllDaysLocalUseCase,
     val uiBiometricDialog: UIBiometricDialog
-) : ViewModel() {
+) : ContainerHost<SettingsState, SettingsSideEffect>, ViewModel() {
 
-    private var _uiDialog = MutableStateFlow<UIDialog?>(null)
-    val uiDialog: StateFlow<UIDialog?>
-        get() = _uiDialog
+    override val container: Container<SettingsState, SettingsSideEffect> =
+        container(SettingsState.Loading)
 
-    private var _userNickname = MutableStateFlow(Constants.USER_NOT_AUTH)
-    val userNickname: StateFlow<String>
-        get() = _userNickname
-
-    private var _settings = MutableStateFlow<Settings?>(null)
-    val settings: StateFlow<Settings?>
-        get() = _settings
-
-    private var _savedPinCode = MutableStateFlow<String?>(null)
-    val savedPinCode: StateFlow<String?>
-        get() = _savedPinCode
-
-    private var _biometricAuthState = MutableStateFlow<BiometricAuthState?>(null)
-    val biometricAuthState: StateFlow<BiometricAuthState?>
-        get() = _biometricAuthState
-
-    private var _biometricAvailableState = MutableStateFlow<BiometricsAvailableState?>(null)
-    val biometricAvailableState: StateFlow<BiometricsAvailableState?>
-        get() = _biometricAvailableState
-
+//    private var _uiDialog = MutableStateFlow<UIDialog?>(null)
+//    val uiDialog: StateFlow<UIDialog?>
+//        get() = _uiDialog
+//
+//    private var _userNickname = MutableStateFlow(Constants.USER_NOT_AUTH)
+//    val userNickname: StateFlow<String>
+//        get() = _userNickname
+//
+//    private var _settings = MutableStateFlow<Settings?>(null)
+//    val settings: StateFlow<Settings?>
+//        get() = _settings
+//
+//    private var _savedPinCode = MutableStateFlow<String?>(null)
+//    val savedPinCode: StateFlow<String?>
+//        get() = _savedPinCode
+//
+//    private var _biometricAuthState = MutableStateFlow<BiometricAuthState?>(null)
+//    val biometricAuthState: StateFlow<BiometricAuthState?>
+//        get() = _biometricAuthState
+//
+//    private var _biometricAvailableState = MutableStateFlow<BiometricsAvailableState?>(null)
+//    val biometricAvailableState: StateFlow<BiometricsAvailableState?>
+//        get() = _biometricAvailableState
+//
     private var isShowDialogSignOut = false
 
     init {
-        Timber.i("animation error : in vm id is ${this.hashCode()}")
-
         getSettings()
         getSavedPinCode()
         getUserNickname()
@@ -96,14 +103,6 @@ class SettingsViewModel @Inject constructor(
     private fun checkBiometricsAvailable() {
         _biometricAvailableState.value =
             uiBiometricDialog.deviceHasBiometricHardware
-    }
-
-    private fun getUserNickname() {
-        viewModelScope.launch(Dispatchers.IO) {
-            getUserNicknameUseCase(Unit).collectLatest {
-                _userNickname.value = it
-            }
-        }
     }
 
     private fun checkIsHasDayEntity() {
@@ -150,16 +149,38 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
-    private fun getSettings() {
-        viewModelScope.launch(Dispatchers.IO) {
+    private fun getSettings() = intent {
+        viewModelScope.launch {
+
+//            combine(
+//                getSettingsUseCase(Unit),
+//                getSavedPinCodeUseCase(Unit),
+//                getUserNicknameUseCase(Unit),
+//                ::Triple
+//            ).collectLatest {
+//                val settings = it.first
+//                val savedPin = it.second
+//                val nickname = it.third
+//
+//
+//            }
+
             getSettingsUseCase(Unit).collectLatest {
                 _settings.value = it
             }
         }
     }
 
-    private fun getSavedPinCode() {
+    private fun getUserNickname() {
         viewModelScope.launch(Dispatchers.IO) {
+            getUserNicknameUseCase(Unit).collectLatest {
+                _userNickname.value = it
+            }
+        }
+    }
+
+    private fun getSavedPinCode() {
+        viewModelScope.launch {
             getSavedPinCodeUseCase(Unit).collectLatest {
                 _savedPinCode.value = it
             }

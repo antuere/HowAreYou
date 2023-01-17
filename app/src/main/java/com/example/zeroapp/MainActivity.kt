@@ -10,17 +10,12 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
 import androidx.fragment.app.FragmentActivity
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.NavGraph.Companion.findStartDestination
-import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.get
 import antuere.domain.dto.Settings
 import antuere.domain.usecases.user_settings.GetSettingsUseCase
 import antuere.domain.util.Constants
@@ -39,13 +34,11 @@ import com.example.zeroapp.presentation.base.ui_compose_components.rememberAppSt
 import com.example.zeroapp.presentation.base.ui_compose_components.top_bar.DefaultTopBar
 import com.example.zeroapp.presentation.home.HomeViewModel
 import com.example.zeroapp.presentation.base.ui_theme.HowAreYouTheme
-import com.example.zeroapp.presentation.base.ui_theme.White
 import com.example.zeroapp.presentation.cats.CatsScreen
 import com.example.zeroapp.presentation.detail.DetailScreen
 import com.example.zeroapp.presentation.favorites.FavoritesScreen
 import com.example.zeroapp.presentation.help_for_you.HelpForYouScreen
 import com.example.zeroapp.presentation.helplines.HelplinesScreen
-import com.example.zeroapp.presentation.helplines.HelplinesViewModel
 import com.example.zeroapp.presentation.history.HistoryScreen
 import com.example.zeroapp.presentation.home.HomeScreen
 import com.example.zeroapp.presentation.mental_tips.MentalTipsScreen
@@ -62,10 +55,10 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import java.util.*
 import javax.inject.Inject
 
 
@@ -88,6 +81,7 @@ class MainActivity : FragmentActivity() {
         super.onCreate(savedInstanceState)
         Timber.plant(Timber.DebugTree())
         WindowCompat.setDecorFitsSystemWindows(window, false)
+        TimeZone.setDefault(TimeZone.getTimeZone("UTC"))
 
         val job = lifecycleScope.launch(Dispatchers.IO) {
             settings = getSettingsUseCase(Unit).first()
@@ -102,13 +96,12 @@ class MainActivity : FragmentActivity() {
         }
 
         var startDestination = Screen.SecureEntry.route
-        lifecycleScope.launch(Dispatchers.Main){
+        lifecycleScope.launch(Dispatchers.Main) {
             job.join()
             if (!settings!!.isPinCodeEnabled && !settings!!.isBiometricEnabled) {
                 startDestination = Screen.Home.route
             }
         }
-
 
         setContent {
             HowAreYouTheme {
@@ -220,6 +213,7 @@ class MainActivity : FragmentActivity() {
                                     navController.navigate(Screen.Detail.route + "/$it")
                                 },
                                 onNavigateUp = { navController.navigateUp() },
+                                showDialog = { uiDialogListener.showDialog(it) }
                             )
                         }
 
@@ -314,15 +308,11 @@ class MainActivity : FragmentActivity() {
                                 updateAppBar = { barState: AppBarState ->
                                     appState.appBarState.value = barState
                                 },
-                                dismissSnackbar = {
-                                    appState.dismissSnackbar()
-                                },
+                                dismissSnackbar = { appState.dismissSnackbar() },
                                 onNavigateToDetail = {
                                     navController.navigate(Screen.Detail.route + "/$it")
                                 },
-                                showDialog = {
-                                    uiDialogListener.showDialog(it)
-                                }
+                                showDialog = { uiDialogListener.showDialog(it) }
                             )
                         }
 
