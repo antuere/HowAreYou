@@ -1,5 +1,5 @@
 package antuere.domain.usecases
 
-interface UseCaseDefault<Type, Param> {
+interface UseCase<Type, Param> {
     suspend operator fun invoke(param: Param): Type
 }

@@ -8,10 +8,8 @@ import antuere.data.remote.remote_day_database.FirebaseRealtimeDB
 import antuere.domain.dto.Quote
 import antuere.domain.repository.QuoteRepository
 import antuere.domain.util.TimeUtility
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.tasks.await
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class QuoteRepositoryImpl @Inject constructor(
@@ -43,11 +41,11 @@ class QuoteRepositoryImpl @Inject constructor(
         return false
     }
 
-    override suspend fun getDayQuoteLocal(): Quote = withContext(Dispatchers.IO) {
-        quoteDataStore.getSavedQuote()
+    override suspend fun getDayQuoteLocal(): Quote {
+        return quoteDataStore.quoteConfiguration.load()
     }
 
-    override suspend fun saveDayQuoteLocal(quote: Quote) = withContext(Dispatchers.IO) {
-        quoteDataStore.saveQuote(quote.text, quote.author)
+    override suspend fun saveDayQuoteLocal(quote: Quote) {
+        quoteDataStore.quoteConfiguration.set(quote)
     }
 }

@@ -9,7 +9,6 @@ import com.example.zeroapp.presentation.helplines.state.HelplinesSideEffect
 import com.example.zeroapp.presentation.helplines.state.HelplinesState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.Container
 import org.orbitmvi.orbit.ContainerHost
@@ -31,7 +30,7 @@ class HelplinesViewModel @Inject constructor(
         intent {
             viewModelScope.launch(Dispatchers.IO) {
                 val supportedCountries = helplinesRepository.getSupportedCountries()
-                val selectedCountryId = settingsRepository.getSelectedCountryId().first()
+                val selectedCountryId = settingsRepository.getSelectedCountryId()
                 val selectedCountry = supportedCountries.find { it.id == selectedCountryId }!!
 
                 reduce {

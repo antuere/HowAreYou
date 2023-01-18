@@ -8,7 +8,7 @@ interface SettingsRepository {
 
     suspend fun getSettings(): Flow<Settings>
 
-    suspend fun getSelectedCountryId(): Flow<Int>
+    suspend fun getSelectedCountryId(): Int
 
     suspend fun saveSettings(settings: Settings)
 
