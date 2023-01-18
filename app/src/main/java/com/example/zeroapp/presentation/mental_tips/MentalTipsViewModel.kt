@@ -5,10 +5,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import antuere.domain.dto.mental_tips.MentalTip
 import antuere.domain.dto.mental_tips.TipsCategoryName
-import antuere.domain.usecases.mental_tips.GetMentalTipsUseCase
+import antuere.domain.repository.MentalTipsRepository
 import antuere.domain.util.Constants
 import com.example.zeroapp.R
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -17,7 +18,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MentalTipsViewModel @Inject constructor(
-    private val getMentalTipsUseCase: GetMentalTipsUseCase,
+    private val mentalTipsRepository: MentalTipsRepository,
     state: SavedStateHandle,
 ) : ViewModel() {
 
@@ -34,8 +35,8 @@ class MentalTipsViewModel @Inject constructor(
     init {
         val tipsCategoryName = mappingSelectedCategory(selectedCategory)
 
-        viewModelScope.launch {
-            _listMentalTips.value = getMentalTipsUseCase(tipsCategoryName)
+        viewModelScope.launch(Dispatchers.IO) {
+            _listMentalTips.value = mentalTipsRepository.getMentalTips(tipsCategoryName)
         }
     }
 

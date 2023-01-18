@@ -2,14 +2,11 @@ package com.example.zeroapp.presentation.secure_entry
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import antuere.domain.authentication_manager.AuthenticationManager
 import antuere.domain.dto.Settings
-import antuere.domain.usecases.authentication.SignOutUseCase
-import antuere.domain.usecases.days_entities.DeleteAllDaysLocalUseCase
+import antuere.domain.repository.DayRepository
+import antuere.domain.repository.SettingsRepository
 import com.example.zeroapp.R
-import antuere.domain.usecases.user_settings.DeleteAllSettingsUseCase
-import antuere.domain.usecases.user_settings.GetSavedPinCodeUseCase
-import antuere.domain.usecases.user_settings.GetSettingsUseCase
-import antuere.domain.usecases.user_settings.SaveSettingsUseCase
 import com.example.zeroapp.presentation.base.ui_text.UiText
 import com.example.zeroapp.presentation.base.ui_biometric_dialog.IUIBiometricListener
 import com.example.zeroapp.presentation.pin_code_creation.PinCodeCirclesState
@@ -17,6 +14,7 @@ import com.example.zeroapp.presentation.base.ui_biometric_dialog.BiometricsAvail
 import com.example.zeroapp.presentation.base.ui_biometric_dialog.UIBiometricDialog
 import com.example.zeroapp.presentation.base.ui_compose_components.dialog.UIDialog
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -27,12 +25,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SecureEntryViewModel @Inject constructor(
-    private val getSettingsUseCase: GetSettingsUseCase,
-    private val saveSettingsUseCase: SaveSettingsUseCase,
-    private val getSavedPinCodeUseCase: GetSavedPinCodeUseCase,
-    private val deleteAllSettingsUseCase: DeleteAllSettingsUseCase,
-    private val deleteAllDaysLocalUseCase: DeleteAllDaysLocalUseCase,
-    private val signOutUseCase: SignOutUseCase,
+    private val settingsRepository: SettingsRepository,
+    private val dayRepository: DayRepository,
+    private val authenticationManager: AuthenticationManager,
     val uiBiometricDialog: UIBiometricDialog
 ) : ViewModel() {
 
@@ -102,8 +97,8 @@ class SecureEntryViewModel @Inject constructor(
     }
 
     private fun getSettings() {
-        viewModelScope.launch {
-            _settings.value = getSettingsUseCase(Unit).first()
+        viewModelScope.launch(Dispatchers.IO) {
+            _settings.value = settingsRepository.getSettings().first()
             delay(350)
             if (_settings.value!!.isBiometricEnabled) {
                 _isShowBiometricAuth.value = true
@@ -112,15 +107,15 @@ class SecureEntryViewModel @Inject constructor(
     }
 
     fun saveSettings() {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             _settings.value!!.isBiometricEnabled = true
-            saveSettingsUseCase(_settings.value!!)
+            settingsRepository.saveSettings(_settings.value!!)
         }
     }
 
     private fun getSavedPinCode() {
-        viewModelScope.launch {
-            savedPinCode = getSavedPinCodeUseCase(Unit).first()
+        viewModelScope.launch(Dispatchers.IO) {
+            savedPinCode = settingsRepository.getPinCode().first()
         }
     }
 
@@ -205,10 +200,10 @@ class SecureEntryViewModel @Inject constructor(
     }
 
     private fun resetAllUserData() {
-        viewModelScope.launch {
-            signOutUseCase(Unit)
-            deleteAllSettingsUseCase(Unit)
-            deleteAllDaysLocalUseCase(Unit)
+        viewModelScope.launch(Dispatchers.IO) {
+            authenticationManager.signOut()
+            dayRepository.deleteAllDaysLocal()
+            settingsRepository.resetAllSettings()
 
             delay(150)
             _isNavigateToHomeScreen.value = true
@@ -235,12 +230,9 @@ class SecureEntryViewModel @Inject constructor(
     }
 
     fun resetAllPinCodeStates() {
-        viewModelScope.launch {
-            userPinCode.value = null
-            currentNumbers.clear()
-            _pinCodeCirclesState.value = PinCodeCirclesState.NONE
-        }
-
+        userPinCode.value = null
+        currentNumbers.clear()
+        _pinCodeCirclesState.value = PinCodeCirclesState.NONE
     }
 
     fun onClickSignOut() {

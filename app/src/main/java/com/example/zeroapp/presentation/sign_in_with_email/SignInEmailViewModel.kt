@@ -2,14 +2,14 @@ package com.example.zeroapp.presentation.sign_in_with_email
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import antuere.domain.authentication_manager.AuthenticationManager
 import antuere.domain.authentication_manager.LoginResultListener
-import antuere.domain.usecases.authentication.GetUserNameFromServerUseCase
-import antuere.domain.usecases.authentication.SignInUseCase
-import antuere.domain.usecases.days_entities.RefreshRemoteDataUseCase
-import antuere.domain.usecases.user_settings.SaveUserNicknameUseCase
+import antuere.domain.repository.DayRepository
+import antuere.domain.repository.SettingsRepository
 import com.example.zeroapp.R
 import com.example.zeroapp.presentation.base.ui_text.UiText
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -18,10 +18,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SignInEmailViewModel @Inject constructor(
-    private val refreshRemoteDataUseCase: RefreshRemoteDataUseCase,
-    private val saveUserNicknameUseCase: SaveUserNicknameUseCase,
-    private val getUserNameFromServerUseCase: GetUserNameFromServerUseCase,
-    private val signInUseCase: SignInUseCase,
+    private val dayRepository: DayRepository,
+    private val authenticationManager: AuthenticationManager,
+    private val settingsRepository: SettingsRepository
 ) : ViewModel() {
 
     private var _signInState = MutableStateFlow<SignInState?>(null)
@@ -45,11 +44,11 @@ class SignInEmailViewModel @Inject constructor(
     }
 
     private fun loginSuccessful() {
-        viewModelScope.launch {
-            refreshRemoteDataUseCase(Unit)
+        viewModelScope.launch(Dispatchers.IO) {
+            dayRepository.refreshRemoteData()
             delay(100)
-            val userNickname = getUserNameFromServerUseCase(Unit)
-            saveUserNicknameUseCase(userNickname ?: "Unknown")
+            val userNickname = authenticationManager.getUserNickName() ?: "Unknown"
+            settingsRepository.saveUserNickname(userNickname)
             _signInState.value = SignInState.Successful
         }
     }
@@ -57,8 +56,12 @@ class SignInEmailViewModel @Inject constructor(
     fun onClickSignIn(email: String, password: String) {
         if (email.isNotEmpty() && password.isNotEmpty()) {
             _isShowLoginProgressIndicator.value = true
-            viewModelScope.launch {
-                signInUseCase(firebaseLoginListener, email, password)
+            viewModelScope.launch(Dispatchers.IO) {
+                authenticationManager.startAuth(
+                    email = email,
+                    password = password,
+                    loginResultListener = firebaseLoginListener
+                )
             }
         } else {
             _signInState.value =

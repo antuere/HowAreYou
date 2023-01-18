@@ -112,7 +112,9 @@ fun HistoryScreen(
             ) {
                 DaysFilterBottomSheet(
                     bottomSheetState = bottomSheetState,
-                    onDaysSelected = { historyViewModel.onDaysSelected(it) })
+                    onDaysSelected = { startDate, endDate ->
+                        historyViewModel.onDaysSelected(startDate, endDate)
+                    })
             }
         }) {
 

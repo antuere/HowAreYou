@@ -2,13 +2,13 @@ package com.example.zeroapp.presentation.sign_up_with_email
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import antuere.domain.authentication_manager.AuthenticationManager
 import antuere.domain.authentication_manager.RegisterResultListener
-import antuere.domain.usecases.user_settings.SaveUserNicknameUseCase
-import antuere.domain.usecases.authentication.SetUserNicknameOnServerUseCase
-import antuere.domain.usecases.authentication.SignUpUseCase
+import antuere.domain.repository.SettingsRepository
 import com.example.zeroapp.R
 import com.example.zeroapp.presentation.base.ui_text.UiText
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -17,9 +17,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SignUpEmailViewModel @Inject constructor(
-    private val saveUserNicknameUseCase: SaveUserNicknameUseCase,
-    private val setUserNicknameOnServerUseCase: SetUserNicknameOnServerUseCase,
-    private val signUpUseCase: SignUpUseCase
+    private val settingsRepository: SettingsRepository,
+    private val authenticationManager: AuthenticationManager
 ) : ViewModel() {
 
     private var _signUpState = MutableStateFlow<SignUpState?>(null)
@@ -43,9 +42,9 @@ class SignUpEmailViewModel @Inject constructor(
     }
 
     private fun registerSuccessful(name: String) {
-        viewModelScope.launch {
-            saveUserNicknameUseCase(name)
-            setUserNicknameOnServerUseCase(name)
+        viewModelScope.launch(Dispatchers.IO) {
+            settingsRepository.saveUserNickname(name)
+            authenticationManager.setUserNicknameOnServer(name)
             _signUpState.value = SignUpState.Successful
         }
     }
@@ -54,8 +53,13 @@ class SignUpEmailViewModel @Inject constructor(
     fun onClickSignUp(email: String, password: String, confirmPassword: String, name: String) {
         if (isValidateFields(email, password, confirmPassword, name)) {
             _isShowRegisterProgressIndicator.value = true
-            viewModelScope.launch {
-                signUpUseCase(firebaseRegisterListener, email, password, name)
+            viewModelScope.launch(Dispatchers.IO) {
+                authenticationManager.startRegister(
+                    email = email,
+                    password = password,
+                    name = name,
+                    registerResultListener = firebaseRegisterListener
+                )
             }
         }
     }

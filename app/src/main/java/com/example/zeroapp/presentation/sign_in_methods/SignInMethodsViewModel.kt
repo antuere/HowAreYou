@@ -2,14 +2,14 @@ package com.example.zeroapp.presentation.sign_in_methods
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import antuere.domain.authentication_manager.AuthenticationManager
 import antuere.domain.authentication_manager.RegisterResultListener
-import antuere.domain.usecases.days_entities.RefreshRemoteDataUseCase
-import antuere.domain.usecases.user_settings.SaveUserNicknameUseCase
-import antuere.domain.usecases.authentication.SetUserNicknameOnServerUseCase
-import antuere.domain.usecases.authentication.SignInByGoogleUseCase
+import antuere.domain.repository.DayRepository
+import antuere.domain.repository.SettingsRepository
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.tasks.Task
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -18,10 +18,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SignInMethodsViewModel @Inject constructor(
-    private val refreshRemoteDataUseCase: RefreshRemoteDataUseCase,
-    private val saveUserNicknameUseCase: SaveUserNicknameUseCase,
-    private val setUserNicknameOnServerUseCase: SetUserNicknameOnServerUseCase,
-    private val signInByGoogleUseCase: SignInByGoogleUseCase
+    private val dayRepository: DayRepository,
+    private val authenticationManager: AuthenticationManager,
+    private val settingsRepository: SettingsRepository
 ) : ViewModel() {
 
     private var _signInState = MutableStateFlow<SignInMethodsState?>(null)
@@ -41,10 +40,10 @@ class SignInMethodsViewModel @Inject constructor(
     }
 
     private fun loginSuccessful(name: String) {
-        viewModelScope.launch {
-            setUserNicknameOnServerUseCase(name)
-            saveUserNicknameUseCase(name)
-            refreshRemoteDataUseCase(Unit)
+        viewModelScope.launch(Dispatchers.IO) {
+            authenticationManager.setUserNicknameOnServer(name)
+            settingsRepository.saveUserNickname(name)
+            dayRepository.refreshRemoteData()
             _signInState.value = SignInMethodsState.UserAuthorized
         }
     }
@@ -63,9 +62,12 @@ class SignInMethodsViewModel @Inject constructor(
     private fun signInWithGoogle(account: GoogleSignInAccount) {
         val name = account.displayName ?: account.givenName ?: "Google user"
         val idToken = account.idToken!!
-        viewModelScope.launch {
-            signInByGoogleUseCase(googleSignInListener, idToken, name)
-        }
+
+        authenticationManager.startAuthByGoogle(
+            accIdToken = idToken,
+            name = name,
+            registerResultListener = googleSignInListener
+        )
     }
 
     fun nullifyState() {

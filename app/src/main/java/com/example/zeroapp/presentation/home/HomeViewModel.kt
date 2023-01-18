@@ -5,12 +5,9 @@ import androidx.lifecycle.viewModelScope
 import antuere.domain.dto.Day
 import antuere.domain.dto.Quote
 import antuere.domain.dto.Settings
-import antuere.domain.usecases.day_quote.GetDayQuoteLocalUseCase
-import antuere.domain.usecases.day_quote.UpdDayQuoteByRemoteUseCase
-import antuere.domain.usecases.days_entities.GetDaysByLimitUseCase
-import antuere.domain.usecases.days_entities.GetLastDayUseCase
-import antuere.domain.usecases.user_settings.GetSettingsUseCase
-import antuere.domain.usecases.user_settings.SaveSettingsUseCase
+import antuere.domain.repository.DayRepository
+import antuere.domain.repository.QuoteRepository
+import antuere.domain.repository.SettingsRepository
 import antuere.domain.util.TimeUtility
 import com.example.zeroapp.R
 import com.example.zeroapp.presentation.base.ui_text.UiText
@@ -27,12 +24,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val getLastDayUseCase: GetLastDayUseCase,
-    private val updDayQuoteByRemoteUseCase: UpdDayQuoteByRemoteUseCase,
-    private val getDayQuoteLocalUseCase: GetDayQuoteLocalUseCase,
-    private val getDaysByLimitUseCase: GetDaysByLimitUseCase,
-    private val getSettingsUseCase: GetSettingsUseCase,
-    private val saveSettingsUseCase: SaveSettingsUseCase,
+    private val dayRepository: DayRepository,
+    private val quoteRepository: QuoteRepository,
+    private val settingsRepository: SettingsRepository
 ) :
     ViewModel() {
 
@@ -76,7 +70,7 @@ class HomeViewModel @Inject constructor(
     private fun getLastDay() {
         viewModelScope.launch(Dispatchers.IO) {
 
-            getLastDayUseCase(Unit).collectLatest {
+            dayRepository.getLastDay().collectLatest {
                 _lastDay.value = it
                 delay(100)
 
@@ -86,32 +80,31 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun getSettings() {
-        viewModelScope.launch {
-            getSettingsUseCase(Unit).collectLatest {
+        viewModelScope.launch(Dispatchers.IO) {
+            settingsRepository.getSettings().collectLatest {
                 _settings.value = it
             }
         }
     }
 
     private fun getSavedDayQuote() {
-        viewModelScope.launch {
-            _dayQuote.value = getDayQuoteLocalUseCase(Unit)
+        viewModelScope.launch(Dispatchers.IO) {
+            _dayQuote.value = quoteRepository.getDayQuoteLocal()
 
             if (_isShowSplash.value) _isShowSplash.value = false
         }
     }
 
     private fun updateDayQuoteByRemote() {
-        viewModelScope.launch {
-            _isShowSplash.value = !updDayQuoteByRemoteUseCase(Unit)
-
+        viewModelScope.launch(Dispatchers.IO) {
+            _isShowSplash.value = !quoteRepository.updateQuoteRemote()
             getSavedDayQuote()
         }
     }
 
     private fun getLastFiveDays() {
-        viewModelScope.launch {
-            getDaysByLimitUseCase(5).collectLatest {
+        viewModelScope.launch(Dispatchers.IO) {
+            dayRepository.getDaysByLimit(5).collectLatest {
                 _daysForCheck.value = it
             }
         }
@@ -155,9 +148,9 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun notShowWorriedDialog() {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             _settings.value!!.isShowWorriedDialog = false
-            saveSettingsUseCase(_settings.value!!)
+            settingsRepository.saveSettings(_settings.value!!)
         }
     }
 

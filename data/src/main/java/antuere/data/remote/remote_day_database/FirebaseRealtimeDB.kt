@@ -52,7 +52,6 @@ data class FirebaseRealtimeDB @Inject constructor(
             }
         }
         return result.toList()
-
     }
 
     override suspend fun deleteDay(id: Long) {

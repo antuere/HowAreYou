@@ -2,13 +2,13 @@ package com.example.zeroapp.presentation.favorites
 
 import androidx.lifecycle.*
 import antuere.domain.dto.Day
-import antuere.domain.usecases.days_entities.DeleteDayUseCase
-import antuere.domain.usecases.days_entities.GetFavoritesDaysUseCase
+import antuere.domain.repository.DayRepository
 import com.example.zeroapp.R
 import com.example.zeroapp.presentation.base.ui_compose_components.dialog.UIDialog
 import com.example.zeroapp.presentation.favorites.state.FavoritesSideEffect
 import com.example.zeroapp.presentation.favorites.state.FavoritesState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.Container
@@ -21,8 +21,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class FavoritesViewModel @Inject constructor(
-    private val getFavoritesDaysUseCase: GetFavoritesDaysUseCase,
-    private val deleteDayUseCase: DeleteDayUseCase,
+    private val dayRepository: DayRepository
 ) : ContainerHost<FavoritesState, FavoritesSideEffect>, ViewModel() {
 
     override val container: Container<FavoritesState, FavoritesSideEffect> =
@@ -56,18 +55,25 @@ class FavoritesViewModel @Inject constructor(
     }
 
     private fun getFavoritesDays() = intent {
-        viewModelScope.launch {
-            getFavoritesDaysUseCase(Unit).collectLatest { favDays ->
-                reduce {
-                    FavoritesState.Loaded(dayList = favDays)
+        viewModelScope.launch(Dispatchers.IO) {
+            dayRepository.getFavoritesDays().collectLatest { favDays ->
+
+                if(favDays.isEmpty()){
+                    reduce {
+                        FavoritesState.Empty()
+                    }
+                } else {
+                    reduce {
+                        FavoritesState.Loaded(dayList = favDays)
+                    }
                 }
             }
         }
     }
 
     private fun deleteDay(dayId: Long) {
-        viewModelScope.launch {
-            deleteDayUseCase(dayId)
+        viewModelScope.launch(Dispatchers.IO) {
+            dayRepository.deleteDay(dayId)
         }
     }
 }

@@ -4,9 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import antuere.domain.dto.Day
-import antuere.domain.usecases.days_entities.DeleteDayUseCase
-import antuere.domain.usecases.days_entities.GetDayByIdUseCase
-import antuere.domain.usecases.days_entities.UpdateDayUseCase
+import antuere.domain.repository.DayRepository
 import antuere.domain.util.Constants
 import com.example.zeroapp.R
 import com.example.zeroapp.presentation.base.ui_compose_components.dialog.UIDialog
@@ -19,9 +17,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DetailViewModel @Inject constructor(
-    private val getDayByIdUseCase: GetDayByIdUseCase,
-    private val deleteDayUseCase: DeleteDayUseCase,
-    private val updateDayUseCase: UpdateDayUseCase,
+    private val dayRepository: DayRepository,
     state: SavedStateHandle,
 ) : ViewModel() {
 
@@ -45,7 +41,7 @@ class DetailViewModel @Inject constructor(
 
     private fun getDay() {
         viewModelScope.launch(Dispatchers.IO) {
-            _selectedDay.value = getDayByIdUseCase(dayId)
+            _selectedDay.value = dayRepository.getDayById(dayId)
         }
     }
 
@@ -54,8 +50,8 @@ class DetailViewModel @Inject constructor(
     }
 
     private fun deleteDay() {
-        viewModelScope.launch {
-            deleteDayUseCase(dayId)
+        viewModelScope.launch(Dispatchers.IO) {
+            dayRepository.deleteDay(dayId)
         }
         _navigateToHistory.value = true
     }
@@ -83,9 +79,10 @@ class DetailViewModel @Inject constructor(
     }
 
     fun onClickFavoriteButton() {
-        viewModelScope.launch {
-            _selectedDay.value!!.isFavorite = _selectedDay.value!!.isFavorite.not()
-            updateDayUseCase(_selectedDay.value!!)
+        _selectedDay.value!!.isFavorite = _selectedDay.value!!.isFavorite.not()
+
+        viewModelScope.launch(Dispatchers.IO) {
+            dayRepository.update(_selectedDay.value!!)
         }
     }
 }

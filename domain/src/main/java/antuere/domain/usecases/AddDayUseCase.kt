@@ -1,8 +1,7 @@
-package antuere.domain.usecases.days_entities
+package antuere.domain.usecases
 
 import antuere.domain.dto.Day
 import antuere.domain.repository.DayRepository
-import antuere.domain.usecases.UseCaseDefault
 
 class AddDayUseCase (private val dayRepository: DayRepository) : UseCaseDefault<Unit, Day> {
 

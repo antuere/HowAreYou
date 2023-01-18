@@ -8,7 +8,6 @@ import antuere.domain.repository.DayRepository
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import timber.log.Timber
 import javax.inject.Inject
 
 
@@ -25,61 +24,40 @@ class DayRepositoryImpl @Inject constructor(
     }
 
     override suspend fun refreshRemoteData() {
-        Timber.i("view models error : refresh remote data")
         val daysFromServer = firebaseRealtimeDB.getDays()
         if (daysFromServer.isNotEmpty()) {
             CoroutineScope(Dispatchers.IO).launch {
-                // TODO нужно потом оптимизировать
+                // TODO нужно потом оптимизировать.
                 deleteAllDaysLocal()
                 daysFromServer.forEach { day ->
                     insertLocal(day)
                 }
 
-                getAllDays().collect { days ->
-                    days.forEach { insertRemote(it) }
-                }
+//                getAllDays().collect { days ->
+//                    days.forEach { insertRemote(it) }
+//                }
             }
         }
     }
 
-    override suspend fun getAllDays(): Flow<List<Day>> = withContext(Dispatchers.IO) {
-        dayDataBaseRoom.dayDatabaseDao.getAllDays().map {
+    override suspend fun getAllDays(): Flow<List<Day>> {
+        return dayDataBaseRoom.dayDatabaseDao.getAllDays().map {
             it.map { dayEntity ->
                 dayEntityMapper.mapToDomainModel(dayEntity)
             }
         }
     }
 
-    override suspend fun getFavoritesDays(): Flow<List<Day>> = withContext(Dispatchers.IO) {
-        dayDataBaseRoom.dayDatabaseDao.getFavoritesDays().map {
+    override suspend fun getFavoritesDays(): Flow<List<Day>> {
+        return dayDataBaseRoom.dayDatabaseDao.getFavoritesDays().map {
             it.map { dayEntity ->
                 dayEntityMapper.mapToDomainModel(dayEntity)
             }
         }
     }
 
-    override suspend fun getSelectedDays(dayStart: Long, dayEnd: Long): Flow<List<Day>> =
-        withContext(Dispatchers.IO) {
-            dayDataBaseRoom.dayDatabaseDao.getSelectedDays(dayStart, dayEnd)
-                .map {
-                    it.map { dayEntity ->
-                        dayEntityMapper.mapToDomainModel(dayEntity)
-                    }
-                }
-        }
-
-    override suspend fun getCertainDays(dayStart: Long): Flow<List<Day>> =
-        withContext(Dispatchers.IO) {
-            dayDataBaseRoom.dayDatabaseDao.getCertainDays(dayStart)
-                .map {
-                    it.map { dayEntity ->
-                        dayEntityMapper.mapToDomainModel(dayEntity)
-                    }
-                }
-        }
-
-    override suspend fun getDaysByLimit(limit: Int): Flow<List<Day>> = withContext(Dispatchers.IO) {
-        dayDataBaseRoom.dayDatabaseDao.getDaysByLimit(limit)
+    override suspend fun getSelectedDays(dayStart: Long, dayEnd: Long): Flow<List<Day>> {
+        return dayDataBaseRoom.dayDatabaseDao.getSelectedDays(dayStart, dayEnd)
             .map {
                 it.map { dayEntity ->
                     dayEntityMapper.mapToDomainModel(dayEntity)
@@ -87,9 +65,28 @@ class DayRepositoryImpl @Inject constructor(
             }
     }
 
-    override suspend fun getDay(): Flow<Day?> = withContext(Dispatchers.IO) {
-        val dayEntity = dayDataBaseRoom.dayDatabaseDao.getDay()
-        dayEntity.map {
+    override suspend fun getCertainDays(dayStart: Long): Flow<List<Day>> {
+        return dayDataBaseRoom.dayDatabaseDao.getCertainDays(dayStart)
+            .map {
+                it.map { dayEntity ->
+                    dayEntityMapper.mapToDomainModel(dayEntity)
+                }
+            }
+    }
+
+    override suspend fun getDaysByLimit(limit: Int): Flow<List<Day>> {
+        return dayDataBaseRoom.dayDatabaseDao.getDaysByLimit(limit)
+            .map {
+                it.map { dayEntity ->
+                    dayEntityMapper.mapToDomainModel(dayEntity)
+                }
+            }
+    }
+
+    override suspend fun getLastDay(): Flow<Day?> {
+        val dayEntity = dayDataBaseRoom.dayDatabaseDao.getLastDay()
+
+        return dayEntity.map {
             it?.let(dayEntityMapper::mapToDomainModel)
         }
     }
@@ -99,20 +96,20 @@ class DayRepositoryImpl @Inject constructor(
         return dayEntity?.let(dayEntityMapper::mapToDomainModel)
     }
 
-    override suspend fun deleteDay(id: Long): Unit = withContext(Dispatchers.IO) {
+    override suspend fun deleteDay(id: Long) {
         dayDataBaseRoom.dayDatabaseDao.deleteDay(id)
         firebaseRealtimeDB.deleteDay(id)
     }
 
-    override suspend fun deleteAllDaysLocal() = withContext(Dispatchers.IO) {
+    override suspend fun deleteAllDaysLocal() {
         dayDataBaseRoom.dayDatabaseDao.clear()
     }
 
-    override suspend fun deleteAllDaysRemote() = withContext(Dispatchers.IO) {
+    override suspend fun deleteAllDaysRemote() {
         firebaseRealtimeDB.deleteAllDays()
     }
 
-    override suspend fun insertLocal(day: Day) = withContext(Dispatchers.IO) {
+    override suspend fun insertLocal(day: Day) {
         val dayEntity = dayEntityMapper.mapFromDomainModel(day)
         dayDataBaseRoom.dayDatabaseDao.insert(dayEntity)
     }
@@ -121,7 +118,7 @@ class DayRepositoryImpl @Inject constructor(
         firebaseRealtimeDB.insert(day)
     }
 
-    override suspend fun update(day: Day): Unit = withContext(Dispatchers.IO) {
+    override suspend fun update(day: Day) {
         val dayEntity = dayEntityMapper.mapFromDomainModel(day)
         dayDataBaseRoom.dayDatabaseDao.update(dayEntity)
 

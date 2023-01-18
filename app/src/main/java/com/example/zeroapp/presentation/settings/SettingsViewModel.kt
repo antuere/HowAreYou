@@ -2,11 +2,11 @@ package com.example.zeroapp.presentation.settings
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import antuere.domain.authentication_manager.AuthenticationManager
 import antuere.domain.dto.Settings
-import antuere.domain.usecases.authentication.SignOutUseCase
-import antuere.domain.usecases.days_entities.DeleteAllDaysLocalUseCase
-import antuere.domain.usecases.days_entities.GetLastDayUseCase
-import antuere.domain.usecases.user_settings.*
+import antuere.domain.repository.DayRepository
+import antuere.domain.repository.SettingsRepository
+import antuere.domain.repository.ToggleBtnRepository
 import antuere.domain.util.Constants
 import com.example.zeroapp.R
 import com.example.zeroapp.presentation.base.ui_text.UiText
@@ -23,55 +23,46 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.Container
 import org.orbitmvi.orbit.ContainerHost
-import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.syntax.simple.intent
-import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
-    private val getLastDayUseCase: GetLastDayUseCase,
-    private val saveSettingsUseCase: SaveSettingsUseCase,
-    private val getSettingsUseCase: GetSettingsUseCase,
-    private val getSavedPinCodeUseCase: GetSavedPinCodeUseCase,
-    private val getUserNicknameUseCase: GetUserNicknameUseCase,
-    private val resetPinCodeUseCase: ResetPinCodeUseCase,
-    private val resetUserNicknameUseCase: ResetUserNicknameUseCase,
-    private val resetToggleBtnUseCase: ResetToggleBtnUseCase,
-    private val signOutUseCase: SignOutUseCase,
-    private val deleteAllDaysLocalUseCase: DeleteAllDaysLocalUseCase,
+    private val dayRepository: DayRepository,
+    private val settingsRepository: SettingsRepository,
+    private val toggleBtnRepository: ToggleBtnRepository,
+    private val authenticationManager: AuthenticationManager,
     val uiBiometricDialog: UIBiometricDialog
 ) : ContainerHost<SettingsState, SettingsSideEffect>, ViewModel() {
 
     override val container: Container<SettingsState, SettingsSideEffect> =
         container(SettingsState.Loading)
 
-//    private var _uiDialog = MutableStateFlow<UIDialog?>(null)
-//    val uiDialog: StateFlow<UIDialog?>
-//        get() = _uiDialog
-//
-//    private var _userNickname = MutableStateFlow(Constants.USER_NOT_AUTH)
-//    val userNickname: StateFlow<String>
-//        get() = _userNickname
-//
-//    private var _settings = MutableStateFlow<Settings?>(null)
-//    val settings: StateFlow<Settings?>
-//        get() = _settings
-//
-//    private var _savedPinCode = MutableStateFlow<String?>(null)
-//    val savedPinCode: StateFlow<String?>
-//        get() = _savedPinCode
-//
-//    private var _biometricAuthState = MutableStateFlow<BiometricAuthState?>(null)
-//    val biometricAuthState: StateFlow<BiometricAuthState?>
-//        get() = _biometricAuthState
-//
-//    private var _biometricAvailableState = MutableStateFlow<BiometricsAvailableState?>(null)
-//    val biometricAvailableState: StateFlow<BiometricsAvailableState?>
-//        get() = _biometricAvailableState
-//
+    private var _uiDialog = MutableStateFlow<UIDialog?>(null)
+    val uiDialog: StateFlow<UIDialog?>
+        get() = _uiDialog
+
+    private var _userNickname = MutableStateFlow(Constants.USER_NOT_AUTH)
+    val userNickname: StateFlow<String>
+        get() = _userNickname
+
+    private var _settings = MutableStateFlow<Settings?>(null)
+    val settings: StateFlow<Settings?>
+        get() = _settings
+
+    private var _savedPinCode = MutableStateFlow<String?>(null)
+    val savedPinCode: StateFlow<String?>
+        get() = _savedPinCode
+
+    private var _biometricAuthState = MutableStateFlow<BiometricAuthState?>(null)
+    val biometricAuthState: StateFlow<BiometricAuthState?>
+        get() = _biometricAuthState
+
+    private var _biometricAvailableState = MutableStateFlow<BiometricsAvailableState?>(null)
+    val biometricAvailableState: StateFlow<BiometricsAvailableState?>
+        get() = _biometricAvailableState
+
     private var isShowDialogSignOut = false
 
     init {
@@ -107,7 +98,7 @@ class SettingsViewModel @Inject constructor(
 
     private fun checkIsHasDayEntity() {
         viewModelScope.launch(Dispatchers.IO) {
-            getLastDayUseCase(Unit).collectLatest {
+            dayRepository.getLastDay().collectLatest {
                 isShowDialogSignOut = it != null
             }
         }
@@ -139,18 +130,18 @@ class SettingsViewModel @Inject constructor(
     }
 
     private fun signOut(isSaveDayEntities: Boolean) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             if (!isSaveDayEntities) {
-                deleteAllDaysLocalUseCase(Unit)
+               dayRepository.deleteAllDaysLocal()
             }
-            signOutUseCase(Unit)
-            resetToggleBtnUseCase(Unit)
-            resetUserNicknameUseCase(Unit)
+            authenticationManager.signOut()
+            toggleBtnRepository.resetToggleButtonState()
+            settingsRepository.resetUserNickname()
         }
     }
 
     private fun getSettings() = intent {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
 
 //            combine(
 //                getSettingsUseCase(Unit),
@@ -165,7 +156,7 @@ class SettingsViewModel @Inject constructor(
 //
 //            }
 
-            getSettingsUseCase(Unit).collectLatest {
+            settingsRepository.getSettings().collectLatest {
                 _settings.value = it
             }
         }
@@ -173,48 +164,47 @@ class SettingsViewModel @Inject constructor(
 
     private fun getUserNickname() {
         viewModelScope.launch(Dispatchers.IO) {
-            getUserNicknameUseCase(Unit).collectLatest {
+            settingsRepository.getUserNickname().collectLatest {
                 _userNickname.value = it
             }
         }
     }
 
     private fun getSavedPinCode() {
-        viewModelScope.launch {
-            getSavedPinCodeUseCase(Unit).collectLatest {
+        viewModelScope.launch(Dispatchers.IO) {
+            settingsRepository.getPinCode().collectLatest {
                 _savedPinCode.value = it
             }
         }
     }
 
     fun saveSettings(isUseBiometric: Boolean, isUsePinCode: Boolean) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             _settings.value!!.isBiometricEnabled = isUseBiometric
             _settings.value!!.isPinCodeEnabled = isUsePinCode
 
-            saveSettingsUseCase(_settings.value!!)
+            settingsRepository.saveSettings(_settings.value!!)
         }
     }
 
     fun saveShowWorriedDialog(isShowWorriedDialog: Boolean) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             _settings.value!!.isShowWorriedDialog = isShowWorriedDialog
 
-            saveSettingsUseCase(_settings.value!!)
+            settingsRepository.saveSettings(_settings.value!!)
         }
     }
 
     fun resetBiometricAuthAndSaveSettings(isUseBiometric: Boolean, isUsePinCode: Boolean) {
-        viewModelScope.launch {
-            nullifyBiometricAuthState()
-            checkBiometricsAvailable()
-            saveSettings(isUseBiometric, isUsePinCode)
-        }
+        nullifyBiometricAuthState()
+        checkBiometricsAvailable()
+        saveSettings(isUseBiometric, isUsePinCode)
+
     }
 
     fun resetPinCodeAuth() {
-        viewModelScope.launch {
-            resetPinCodeUseCase(Unit)
+        viewModelScope.launch(Dispatchers.IO) {
+            settingsRepository.resetPinCode()
         }
     }
 

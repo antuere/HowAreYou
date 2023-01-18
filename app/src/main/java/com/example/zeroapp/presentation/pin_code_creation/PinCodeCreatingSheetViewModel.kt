@@ -3,10 +3,9 @@ package com.example.zeroapp.presentation.pin_code_creation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import antuere.domain.dto.Settings
-import antuere.domain.usecases.user_settings.GetSettingsUseCase
-import antuere.domain.usecases.user_settings.SavePinCodeUseCase
-import antuere.domain.usecases.user_settings.SaveSettingsUseCase
+import antuere.domain.repository.SettingsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -16,9 +15,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PinCodeCreatingSheetViewModel @Inject constructor(
-    private val getSettingsUseCase: GetSettingsUseCase,
-    private val saveSettingsUseCase: SaveSettingsUseCase,
-    private val savePinCodeUseCase: SavePinCodeUseCase,
+    private val settingsRepository: SettingsRepository
 ) : ViewModel() {
 
     private var _userPinCode = MutableStateFlow<String?>(null)
@@ -120,8 +117,8 @@ class PinCodeCreatingSheetViewModel @Inject constructor(
     }
 
     private fun getSettings() {
-        viewModelScope.launch {
-            getSettingsUseCase(Unit).collectLatest {
+        viewModelScope.launch(Dispatchers.IO) {
+            settingsRepository.getSettings().collectLatest {
                 _settings.value = it
             }
         }
@@ -138,23 +135,21 @@ class PinCodeCreatingSheetViewModel @Inject constructor(
     }
 
     fun resetAllPinCodeStates() {
-        viewModelScope.launch {
-            _userPinCode.value = null
-            currentNumbers.clear()
-            _pinCodeCirclesState.value = PinCodeCirclesState.NONE
-        }
+        _userPinCode.value = null
+        currentNumbers.clear()
+        _pinCodeCirclesState.value = PinCodeCirclesState.NONE
     }
 
     private fun savePinCode(pinCode: String) {
-        viewModelScope.launch {
-            savePinCodeUseCase(pinCode)
+        viewModelScope.launch(Dispatchers.IO) {
+            settingsRepository.savePinCode(pinCode)
         }
     }
 
     private fun saveSettings() {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             _settings.value!!.isPinCodeEnabled = true
-            saveSettingsUseCase(_settings.value!!)
+            settingsRepository.saveSettings(_settings.value!!)
         }
     }
 

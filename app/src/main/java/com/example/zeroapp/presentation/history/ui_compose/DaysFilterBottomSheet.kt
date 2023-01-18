@@ -14,7 +14,6 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import antuere.domain.util.TimeUtility
 import com.example.zeroapp.R
 import com.example.zeroapp.presentation.history.ui_compose.date_picker.EndDatePicker
 import com.example.zeroapp.presentation.history.ui_compose.date_picker.StartDatePicker
@@ -26,7 +25,7 @@ import java.time.LocalDate
 @Composable
 fun DaysFilterBottomSheet(
     bottomSheetState: ModalBottomSheetState,
-    onDaysSelected: (Pair<Long, Long>) -> Unit
+    onDaysSelected: (LocalDate, LocalDate) -> Unit
 ) {
     val dialogStartDateState = rememberMaterialDialogState()
     val dialogEndDateState = rememberMaterialDialogState()
@@ -77,7 +76,8 @@ fun DaysFilterBottomSheet(
 
         Row(
             modifier = Modifier.fillMaxWidth(0.8F),
-            verticalAlignment = Alignment.CenterVertically) {
+            verticalAlignment = Alignment.CenterVertically
+        ) {
             DateSelectionBtn(
                 modifier = Modifier
                     .padding(horizontal = dimensionResource(id = R.dimen.padding_small_2))
@@ -95,7 +95,7 @@ fun DaysFilterBottomSheet(
                 modifier = Modifier
                     .padding(horizontal = dimensionResource(id = R.dimen.padding_small_2))
                     .weight(1F)
-                    .alpha(if(isEnabledEndDateBtn) 1F else 0.4F),
+                    .alpha(if (isEnabledEndDateBtn) 1F else 0.4F),
                 onClick = { dialogEndDateState.show() },
                 label = endBtnText,
                 enabled = isEnabledEndDateBtn
@@ -104,14 +104,13 @@ fun DaysFilterBottomSheet(
         Spacer(modifier = Modifier.weight(1F))
 
         Button(
-            modifier = Modifier.fillMaxWidth(0.6F).alpha(
-                if(isEnabledConfirmBtn) 1F else 0.4F
-            ),
+            modifier = Modifier
+                .fillMaxWidth(0.6F)
+                .alpha(
+                    if (isEnabledConfirmBtn) 1F else 0.4F
+                ),
             onClick = {
-                val startDateInSec = TimeUtility.getTimeInMilliseconds(startDate)
-                val endDateInSec = TimeUtility.getTimeInMilliseconds(endDate)
-
-                onDaysSelected(Pair(startDateInSec, endDateInSec))
+                onDaysSelected(startDate, endDate)
                 scope.launch {
                     bottomSheetState.hide()
                 }

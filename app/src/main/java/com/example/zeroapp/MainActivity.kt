@@ -17,7 +17,7 @@ import androidx.core.view.WindowCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.lifecycleScope
 import antuere.domain.dto.Settings
-import antuere.domain.usecases.user_settings.GetSettingsUseCase
+import antuere.domain.repository.SettingsRepository
 import antuere.domain.util.Constants
 import com.example.zeroapp.presentation.add_day.AddDayScreen
 import com.example.zeroapp.presentation.base.*
@@ -69,7 +69,7 @@ class MainActivity : FragmentActivity() {
     private val viewModel by viewModels<HomeViewModel>()
 
     @Inject
-    lateinit var getSettingsUseCase: GetSettingsUseCase
+    lateinit var settingsRepository: SettingsRepository
 
     @Inject
     lateinit var signInClient: GoogleSignInClient
@@ -84,7 +84,7 @@ class MainActivity : FragmentActivity() {
         TimeZone.setDefault(TimeZone.getTimeZone("UTC"))
 
         val job = lifecycleScope.launch(Dispatchers.IO) {
-            settings = getSettingsUseCase(Unit).first()
+            settings = settingsRepository.getSettings().first()
         }
 
         installSplashScreen().apply {

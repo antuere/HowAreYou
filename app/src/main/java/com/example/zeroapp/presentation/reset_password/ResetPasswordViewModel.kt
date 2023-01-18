@@ -2,11 +2,12 @@ package com.example.zeroapp.presentation.reset_password
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import antuere.domain.authentication_manager.AuthenticationManager
 import antuere.domain.authentication_manager.ResetPassResultListener
-import antuere.domain.usecases.authentication.ResetPasswordUseCase
 import com.example.zeroapp.R
 import com.example.zeroapp.presentation.base.ui_text.UiText
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -14,7 +15,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ResetPasswordViewModel @Inject constructor(
-    private val resetPasswordUseCase: ResetPasswordUseCase
+    private val authenticationManager: AuthenticationManager
 ) : ViewModel() {
 
     private var _resetState = MutableStateFlow<ResetPasswordState?>(null)
@@ -39,8 +40,11 @@ class ResetPasswordViewModel @Inject constructor(
     fun onClickResetPassword(email: String) {
         if (email.isNotEmpty()) {
             _isShowProgressIndicator.value = true
-            viewModelScope.launch {
-                resetPasswordUseCase(resetPassResultListener, email)
+            viewModelScope.launch(Dispatchers.IO) {
+                authenticationManager.resetPassword(
+                    email = email,
+                    resetPassResultListener = resetPassResultListener
+                )
             }
         } else {
             _resetState.value =
