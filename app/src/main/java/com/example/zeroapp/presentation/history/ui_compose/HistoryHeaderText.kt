@@ -10,20 +10,24 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.style.TextAlign
 import com.example.zeroapp.R
 import com.example.zeroapp.presentation.base.ui_text.UiText
+import timber.log.Timber
 
 @Composable
 fun HistoryHeaderText(
     modifier: Modifier = Modifier,
-    rotation: Float = 0F,
+    rotation: () -> Float = { 0f },
     headerText: UiText
 ) {
+
+    Timber.i("MVI error test : composed in header text rotate is $rotation")
+
     Text(
         text = headerText.asString(),
         modifier = modifier
             .fillMaxWidth()
             .padding(vertical = dimensionResource(id = R.dimen.padding_normal_0))
             .graphicsLayer {
-                rotationX = rotation
+                rotationX = rotation()
             },
         textAlign = TextAlign.Center
     )

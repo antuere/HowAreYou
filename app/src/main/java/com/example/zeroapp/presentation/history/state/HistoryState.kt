@@ -5,7 +5,7 @@ import antuere.domain.dto.ToggleBtnState
 import com.example.zeroapp.R
 import com.example.zeroapp.presentation.base.ui_text.UiText
 
-sealed class HistoryState {
+sealed interface HistoryState {
 
     data class LoadingShimmer(
         val cellsAmount: Int = 3,
@@ -13,23 +13,22 @@ sealed class HistoryState {
         val toggleBtnState: ToggleBtnState = ToggleBtnState.CURRENT_MONTH,
         val dateTextPlug: UiText = UiText.StringResource(R.string.loading),
         val toggleButtons: Map<UiText, ToggleBtnState> = toggleButtonsList
-    ) : HistoryState()
+    ) : HistoryState
 
+    sealed interface Empty : HistoryState {
+        data class NoEntriesYet(val message: UiText) : Empty
 
-    sealed class Empty(message: UiText) : HistoryState() {
-        class NoEntriesYet(val message: UiText) : Empty(message)
-
-        class FromToggleGroup(
+        data class FromToggleGroup(
             val message: UiText,
             val toggleBtnState: ToggleBtnState,
             val toggleButtons: Map<UiText, ToggleBtnState> = toggleButtonsList
-        ) : Empty(message)
+        ) : Empty
 
-        class FromFilter(val message: UiText) : Empty(message)
+        class FromFilter(val message: UiText) : Empty
     }
 
     sealed class Loaded :
-        HistoryState() {
+        HistoryState {
 
         data class Default(
             val dayList: List<Day>,

@@ -7,9 +7,11 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import antuere.domain.dto.Day
 import com.example.zeroapp.presentation.base.ui_compose_components.days_list.DaysListItem
+import timber.log.Timber
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -20,6 +22,8 @@ fun DaysGrid(
     onLongClick: (Day) -> Unit
 
 ) {
+    Timber.i("MVI error test : composed in daysGrid ${days.size}")
+
     LazyVerticalGrid(
         columns = GridCells.Fixed(cellsAmount),
         modifier = Modifier.fillMaxSize()

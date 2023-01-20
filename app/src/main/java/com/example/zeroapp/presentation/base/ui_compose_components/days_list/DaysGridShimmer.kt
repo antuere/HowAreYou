@@ -15,6 +15,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
 import com.example.zeroapp.R
 import com.example.zeroapp.util.shimmer
+import timber.log.Timber
 
 
 @Composable
@@ -22,6 +23,8 @@ fun DaysGridShimmer(
     cellsAmount: Int,
     aspectRatio: Float
 ) {
+    Timber.i("MVI error test : composed in daysGrid shimmer")
+
     LazyVerticalGrid(
         columns = GridCells.Fixed(cellsAmount),
         modifier = Modifier.fillMaxSize()

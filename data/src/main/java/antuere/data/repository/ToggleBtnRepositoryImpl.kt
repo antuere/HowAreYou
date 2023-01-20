@@ -8,8 +8,7 @@ import javax.inject.Inject
 
 class ToggleBtnRepositoryImpl @Inject constructor(
     private val toggleBtnDataStore: ToggleBtnDataStore
-) :
-    ToggleBtnRepository {
+) : ToggleBtnRepository {
 
     override suspend fun getToggleButtonState(): Flow<ToggleBtnState> {
         return toggleBtnDataStore.toggleBtnConfiguration.flow

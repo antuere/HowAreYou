@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
@@ -14,6 +15,7 @@ import androidx.compose.ui.zIndex
 import antuere.domain.dto.ToggleBtnState
 import com.example.zeroapp.R
 import com.example.zeroapp.presentation.base.ui_text.UiText
+import timber.log.Timber
 
 @Composable
 fun ToggleBtnGroup(
@@ -21,8 +23,10 @@ fun ToggleBtnGroup(
     toggleButtons: Map<UiText, ToggleBtnState>,
     currentToggleBtnState: ToggleBtnState,
     onClick: (ToggleBtnState) -> Unit,
-    ) {
+) {
     val shapePercent = 50
+
+    Timber.i("MVI error test : composed in toggleBtnGroup ${currentToggleBtnState.name}")
 
     Row(
         modifier = modifier.fillMaxWidth(),

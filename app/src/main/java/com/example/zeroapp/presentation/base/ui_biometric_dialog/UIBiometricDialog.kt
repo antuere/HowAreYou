@@ -29,13 +29,13 @@ class UIBiometricDialog(private val context: Context) {
     private var biometricPrompt: BiometricPrompt? = null
     private var promptInfo: BiometricPrompt.PromptInfo? = null
 
-    val deviceHasBiometricHardware: BiometricsAvailableState
+    val deviceHasBiometricHardware: Boolean
         get() {
             return when (biometricManager.canAuthenticate(BIOMETRIC_WEAK or BIOMETRIC_STRONG)) {
                 BiometricManager.BIOMETRIC_SUCCESS, BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED -> {
-                    BiometricsAvailableState.Available
+                    true
                 }
-                else -> BiometricsAvailableState.NoHardware
+                else -> false
             }
         }
 

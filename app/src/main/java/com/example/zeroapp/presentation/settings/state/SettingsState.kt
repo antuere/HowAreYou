@@ -1,24 +1,14 @@
 package com.example.zeroapp.presentation.settings.state
 
-import antuere.domain.dto.Settings
-import com.example.zeroapp.presentation.base.ui_biometric_dialog.BiometricAuthState
-import com.example.zeroapp.presentation.base.ui_biometric_dialog.BiometricsAvailableState
-
-interface SettingsState {
-
-    object Loading : SettingsState
-
-    data class Loaded(
-        val settings: Settings,
-        val userPinCode: String,
-        val userNickname: String
-    ) : SettingsState
-}
+import antuere.domain.util.Constants
 
 
-data class SettingState(
+data class SettingsState(
     val isLoading: Boolean = true,
-    val settings: Settings? = null,
+    val isCheckedWorriedDialog: Boolean = true,
+    val isCheckedPin: Boolean = false,
+    val isEnableBiomAuthOnDevice : Boolean = false,
+    val isCheckedBiomAuth: Boolean = false,
     val userPinCode: String = "",
-    val userNickname: String = ""
+    val userNickname: String = Constants.USER_NOT_AUTH
 )

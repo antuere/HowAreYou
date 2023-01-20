@@ -1,11 +1,7 @@
 package com.example.zeroapp.presentation.history.ui_compose
 
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.ModalBottomSheetState
-import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -18,25 +14,16 @@ import com.example.zeroapp.R
 import com.example.zeroapp.presentation.history.ui_compose.date_picker.EndDatePicker
 import com.example.zeroapp.presentation.history.ui_compose.date_picker.StartDatePicker
 import com.vanpra.composematerialdialogs.rememberMaterialDialogState
-import kotlinx.coroutines.launch
+import timber.log.Timber
 import java.time.LocalDate
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun DaysFilterBottomSheet(
-    bottomSheetState: ModalBottomSheetState,
+    hideBottomSheet: () -> Unit,
     onDaysSelected: (LocalDate, LocalDate) -> Unit
 ) {
     val dialogStartDateState = rememberMaterialDialogState()
     val dialogEndDateState = rememberMaterialDialogState()
-    val scope = rememberCoroutineScope()
-
-    val isEnabledHandler = bottomSheetState.currentValue == ModalBottomSheetValue.Expanded
-    BackHandler(enabled = isEnabledHandler) {
-        scope.launch {
-            bottomSheetState.hide()
-        }
-    }
 
     val startBtnString = stringResource(R.string.start_date_field)
     var startBtnText by remember {
@@ -55,8 +42,18 @@ fun DaysFilterBottomSheet(
         mutableStateOf(LocalDate.now())
     }
 
-    val isEnabledEndDateBtn = !startBtnText.contains(" ")
-    val isEnabledConfirmBtn = !startBtnText.contains(" ") && !endBtnText.contains(" ")
+    Timber.i("MVI error test : composed in daysFilter")
+
+    val isEnabledEndDateBtn by remember {
+        derivedStateOf {
+            !startBtnText.contains(" ")
+        }
+    }
+    val isEnabledConfirmBtn by remember {
+        derivedStateOf {
+            !startBtnText.contains(" ") && !endBtnText.contains(" ")
+        }
+    }
 
     Column(
         modifier = Modifier.fillMaxHeight(0.4F),
@@ -111,9 +108,7 @@ fun DaysFilterBottomSheet(
                 ),
             onClick = {
                 onDaysSelected(startDate, endDate)
-                scope.launch {
-                    bottomSheetState.hide()
-                }
+                hideBottomSheet()
             },
             enabled = isEnabledConfirmBtn,
             colors = ButtonDefaults.buttonColors(

@@ -78,9 +78,14 @@ dependencies {
     runtimeOnly "androidx.appcompat:appcompat:$version_appcompat"
     runtimeOnly "com.google.android.material:material:$version_material"
     runtimeOnly "androidx.constraintlayout:constraintlayout:$version_constraint_layout"
+
+
+    //Lifecycle
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$version_lifecycle"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$version_lifecycle"
-    implementation "androidx.lifecycle:lifecycle-extensions:$version_lifecycle_extensions"
+    implementation "androidx.lifecycle:lifecycle-runtime-compose:$version_lifecycle"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-compose:$version_lifecycle"
+    implementation"androidx.lifecycle:lifecycle-viewmodel-savedstate:$version_lifecycle"
 
     //Compose
     def composeBom = platform('androidx.compose:compose-bom:2022.11.00')
@@ -98,7 +103,6 @@ dependencies {
     implementation 'androidx.compose.material:material-icons-extended'
     implementation 'androidx.compose.material3:material3-window-size-class'
     implementation "androidx.activity:activity-compose:$version_compose_activity"
-    implementation "androidx.lifecycle:lifecycle-viewmodel-compose:$version_compose_view_model"
     implementation 'androidx.compose.runtime:runtime-livedata'
 
     // Leak canary

@@ -47,12 +47,10 @@ fun rememberAppState(
         mutableStateOf(AppBarState())
     }
 ) = remember {
-    mutableStateOf(
-        AppState(
-            navController = navController,
-            snackbarHostState = snackbarHostState,
-            snackbarScope = snackbarScope,
-            appBarState = appBarState
-        )
+    AppState(
+        navController = navController,
+        snackbarHostState = snackbarHostState,
+        snackbarScope = snackbarScope,
+        appBarState = appBarState
     )
 }

@@ -1,5 +1,6 @@
 package com.example.zeroapp.presentation.history
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -34,6 +35,7 @@ import com.example.zeroapp.presentation.history.ui_compose.*
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
+import java.time.LocalDate
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -56,6 +58,40 @@ fun HistoryScreen(
 
     val viewState by historyViewModel.collectAsState()
 
+    val isEnabledHandler by remember {
+        derivedStateOf {
+            bottomSheetState.currentValue == ModalBottomSheetValue.Expanded
+        }
+    }
+
+    val hideBottomSheet: () -> Unit = remember {
+        {
+            scope.launch {
+                bottomSheetState.hide()
+            }
+        }
+    }
+
+    val showBottomSheet: () -> Unit = remember {
+        {
+            scope.launch {
+                bottomSheetState.animateTo(ModalBottomSheetValue.Expanded)
+            }
+        }
+    }
+
+    val onDaysSelected: (LocalDate, LocalDate) -> Unit = remember {
+        { startDate, endDate ->
+            historyViewModel.onDaysSelected(startDate, endDate)
+        }
+    }
+
+    BackHandler(enabled = isEnabledHandler) {
+        scope.launch {
+            bottomSheetState.hide()
+        }
+    }
+
     LaunchedEffect(true) {
         dismissSnackbar()
     }
@@ -70,11 +106,7 @@ fun HistoryScreen(
                             scaleY = scaleFilterBtn
                             scaleX = scaleFilterBtn
                         },
-                        onClick = {
-                            scope.launch {
-                                bottomSheetState.animateTo(ModalBottomSheetValue.Expanded)
-                            }
-                        },
+                        onClick = showBottomSheet,
                         interactionSource = interactionSource
                     ) {
                         Icon(
@@ -111,13 +143,11 @@ fun HistoryScreen(
                 contentAlignment = Alignment.Center
             ) {
                 DaysFilterBottomSheet(
-                    bottomSheetState = bottomSheetState,
-                    onDaysSelected = { startDate, endDate ->
-                        historyViewModel.onDaysSelected(startDate, endDate)
-                    })
+                    hideBottomSheet = hideBottomSheet,
+                    onDaysSelected = onDaysSelected
+                )
             }
         }) {
-
         Column(
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.Center,
@@ -176,7 +206,7 @@ fun HistoryScreen(
                     )
 
                     HistoryHeaderText(
-                        rotation = rotation.value,
+                        rotation = { rotation.value },
                         headerText = state.textHeadline
                     )
 
@@ -201,7 +231,7 @@ fun HistoryScreen(
                     )
 
                     HistoryHeaderText(
-                        rotation = rotation.value,
+                        rotation = { rotation.value },
                         headerText = state.textHeadline
                     )
 
@@ -233,3 +263,4 @@ fun HistoryScreen(
         }
     }
 }
+

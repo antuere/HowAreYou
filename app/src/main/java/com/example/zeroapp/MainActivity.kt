@@ -28,7 +28,9 @@ import com.example.zeroapp.presentation.base.ui_animations.materialSlideOut
 import com.example.zeroapp.presentation.base.ui_compose_components.AppState
 import com.example.zeroapp.presentation.base.ui_compose_components.top_bar.AppBarState
 import com.example.zeroapp.presentation.base.navigation.Screen
+import com.example.zeroapp.presentation.base.navigation.navigateToDayDetail
 import com.example.zeroapp.presentation.base.ui_compose_components.bottom_nav_bar.DefaultBottomNavBar
+import com.example.zeroapp.presentation.base.ui_compose_components.dialog.UIDialog
 import com.example.zeroapp.presentation.base.ui_compose_components.dialog.UIDialogListener
 import com.example.zeroapp.presentation.base.ui_compose_components.rememberAppState
 import com.example.zeroapp.presentation.base.ui_compose_components.top_bar.DefaultTopBar
@@ -105,9 +107,15 @@ class MainActivity : FragmentActivity() {
 
         setContent {
             HowAreYouTheme {
-                val appState: AppState by rememberAppState()
+
+                Timber.i("MVI error test : composed in activity")
+
+                val appState: AppState = rememberAppState()
                 val appBarState by appState.appBarState
-                val navController = appState.navController
+
+                val navController = remember {
+                    appState.navController
+                }
 
                 val uiDialogListener by remember {
                     mutableStateOf(UIDialogListener())
@@ -115,6 +123,7 @@ class MainActivity : FragmentActivity() {
                 uiDialogListener.SetupDialogListener()
 
                 val systemUiController = rememberSystemUiController()
+
                 val isUseDarkIcons =
                     !(isSystemInDarkTheme() || (!isSystemInDarkTheme() && appBarState.isVisibleBottomBar))
                 val colorNavBarColor =
@@ -125,6 +134,16 @@ class MainActivity : FragmentActivity() {
                         color = colorNavBarColor,
                         darkIcons = isUseDarkIcons
                     )
+                }
+
+                val showDialog: (UIDialog) -> Unit = remember {
+                    { uiDialogListener.showDialog(it) }
+                }
+
+                val updateAppBarState: (AppBarState) -> Unit = remember {
+                    { barState: AppBarState ->
+                        appState.appBarState.value = barState
+                    }
                 }
 
                 Scaffold(
@@ -305,14 +324,10 @@ class MainActivity : FragmentActivity() {
                             exitTransition = { materialFadeThroughOut() },
                         ) {
                             HistoryScreen(
-                                updateAppBar = { barState: AppBarState ->
-                                    appState.appBarState.value = barState
-                                },
-                                dismissSnackbar = { appState.dismissSnackbar() },
-                                onNavigateToDetail = {
-                                    navController.navigate(Screen.Detail.route + "/$it")
-                                },
-                                showDialog = { uiDialogListener.showDialog(it) }
+                                updateAppBar = updateAppBarState,
+                                dismissSnackbar = appState::dismissSnackbar,
+                                onNavigateToDetail = navController.navigateToDayDetail(),
+                                showDialog = showDialog
                             )
                         }
 
