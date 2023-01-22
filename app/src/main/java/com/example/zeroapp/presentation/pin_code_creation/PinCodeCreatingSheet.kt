@@ -24,7 +24,7 @@ import kotlinx.coroutines.launch
 fun PinCodeCreating(
     sheetViewModel: PinCodeCreatingSheetViewModel = hiltViewModel(),
     bottomSheetState: ModalBottomSheetState,
-    onShowSuccessSnackBar: () -> Unit,
+    onHandleResult: (Boolean) -> Unit,
 ) {
     val scope = rememberCoroutineScope()
     val pinCodeCirclesState by sheetViewModel.pinCodeCirclesState.collectAsState()
@@ -39,6 +39,7 @@ fun PinCodeCreating(
 
     LaunchedEffect(bottomSheetState.targetValue) {
         if (bottomSheetState.targetValue == ModalBottomSheetValue.Hidden) {
+            onHandleResult(isPinCodeCreated)
             sheetViewModel.resetAllPinCodeStates()
         }
     }
@@ -51,7 +52,6 @@ fun PinCodeCreating(
 
     if (isPinCodeCreated) {
         LaunchedEffect(true) {
-            onShowSuccessSnackBar()
             bottomSheetState.hide()
         }
     }

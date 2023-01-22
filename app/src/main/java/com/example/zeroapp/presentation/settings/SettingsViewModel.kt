@@ -1,5 +1,7 @@
 package com.example.zeroapp.presentation.settings
 
+import android.content.Intent
+import androidx.biometric.BiometricManager
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import antuere.domain.authentication_manager.AuthenticationManager
@@ -35,7 +37,7 @@ class SettingsViewModel @Inject constructor(
     private val settingsRepository: SettingsRepository,
     private val toggleBtnRepository: ToggleBtnRepository,
     private val authenticationManager: AuthenticationManager,
-    val uiBiometricDialog: UIBiometricDialog
+    private val uiBiometricDialog: UIBiometricDialog
 ) : ContainerHost<SettingsState, SettingsSideEffect>, ViewModel() {
 
     override val container: Container<SettingsState, SettingsSideEffect> =
@@ -97,9 +99,8 @@ class SettingsViewModel @Inject constructor(
             reduce {
                 state.copy(isCheckedBiomAuth = false)
             }
-            saveSettings(isUseBiometric = false, isUsePinCode = true)
-            _biometricAvailableState.value =
-                BiometricsAvailableState.NoneEnrolled(UiText.StringResource(R.string.biometric_none_enroll))
+
+            defineEnrollAction()
         }
     }
 
@@ -154,7 +155,6 @@ class SettingsViewModel @Inject constructor(
 
     private fun getSettings() = intent {
         viewModelScope.launch(Dispatchers.IO) {
-
             combine(
                 settingsRepository.getSettings(),
                 settingsRepository.getUserNickname(),
@@ -165,17 +165,32 @@ class SettingsViewModel @Inject constructor(
                         isLoading = false,
                         isCheckedWorriedDialog = settings.isShowWorriedDialog,
                         isCheckedPin = settings.isPinCodeEnabled,
-                        isEnableBiomAuthOnDevice =,
                         isCheckedBiomAuth = settings.isBiometricEnabled,
                         userNickname = username,
                         userPinCode = pinCode
                     )
                 }
-            }
+            }.collect()
 
 //            settingsRepository.getSettings().collectLatest {
 //                _settings.value = it
 //            }
+        }
+    }
+
+    private fun defineEnrollAction() = intent {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
+            val enrollIntent = Intent(android.provider.Settings.ACTION_BIOMETRIC_ENROLL).apply {
+                putExtra(
+                    android.provider.Settings.EXTRA_BIOMETRIC_AUTHENTICATORS_ALLOWED,
+                    BiometricManager.Authenticators.BIOMETRIC_STRONG or BiometricManager.Authenticators.BIOMETRIC_WEAK
+                )
+            }
+            postSideEffect(SettingsSideEffect.BiometricNoneEnroll(enrollIntent))
+        } else {
+            postSideEffect(
+                SettingsSideEffect.Snackbar(UiText.StringResource(R.string.biometric_none_enroll))
+            )
         }
     }
 
@@ -195,6 +210,39 @@ class SettingsViewModel @Inject constructor(
 //        }
 //    }
 
+    fun onChangePinSetting(isEnablePin: Boolean) = intent {
+        reduce {
+            state.copy(isCheckedPin = isEnablePin)
+        }
+
+        if (isEnablePin) {
+            postSideEffect(SettingsSideEffect.ShowBottomSheet)
+        } else {
+            resetPinCodeAuth()
+            saveSettings(isUseBiometric = false, isUsePinCode = false)
+        }
+    }
+
+    fun onChangeBiomAuthSetting(isEnableBiom: Boolean) = intent {
+        reduce {
+            state.copy(isCheckedBiomAuth = isEnableBiom)
+        }
+        if (isEnableBiom) {
+            postSideEffect(SettingsSideEffect.BiometricDialog(uiBiometricDialog))
+        } else {
+            saveSettings(isUseBiometric = false, isUsePinCode = true)
+        }
+    }
+
+    fun onHandlePinCreationResult(isCreated: Boolean) = intent {
+        reduce {
+            state.copy(isCheckedPin = isCreated)
+        }
+        if (isCreated) {
+            postSideEffect(SettingsSideEffect.Snackbar(UiText.StringResource(R.string.pin_code_create_success)))
+        }
+    }
+
     fun saveSettings(isUseBiometric: Boolean, isUsePinCode: Boolean) = intent {
         viewModelScope.launch(Dispatchers.IO) {
             val newSettings = Settings(
@@ -208,6 +256,10 @@ class SettingsViewModel @Inject constructor(
     }
 
     fun saveShowWorriedDialog(isShowWorriedDialog: Boolean) = intent {
+        reduce {
+            state.copy(isCheckedWorriedDialog = isShowWorriedDialog)
+        }
+
         viewModelScope.launch(Dispatchers.IO) {
             val newSettings = Settings(
                 isBiometricEnabled = state.isCheckedBiomAuth,
@@ -215,7 +267,6 @@ class SettingsViewModel @Inject constructor(
                 isShowWorriedDialog = isShowWorriedDialog
 
             )
-
             settingsRepository.saveSettings(newSettings)
         }
     }

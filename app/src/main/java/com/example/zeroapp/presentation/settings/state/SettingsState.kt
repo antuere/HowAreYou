@@ -7,7 +7,7 @@ data class SettingsState(
     val isLoading: Boolean = true,
     val isCheckedWorriedDialog: Boolean = true,
     val isCheckedPin: Boolean = false,
-    val isEnableBiomAuthOnDevice : Boolean = false,
+    val isEnableBiomAuthOnDevice : Boolean = true,
     val isCheckedBiomAuth: Boolean = false,
     val userPinCode: String = "",
     val userNickname: String = Constants.USER_NOT_AUTH

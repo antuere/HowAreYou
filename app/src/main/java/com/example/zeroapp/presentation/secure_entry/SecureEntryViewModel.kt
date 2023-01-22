@@ -120,8 +120,8 @@ class SecureEntryViewModel @Inject constructor(
     }
 
     private fun checkBiometricsAvailable() {
-        _biometricAvailableState.value =
-            uiBiometricDialog.deviceHasBiometricHardware
+//        _biometricAvailableState.value =
+//            uiBiometricDialog.deviceHasBiometricHardware
     }
 
 

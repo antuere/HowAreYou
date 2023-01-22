@@ -29,6 +29,7 @@ import com.example.zeroapp.presentation.base.ui_compose_components.AppState
 import com.example.zeroapp.presentation.base.ui_compose_components.top_bar.AppBarState
 import com.example.zeroapp.presentation.base.navigation.Screen
 import com.example.zeroapp.presentation.base.navigation.navigateToDayDetail
+import com.example.zeroapp.presentation.base.ui_biometric_dialog.UIBiometricDialog
 import com.example.zeroapp.presentation.base.ui_compose_components.bottom_nav_bar.DefaultBottomNavBar
 import com.example.zeroapp.presentation.base.ui_compose_components.dialog.UIDialog
 import com.example.zeroapp.presentation.base.ui_compose_components.dialog.UIDialogListener
@@ -49,6 +50,7 @@ import com.example.zeroapp.presentation.reset_password.ResetPasswordScreen
 import com.example.zeroapp.presentation.secure_entry.SecureEntryScreen
 import com.example.zeroapp.presentation.sign_in_with_email.SignInEmailScreen
 import com.example.zeroapp.presentation.settings.SettingsScreen
+import com.example.zeroapp.presentation.settings.SettingsViewModel
 import com.example.zeroapp.presentation.sign_in_methods.SignInMethodsScreen
 import com.example.zeroapp.presentation.sign_up_with_email.SignUpEmailScreen
 import com.google.accompanist.navigation.animation.AnimatedNavHost
@@ -356,6 +358,8 @@ class MainActivity : FragmentActivity() {
                                     appState.showSnackbar(message)
                                 },
                                 onNavigateSignIn = { navController.navigate(Screen.SignInMethods.route) },
+                                dismissSnackbar = appState::dismissSnackbar,
+                                showDialog = showDialog,
                             )
                         }
 
