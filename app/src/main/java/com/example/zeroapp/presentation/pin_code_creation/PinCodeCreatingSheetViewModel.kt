@@ -2,40 +2,30 @@ package com.example.zeroapp.presentation.pin_code_creation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import antuere.domain.dto.Settings
 import antuere.domain.repository.SettingsRepository
+import antuere.domain.util.Constants
+import com.example.zeroapp.presentation.pin_code_creation.state.PinCodeCreationSideEffect
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import org.orbitmvi.orbit.Container
+import org.orbitmvi.orbit.ContainerHost
+import org.orbitmvi.orbit.syntax.simple.intent
+import org.orbitmvi.orbit.syntax.simple.postSideEffect
+import org.orbitmvi.orbit.syntax.simple.reduce
+import org.orbitmvi.orbit.viewmodel.container
 import javax.inject.Inject
 
 @HiltViewModel
 class PinCodeCreatingSheetViewModel @Inject constructor(
     private val settingsRepository: SettingsRepository
-) : ViewModel() {
+) : ContainerHost<PinCodeCirclesState, PinCodeCreationSideEffect>, ViewModel() {
 
-    private var _userPinCode = MutableStateFlow<String?>(null)
+    override val container: Container<PinCodeCirclesState, PinCodeCreationSideEffect> =
+        container(PinCodeCirclesState.NONE)
 
-    private var _pinCodeCirclesState = MutableStateFlow(PinCodeCirclesState.NONE)
-    val pinCodeCirclesState: StateFlow<PinCodeCirclesState>
-        get() = _pinCodeCirclesState
-
-    private var _settings = MutableStateFlow<Settings?>(null)
-    val settings: StateFlow<Settings?>
-        get() = _settings
-
-    private var _isPinCodeCreated = MutableStateFlow(false)
-    val isPinCodeCreated: StateFlow<Boolean>
-        get() = _isPinCodeCreated
-
-
-    init {
-        getSettings()
-    }
+    private var userPinCode = Constants.PIN_NOT_SET
 
     private var num1: String? = null
     private var num2: String? = null
@@ -44,116 +34,68 @@ class PinCodeCreatingSheetViewModel @Inject constructor(
 
     private var currentNumbers = mutableListOf<String>()
 
-
     fun onClickNumber(value: String) {
-        when (value) {
-            "0" -> {
-                currentNumbers.add(value)
-                checkPassword(currentNumbers)
-            }
-            "1" -> {
-                currentNumbers.add(value)
-                checkPassword(currentNumbers)
-            }
-            "2" -> {
-                currentNumbers.add(value)
-                checkPassword(currentNumbers)
-            }
-            "3" -> {
-                currentNumbers.add(value)
-                checkPassword(currentNumbers)
-            }
-            "4" -> {
-                currentNumbers.add(value)
-                checkPassword(currentNumbers)
-            }
-            "5" -> {
-                currentNumbers.add(value)
-                checkPassword(currentNumbers)
-            }
-            "6" -> {
-                currentNumbers.add(value)
-                checkPassword(currentNumbers)
-            }
-            "7" -> {
-                currentNumbers.add(value)
-                checkPassword(currentNumbers)
-            }
-            "8" -> {
-                currentNumbers.add(value)
-                checkPassword(currentNumbers)
-            }
-            "9" -> {
-                currentNumbers.add(value)
-                checkPassword(currentNumbers)
-            }
-            else -> throw IllegalArgumentException("Invalid number: $value")
-
+        if (value.length != 1) {
+            throw IllegalArgumentException("Invalid number: $value")
         }
+
+        currentNumbers.add(value)
+        checkPassword(currentNumbers)
     }
 
-    private fun checkPassword(list: List<String>) {
+    fun resetAllPinCodeStates() = intent {
+        reduce {
+            PinCodeCirclesState.NONE
+        }
+        userPinCode = Constants.PIN_NOT_SET
+        currentNumbers.clear()
+    }
+
+    private fun checkPassword(list: List<String>) = intent {
         when (list.size) {
             1 -> {
                 num1 = list[0]
-                _pinCodeCirclesState.value = PinCodeCirclesState.FIRST
+                reduce {
+                    PinCodeCirclesState.FIRST
+                }
             }
             2 -> {
                 num2 = list[1]
-                _pinCodeCirclesState.value = PinCodeCirclesState.SECOND
+                reduce {
+                    PinCodeCirclesState.SECOND
+                }
             }
             3 -> {
                 num3 = list[2]
-                _pinCodeCirclesState.value = PinCodeCirclesState.THIRD
+                reduce {
+                    PinCodeCirclesState.THIRD
+                }
             }
             4 -> {
                 num4 = list[3]
-                _pinCodeCirclesState.value = PinCodeCirclesState.FOURTH
-                _userPinCode.value = num1 + num2 + num3 + num4
+                reduce {
+                    PinCodeCirclesState.FOURTH
+                }
+                userPinCode = num1 + num2 + num3 + num4
                 pinCodeCreated()
             }
             else -> throw IllegalArgumentException("Too much list size")
         }
     }
 
-    private fun getSettings() {
-        viewModelScope.launch(Dispatchers.IO) {
-            settingsRepository.getSettings().collectLatest {
-                _settings.value = it
-            }
-        }
-    }
 
-    private fun pinCodeCreated() {
-        viewModelScope.launch {
-            saveSettings()
-            savePinCode(_userPinCode.value!!)
+    private fun pinCodeCreated() = intent {
+        viewModelScope.launch(Dispatchers.IO) {
+            savePinCode(userPinCode)
             delay(100)
 
-            _isPinCodeCreated.value = true
+            postSideEffect(PinCodeCreationSideEffect.PinCreated)
         }
-    }
-
-    fun resetAllPinCodeStates() {
-        _userPinCode.value = null
-        currentNumbers.clear()
-        _pinCodeCirclesState.value = PinCodeCirclesState.NONE
     }
 
     private fun savePinCode(pinCode: String) {
         viewModelScope.launch(Dispatchers.IO) {
             settingsRepository.savePinCode(pinCode)
         }
-    }
-
-    private fun saveSettings() {
-        viewModelScope.launch(Dispatchers.IO) {
-            _settings.value!!.isPinCodeEnabled = true
-            settingsRepository.saveSettings(_settings.value!!)
-        }
-    }
-
-    fun resetIsPinCodeCreated() {
-        _isPinCodeCreated.value = false
     }
 }

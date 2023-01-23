@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.zeroapp.R
+import com.example.zeroapp.presentation.base.ui_compose_components.IconApp
 import com.example.zeroapp.presentation.base.ui_compose_components.top_bar.AppBarState
 import com.example.zeroapp.presentation.base.ui_compose_components.buttons.ButtonWithIcon
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -47,7 +48,7 @@ fun SignInMethodsScreen(
         )
     }
 
-    LaunchedEffect(signInState){
+    LaunchedEffect(signInState) {
         signInState?.let { state ->
             when (state) {
                 is SignInMethodsState.UserAuthorized -> {

@@ -15,9 +15,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.zeroapp.R
+import com.example.zeroapp.presentation.add_day.state.AddDaySideEffect
 import com.example.zeroapp.presentation.base.ui_compose_components.top_bar.AppBarState
 import com.example.zeroapp.presentation.base.ui_compose_components.text_field.DefaultTextField
 import com.example.zeroapp.presentation.base.ui_theme.PlayfairDisplay
+import org.orbitmvi.orbit.compose.collectAsState
+import org.orbitmvi.orbit.compose.collectSideEffect
+import timber.log.Timber
 
 @Composable
 fun AddDayScreen(
@@ -25,7 +29,9 @@ fun AddDayScreen(
     onNavigateUp: () -> Unit,
     addDayViewModel: AddDayViewModel = hiltViewModel()
 ) {
-    LaunchedEffect(key1 = true) {
+    Timber.i("MVI error test : enter in add day screen")
+
+    LaunchedEffect(true) {
         updateAppBar(
             AppBarState(
                 titleId = R.string.today,
@@ -35,19 +41,17 @@ fun AddDayScreen(
             )
         )
     }
+    val viewState by addDayViewModel.collectAsState()
 
-    var dayDesc by remember { mutableStateOf("") }
-    val smileImages by remember {
-        mutableStateOf(
-            listOf(
-                antuere.data.R.drawable.smile_sad,
-                antuere.data.R.drawable.smile_none,
-                antuere.data.R.drawable.smile_low,
-                antuere.data.R.drawable.smile_happy,
-                antuere.data.R.drawable.smile_very_happy
-            )
-        )
+    addDayViewModel.collectSideEffect { sideEffect ->
+        when (sideEffect) {
+            is AddDaySideEffect.NavigateUp -> {
+                onNavigateUp()
+            }
+        }
+
     }
+    var dayDesc by remember { mutableStateOf("") }
 
     Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
         Spacer(modifier = Modifier.weight(0.15F))
@@ -73,19 +77,17 @@ fun AddDayScreen(
             modifier = Modifier
                 .padding(horizontal = dimensionResource(id = R.dimen.padding_normal_3))
         ) {
-            smileImages.forEach { imageRes ->
-                IconButton(onClick = {
-                    addDayViewModel.onClickSmile(imageRes, dayDesc)
-                    dayDesc = ""
-                    onNavigateUp()
-                }) {
+            viewState.smileImages.forEach { imageRes ->
+                IconButton(
+                    onClick = {
+                        addDayViewModel.onClickSmile(imageRes, dayDesc)
+                        dayDesc = ""
+                    }) {
                     Icon(painter = painterResource(id = imageRes), contentDescription = null)
                 }
-
             }
         }
         Spacer(modifier = Modifier.weight(0.25F))
 
     }
-
 }

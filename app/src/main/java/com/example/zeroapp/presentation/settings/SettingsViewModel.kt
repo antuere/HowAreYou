@@ -11,12 +11,9 @@ import antuere.domain.repository.SettingsRepository
 import antuere.domain.repository.ToggleBtnRepository
 import com.example.zeroapp.R
 import com.example.zeroapp.presentation.base.ui_text.UiText
-import com.example.zeroapp.presentation.base.ui_biometric_dialog.BiometricsAvailableState
 import com.example.zeroapp.presentation.base.ui_biometric_dialog.IUIBiometricListener
 import com.example.zeroapp.presentation.base.ui_biometric_dialog.UIBiometricDialog
-import com.example.zeroapp.presentation.base.ui_biometric_dialog.BiometricAuthState
 import com.example.zeroapp.presentation.base.ui_compose_components.dialog.UIDialog
-import com.example.zeroapp.presentation.history.state.HistorySideEffect
 import com.example.zeroapp.presentation.settings.state.SettingsSideEffect
 import com.example.zeroapp.presentation.settings.state.SettingsState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -29,7 +26,9 @@ import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
+import timber.log.Timber
 import javax.inject.Inject
+
 
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
@@ -43,36 +42,10 @@ class SettingsViewModel @Inject constructor(
     override val container: Container<SettingsState, SettingsSideEffect> =
         container(SettingsState())
 
-//    private var _uiDialog = MutableStateFlow<UIDialog?>(null)
-//    val uiDialog: StateFlow<UIDialog?>
-//        get() = _uiDialog
-
-//    private var _userNickname = MutableStateFlow(Constants.USER_NOT_AUTH)
-//    val userNickname: StateFlow<String>
-//        get() = _userNickname
-
-//    private var _settings = MutableStateFlow<Settings?>(null)
-//    val settings: StateFlow<Settings?>
-//        get() = _settings
-
-//    private var _savedPinCode = MutableStateFlow<String?>(null)
-//    val savedPinCode: StateFlow<String?>
-//        get() = _savedPinCode
-
-//    private var _biometricAuthState = MutableStateFlow<BiometricAuthState?>(null)
-//    val biometricAuthState: StateFlow<BiometricAuthState?>
-//        get() = _biometricAuthState
-
-//    private var _biometricAvailableState = MutableStateFlow<BiometricsAvailableState?>(null)
-//    val biometricAvailableState: StateFlow<BiometricsAvailableState?>
-//        get() = _biometricAvailableState
-
     private var isShowDialogSignOut = false
 
     init {
         getSettings()
-//        getSavedPinCode()
-//        getUserNickname()
         checkIsHasDayEntity()
         checkBiometricsAvailable()
     }
@@ -104,19 +77,8 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
-
-    private fun checkBiometricsAvailable() = intent {
-        reduce {
-            state.copy(isEnableBiomAuthOnDevice = uiBiometricDialog.deviceHasBiometricHardware)
-        }
-    }
-
-    private fun checkIsHasDayEntity() {
-        viewModelScope.launch(Dispatchers.IO) {
-            dayRepository.getLastDay().collectLatest {
-                isShowDialogSignOut = it != null
-            }
-        }
+    fun onClickSignIn() = intent {
+        postSideEffect(SettingsSideEffect.NavigateToSignIn)
     }
 
     fun onClickSignOut() = intent {
@@ -142,73 +104,21 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
-    private fun signOut(isSaveDayEntities: Boolean) {
-        viewModelScope.launch(Dispatchers.IO) {
-            if (!isSaveDayEntities) {
-                dayRepository.deleteAllDaysLocal()
-            }
-            authenticationManager.signOut()
-            toggleBtnRepository.resetToggleButtonState()
-            settingsRepository.resetUserNickname()
+    fun onChangeWorriedDialogSetting(isShowWorriedDialog: Boolean) = intent {
+        reduce {
+            state.copy(isCheckedWorriedDialog = isShowWorriedDialog)
         }
-    }
 
-    private fun getSettings() = intent {
         viewModelScope.launch(Dispatchers.IO) {
-            combine(
-                settingsRepository.getSettings(),
-                settingsRepository.getUserNickname(),
-                settingsRepository.getPinCode()
-            ) { settings, username, pinCode ->
-                reduce {
-                    state.copy(
-                        isLoading = false,
-                        isCheckedWorriedDialog = settings.isShowWorriedDialog,
-                        isCheckedPin = settings.isPinCodeEnabled,
-                        isCheckedBiomAuth = settings.isBiometricEnabled,
-                        userNickname = username,
-                        userPinCode = pinCode
-                    )
-                }
-            }.collect()
+            val newSettings = Settings(
+                isBiometricEnabled = state.isCheckedBiomAuth,
+                isPinCodeEnabled = state.isCheckedPin,
+                isShowWorriedDialog = isShowWorriedDialog
 
-//            settingsRepository.getSettings().collectLatest {
-//                _settings.value = it
-//            }
-        }
-    }
-
-    private fun defineEnrollAction() = intent {
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
-            val enrollIntent = Intent(android.provider.Settings.ACTION_BIOMETRIC_ENROLL).apply {
-                putExtra(
-                    android.provider.Settings.EXTRA_BIOMETRIC_AUTHENTICATORS_ALLOWED,
-                    BiometricManager.Authenticators.BIOMETRIC_STRONG or BiometricManager.Authenticators.BIOMETRIC_WEAK
-                )
-            }
-            postSideEffect(SettingsSideEffect.BiometricNoneEnroll(enrollIntent))
-        } else {
-            postSideEffect(
-                SettingsSideEffect.Snackbar(UiText.StringResource(R.string.biometric_none_enroll))
             )
+            settingsRepository.saveSettings(newSettings)
         }
     }
-
-//    private fun getUserNickname() {
-//        viewModelScope.launch(Dispatchers.IO) {
-//            settingsRepository.getUserNickname().collectLatest {
-//                _userNickname.value = it
-//            }
-//        }
-//    }
-
-//    private fun getSavedPinCode() {
-//        viewModelScope.launch(Dispatchers.IO) {
-//            settingsRepository.getPinCode().collectLatest {
-//                _savedPinCode.value = it
-//            }
-//        }
-//    }
 
     fun onChangePinSetting(isEnablePin: Boolean) = intent {
         reduce {
@@ -239,6 +149,7 @@ class SettingsViewModel @Inject constructor(
             state.copy(isCheckedPin = isCreated)
         }
         if (isCreated) {
+            saveSettings(isUseBiometric = false, isUsePinCode = true)
             postSideEffect(SettingsSideEffect.Snackbar(UiText.StringResource(R.string.pin_code_create_success)))
         }
     }
@@ -255,42 +166,74 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
-    fun saveShowWorriedDialog(isShowWorriedDialog: Boolean) = intent {
+    private fun checkBiometricsAvailable() = intent {
         reduce {
-            state.copy(isCheckedWorriedDialog = isShowWorriedDialog)
-        }
-
-        viewModelScope.launch(Dispatchers.IO) {
-            val newSettings = Settings(
-                isBiometricEnabled = state.isCheckedBiomAuth,
-                isPinCodeEnabled = state.isCheckedPin,
-                isShowWorriedDialog = isShowWorriedDialog
-
-            )
-            settingsRepository.saveSettings(newSettings)
+            state.copy(isEnableBiomAuthOnDevice = uiBiometricDialog.deviceHasBiometricHardware)
         }
     }
 
-//    fun resetBiometricAuthAndSaveSettings(isUseBiometric: Boolean, isUsePinCode: Boolean) {
-////        nullifyBiometricAuthState()
-////        checkBiometricsAvailable()
-//
-//        saveSettings(isUseBiometric, isUsePinCode)
-//
-//    }
+    private fun checkIsHasDayEntity() {
+        viewModelScope.launch(Dispatchers.IO) {
+            dayRepository.getLastDay().collectLatest {
+                isShowDialogSignOut = it != null
+            }
+        }
+    }
 
-    fun resetPinCodeAuth() {
+
+    private fun signOut(isSaveDayEntities: Boolean) {
+        viewModelScope.launch(Dispatchers.IO) {
+            if (!isSaveDayEntities) {
+                dayRepository.deleteAllDaysLocal()
+            }
+            authenticationManager.signOut()
+            toggleBtnRepository.resetToggleButtonState()
+            settingsRepository.resetUserNickname()
+        }
+    }
+
+    private fun getSettings() = intent {
+        viewModelScope.launch(Dispatchers.IO) {
+            combine(
+                settingsRepository.getSettings(),
+                settingsRepository.getUserNickname(),
+                settingsRepository.getPinCode()
+            ) { settings, username, pinCode ->
+
+                Timber.i("MVI error test : collect from combine")
+                reduce {
+                    state.copy(
+                        isLoading = false,
+                        isCheckedWorriedDialog = settings.isShowWorriedDialog,
+                        isCheckedPin = settings.isPinCodeEnabled,
+                        isCheckedBiomAuth = settings.isBiometricEnabled,
+                        userNickname = username,
+                        userPinCode = pinCode
+                    )
+                }
+            }.collect()
+        }
+    }
+
+    private fun defineEnrollAction() = intent {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
+            val enrollIntent = Intent(android.provider.Settings.ACTION_BIOMETRIC_ENROLL).apply {
+                putExtra(
+                    android.provider.Settings.EXTRA_BIOMETRIC_AUTHENTICATORS_ALLOWED,
+                    BiometricManager.Authenticators.BIOMETRIC_STRONG or BiometricManager.Authenticators.BIOMETRIC_WEAK
+                )
+            }
+            postSideEffect(SettingsSideEffect.BiometricNoneEnroll(enrollIntent))
+        } else {
+            postSideEffect(
+                SettingsSideEffect.Snackbar(UiText.StringResource(R.string.biometric_none_enroll))
+            )
+        }
+    }
+
+    private fun resetPinCodeAuth() {
         viewModelScope.launch(Dispatchers.IO) {
             settingsRepository.resetPinCode()
         }
     }
-
-
-//    fun nullifyBiometricAvailableState() {
-//        _biometricAvailableState.value = null
-//    }
-
-//    fun nullifyBiometricAuthState() {
-//        _biometricAuthState.value = null
-//    }
 }

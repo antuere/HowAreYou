@@ -1,28 +1,25 @@
 package com.example.zeroapp.presentation.cats
 
 import androidx.lifecycle.ViewModel
+import com.example.zeroapp.presentation.cats.state.CatsState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import org.orbitmvi.orbit.Container
+import org.orbitmvi.orbit.ContainerHost
+import org.orbitmvi.orbit.syntax.simple.intent
+import org.orbitmvi.orbit.syntax.simple.reduce
+import org.orbitmvi.orbit.viewmodel.container
 import javax.inject.Inject
 
 
 @HiltViewModel
-class CatsViewModel @Inject constructor() : ViewModel() {
+class CatsViewModel @Inject constructor() :
+    ContainerHost<CatsState, Nothing>, ViewModel() {
 
-    private var _urlList = MutableStateFlow(
-        listOf(
-            "https://source.unsplash.com/random/?cutecats",
-            "https://source.unsplash.com/random/?feline",
-            "https://source.unsplash.com/random/?cat",
-            "https://source.unsplash.com/random/?kitty"
-        )
-    )
-    val urlList: StateFlow<List<String>>
-        get() = _urlList
+    override val container: Container<CatsState, Nothing> = container(CatsState())
 
-
-    fun onClickUpdateCats() {
-        _urlList.value = _urlList.value.asReversed()
+    fun onClickUpdateCats() = intent {
+        reduce {
+            state.copy(urlList = state.urlList.reversed())
+        }
     }
 }

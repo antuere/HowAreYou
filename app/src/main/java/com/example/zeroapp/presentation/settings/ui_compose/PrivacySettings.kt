@@ -15,7 +15,6 @@ import com.example.zeroapp.R
 
 @Composable
 fun PrivacySettings(
-    modifier: Modifier = Modifier,
     isCheckedPinCode: Boolean,
     checkChangePinCode: (Boolean) -> Unit,
     isShowBiometricSetting: Boolean,
@@ -28,7 +27,9 @@ fun PrivacySettings(
         Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_4)))
 
         Text(
-            modifier = modifier,
+            modifier = Modifier.padding(
+                horizontal = dimensionResource(id = R.dimen.padding_normal_3)
+            ),
             text = stringResource(id = R.string.settings_privacy_text),
             fontSize = dimensionResource(id = R.dimen.textSize_normal_2).value.sp
         )
@@ -42,7 +43,7 @@ fun PrivacySettings(
             titleId = R.string.enable_pin_code,
             descriptionId = R.string.enable_pin_code_desc,
             isChecked = isCheckedPinCode,
-            checkChanged = checkChangePinCode
+            onCheckedChange = checkChangePinCode
         )
 
         AnimatedVisibility(
@@ -57,11 +58,15 @@ fun PrivacySettings(
                 titleId = R.string.enable_biometric_authentication,
                 descriptionId = R.string.enable_biometric_authentication_desc,
                 isChecked = isCheckedBiometric,
-                checkChanged = checkChangeBiometric
+                onCheckedChange = checkChangeBiometric
             )
         }
         Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_4)))
-        Divider(modifier = modifier.fillMaxWidth(), color = MaterialTheme.colorScheme.onSecondary)
+        Divider(
+            modifier = Modifier.padding(
+                horizontal = dimensionResource(id = R.dimen.padding_normal_3)
+            ), color = MaterialTheme.colorScheme.onSecondary
+        )
 
     }
 }

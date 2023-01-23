@@ -17,7 +17,7 @@ class SettingsDataStore(context: Context, name: String) {
         StringConfiguration(Constants.USER_NICKNAME_KEY, Constants.USER_NOT_AUTH, settingsDataStore)
 
     val pinCodeConfiguration: Configuration<String> =
-        StringConfiguration(Constants.PIN_CODE_SAVED_KEY, "NOT_SET", settingsDataStore)
+        StringConfiguration(Constants.PIN_CODE_SAVED_KEY, Constants.PIN_NOT_SET, settingsDataStore)
 
     val settingsConfiguration: Configuration<SettingsEntity> =
         SettingsConfiguration(settingsDataStore)

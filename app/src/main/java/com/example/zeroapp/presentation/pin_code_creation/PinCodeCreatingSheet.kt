@@ -1,11 +1,7 @@
 package com.example.zeroapp.presentation.pin_code_creation
 
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.ModalBottomSheetState
-import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -17,42 +13,41 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.zeroapp.R
 import com.example.zeroapp.presentation.base.ui_compose_components.pin_code.NumericKeyPad
 import com.example.zeroapp.presentation.base.ui_compose_components.pin_code.PinCirclesIndicates
-import kotlinx.coroutines.launch
+import com.example.zeroapp.presentation.pin_code_creation.state.PinCodeCreationSideEffect
+import org.orbitmvi.orbit.compose.collectAsState
+import org.orbitmvi.orbit.compose.collectSideEffect
+import timber.log.Timber
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun PinCodeCreating(
-    sheetViewModel: PinCodeCreatingSheetViewModel = hiltViewModel(),
-    bottomSheetState: ModalBottomSheetState,
+    hideBottomSheet: () -> Unit,
+    isSheetStartsHiding: Boolean,
     onHandleResult: (Boolean) -> Unit,
+    sheetViewModel: PinCodeCreatingSheetViewModel = hiltViewModel(),
 ) {
-    val scope = rememberCoroutineScope()
-    val pinCodeCirclesState by sheetViewModel.pinCodeCirclesState.collectAsState()
-    val isPinCodeCreated by sheetViewModel.isPinCodeCreated.collectAsState()
+    Timber.i("MVI error test : composed pin code creating")
 
-    val isEnabledHandler = bottomSheetState.currentValue == ModalBottomSheetValue.Expanded
-    BackHandler(enabled = isEnabledHandler) {
-        scope.launch {
-            bottomSheetState.hide()
+    val viewState by sheetViewModel.collectAsState()
+
+    val onClickNumber: (String) -> Unit = remember {
+        { sheetViewModel.onClickNumber(it) }
+    }
+
+    sheetViewModel.collectSideEffect { sideEffect ->
+        when (sideEffect) {
+            is PinCodeCreationSideEffect.PinCreated -> {
+                onHandleResult(true)
+                hideBottomSheet()
+            }
         }
     }
 
-    LaunchedEffect(bottomSheetState.targetValue) {
-        if (bottomSheetState.targetValue == ModalBottomSheetValue.Hidden) {
-            onHandleResult(isPinCodeCreated)
+    LaunchedEffect(isSheetStartsHiding) {
+        if (isSheetStartsHiding) {
+            if (viewState != PinCodeCirclesState.FOURTH) {
+                onHandleResult(false)
+            }
             sheetViewModel.resetAllPinCodeStates()
-        }
-    }
-
-    LaunchedEffect(bottomSheetState.currentValue) {
-        if (bottomSheetState.currentValue == ModalBottomSheetValue.Hidden) {
-            sheetViewModel.resetIsPinCodeCreated()
-        }
-    }
-
-    if (isPinCodeCreated) {
-        LaunchedEffect(true) {
-            bottomSheetState.hide()
         }
     }
 
@@ -71,13 +66,18 @@ fun PinCodeCreating(
         Text(text = stringResource(id = R.string.create_a_pin_code))
         Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_5)))
 
-        PinCirclesIndicates(pinCodeCirclesState)
+        PinCirclesIndicates(viewState)
+
         Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_11)))
 
         NumericKeyPad(
-            onClick = { sheetViewModel.onClickNumber(it) },
-            onClickClear = { sheetViewModel.resetAllPinCodeStates() })
+            onClick = onClickNumber,
+            onClickClear = sheetViewModel::resetAllPinCodeStates
+        )
 
-        Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_7)))
+        Spacer(
+            modifier =
+            Modifier.height(dimensionResource(id = R.dimen.spacer_height_7))
+        )
     }
 }

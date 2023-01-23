@@ -35,6 +35,7 @@ import com.example.zeroapp.presentation.history.ui_compose.*
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
+import timber.log.Timber
 import java.time.LocalDate
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -46,6 +47,9 @@ fun HistoryScreen(
     showDialog: (UIDialog) -> Unit,
     historyViewModel: HistoryViewModel = hiltViewModel(),
 ) {
+
+    Timber.i("MVI error test : enter in history screen")
+
     val bottomSheetState = rememberModalBottomSheetState(
         initialValue = ModalBottomSheetValue.Hidden,
     )
@@ -58,10 +62,8 @@ fun HistoryScreen(
 
     val viewState by historyViewModel.collectAsState()
 
-    val isEnabledHandler by remember {
-        derivedStateOf {
-            bottomSheetState.currentValue == ModalBottomSheetValue.Expanded
-        }
+    val isEnabledHandler = remember {
+        bottomSheetState.currentValue == ModalBottomSheetValue.Expanded
     }
 
     val hideBottomSheet: () -> Unit = remember {

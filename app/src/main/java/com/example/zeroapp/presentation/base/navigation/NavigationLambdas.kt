@@ -8,3 +8,8 @@ import androidx.navigation.NavController
 fun NavController.navigateToDayDetail(): (Long) -> Unit = remember {
     { this.navigate(Screen.Detail.route + "/$it") }
 }
+
+@Composable
+fun NavController.navigateToSignIn(): () -> Unit = remember {
+    { this.navigate(Screen.SignInMethods.route) }
+}

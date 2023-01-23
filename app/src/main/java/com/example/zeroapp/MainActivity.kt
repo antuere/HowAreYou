@@ -29,7 +29,7 @@ import com.example.zeroapp.presentation.base.ui_compose_components.AppState
 import com.example.zeroapp.presentation.base.ui_compose_components.top_bar.AppBarState
 import com.example.zeroapp.presentation.base.navigation.Screen
 import com.example.zeroapp.presentation.base.navigation.navigateToDayDetail
-import com.example.zeroapp.presentation.base.ui_biometric_dialog.UIBiometricDialog
+import com.example.zeroapp.presentation.base.navigation.navigateToSignIn
 import com.example.zeroapp.presentation.base.ui_compose_components.bottom_nav_bar.DefaultBottomNavBar
 import com.example.zeroapp.presentation.base.ui_compose_components.dialog.UIDialog
 import com.example.zeroapp.presentation.base.ui_compose_components.dialog.UIDialogListener
@@ -50,7 +50,6 @@ import com.example.zeroapp.presentation.reset_password.ResetPasswordScreen
 import com.example.zeroapp.presentation.secure_entry.SecureEntryScreen
 import com.example.zeroapp.presentation.sign_in_with_email.SignInEmailScreen
 import com.example.zeroapp.presentation.settings.SettingsScreen
-import com.example.zeroapp.presentation.settings.SettingsViewModel
 import com.example.zeroapp.presentation.sign_in_methods.SignInMethodsScreen
 import com.example.zeroapp.presentation.sign_up_with_email.SignUpEmailScreen
 import com.google.accompanist.navigation.animation.AnimatedNavHost
@@ -109,9 +108,7 @@ class MainActivity : FragmentActivity() {
 
         setContent {
             HowAreYouTheme {
-
                 Timber.i("MVI error test : composed in activity")
-
                 val appState: AppState = rememberAppState()
                 val appBarState by appState.appBarState
 
@@ -131,7 +128,7 @@ class MainActivity : FragmentActivity() {
                 val colorNavBarColor =
                     if (appBarState.isVisibleBottomBar) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onPrimary
 
-                SideEffect {
+                LaunchedEffect(isUseDarkIcons, colorNavBarColor) {
                     systemUiController.setNavigationBarColor(
                         color = colorNavBarColor,
                         darkIcons = isUseDarkIcons
@@ -140,6 +137,12 @@ class MainActivity : FragmentActivity() {
 
                 val showDialog: (UIDialog) -> Unit = remember {
                     { uiDialogListener.showDialog(it) }
+                }
+
+                val showSnackbar: (String) -> Unit = remember {
+                    { message: String ->
+                        appState.showSnackbar(message)
+                    }
                 }
 
                 val updateAppBarState: (AppBarState) -> Unit = remember {
@@ -244,10 +247,8 @@ class MainActivity : FragmentActivity() {
                             exitTransition = { materialFadeThroughOut() }
                         ) {
                             CatsScreen(
-                                updateAppBar = { barState: AppBarState ->
-                                    appState.appBarState.value = barState
-                                },
-                                onNavigateUp = { navController.navigateUp() },
+                                updateAppBar = updateAppBarState,
+                                onNavigateUp = navController::navigateUp,
                             )
                         }
 
@@ -313,10 +314,8 @@ class MainActivity : FragmentActivity() {
                             exitTransition = { materialFadeThroughOut() }
                         ) {
                             AddDayScreen(
-                                updateAppBar = { barState: AppBarState ->
-                                    appState.appBarState.value = barState
-                                },
-                                onNavigateUp = { navController.navigateUp() },
+                                updateAppBar = updateAppBarState,
+                                onNavigateUp = navController::navigateUp,
                             )
                         }
 
@@ -351,13 +350,9 @@ class MainActivity : FragmentActivity() {
                             exitTransition = { materialFadeThroughOut() }
                         ) {
                             SettingsScreen(
-                                updateAppBar = { barState: AppBarState ->
-                                    appState.appBarState.value = barState
-                                },
-                                showSnackbar = { message: String ->
-                                    appState.showSnackbar(message)
-                                },
-                                onNavigateSignIn = { navController.navigate(Screen.SignInMethods.route) },
+                                updateAppBar = updateAppBarState,
+                                showSnackbar = showSnackbar,
+                                onNavigateSignIn = navController.navigateToSignIn(),
                                 dismissSnackbar = appState::dismissSnackbar,
                                 showDialog = showDialog,
                             )

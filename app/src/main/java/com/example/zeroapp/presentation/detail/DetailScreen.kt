@@ -24,6 +24,7 @@ import com.example.zeroapp.R
 import com.example.zeroapp.presentation.base.ui_compose_components.top_bar.AppBarState
 import com.example.zeroapp.presentation.base.ui_compose_components.dialog.Dialog
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 @Composable
 fun DetailScreen(
@@ -31,6 +32,9 @@ fun DetailScreen(
     onNavigateUp: () -> Unit,
     detailViewModel: DetailViewModel = hiltViewModel()
 ) {
+
+    Timber.i("MVI error test : enter in detail screen")
+
     val scope = rememberCoroutineScope()
 
     val uiDialog by detailViewModel.uiDialog.collectAsState()

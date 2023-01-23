@@ -8,7 +8,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -21,6 +20,8 @@ import com.example.zeroapp.R
 import com.example.zeroapp.presentation.base.ui_compose_components.top_bar.AppBarState
 import com.example.zeroapp.presentation.cats.ui_compose.DefaultGlideImage
 import com.example.zeroapp.presentation.base.ui_theme.PlayfairDisplay
+import org.orbitmvi.orbit.compose.collectAsState
+import timber.log.Timber
 
 @Composable
 fun CatsScreen(
@@ -28,6 +29,8 @@ fun CatsScreen(
     onNavigateUp: () -> Unit,
     catsViewModel: CatsViewModel = hiltViewModel()
 ) {
+    Timber.i("MVI error test : enter in catsScreen screen")
+
     LaunchedEffect(true) {
         updateAppBar(
             AppBarState(
@@ -39,7 +42,7 @@ fun CatsScreen(
         )
     }
 
-    val urlList by catsViewModel.urlList.collectAsState()
+    val viewState by catsViewModel.collectAsState()
 
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -60,14 +63,14 @@ fun CatsScreen(
                 modifier = Modifier
                     .weight(1F)
                     .padding(start = 8.dp),
-                url = urlList[0],
+                url = viewState.urlList[0],
                 contentDescription = "cat"
             )
             DefaultGlideImage(
                 modifier = Modifier
                     .weight(1F)
                     .padding(horizontal = 8.dp),
-                url = urlList[1],
+                url = viewState.urlList[1],
                 contentDescription = "cat"
             )
         }
@@ -78,14 +81,14 @@ fun CatsScreen(
                 modifier = Modifier
                     .weight(1F)
                     .padding(start = 8.dp),
-                url = urlList[2],
+                url = viewState.urlList[2],
                 contentDescription = "cat"
             )
             DefaultGlideImage(
                 modifier = Modifier
                     .weight(1F)
                     .padding(horizontal = 8.dp),
-                url = urlList[3],
+                url = viewState.urlList[3],
                 contentDescription = "cat"
             )
         }
@@ -94,7 +97,8 @@ fun CatsScreen(
 
         Button(
             modifier = Modifier.fillMaxWidth(0.7F),
-            onClick = { catsViewModel.onClickUpdateCats() }) {
+            onClick = catsViewModel::onClickUpdateCats
+        ) {
             Text(
                 text = stringResource(id = R.string.getCats),
                 color = MaterialTheme.colorScheme.onPrimary
