@@ -26,6 +26,7 @@ import com.example.zeroapp.presentation.pin_code_creation.PinCodeCreating
 import com.example.zeroapp.presentation.settings.state.SettingsSideEffect
 import com.example.zeroapp.presentation.settings.ui_compose.PrivacySettings
 import com.example.zeroapp.util.findFragmentActivity
+import com.example.zeroapp.util.paddingForBotAndTopBar
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
@@ -159,6 +160,7 @@ fun SettingsScreen(
             Column(
                 modifier = Modifier
                     .fillMaxSize()
+                    .paddingForBotAndTopBar()
             ) {
                 AuthSection(
                     userName = viewState.userNickname,

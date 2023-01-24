@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.ContextWrapper
 import androidx.compose.animation.core.*
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
@@ -30,6 +31,27 @@ fun Context.findFragmentActivity(): FragmentActivity {
     }
     throw IllegalStateException("no activity")
 }
+
+fun Modifier.paddingForBotAndTopBar() = composed(
+    factory = {
+        Modifier.padding(top = 64.dp, bottom = 80.dp)
+    },
+
+    inspectorInfo = debugInspectorInfo {
+        name = "paddingForBotAndTopBar"
+    }
+)
+
+fun Modifier.paddingTopBar() = composed(
+    factory = {
+        Modifier.padding(top = 64.dp)
+    },
+
+    inspectorInfo = debugInspectorInfo {
+        name = "paddingTopBar"
+    }
+)
+
 
 fun Modifier.shake() = composed(
     factory = {
@@ -163,7 +185,7 @@ fun SupportedCountry.getName(): String {
 }
 
 fun Modifier.shimmer(
-    duration: Int
+    duration: Int,
 ): Modifier = composed {
     val shimmer = rememberShimmer(
         shimmerBounds = ShimmerBounds.View,

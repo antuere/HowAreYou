@@ -20,6 +20,7 @@ import com.example.zeroapp.R
 import com.example.zeroapp.presentation.base.ui_compose_components.top_bar.AppBarState
 import com.example.zeroapp.presentation.cats.ui_compose.DefaultGlideImage
 import com.example.zeroapp.presentation.base.ui_theme.PlayfairDisplay
+import com.example.zeroapp.util.paddingTopBar
 import org.orbitmvi.orbit.compose.collectAsState
 import timber.log.Timber
 
@@ -45,7 +46,7 @@ fun CatsScreen(
     val viewState by catsViewModel.collectAsState()
 
     Column(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier.fillMaxSize().paddingTopBar(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {

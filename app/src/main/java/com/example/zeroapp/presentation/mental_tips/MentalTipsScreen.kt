@@ -16,6 +16,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.zeroapp.R
 import com.example.zeroapp.presentation.base.ui_compose_components.top_bar.AppBarState
 import com.example.zeroapp.presentation.mental_tips.ui_compose.MentalTipItem
+import com.example.zeroapp.util.paddingTopBar
 import com.google.accompanist.pager.*
 import kotlin.math.absoluteValue
 
@@ -43,7 +44,8 @@ fun MentalTipsScreen(
 
     Column(
         modifier = Modifier
-            .fillMaxSize(),
+            .fillMaxSize()
+            .paddingTopBar(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {

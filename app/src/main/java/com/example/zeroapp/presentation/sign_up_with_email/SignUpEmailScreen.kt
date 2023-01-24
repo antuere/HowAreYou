@@ -20,6 +20,7 @@ import com.example.zeroapp.presentation.base.ui_compose_components.buttons.Defau
 import com.example.zeroapp.presentation.base.ui_compose_components.text_field.DefaultTextField
 import com.example.zeroapp.presentation.base.ui_compose_components.text_field.EmailTextField
 import com.example.zeroapp.presentation.base.ui_compose_components.text_field.PasswordTextField
+import com.example.zeroapp.util.paddingTopBar
 
 @Composable
 fun SignUpEmailScreen(
@@ -77,7 +78,8 @@ fun SignUpEmailScreen(
 
     Column(
         modifier = Modifier
-            .fillMaxSize(),
+            .fillMaxSize()
+            .paddingTopBar(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         IconApp(modifier = Modifier.padding(top = dimensionResource(id = R.dimen.padding_small_1)))

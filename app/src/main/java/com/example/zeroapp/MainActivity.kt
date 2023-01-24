@@ -1,5 +1,6 @@
 package com.example.zeroapp
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -64,7 +65,7 @@ import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
 
-
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @AndroidEntryPoint
 class MainActivity : FragmentActivity() {
@@ -191,9 +192,11 @@ class MainActivity : FragmentActivity() {
                                 actions = appBarState.actions
                             )
                         }
-                    }) { innerPadding ->
+                    }) { _ ->
                     AnimatedNavHost(
-                        modifier = Modifier.padding(innerPadding),
+                        modifier = Modifier
+                            .systemBarsPadding()
+                            .navigationBarsPadding(),
                         navController = navController,
                         startDestination = startDestination
                     ) {
@@ -338,10 +341,10 @@ class MainActivity : FragmentActivity() {
                             exitTransition = { materialFadeThroughOut() }
                         ) {
                             DetailScreen(
-                                updateAppBar = { barState: AppBarState ->
-                                    appState.appBarState.value = barState
-                                },
-                                onNavigateUp = { navController.navigateUp() })
+                                updateAppBar = updateAppBarState,
+                                showDialog = showDialog,
+                                onNavigateUp = navController::navigateUp
+                            )
                         }
 
                         composable(

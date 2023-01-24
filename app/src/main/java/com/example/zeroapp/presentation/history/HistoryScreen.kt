@@ -22,6 +22,7 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import antuere.domain.dto.Day
 import antuere.domain.dto.ToggleBtnState
 import com.example.zeroapp.R
 import com.example.zeroapp.presentation.base.ui_compose_components.top_bar.AppBarState
@@ -32,6 +33,7 @@ import com.example.zeroapp.presentation.base.ui_compose_components.dialog.UIDial
 import com.example.zeroapp.presentation.history.state.HistorySideEffect
 import com.example.zeroapp.presentation.history.state.HistoryState
 import com.example.zeroapp.presentation.history.ui_compose.*
+import com.example.zeroapp.util.paddingForBotAndTopBar
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
@@ -47,7 +49,6 @@ fun HistoryScreen(
     showDialog: (UIDialog) -> Unit,
     historyViewModel: HistoryViewModel = hiltViewModel(),
 ) {
-
     Timber.i("MVI error test : enter in history screen")
 
     val bottomSheetState = rememberModalBottomSheetState(
@@ -86,6 +87,14 @@ fun HistoryScreen(
         { startDate, endDate ->
             historyViewModel.onDaysSelected(startDate, endDate)
         }
+    }
+
+    val onDayClick : (Day) -> Unit = remember {
+        { historyViewModel.onClickDay(it) }
+    }
+
+    val onDayClickLong : (Day) -> Unit = remember {
+        { historyViewModel.onClickLongDay(it) }
     }
 
     BackHandler(enabled = isEnabledHandler) {
@@ -151,7 +160,7 @@ fun HistoryScreen(
             }
         }) {
         Column(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier.fillMaxSize().paddingForBotAndTopBar(),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -186,7 +195,6 @@ fun HistoryScreen(
                     Spacer(modifier = Modifier.weight(1F))
                 }
                 is HistoryState.Empty.NoEntriesYet -> {
-
                     LaunchedEffect(true) {
                         updateAppBar(
                             AppBarState(
@@ -215,8 +223,8 @@ fun HistoryScreen(
                     DaysGrid(
                         cellsAmount = state.cellsAmountForGrid,
                         days = state.dayList,
-                        onClick = { historyViewModel.onClickDay(it) },
-                        onLongClick = { historyViewModel.onClickLongDay(it) }
+                        onClick = onDayClick,
+                        onLongClick = onDayClickLong
                     )
 
                 }
@@ -240,8 +248,8 @@ fun HistoryScreen(
                     DaysGrid(
                         cellsAmount = state.cellsAmountForGrid,
                         days = state.dayList,
-                        onClick = { historyViewModel.onClickDay(it) },
-                        onLongClick = { historyViewModel.onClickLongDay(it) }
+                        onClick = onDayClick,
+                        onLongClick = onDayClickLong
                     )
                 }
 

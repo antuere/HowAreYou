@@ -117,23 +117,9 @@ class HistoryViewModel @Inject constructor(
                             dayRepository.getAllDays()
                         }
                         ToggleBtnState.LAST_WEEK -> {
-                            reduce {
-                                HistoryState.LoadingShimmer(
-                                    cellsAmount = 2,
-                                    aspectRatioForItem = 2F,
-                                    toggleBtnState = filterState.toggleBtnState
-                                )
-                            }
                             dayRepository.getCertainDays(TimeUtility.getCurrentWeekTime())
                         }
                         ToggleBtnState.CURRENT_MONTH -> {
-                            reduce {
-                                HistoryState.LoadingShimmer(
-                                    cellsAmount = 3,
-                                    aspectRatioForItem = 1F,
-                                    toggleBtnState = filterState.toggleBtnState
-                                )
-                            }
                             dayRepository.getCertainDays(TimeUtility.getCurrentMonthTime())
                         }
                     }

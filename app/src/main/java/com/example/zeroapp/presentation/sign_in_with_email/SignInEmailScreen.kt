@@ -17,6 +17,7 @@ import com.example.zeroapp.presentation.base.ui_compose_components.buttons.Defau
 import com.example.zeroapp.presentation.base.ui_compose_components.buttons.DefaultTextButton
 import com.example.zeroapp.presentation.base.ui_compose_components.text_field.EmailTextField
 import com.example.zeroapp.presentation.base.ui_compose_components.text_field.PasswordTextField
+import com.example.zeroapp.util.paddingTopBar
 
 @Composable
 fun SignInEmailScreen(
@@ -70,7 +71,8 @@ fun SignInEmailScreen(
 
     Column(
         modifier = Modifier
-            .fillMaxSize(),
+            .fillMaxSize()
+            .paddingTopBar(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {

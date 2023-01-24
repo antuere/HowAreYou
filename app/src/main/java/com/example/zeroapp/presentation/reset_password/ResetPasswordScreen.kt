@@ -16,6 +16,7 @@ import com.example.zeroapp.R
 import com.example.zeroapp.presentation.base.ui_compose_components.top_bar.AppBarState
 import com.example.zeroapp.presentation.base.ui_compose_components.buttons.DefaultButton
 import com.example.zeroapp.presentation.base.ui_compose_components.text_field.EmailTextField
+import com.example.zeroapp.util.paddingTopBar
 
 @Composable
 fun ResetPasswordScreen(
@@ -64,7 +65,8 @@ fun ResetPasswordScreen(
 
     Column(
         modifier = Modifier
-            .fillMaxSize(),
+            .fillMaxSize()
+            .paddingTopBar(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {

@@ -20,6 +20,7 @@ import com.example.zeroapp.presentation.base.ui_compose_components.top_bar.AppBa
 import com.example.zeroapp.presentation.helplines.state.HelplinesState
 import com.example.zeroapp.presentation.helplines.ui_compose.CountrySelectionMenu
 import com.example.zeroapp.presentation.helplines.ui_compose.HelplineItem
+import com.example.zeroapp.util.paddingTopBar
 import org.orbitmvi.orbit.compose.collectAsState
 import timber.log.Timber
 
@@ -47,6 +48,7 @@ fun HelplinesScreen(
             Column(
                 modifier = Modifier
                     .fillMaxSize()
+                    .paddingTopBar()
                     .padding(top = dimensionResource(id = R.dimen.padding_normal_0)),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally

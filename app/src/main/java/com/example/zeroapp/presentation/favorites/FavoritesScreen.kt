@@ -19,6 +19,7 @@ import com.example.zeroapp.presentation.base.ui_compose_components.top_bar.AppBa
 import com.example.zeroapp.presentation.base.ui_compose_components.dialog.UIDialog
 import com.example.zeroapp.presentation.favorites.state.FavoritesSideEffect
 import com.example.zeroapp.presentation.favorites.state.FavoritesState
+import com.example.zeroapp.util.paddingTopBar
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
@@ -50,7 +51,7 @@ fun FavoritesScreen(
     }
 
     Column(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier.fillMaxSize().paddingTopBar(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {

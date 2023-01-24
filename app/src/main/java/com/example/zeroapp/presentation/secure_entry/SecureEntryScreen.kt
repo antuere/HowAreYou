@@ -23,6 +23,7 @@ import com.example.zeroapp.presentation.base.ui_compose_components.pin_code.Nume
 import com.example.zeroapp.presentation.base.ui_compose_components.dialog.Dialog
 import com.example.zeroapp.presentation.base.ui_compose_components.pin_code.PinCirclesIndicates
 import com.example.zeroapp.util.findFragmentActivity
+import com.example.zeroapp.util.paddingTopBar
 
 
 @Composable
@@ -107,7 +108,7 @@ fun SecureEntryScreen(
     Column(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier.fillMaxSize().paddingTopBar()
     ) {
         IconApp(modifier = Modifier.padding(top = dimensionResource(id = R.dimen.padding_small_1)))
         Spacer(modifier = Modifier.weight(0.2F))

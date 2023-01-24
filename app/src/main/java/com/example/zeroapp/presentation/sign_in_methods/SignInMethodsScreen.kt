@@ -15,6 +15,7 @@ import com.example.zeroapp.R
 import com.example.zeroapp.presentation.base.ui_compose_components.IconApp
 import com.example.zeroapp.presentation.base.ui_compose_components.top_bar.AppBarState
 import com.example.zeroapp.presentation.base.ui_compose_components.buttons.ButtonWithIcon
+import com.example.zeroapp.util.paddingTopBar
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 
@@ -64,7 +65,8 @@ fun SignInMethodsScreen(
 
     Column(
         modifier = Modifier
-            .fillMaxSize(),
+            .fillMaxSize()
+            .paddingTopBar(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {

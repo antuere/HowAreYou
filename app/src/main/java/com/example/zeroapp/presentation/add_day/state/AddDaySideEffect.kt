@@ -1,5 +1,5 @@
 package com.example.zeroapp.presentation.add_day.state
 
-interface AddDaySideEffect {
+sealed interface AddDaySideEffect {
     object NavigateUp : AddDaySideEffect
 }

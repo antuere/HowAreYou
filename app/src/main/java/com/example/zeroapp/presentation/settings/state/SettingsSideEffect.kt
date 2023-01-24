@@ -6,7 +6,7 @@ import com.example.zeroapp.presentation.base.ui_compose_components.dialog.UIDial
 import com.example.zeroapp.presentation.base.ui_text.UiText
 import com.example.zeroapp.presentation.history.state.HistorySideEffect
 
-interface SettingsSideEffect {
+sealed interface SettingsSideEffect {
 
     object NavigateToSignIn : SettingsSideEffect
 

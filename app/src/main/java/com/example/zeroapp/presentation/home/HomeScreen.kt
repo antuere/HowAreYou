@@ -20,6 +20,7 @@ import com.example.zeroapp.presentation.base.ui_compose_components.card.CardDefa
 import com.example.zeroapp.presentation.base.ui_compose_components.card.CardWithOnClick
 import com.example.zeroapp.presentation.base.ui_compose_components.dialog.Dialog
 import com.example.zeroapp.presentation.base.ui_theme.TealMain
+import com.example.zeroapp.util.paddingForBotAndTopBar
 
 @Composable
 fun HomeScreen(
@@ -66,7 +67,8 @@ fun HomeScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(dimensionResource(id = R.dimen.padding_normal_0)),
+            .padding(dimensionResource(id = R.dimen.padding_normal_0))
+            .paddingForBotAndTopBar(),
         verticalArrangement = Arrangement.Top
     ) {
         CardWithQuote(

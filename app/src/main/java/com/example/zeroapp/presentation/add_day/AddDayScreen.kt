@@ -19,6 +19,8 @@ import com.example.zeroapp.presentation.add_day.state.AddDaySideEffect
 import com.example.zeroapp.presentation.base.ui_compose_components.top_bar.AppBarState
 import com.example.zeroapp.presentation.base.ui_compose_components.text_field.DefaultTextField
 import com.example.zeroapp.presentation.base.ui_theme.PlayfairDisplay
+import com.example.zeroapp.util.paddingForBotAndTopBar
+import com.example.zeroapp.util.paddingTopBar
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 import timber.log.Timber
@@ -27,7 +29,7 @@ import timber.log.Timber
 fun AddDayScreen(
     updateAppBar: (AppBarState) -> Unit,
     onNavigateUp: () -> Unit,
-    addDayViewModel: AddDayViewModel = hiltViewModel()
+    addDayViewModel: AddDayViewModel = hiltViewModel(),
 ) {
     Timber.i("MVI error test : enter in add day screen")
 
@@ -53,7 +55,12 @@ fun AddDayScreen(
     }
     var dayDesc by remember { mutableStateOf("") }
 
-    Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .paddingTopBar(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
         Spacer(modifier = Modifier.weight(0.15F))
         Text(
             text = stringResource(id = R.string.how_are_you_today),

@@ -22,6 +22,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.zeroapp.R
 import com.example.zeroapp.presentation.base.ui_compose_components.card.CardWithIcons
 import com.example.zeroapp.presentation.base.ui_compose_components.top_bar.AppBarState
+import com.example.zeroapp.util.paddingTopBar
 import timber.log.Timber
 
 @Composable
@@ -46,7 +47,8 @@ fun HelpForYouScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(dimensionResource(id = R.dimen.padding_normal_0)),
+            .padding(dimensionResource(id = R.dimen.padding_normal_0))
+            .paddingTopBar(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
