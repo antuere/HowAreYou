@@ -5,13 +5,7 @@ import antuere.data.local_day_database.entities.DayEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface DayDatabaseDao {
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(dayEntity: DayEntity)
-
-    @Update
-    fun update(dayEntity: DayEntity)
+interface DayDatabaseDao: BaseDao<DayEntity> {
 
     @Query("DELETE FROM day_table")
     fun clear()
