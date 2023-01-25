@@ -1,6 +1,7 @@
 package antuere.how_are_you.presentation.add_day.state
 
 data class AddDayState(
+    val dayDesc: String = "",
     val smileImages: List<Int> = listOf(
         antuere.data.R.drawable.smile_sad,
         antuere.data.R.drawable.smile_none,

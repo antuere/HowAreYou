@@ -15,6 +15,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import antuere.how_are_you.R
+import antuere.how_are_you.presentation.add_day.state.AddDayIntent
 import antuere.how_are_you.presentation.add_day.state.AddDaySideEffect
 import antuere.how_are_you.presentation.base.ui_compose_components.top_bar.AppBarState
 import antuere.how_are_you.presentation.base.ui_compose_components.text_field.DefaultTextField
@@ -28,7 +29,7 @@ import timber.log.Timber
 fun AddDayScreen(
     updateAppBar: (AppBarState) -> Unit,
     onNavigateUp: () -> Unit,
-    addDayViewModel: AddDayViewModel = hiltViewModel(),
+    viewModel: AddDayViewModel = hiltViewModel(),
 ) {
     Timber.i("MVI error test : enter in add day screen")
 
@@ -37,22 +38,18 @@ fun AddDayScreen(
             AppBarState(
                 titleId = R.string.today,
                 navigationIcon = Icons.Filled.ArrowBack,
-                navigationOnClick = { onNavigateUp() },
+                navigationOnClick = onNavigateUp,
                 isVisibleBottomBar = false
             )
         )
     }
-    val viewState by addDayViewModel.collectAsState()
+    val viewState by viewModel.collectAsState()
 
-    addDayViewModel.collectSideEffect { sideEffect ->
+    viewModel.collectSideEffect { sideEffect ->
         when (sideEffect) {
-            is AddDaySideEffect.NavigateUp -> {
-                onNavigateUp()
-            }
+            is AddDaySideEffect.NavigateUp -> onNavigateUp()
         }
-
     }
-    var dayDesc by remember { mutableStateOf("") }
 
     Column(
         modifier = Modifier
@@ -73,8 +70,8 @@ fun AddDayScreen(
                 .padding(horizontal = dimensionResource(id = R.dimen.padding_normal_3))
                 .fillMaxWidth(),
             label = stringResource(id = R.string.desc_you_day),
-            value = dayDesc,
-            onValueChange = { dayDesc = it },
+            value = viewState.dayDesc,
+            onValueChange = { AddDayIntent.DayDescChanged(it).run(viewModel::onIntent) },
             maxLength = 100,
         )
         Spacer(modifier = Modifier.weight(0.25F))
@@ -86,14 +83,14 @@ fun AddDayScreen(
             viewState.smileImages.forEach { imageRes ->
                 IconButton(
                     onClick = {
-                        addDayViewModel.onClickSmile(imageRes, dayDesc)
-                        dayDesc = ""
+                        AddDayIntent.SmileClicked(imageRes, viewState.dayDesc)
+                            .run(viewModel::onIntent)
+                        AddDayIntent.DayDescChanged("").run(viewModel::onIntent)
                     }) {
                     Icon(painter = painterResource(id = imageRes), contentDescription = null)
                 }
             }
         }
         Spacer(modifier = Modifier.weight(0.25F))
-
     }
 }
