@@ -9,13 +9,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import antuere.how_are_you.R
+import antuere.how_are_you.util.paddingBotAndTopBar
 
 @Composable
 fun FullScreenProgressIndicator() {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .padding(top = dimensionResource(id = R.dimen.padding_normal_0)),
+            .padding(top = dimensionResource(id = R.dimen.padding_normal_0))
+            .paddingBotAndTopBar(),
         contentAlignment = Alignment.Center
     ) {
         CircularProgressIndicator()

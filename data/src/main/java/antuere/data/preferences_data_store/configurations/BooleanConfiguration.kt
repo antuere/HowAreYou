@@ -7,9 +7,10 @@ import androidx.datastore.preferences.core.edit
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
+import timber.log.Timber
 
 class BooleanConfiguration(
-    key: String,
+    private val key: String,
     private val default: Boolean,
     dataStore: DataStore<Preferences>
 ) : Configuration<Boolean>(dataStore) {
@@ -35,5 +36,4 @@ class BooleanConfiguration(
             preferences[preferenceKey] = value
         }
     }
-
 }

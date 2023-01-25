@@ -17,7 +17,7 @@ interface DayRepository {
 
     suspend fun getLastDay(): Flow<Day?>
 
-    suspend fun getDayById(id: Long): Day?
+    suspend fun getDayById(id: Long): Flow<Day?>
 
     suspend fun deleteDay(id: Long)
 

@@ -12,6 +12,7 @@ import antuere.how_are_you.presentation.detail.state.DetailSideEffect
 import antuere.how_are_you.presentation.detail.state.DetailState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.Container
 import org.orbitmvi.orbit.ContainerHost
@@ -84,7 +85,7 @@ class DetailViewModel @Inject constructor(
 
     private fun getDay() = intent {
         viewModelScope.launch(Dispatchers.IO) {
-            val day = dayRepository.getDayById(dayId)!!
+            val day = dayRepository.getDayById(dayId).first()!!
 
             val favBtnRes = if (day.isFavorite) {
                 R.drawable.ic_baseline_favorite

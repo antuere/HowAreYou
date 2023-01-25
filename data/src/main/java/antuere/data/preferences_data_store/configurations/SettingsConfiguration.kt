@@ -9,6 +9,7 @@ import antuere.domain.util.Constants
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
+import timber.log.Timber
 
 class SettingsConfiguration(
     dataStore: DataStore<Preferences>

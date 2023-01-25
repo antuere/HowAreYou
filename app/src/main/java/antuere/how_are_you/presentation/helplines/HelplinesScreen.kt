@@ -20,6 +20,7 @@ import antuere.how_are_you.presentation.helplines.ui_compose.CountrySelectionMen
 import antuere.how_are_you.presentation.helplines.ui_compose.HelplineItem
 import antuere.how_are_you.util.paddingTopBar
 import org.orbitmvi.orbit.compose.collectAsState
+import timber.log.Timber
 
 @Composable
 fun HelplinesScreen(
@@ -27,6 +28,8 @@ fun HelplinesScreen(
     onNavigateUp: () -> Unit,
     helplinesViewModel: HelplinesViewModel = hiltViewModel()
 ) {
+    Timber.i("MVI error test : enter in helplines screen")
+
     LaunchedEffect(true) {
         updateAppBar(
             AppBarState(

@@ -19,8 +19,29 @@ class SettingsDataStore(context: Context, name: String) {
     val pinCodeConfiguration: Configuration<String> =
         StringConfiguration(Constants.PIN_CODE_SAVED_KEY, Constants.PIN_NOT_SET, settingsDataStore)
 
-    val settingsConfiguration: Configuration<SettingsEntity> =
+    val allSettingsConfiguration: Configuration<SettingsEntity> =
         SettingsConfiguration(settingsDataStore)
+
+    val isEnableWorriedDialogConfiguration: Configuration<Boolean> =
+        BooleanConfiguration(
+            key = Constants.SETTINGS_WORRIED_DIALOG_KEY,
+            default = true,
+            dataStore = settingsDataStore
+        )
+
+    val isEnablePinConfiguration: Configuration<Boolean> =
+        BooleanConfiguration(
+            key = Constants.SETTINGS_PIN_CODE_KEY,
+            default = false,
+            dataStore = settingsDataStore
+        )
+
+    val isEnableBiomAuthConfiguration: Configuration<Boolean> =
+        BooleanConfiguration(
+            key = Constants.SETTINGS_BIOMETRIC_KEY,
+            default = false,
+            dataStore = settingsDataStore
+        )
 
     val countryIdConfiguration: Configuration<Int> =
         IntConfiguration(Constants.SELECTED_COUNTRY_ID, 1, settingsDataStore)

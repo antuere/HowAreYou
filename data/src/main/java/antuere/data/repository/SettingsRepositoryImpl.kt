@@ -11,18 +11,42 @@ import javax.inject.Inject
 
 class SettingsRepositoryImpl @Inject constructor(
     private val settingsDataStore: SettingsDataStore,
-    private val settingsEntityMapper: SettingsEntityMapper
+    private val settingsEntityMapper: SettingsEntityMapper,
 ) : SettingsRepository {
 
-    override suspend fun getSettings(): Flow<Settings> {
-        return settingsDataStore.settingsConfiguration.flow.map {
+    override suspend fun getAllSettings(): Flow<Settings> {
+        return settingsDataStore.allSettingsConfiguration.flow.map {
             settingsEntityMapper.mapToDomainModel(it)
         }
     }
 
+    override suspend fun getWorriedDialogSetting(): Flow<Boolean> {
+        return settingsDataStore.isEnableWorriedDialogConfiguration.flow
+    }
+
+    override suspend fun getPinSetting(): Flow<Boolean> {
+        return settingsDataStore.isEnablePinConfiguration.flow
+    }
+
+    override suspend fun getBiomAuthSetting(): Flow<Boolean> {
+        return settingsDataStore.isEnableBiomAuthConfiguration.flow
+    }
+
     override suspend fun saveSettings(settings: Settings) {
         val settingsEntity = settingsEntityMapper.mapFromDomainModel(settings)
-        settingsDataStore.settingsConfiguration.set(settingsEntity)
+        settingsDataStore.allSettingsConfiguration.set(settingsEntity)
+    }
+
+    override suspend fun saveWorriedDialogSetting(isEnable: Boolean) {
+        settingsDataStore.isEnableWorriedDialogConfiguration.set(isEnable)
+    }
+
+    override suspend fun savePinSetting(isEnable: Boolean) {
+        settingsDataStore.isEnablePinConfiguration.set(isEnable)
+    }
+
+    override suspend fun saveBiomAuthSetting(isEnable: Boolean) {
+        settingsDataStore.isEnableBiomAuthConfiguration.set(isEnable)
     }
 
     override suspend fun saveSelectedCountryId(supportedCountry: SupportedCountry) {
@@ -60,7 +84,7 @@ class SettingsRepositoryImpl @Inject constructor(
     override suspend fun resetAllSettings() {
         settingsDataStore.pinCodeConfiguration.reset()
         settingsDataStore.nicknameConfiguration.reset()
-        settingsDataStore.settingsConfiguration.reset()
+        settingsDataStore.allSettingsConfiguration.reset()
         settingsDataStore.countryIdConfiguration.reset()
     }
 }

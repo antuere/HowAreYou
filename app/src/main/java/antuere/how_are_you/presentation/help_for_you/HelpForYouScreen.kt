@@ -30,7 +30,9 @@ fun HelpForYouScreen(
     onNavigateToHelplines : () -> Unit,
     helpForYouViewModel: HelpForYouViewModel = hiltViewModel()
 ) {
-    Timber.i("animation error : in compose helpfory screen model id is ${helpForYouViewModel.hashCode()}")
+    Timber.i("MVI error test : helpfory screen model id is ${helpForYouViewModel.hashCode()}")
+    Timber.i("MVI error test : enter in help for u screen")
+
     LaunchedEffect(true) {
         updateAppBar(
             AppBarState(

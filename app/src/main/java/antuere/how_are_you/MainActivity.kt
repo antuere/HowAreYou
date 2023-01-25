@@ -22,9 +22,7 @@ import antuere.domain.dto.Settings
 import antuere.domain.repository.SettingsRepository
 import antuere.domain.util.Constants
 import antuere.how_are_you.presentation.add_day.AddDayScreen
-import antuere.how_are_you.presentation.base.navigation.Screen
-import antuere.how_are_you.presentation.base.navigation.navigateToDayDetail
-import antuere.how_are_you.presentation.base.navigation.navigateToSignIn
+import antuere.how_are_you.presentation.base.navigation.*
 import antuere.how_are_you.presentation.base.ui_animations.materialFadeThroughIn
 import antuere.how_are_you.presentation.base.ui_animations.materialFadeThroughOut
 import antuere.how_are_you.presentation.base.ui_animations.materialSlideIn
@@ -70,7 +68,7 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class MainActivity : FragmentActivity() {
 
-    private val viewModel by viewModels<HomeViewModel>()
+    private val homeViewModel by viewModels<HomeViewModel>()
 
     @Inject
     lateinit var settingsRepository: SettingsRepository
@@ -88,13 +86,13 @@ class MainActivity : FragmentActivity() {
         TimeZone.setDefault(TimeZone.getTimeZone("UTC"))
 
         val job = lifecycleScope.launch(Dispatchers.IO) {
-            settings = settingsRepository.getSettings().first()
+            settings = settingsRepository.getAllSettings().first()
         }
 
         installSplashScreen().apply {
             if (BuildConfig.BUILD_TYPE != "benchmark") {
                 setKeepOnScreenCondition {
-                    viewModel.isShowSplash.value
+                    homeViewModel.isShowSplash.value
                 }
             }
         }
@@ -152,6 +150,10 @@ class MainActivity : FragmentActivity() {
                     }
                 }
 
+                val getHomeViewModel: () -> HomeViewModel = remember {
+                    { homeViewModel }
+                }
+
                 Scaffold(
                     snackbarHost = {
                         SnackbarHost(appState.snackbarHostState) { data ->
@@ -192,7 +194,8 @@ class MainActivity : FragmentActivity() {
                                 actions = appBarState.actions
                             )
                         }
-                    }) { _ ->
+                    }) { inner ->
+
                     AnimatedNavHost(
                         modifier = Modifier
                             .systemBarsPadding()
@@ -209,21 +212,17 @@ class MainActivity : FragmentActivity() {
                                 startDestination = Screen.Home.route
                             }
                             HomeScreen(
-                                updateAppBar = { barState: AppBarState ->
-                                    appState.appBarState.value = barState
-                                },
-                                showSnackbar = { message: String ->
-                                    appState.showSnackbar(message)
-                                },
-                                dismissSnackbar = {
-                                    appState.dismissSnackbar()
-                                },
-                                onNavigateToMentalTips = { navController.navigate(Screen.MentalTipsCategories.route) },
-                                onNavigateToFavorites = { navController.navigate(Screen.Favorites.route) },
-                                onNavigateToHelpForYou = { navController.navigate(Screen.HelpForYou.route) },
-                                onNavigateToCats = { navController.navigate(Screen.Cats.route) },
-                                onNavigateToDetail = { navController.navigate(Screen.Detail.route + "/$it") },
-                                onNavigateToAddDay = { navController.navigate(Screen.AddDay.route) }
+                                updateAppBar = updateAppBarState,
+                                showSnackbar = showSnackbar,
+                                dismissSnackbar = appState::dismissSnackbar,
+                                showDialog = showDialog,
+                                onNavigateToMentalTips = navController.navigateToMentalTips(),
+                                onNavigateToFavorites = navController.navigateToFavorites(),
+                                onNavigateToHelpForYou = navController.navigateToHelpForYou(),
+                                onNavigateToCats = navController.navigateToCats(),
+                                onNavigateToDetail = navController.navigateToDayDetail(),
+                                onNavigateToAddDay = navController.navigateToAddDay(),
+                                homeViewModel = getHomeViewModel
                             )
                         }
 
@@ -262,11 +261,9 @@ class MainActivity : FragmentActivity() {
                             popEnterTransition = { materialSlideIn(false) }
                         ) {
                             HelpForYouScreen(
-                                updateAppBar = { barState: AppBarState ->
-                                    appState.appBarState.value = barState
-                                },
-                                onNavigateUp = { navController.navigateUp() },
-                                onNavigateToHelplines = { navController.navigate(Screen.Helplines.route) }
+                                updateAppBar = updateAppBarState,
+                                onNavigateUp = navController::navigateUp,
+                                onNavigateToHelplines = navController.navigateToHelplines()
                             )
                         }
 
@@ -276,10 +273,8 @@ class MainActivity : FragmentActivity() {
                             exitTransition = { materialSlideOut(true) },
                         ) {
                             HelplinesScreen(
-                                updateAppBar = { barState: AppBarState ->
-                                    appState.appBarState.value = barState
-                                },
-                                onNavigateUp = { navController.navigateUp() },
+                                updateAppBar = updateAppBarState,
+                                onNavigateUp = navController::navigateUp
                             )
                         }
 

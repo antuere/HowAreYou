@@ -91,9 +91,11 @@ class DayRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getDayById(id: Long): Day? {
+    override suspend fun getDayById(id: Long): Flow<Day?> {
         val dayEntity = dayDataBaseRoom.dayDatabaseDao.getDayById(id)
-        return dayEntity?.let(dayEntityMapper::mapToDomainModel)
+        return dayEntity.map {
+            it?.let(dayEntityMapper::mapToDomainModel)
+        }
     }
 
     override suspend fun deleteDay(id: Long) {

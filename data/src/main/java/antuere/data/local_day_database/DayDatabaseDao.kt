@@ -23,7 +23,7 @@ interface DayDatabaseDao {
     fun deleteDay(id: Long)
 
     @Query("SELECT * FROM day_table WHERE dayId = :id")
-    fun getDayById(id: Long): DayEntity?
+    fun getDayById(id: Long): Flow<DayEntity?>
 
     @Query("SELECT * FROM day_table ORDER BY dayId DESC")
     fun getAllDays(): Flow<List<DayEntity>>

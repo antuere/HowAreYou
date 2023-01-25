@@ -98,7 +98,7 @@ class SecureEntryViewModel @Inject constructor(
 
     private fun getSettings() {
         viewModelScope.launch(Dispatchers.IO) {
-            _settings.value = settingsRepository.getSettings().first()
+            _settings.value = settingsRepository.getAllSettings().first()
             delay(350)
             if (_settings.value!!.isBiometricEnabled) {
                 _isShowBiometricAuth.value = true

@@ -4,7 +4,7 @@ import antuere.domain.dto.Day
 import antuere.how_are_you.R
 import antuere.how_are_you.presentation.base.ui_text.UiText
 
-object MyAnalystForHome {
+object HelperForHome {
 
     const val DEFAULT_WISH = -1
 
