@@ -5,10 +5,11 @@ import androidx.lifecycle.viewModelScope
 import antuere.domain.dto.helplines.SupportedCountry
 import antuere.domain.repository.HelplinesRepository
 import antuere.domain.repository.SettingsRepository
-import antuere.how_are_you.presentation.helplines.state.HelplinesSideEffect
+import antuere.how_are_you.presentation.helplines.state.HelplinesIntent
 import antuere.how_are_you.presentation.helplines.state.HelplinesState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.Container
 import org.orbitmvi.orbit.ContainerHost
@@ -21,12 +22,9 @@ import javax.inject.Inject
 class HelplinesViewModel @Inject constructor(
     private val helplinesRepository: HelplinesRepository,
     private val settingsRepository: SettingsRepository
-) : ContainerHost<HelplinesState, HelplinesSideEffect>, ViewModel() {
+) : ContainerHost<HelplinesState, Nothing>, ViewModel() {
 
-    override val container: Container<HelplinesState, HelplinesSideEffect> =
-        container(HelplinesState.Loading)
-
-    init {
+    override val container: Container<HelplinesState, Nothing> = container(HelplinesState.Loading) {
         intent {
             viewModelScope.launch(Dispatchers.IO) {
                 val supportedCountries = helplinesRepository.getSupportedCountries()
@@ -40,12 +38,15 @@ class HelplinesViewModel @Inject constructor(
         }
     }
 
-    fun onCountrySelected(country: SupportedCountry) = intent {
-        reduce {
-            (state as HelplinesState.Loaded).copy(selectedCountry = country)
-        }
-        viewModelScope.launch(Dispatchers.IO) {
-            settingsRepository.saveSelectedCountryId(country)
+    fun onIntent(intent: HelplinesIntent) = intent {
+        when (intent) {
+            is HelplinesIntent.CountrySelected -> reduce {
+                viewModelScope.launch(Dispatchers.IO) {
+                    settingsRepository.saveSelectedCountryId(intent.country)
+                }
+                (state as? HelplinesState.Loaded)?.copy(selectedCountry = intent.country) ?: state
+            }
         }
     }
+
 }
