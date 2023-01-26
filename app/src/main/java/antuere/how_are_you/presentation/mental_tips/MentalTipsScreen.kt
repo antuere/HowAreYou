@@ -13,6 +13,7 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.util.lerp
 import androidx.hilt.navigation.compose.hiltViewModel
+import antuere.how_are_you.LocalAppState
 import antuere.how_are_you.R
 import antuere.how_are_you.presentation.base.ui_compose_components.top_bar.AppBarState
 import antuere.how_are_you.presentation.mental_tips.ui_compose.MentalTipItem
@@ -23,20 +24,19 @@ import kotlin.math.absoluteValue
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun MentalTipsScreen(
-    onNavigateUp: () -> Unit,
-    updateAppBar: (AppBarState) -> Unit,
     mentalTipsViewModel: MentalTipsViewModel = hiltViewModel()
 ) {
     val pagerState = rememberPagerState()
     val titleId by mentalTipsViewModel.screenLabelId.collectAsState()
     val listMentalTips by mentalTipsViewModel.listMentalTips.collectAsState()
+    val appState = LocalAppState.current
 
     LaunchedEffect(true) {
-        updateAppBar(
+        appState.updateAppBar(
             AppBarState(
                 titleId = titleId,
                 navigationIcon = Icons.Filled.ArrowBack,
-                navigationOnClick = { onNavigateUp() },
+                navigationOnClick = appState::navigateUp,
                 isVisibleBottomBar = false
             ),
         )
@@ -77,7 +77,7 @@ fun MentalTipsScreen(
                             fraction = 1f - pageOffset.coerceIn(0f, 1f)
                         )
                     }
-                    .padding(horizontal =  dimensionResource(id = R.dimen.padding_normal_0)),
+                    .padding(horizontal = dimensionResource(id = R.dimen.padding_normal_0)),
                 mentalTip = mentalTip
             )
         }

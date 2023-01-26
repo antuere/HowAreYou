@@ -12,9 +12,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.hilt.navigation.compose.hiltViewModel
+import antuere.how_are_you.LocalAppState
 import antuere.how_are_you.R
 import antuere.how_are_you.presentation.base.ui_compose_components.placeholder.FullScreenProgressIndicator
 import antuere.how_are_you.presentation.base.ui_compose_components.top_bar.AppBarState
+import antuere.how_are_you.presentation.helplines.state.HelplinesIntent
 import antuere.how_are_you.presentation.helplines.state.HelplinesState
 import antuere.how_are_you.presentation.helplines.ui_compose.CountrySelectionMenu
 import antuere.how_are_you.presentation.helplines.ui_compose.HelplineItem
@@ -24,24 +26,23 @@ import timber.log.Timber
 
 @Composable
 fun HelplinesScreen(
-    updateAppBar: (AppBarState) -> Unit,
-    onNavigateUp: () -> Unit,
-    helplinesViewModel: HelplinesViewModel = hiltViewModel()
+    viewModel: HelplinesViewModel = hiltViewModel(),
 ) {
     Timber.i("MVI error test : enter in helplines screen")
+    val appState = LocalAppState.current
 
     LaunchedEffect(true) {
-        updateAppBar(
+      appState.updateAppBar(
             AppBarState(
                 titleId = R.string.helplines,
                 navigationIcon = Icons.Filled.ArrowBack,
-                navigationOnClick = { onNavigateUp() },
+                navigationOnClick = appState::navigateUp,
                 isVisibleBottomBar = false
             ),
         )
     }
 
-    val viewState by helplinesViewModel.collectAsState()
+    val viewState by viewModel.collectAsState()
 
     when (val state = viewState) {
         is HelplinesState.Loaded -> {
@@ -58,7 +59,9 @@ fun HelplinesScreen(
                     modifier = Modifier.fillMaxWidth(0.6F),
                     countries = state.supportedCountries,
                     selectedCountry = state.selectedCountry,
-                    onSelectedCountryChange = { helplinesViewModel.onCountrySelected(it) }
+                    onSelectedCountryChange = {
+                        HelplinesIntent.CountrySelected(it).run(viewModel::onIntent)
+                    }
                 )
                 Spacer(modifier = Modifier.weight(0.05F))
 

@@ -16,13 +16,13 @@ import timber.log.Timber
 fun HistoryHeaderText(
     modifier: Modifier = Modifier,
     rotation: () -> Float = { 0f },
-    headerText: UiText
+    headerText: String
 ) {
 
     Timber.i("MVI error test : composed in header text rotate is $rotation")
 
     Text(
-        text = headerText.asString(),
+        text = headerText,
         modifier = modifier
             .fillMaxWidth()
             .padding(vertical = dimensionResource(id = R.dimen.padding_normal_0))

@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import antuere.how_are_you.LocalAppState
 import antuere.how_are_you.R
 import antuere.how_are_you.presentation.base.ui_compose_components.top_bar.AppBarState
 import antuere.how_are_you.presentation.base.ui_compose_components.dialog.UIDialog
@@ -30,19 +31,20 @@ import antuere.how_are_you.util.paddingBotAndTopBar
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
+import timber.log.Timber
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun SettingsScreen(
-    updateAppBar: (AppBarState) -> Unit,
-    showSnackbar: (String) -> Unit,
-    dismissSnackbar: () -> Unit,
-    showDialog: (UIDialog) -> Unit,
     onNavigateSignIn: () -> Unit,
     settingsViewModel: SettingsViewModel = hiltViewModel()
 ) {
+    Timber.i("MVI error test : composed in settings screen")
+
+    val appState = LocalAppState.current
+
     LaunchedEffect(true) {
-        dismissSnackbar()
+      appState.dismissSnackbar()
     }
 
     val viewState by settingsViewModel.collectAsState()
@@ -62,10 +64,8 @@ fun SettingsScreen(
         { scope.launch { bottomSheetState.hide() } }
     }
 
-    val isEnabledHandler by remember {
-        derivedStateOf {
-            bottomSheetState.currentValue == ModalBottomSheetValue.Expanded
-        }
+    val isEnabledHandler = remember(bottomSheetState.currentValue) {
+        bottomSheetState.currentValue == ModalBottomSheetValue.Expanded
     }
 
     val isSheetStartsHiding by remember {
@@ -103,7 +103,7 @@ fun SettingsScreen(
     }
 
     LaunchedEffect(bottomSheetState.targetValue) {
-        updateAppBar(
+      appState.updateAppBar(
             AppBarState(
                 titleId = R.string.settings,
                 isVisibleBottomBar = bottomSheetState.targetValue == ModalBottomSheetValue.Hidden
@@ -114,10 +114,10 @@ fun SettingsScreen(
     settingsViewModel.collectSideEffect { sideEffect ->
         when (sideEffect) {
             is SettingsSideEffect.Dialog -> {
-                showDialog(sideEffect.uiDialog)
+               appState.showDialog(sideEffect.uiDialog)
             }
             is SettingsSideEffect.Snackbar -> {
-                showSnackbar(sideEffect.message.asString(context))
+               appState.showSnackbar(sideEffect.message.asString(context))
             }
             is SettingsSideEffect.BiometricDialog -> {
                 sideEffect.dialog.startBiometricAuth(

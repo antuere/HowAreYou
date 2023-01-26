@@ -1,7 +1,9 @@
 package antuere.how_are_you.presentation.cats
 
 import androidx.lifecycle.ViewModel
+import antuere.how_are_you.presentation.cats.state.CatsIntent
 import antuere.how_are_you.presentation.cats.state.CatsState
+import antuere.how_are_you.util.ContainerHostPlus
 import dagger.hilt.android.lifecycle.HiltViewModel
 import org.orbitmvi.orbit.Container
 import org.orbitmvi.orbit.ContainerHost
@@ -13,13 +15,15 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CatsViewModel @Inject constructor() :
-    ContainerHost<CatsState, Nothing>, ViewModel() {
+    ContainerHostPlus<CatsState, Nothing, CatsIntent>, ViewModel() {
 
     override val container: Container<CatsState, Nothing> = container(CatsState())
 
-    fun onClickUpdateCats() = intent {
-        reduce {
-            state.copy(urlList = state.urlList.reversed())
+    override fun onIntent(intent: CatsIntent) = intent {
+        when (intent) {
+            CatsIntent.UpdateCatsClicked -> reduce {
+                state.copy(urlList = state.urlList.reversed())
+            }
         }
     }
 }

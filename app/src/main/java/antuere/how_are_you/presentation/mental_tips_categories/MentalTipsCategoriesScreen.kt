@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import antuere.how_are_you.LocalAppState
 import antuere.how_are_you.R
 import antuere.how_are_you.presentation.base.ui_compose_components.top_bar.AppBarState
 import antuere.how_are_you.presentation.mental_tips_categories.ui_compose.CategoryCard
@@ -20,19 +21,18 @@ import antuere.how_are_you.util.paddingTopBar
 
 @Composable
 fun MentalTipsCategoriesScreen(
-    onNavigateUp: () -> Unit,
     onNavigateToMentalTip: (String) -> Unit,
-    updateAppBar: (AppBarState) -> Unit,
-    mentalTipsViewModel: MentalTipsCategoriesViewModel = hiltViewModel()
+    mentalTipsViewModel: MentalTipsCategoriesViewModel = hiltViewModel(),
 ) {
     val listCategories by mentalTipsViewModel.listMentalTipsCategories.collectAsState()
+    val appState = LocalAppState.current
 
     LaunchedEffect(true) {
-        updateAppBar(
+        appState.updateAppBar(
             AppBarState(
                 titleId = R.string.mental_tips,
                 navigationIcon = Icons.Filled.ArrowBack,
-                navigationOnClick = { onNavigateUp() },
+                navigationOnClick = appState::navigateUp,
                 isVisibleBottomBar = false
             )
         )

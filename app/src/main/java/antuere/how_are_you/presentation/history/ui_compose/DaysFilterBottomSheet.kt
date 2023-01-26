@@ -20,8 +20,10 @@ import java.time.LocalDate
 @Composable
 fun DaysFilterBottomSheet(
     hideBottomSheet: () -> Unit,
-    onDaysSelected: (LocalDate, LocalDate) -> Unit
+    onDaysSelected: (LocalDate, LocalDate) -> Unit,
 ) {
+    Timber.i("MVI error test : composed in daysFilter")
+
     val dialogStartDateState = rememberMaterialDialogState()
     val dialogEndDateState = rememberMaterialDialogState()
 
@@ -41,8 +43,6 @@ fun DaysFilterBottomSheet(
     var endDate by remember {
         mutableStateOf(LocalDate.now())
     }
-
-    Timber.i("MVI error test : composed in daysFilter")
 
     val isEnabledEndDateBtn by remember {
         derivedStateOf {

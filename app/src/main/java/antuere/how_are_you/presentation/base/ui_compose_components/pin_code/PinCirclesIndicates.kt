@@ -7,17 +7,17 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import antuere.how_are_you.R
 import antuere.how_are_you.presentation.base.ui_theme.DarkGreen
-import antuere.how_are_you.presentation.pin_code_creation.PinCodeCirclesState
+import antuere.how_are_you.presentation.pin_code_creation.PinCirclesState
 import antuere.how_are_you.util.animateScaleDownOnce
 import antuere.how_are_you.util.animateScaleOnce
 import antuere.how_are_you.util.animateScaleUpOnce
 import antuere.how_are_you.util.shake
 
 @Composable
-fun PinCirclesIndicates(pinCodeCirclesState: PinCodeCirclesState) {
+fun PinCirclesIndicates(pinCodeCirclesState: PinCirclesState) {
     Row {
         when (pinCodeCirclesState) {
-            PinCodeCirclesState.NONE -> {
+            PinCirclesState.NONE -> {
                 repeat(4) {
                     ProgressCircle(
                         drawId = R.drawable.ic_circle_outlined,
@@ -25,7 +25,7 @@ fun PinCirclesIndicates(pinCodeCirclesState: PinCodeCirclesState) {
                     )
                 }
             }
-            PinCodeCirclesState.FIRST -> {
+            PinCirclesState.FIRST -> {
                 ProgressCircle(
                     drawId = R.drawable.ic_circle_filled,
                     modifier = Modifier.animateScaleOnce()
@@ -34,7 +34,7 @@ fun PinCirclesIndicates(pinCodeCirclesState: PinCodeCirclesState) {
                     ProgressCircle(drawId = R.drawable.ic_circle_outlined)
                 }
             }
-            PinCodeCirclesState.SECOND -> {
+            PinCirclesState.SECOND -> {
                 ProgressCircle(drawId = R.drawable.ic_circle_filled)
                 ProgressCircle(
                     drawId = R.drawable.ic_circle_filled,
@@ -43,7 +43,7 @@ fun PinCirclesIndicates(pinCodeCirclesState: PinCodeCirclesState) {
                 ProgressCircle(drawId = R.drawable.ic_circle_outlined)
                 ProgressCircle(drawId = R.drawable.ic_circle_outlined)
             }
-            PinCodeCirclesState.THIRD -> {
+            PinCirclesState.THIRD -> {
                 ProgressCircle(drawId = R.drawable.ic_circle_filled)
                 ProgressCircle(drawId = R.drawable.ic_circle_filled)
                 ProgressCircle(
@@ -52,7 +52,7 @@ fun PinCirclesIndicates(pinCodeCirclesState: PinCodeCirclesState) {
                 )
                 ProgressCircle(drawId = R.drawable.ic_circle_outlined)
             }
-            PinCodeCirclesState.FOURTH -> {
+            PinCirclesState.FOURTH -> {
                 ProgressCircle(drawId = R.drawable.ic_circle_filled)
                 ProgressCircle(drawId = R.drawable.ic_circle_filled)
                 ProgressCircle(drawId = R.drawable.ic_circle_filled)
@@ -61,7 +61,7 @@ fun PinCirclesIndicates(pinCodeCirclesState: PinCodeCirclesState) {
                     modifier = Modifier.animateScaleOnce()
                 )
             }
-            PinCodeCirclesState.WRONG_PIN -> {
+            PinCirclesState.WRONG_PIN -> {
                 repeat(4) {
                     ProgressCircle(
                         modifier = Modifier.shake(),
@@ -72,7 +72,7 @@ fun PinCirclesIndicates(pinCodeCirclesState: PinCodeCirclesState) {
                 }
             }
 
-            PinCodeCirclesState.CORRECT_PIN -> {
+            PinCirclesState.CORRECT_PIN -> {
                 repeat(4) {
                     ProgressCircle(
                         drawId = R.drawable.ic_circle_filled,

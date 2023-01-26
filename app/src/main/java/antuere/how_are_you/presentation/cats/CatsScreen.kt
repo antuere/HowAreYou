@@ -16,37 +16,40 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import antuere.how_are_you.LocalAppState
 import antuere.how_are_you.R
 import antuere.how_are_you.presentation.base.ui_compose_components.top_bar.AppBarState
 import antuere.how_are_you.presentation.cats.ui_compose.DefaultGlideImage
 import antuere.how_are_you.presentation.base.ui_theme.PlayfairDisplay
+import antuere.how_are_you.presentation.cats.state.CatsIntent
 import antuere.how_are_you.util.paddingTopBar
 import org.orbitmvi.orbit.compose.collectAsState
 import timber.log.Timber
 
 @Composable
 fun CatsScreen(
-    updateAppBar: (AppBarState) -> Unit,
-    onNavigateUp: () -> Unit,
-    catsViewModel: CatsViewModel = hiltViewModel()
+    viewModel: CatsViewModel = hiltViewModel(),
 ) {
     Timber.i("MVI error test : enter in catsScreen screen")
+    val appState = LocalAppState.current
 
     LaunchedEffect(true) {
-        updateAppBar(
+       appState.updateAppBar(
             AppBarState(
                 titleId = R.string.cats,
                 navigationIcon = Icons.Filled.ArrowBack,
-                navigationOnClick = { onNavigateUp() },
+                navigationOnClick = appState::navigateUp,
                 isVisibleBottomBar = false
             ),
         )
     }
 
-    val viewState by catsViewModel.collectAsState()
+    val viewState by viewModel.collectAsState()
 
     Column(
-        modifier = Modifier.fillMaxSize().paddingTopBar(),
+        modifier = Modifier
+            .fillMaxSize()
+            .paddingTopBar(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -98,7 +101,7 @@ fun CatsScreen(
 
         Button(
             modifier = Modifier.fillMaxWidth(0.7F),
-            onClick = catsViewModel::onClickUpdateCats
+            onClick = { CatsIntent.UpdateCatsClicked.run(viewModel::onIntent) }
         ) {
             Text(
                 text = stringResource(id = R.string.getCats),

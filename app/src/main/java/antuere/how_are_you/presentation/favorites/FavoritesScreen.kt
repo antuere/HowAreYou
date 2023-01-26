@@ -12,46 +12,50 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
+import antuere.how_are_you.LocalAppState
 import antuere.how_are_you.R
 import antuere.how_are_you.presentation.base.ui_compose_components.days_list.DaysGrid
 import antuere.how_are_you.presentation.base.ui_compose_components.days_list.DaysGridShimmer
 import antuere.how_are_you.presentation.base.ui_compose_components.top_bar.AppBarState
-import antuere.how_are_you.presentation.base.ui_compose_components.dialog.UIDialog
+import antuere.how_are_you.presentation.favorites.state.FavoritesIntent
 import antuere.how_are_you.presentation.favorites.state.FavoritesSideEffect
 import antuere.how_are_you.presentation.favorites.state.FavoritesState
 import antuere.how_are_you.util.paddingTopBar
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
+import timber.log.Timber
 
 @Composable
 fun FavoritesScreen(
     onNavigateToDetail: (Long) -> Unit,
-    onNavigateUp: () -> Unit,
-    updateAppBar: (AppBarState) -> Unit,
-    showDialog: (UIDialog) -> Unit,
-    favoritesViewModel: FavoritesViewModel = hiltViewModel()
+    viewModel: FavoritesViewModel = hiltViewModel(),
 ) {
+    Timber.i("MVI error test : enter in fav screen")
+    val appState = LocalAppState.current
+
     LaunchedEffect(true) {
-        updateAppBar(
+        appState.updateAppBar(
             AppBarState(
                 titleId = R.string.favorites,
                 navigationIcon = Icons.Filled.ArrowBack,
-                navigationOnClick = { onNavigateUp() },
+                navigationOnClick = appState::navigateUp,
                 isVisibleBottomBar = false
             ),
         )
     }
-    val viewState by favoritesViewModel.collectAsState()
+    val viewState by viewModel.collectAsState()
 
-    favoritesViewModel.collectSideEffect { sideEffect ->
+    viewModel.collectSideEffect { sideEffect ->
         when (sideEffect) {
-            is FavoritesSideEffect.Dialog -> showDialog(sideEffect.uiDialog)
+            is FavoritesSideEffect.Dialog -> appState.showDialog(sideEffect.uiDialog)
             is FavoritesSideEffect.NavigationToDayDetail -> onNavigateToDetail(sideEffect.dayId)
         }
     }
 
     Column(
-        modifier = Modifier.fillMaxSize().paddingTopBar(),
+        modifier = Modifier
+            .fillMaxSize()
+            .paddingTopBar(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -64,8 +68,8 @@ fun FavoritesScreen(
                 DaysGrid(
                     cellsAmount = state.cellsAmountForGrid,
                     days = state.dayList,
-                    onClick = { favoritesViewModel.onClickDay(it) },
-                    onLongClick = { favoritesViewModel.onClickLongDay(it) })
+                    onClick = { FavoritesIntent.DayClicked(it).run(viewModel::onIntent) },
+                    onLongClick = { FavoritesIntent.DayLongClicked(it).run(viewModel::onIntent) })
             }
 
             is FavoritesState.LoadingShimmer -> {

@@ -14,10 +14,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
 import androidx.hilt.navigation.compose.hiltViewModel
+import antuere.how_are_you.LocalAppState
 import antuere.how_are_you.R
 import antuere.how_are_you.presentation.base.ui_compose_components.top_bar.AppBarState
-import antuere.how_are_you.presentation.base.ui_compose_components.dialog.UIDialog
 import antuere.how_are_you.presentation.base.ui_compose_components.placeholder.FullScreenProgressIndicator
+import antuere.how_are_you.presentation.detail.state.DetailIntent
 import antuere.how_are_you.presentation.detail.state.DetailSideEffect
 import antuere.how_are_you.presentation.detail.ui_compose.DayDetailView
 import org.orbitmvi.orbit.compose.collectAsState
@@ -26,28 +27,25 @@ import timber.log.Timber
 
 @Composable
 fun DetailScreen(
-    updateAppBar: (AppBarState) -> Unit,
-    onNavigateUp: () -> Unit,
-    showDialog: (UIDialog) -> Unit,
-    detailViewModel: DetailViewModel = hiltViewModel()
+    viewModel: DetailViewModel = hiltViewModel(),
 ) {
     Timber.i("MVI error test : enter in detail screen")
-
+    val appState = LocalAppState.current
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed by interactionSource.collectIsPressedAsState()
     val scaleDeleteBtn by animateFloatAsState(if (isPressed) 0.75f else 1f)
     val rotation = remember { Animatable(initialValue = 0F) }
 
-    val viewState by detailViewModel.collectAsState()
+    val viewState by viewModel.collectAsState()
 
     LaunchedEffect(viewState.isFavorite) {
-        updateAppBar(
+        appState.updateAppBar(
             AppBarState(
                 titleId = R.string.about_day,
                 navigationIcon = Icons.Filled.ArrowBack,
-                navigationOnClick = { onNavigateUp() },
+                navigationOnClick = appState::navigateUp,
                 actions = {
-                    IconButton(onClick = detailViewModel::onClickFavoriteButton) {
+                    IconButton(onClick = { DetailIntent.FavoriteBtnClicked.run(viewModel::onIntent) }) {
                         Icon(
                             modifier = Modifier.graphicsLayer {
                                 rotationY = rotation.value
@@ -63,7 +61,7 @@ fun DetailScreen(
                             scaleX = scaleDeleteBtn
                             scaleY = scaleDeleteBtn
                         },
-                        onClick = detailViewModel::onClickDeleteButton,
+                        onClick = { DetailIntent.DeleteBtnClicked.run(viewModel::onIntent) },
                         interactionSource = interactionSource
                     ) {
                         Icon(
@@ -77,7 +75,7 @@ fun DetailScreen(
         )
     }
 
-    detailViewModel.collectSideEffect { sideEffect ->
+    viewModel.collectSideEffect { sideEffect ->
         when (sideEffect) {
             DetailSideEffect.AnimateFavoriteBtn -> {
                 rotation.animateTo(
@@ -86,12 +84,8 @@ fun DetailScreen(
                 )
                 rotation.snapTo(0F)
             }
-            is DetailSideEffect.Dialog -> {
-                showDialog(sideEffect.uiDialog)
-            }
-            DetailSideEffect.NavigateUp -> {
-                onNavigateUp()
-            }
+            is DetailSideEffect.Dialog -> appState.showDialog(sideEffect.uiDialog)
+            DetailSideEffect.NavigateUp -> appState.navigateUp()
         }
     }
 

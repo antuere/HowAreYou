@@ -13,7 +13,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import antuere.how_are_you.R
 import antuere.how_are_you.presentation.base.ui_compose_components.pin_code.NumericKeyPad
 import antuere.how_are_you.presentation.base.ui_compose_components.pin_code.PinCirclesIndicates
-import antuere.how_are_you.presentation.pin_code_creation.state.PinCodeCreationSideEffect
+import antuere.how_are_you.presentation.pin_code_creation.state.PinCreationIntent
+import antuere.how_are_you.presentation.pin_code_creation.state.PinCreationSideEffect
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 import timber.log.Timber
@@ -23,19 +24,23 @@ fun PinCodeCreating(
     hideBottomSheet: () -> Unit,
     isSheetStartsHiding: Boolean,
     onHandleResult: (Boolean) -> Unit,
-    sheetViewModel: PinCodeCreatingSheetViewModel = hiltViewModel(),
+    viewModel: PinCreatingSheetViewModel = hiltViewModel(),
 ) {
     Timber.i("MVI error test : composed pin code creating")
 
-    val viewState by sheetViewModel.collectAsState()
+    val viewState by viewModel.collectAsState()
 
     val onClickNumber: (String) -> Unit = remember {
-        { sheetViewModel.onClickNumber(it) }
+        { PinCreationIntent.NumberClicked(it).run(viewModel::onIntent) }
     }
 
-    sheetViewModel.collectSideEffect { sideEffect ->
+    val resetPinState: () -> Unit = remember {
+        { PinCreationIntent.PinStateReset.run(viewModel::onIntent) }
+    }
+
+    viewModel.collectSideEffect { sideEffect ->
         when (sideEffect) {
-            is PinCodeCreationSideEffect.PinCreated -> {
+            is PinCreationSideEffect.PinCreated -> {
                 onHandleResult(true)
                 hideBottomSheet()
             }
@@ -44,10 +49,10 @@ fun PinCodeCreating(
 
     LaunchedEffect(isSheetStartsHiding) {
         if (isSheetStartsHiding) {
-            if (viewState != PinCodeCirclesState.FOURTH) {
+            if (viewState != PinCirclesState.FOURTH) {
                 onHandleResult(false)
             }
-            sheetViewModel.resetAllPinCodeStates()
+            resetPinState()
         }
     }
 
@@ -72,7 +77,7 @@ fun PinCodeCreating(
 
         NumericKeyPad(
             onClick = onClickNumber,
-            onClickClear = sheetViewModel::resetAllPinCodeStates
+            onClickClear = resetPinState
         )
 
         Spacer(

@@ -12,6 +12,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import antuere.how_are_you.R
+import timber.log.Timber
 
 @Composable
 fun NumericKeyPad(
@@ -20,6 +21,8 @@ fun NumericKeyPad(
     isShowBiometricBtn: Boolean = false,
     onClickBiometric: () -> Unit = {}
 ) {
+    Timber.i("MVI error test : composed in numeric pad")
+
     Column(
         modifier = Modifier
             .padding(horizontal = dimensionResource(id = R.dimen.padding_normal_1))

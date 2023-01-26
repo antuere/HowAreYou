@@ -9,7 +9,7 @@ import antuere.domain.repository.SettingsRepository
 import antuere.how_are_you.R
 import antuere.how_are_you.presentation.base.ui_text.UiText
 import antuere.how_are_you.presentation.base.ui_biometric_dialog.IUIBiometricListener
-import antuere.how_are_you.presentation.pin_code_creation.PinCodeCirclesState
+import antuere.how_are_you.presentation.pin_code_creation.PinCirclesState
 import antuere.how_are_you.presentation.base.ui_biometric_dialog.BiometricsAvailableState
 import antuere.how_are_you.presentation.base.ui_biometric_dialog.UIBiometricDialog
 import antuere.how_are_you.presentation.base.ui_compose_components.dialog.UIDialog
@@ -46,8 +46,8 @@ class SecureEntryViewModel @Inject constructor(
     val isShowBiometricAuth: StateFlow<Boolean>
         get() = _isShowBiometricAuth
 
-    private var _pinCodeCirclesState = MutableStateFlow(PinCodeCirclesState.NONE)
-    val pinCodeCirclesState: StateFlow<PinCodeCirclesState>
+    private var _pinCodeCirclesState = MutableStateFlow(PinCirclesState.NONE)
+    val pinCodeCirclesState: StateFlow<PinCirclesState>
         get() = _pinCodeCirclesState
 
     private var _settings = MutableStateFlow<Settings?>(null)
@@ -77,7 +77,7 @@ class SecureEntryViewModel @Inject constructor(
         }
 
         override fun onBiometricAuthSuccess() {
-            _pinCodeCirclesState.value = PinCodeCirclesState.CORRECT_PIN
+            _pinCodeCirclesState.value = PinCirclesState.CORRECT_PIN
 
             saveSettings()
             _isNavigateToHomeScreen.value = true
@@ -178,19 +178,19 @@ class SecureEntryViewModel @Inject constructor(
         when (list.size) {
             1 -> {
                 num1 = list[0]
-                _pinCodeCirclesState.value = PinCodeCirclesState.FIRST
+                _pinCodeCirclesState.value = PinCirclesState.FIRST
             }
             2 -> {
                 num2 = list[1]
-                _pinCodeCirclesState.value = PinCodeCirclesState.SECOND
+                _pinCodeCirclesState.value = PinCirclesState.SECOND
             }
             3 -> {
                 num3 = list[2]
-                _pinCodeCirclesState.value = PinCodeCirclesState.THIRD
+                _pinCodeCirclesState.value = PinCirclesState.THIRD
             }
             4 -> {
                 num4 = list[3]
-                _pinCodeCirclesState.value = PinCodeCirclesState.FOURTH
+                _pinCodeCirclesState.value = PinCirclesState.FOURTH
                 userPinCode.value = num1 + num2 + num3 + num4
 
                 validateEnteredPinCode(userPinCode.value!!)
@@ -214,17 +214,17 @@ class SecureEntryViewModel @Inject constructor(
     private fun validateEnteredPinCode(pinCode: String) {
         if (pinCode == savedPinCode) {
             _isNavigateToHomeScreen.value = true
-            _pinCodeCirclesState.value = PinCodeCirclesState.CORRECT_PIN
+            _pinCodeCirclesState.value = PinCirclesState.CORRECT_PIN
         } else {
             wrongPinAnimationJob = viewModelScope.launch {
                 _isShowErrorMessage.value = true
-                _pinCodeCirclesState.value = PinCodeCirclesState.WRONG_PIN
+                _pinCodeCirclesState.value = PinCirclesState.WRONG_PIN
                 userPinCode.value = null
                 currentNumbers.clear()
 
                 delay(500)
 
-                _pinCodeCirclesState.value = PinCodeCirclesState.NONE
+                _pinCodeCirclesState.value = PinCirclesState.NONE
             }
         }
     }
@@ -232,7 +232,7 @@ class SecureEntryViewModel @Inject constructor(
     fun resetAllPinCodeStates() {
         userPinCode.value = null
         currentNumbers.clear()
-        _pinCodeCirclesState.value = PinCodeCirclesState.NONE
+        _pinCodeCirclesState.value = PinCirclesState.NONE
     }
 
     fun onClickSignOut() {

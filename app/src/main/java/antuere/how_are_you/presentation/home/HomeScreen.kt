@@ -12,14 +12,15 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import antuere.how_are_you.LocalAppState
 import antuere.how_are_you.R
 import antuere.how_are_you.presentation.base.ui_compose_components.top_bar.AppBarState
 import antuere.how_are_you.presentation.home.ui_compose.CardWithQuote
 import antuere.how_are_you.presentation.base.ui_compose_components.card.CardDefault
 import antuere.how_are_you.presentation.base.ui_compose_components.card.CardWithOnClick
-import antuere.how_are_you.presentation.base.ui_compose_components.dialog.UIDialog
 import antuere.how_are_you.presentation.base.ui_compose_components.placeholder.FullScreenProgressIndicator
 import antuere.how_are_you.presentation.base.ui_theme.TealMain
+import antuere.how_are_you.presentation.home.state.HomeIntent
 import antuere.how_are_you.presentation.home.state.HomeSideEffect
 import antuere.how_are_you.presentation.home.state.HomeState
 import antuere.how_are_you.util.paddingBotAndTopBar
@@ -29,28 +30,24 @@ import timber.log.Timber
 
 @Composable
 fun HomeScreen(
-    updateAppBar: (AppBarState) -> Unit,
-    dismissSnackbar: () -> Unit,
-    showSnackbar: (String) -> Unit,
-    showDialog: (UIDialog) -> Unit,
     onNavigateToMentalTips: () -> Unit,
     onNavigateToHelpForYou: () -> Unit,
     onNavigateToFavorites: () -> Unit,
     onNavigateToCats: () -> Unit,
     onNavigateToDetail: (Long) -> Unit,
     onNavigateToAddDay: () -> Unit,
-    homeViewModel: () -> HomeViewModel,
+    viewModel: () -> HomeViewModel,
 ) {
 
     Timber.i("MVI error test : enter in home screen")
     val context = LocalContext.current
-    val viewState by homeViewModel().collectAsState()
+    val appState = LocalAppState.current
+    val viewState by viewModel().collectAsState()
 
-    homeViewModel().collectSideEffect { sideEffect ->
+    viewModel().collectSideEffect { sideEffect ->
         when (sideEffect) {
-
             is HomeSideEffect.Dialog -> {
-                showDialog(sideEffect.uiDialog)
+                appState.showDialog(sideEffect.uiDialog)
             }
             HomeSideEffect.NavigationToAddDay -> {
                 onNavigateToAddDay()
@@ -59,20 +56,20 @@ fun HomeScreen(
                 onNavigateToDetail(sideEffect.dayId)
             }
             is HomeSideEffect.Snackbar -> {
-                showSnackbar(sideEffect.message.asString(context))
+                appState.showSnackbar(sideEffect.message.asString(context))
             }
         }
 
     }
 
     LaunchedEffect(true) {
-        updateAppBar(
+        appState.updateAppBar(
             AppBarState(
                 titleId = R.string.home,
                 isVisibleBottomBar = true
             ),
         )
-        dismissSnackbar()
+        appState.dismissSnackbar()
     }
 
     when (val state = viewState) {
@@ -178,7 +175,7 @@ fun HomeScreen(
                                 start = dimensionResource(id = R.dimen.padding_normal_1),
                                 end = dimensionResource(id = R.dimen.padding_normal_1)
                             ),
-                        onClick = homeViewModel()::onClickFAB,
+                        onClick = { HomeIntent.FabClicked.run(viewModel()::onIntent) },
                         containerColor = TealMain
                     ) {
                         Icon(

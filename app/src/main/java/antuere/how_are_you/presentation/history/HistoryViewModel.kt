@@ -10,20 +10,20 @@ import antuere.how_are_you.R
 import antuere.how_are_you.presentation.base.ui_compose_components.dialog.UIDialog
 import antuere.how_are_you.presentation.base.ui_text.UiText
 import antuere.how_are_you.presentation.history.state.FilterState
+import antuere.how_are_you.presentation.history.state.HistoryIntent
 import antuere.how_are_you.presentation.history.state.HistorySideEffect
 import antuere.how_are_you.presentation.history.state.HistoryState
+import antuere.how_are_you.util.ContainerHostPlus
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.Container
-import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
-import java.time.LocalDate
 import javax.inject.Inject
 
 
@@ -31,8 +31,8 @@ import javax.inject.Inject
 @HiltViewModel
 class HistoryViewModel @Inject constructor(
     private val dayRepository: DayRepository,
-    private val toggleBtnRepository: ToggleBtnRepository
-) : ContainerHost<HistoryState, HistorySideEffect>, ViewModel() {
+    private val toggleBtnRepository: ToggleBtnRepository,
+) : ContainerHostPlus<HistoryState, HistorySideEffect, HistoryIntent>, ViewModel() {
 
     override val container: Container<HistoryState, HistorySideEffect> =
         container(HistoryState.LoadingShimmer())
@@ -44,43 +44,45 @@ class HistoryViewModel @Inject constructor(
         getToggleButtonState()
     }
 
-    fun onClickDay(day: Day) = intent {
-        postSideEffect(
-            HistorySideEffect.NavigationToDayDetail(
-                dayId = day.dayId
-            )
-        )
-    }
-
-    fun onClickLongDay(day: Day) = intent {
-        val uiDialog = UIDialog(
-            title = R.string.dialog_delete_title,
-            desc = R.string.dialog_delete_desc,
-            icon = R.drawable.ic_delete_black,
-            positiveButton = UIDialog.UiButton(
-                text = R.string.yes,
-                onClick = {
-                    deleteDay(day.dayId)
-                }),
-            negativeButton = UIDialog.UiButton(text = R.string.no)
-        )
-        postSideEffect(HistorySideEffect.Dialog(uiDialog))
-    }
-
-    fun onClickCheckedItem(btnState: ToggleBtnState) = intent {
-
-        filterState.update {
-            FilterState.Disabled(btnState)
-        }
-        saveToggleButtonState(btnState)
-        postSideEffect(HistorySideEffect.AnimationHistoryHeader)
-    }
-
-    fun onDaysSelected(startDate: LocalDate, endDate: LocalDate) = intent {
-
-        postSideEffect(HistorySideEffect.AnimationHistoryHeader)
-        filterState.update {
-            FilterState.Activated(startDate, endDate)
+    override fun onIntent(intent: HistoryIntent) = intent {
+        when (intent) {
+            is HistoryIntent.DayClicked -> {
+                postSideEffect(
+                    HistorySideEffect.NavigationToDayDetail(
+                        dayId = intent.day.dayId
+                    )
+                )
+            }
+            is HistoryIntent.DayLongClicked -> {
+                val uiDialog = UIDialog(
+                    title = R.string.dialog_delete_title,
+                    desc = R.string.dialog_delete_desc,
+                    icon = R.drawable.ic_delete_black,
+                    positiveButton = UIDialog.UiButton(
+                        text = R.string.yes,
+                        onClick = {
+                            deleteDay(intent.day.dayId)
+                        }),
+                    negativeButton = UIDialog.UiButton(text = R.string.no)
+                )
+                postSideEffect(HistorySideEffect.Dialog(uiDialog))
+            }
+            is HistoryIntent.DaysInFilterSelected -> {
+                postSideEffect(HistorySideEffect.AnimationHistoryHeader)
+                filterState.update {
+                    FilterState.Activated(
+                        firstDate = intent.startDate,
+                        secondDate = intent.endDate
+                    )
+                }
+            }
+            is HistoryIntent.ToggleBtnChanged -> {
+                filterState.update {
+                    FilterState.Disabled(intent.toggleBtnState)
+                }
+                saveToggleButtonState(intent.toggleBtnState)
+                postSideEffect(HistorySideEffect.AnimationHistoryHeader)
+            }
         }
     }
 

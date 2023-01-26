@@ -12,6 +12,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.sp
 import antuere.how_are_you.R
 import antuere.how_are_you.util.paddingTopBar
+import timber.log.Timber
 
 @Composable
 fun DayDetailView(

@@ -4,7 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import antuere.domain.repository.SettingsRepository
 import antuere.domain.util.Constants
-import antuere.how_are_you.presentation.pin_code_creation.state.PinCodeCreationSideEffect
+import antuere.how_are_you.presentation.pin_code_creation.state.PinCreationIntent
+import antuere.how_are_you.presentation.pin_code_creation.state.PinCreationSideEffect
+import antuere.how_are_you.util.ContainerHostPlus
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -18,12 +20,12 @@ import org.orbitmvi.orbit.viewmodel.container
 import javax.inject.Inject
 
 @HiltViewModel
-class PinCodeCreatingSheetViewModel @Inject constructor(
-    private val settingsRepository: SettingsRepository
-) : ContainerHost<PinCodeCirclesState, PinCodeCreationSideEffect>, ViewModel() {
+class PinCreatingSheetViewModel @Inject constructor(
+    private val settingsRepository: SettingsRepository,
+) : ContainerHostPlus<PinCirclesState, PinCreationSideEffect, PinCreationIntent>, ViewModel() {
 
-    override val container: Container<PinCodeCirclesState, PinCodeCreationSideEffect> =
-        container(PinCodeCirclesState.NONE)
+    override val container: Container<PinCirclesState, PinCreationSideEffect> =
+        container(PinCirclesState.NONE)
 
     private var userPinCode = Constants.PIN_NOT_SET
 
@@ -34,21 +36,24 @@ class PinCodeCreatingSheetViewModel @Inject constructor(
 
     private var currentNumbers = mutableListOf<String>()
 
-    fun onClickNumber(value: String) {
-        if (value.length != 1) {
-            throw IllegalArgumentException("Invalid number: $value")
-        }
+    override fun onIntent(intent: PinCreationIntent) = intent {
+        when (intent) {
+            is PinCreationIntent.NumberClicked -> {
+                if (intent.number.length != 1) {
+                    throw IllegalArgumentException("Invalid number: ${intent.number}")
+                }
 
-        currentNumbers.add(value)
-        checkPassword(currentNumbers)
-    }
-
-    fun resetAllPinCodeStates() = intent {
-        reduce {
-            PinCodeCirclesState.NONE
+                currentNumbers.add(intent.number)
+                checkPassword(currentNumbers)
+            }
+            PinCreationIntent.PinStateReset -> {
+                reduce {
+                    PinCirclesState.NONE
+                }
+                userPinCode = Constants.PIN_NOT_SET
+                currentNumbers.clear()
+            }
         }
-        userPinCode = Constants.PIN_NOT_SET
-        currentNumbers.clear()
     }
 
     private fun checkPassword(list: List<String>) = intent {
@@ -56,25 +61,25 @@ class PinCodeCreatingSheetViewModel @Inject constructor(
             1 -> {
                 num1 = list[0]
                 reduce {
-                    PinCodeCirclesState.FIRST
+                    PinCirclesState.FIRST
                 }
             }
             2 -> {
                 num2 = list[1]
                 reduce {
-                    PinCodeCirclesState.SECOND
+                    PinCirclesState.SECOND
                 }
             }
             3 -> {
                 num3 = list[2]
                 reduce {
-                    PinCodeCirclesState.THIRD
+                    PinCirclesState.THIRD
                 }
             }
             4 -> {
                 num4 = list[3]
                 reduce {
-                    PinCodeCirclesState.FOURTH
+                    PinCirclesState.FOURTH
                 }
                 userPinCode = num1 + num2 + num3 + num4
                 pinCodeCreated()
@@ -89,7 +94,7 @@ class PinCodeCreatingSheetViewModel @Inject constructor(
             savePinCode(userPinCode)
             delay(100)
 
-            postSideEffect(PinCodeCreationSideEffect.PinCreated)
+            postSideEffect(PinCreationSideEffect.PinCreated)
         }
     }
 

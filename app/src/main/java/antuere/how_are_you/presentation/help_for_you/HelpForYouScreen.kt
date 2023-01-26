@@ -17,6 +17,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import antuere.how_are_you.LocalAppState
 import antuere.how_are_you.R
 import antuere.how_are_you.presentation.base.ui_compose_components.card.CardWithIcons
 import antuere.how_are_you.presentation.base.ui_compose_components.top_bar.AppBarState
@@ -25,20 +26,20 @@ import timber.log.Timber
 
 @Composable
 fun HelpForYouScreen(
-    updateAppBar: (AppBarState) -> Unit,
-    onNavigateUp: () -> Unit,
     onNavigateToHelplines : () -> Unit,
-    helpForYouViewModel: HelpForYouViewModel = hiltViewModel()
+    viewModel: HelpForYouViewModel = hiltViewModel()
 ) {
-    Timber.i("MVI error test : helpfory screen model id is ${helpForYouViewModel.hashCode()}")
+    Timber.i("MVI error test : helpfory screen model id is ${viewModel.hashCode()}")
     Timber.i("MVI error test : enter in help for u screen")
 
+    val appState = LocalAppState.current
+
     LaunchedEffect(true) {
-        updateAppBar(
+      appState.updateAppBar(
             AppBarState(
                 titleId = R.string.help_for_you,
                 navigationIcon = Icons.Filled.ArrowBack,
-                navigationOnClick = { onNavigateUp() },
+                navigationOnClick = appState::navigateUp,
                 isVisibleBottomBar = false
             ),
         )

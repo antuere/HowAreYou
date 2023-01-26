@@ -5,7 +5,6 @@ import antuere.how_are_you.R
 import antuere.how_are_you.presentation.base.ui_text.UiText
 
 sealed interface FavoritesState {
-
     data class LoadingShimmer(
         val cellsAmount: Int = 3,
         val aspectRatioForItem: Float = 1F
@@ -18,5 +17,4 @@ sealed interface FavoritesState {
         val dayList: List<Day>,
         val cellsAmountForGrid: Int = 3
     ) : FavoritesState
-
 }

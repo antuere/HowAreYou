@@ -27,8 +27,7 @@ sealed interface HistoryState {
         class FromFilter(val message: UiText) : Empty
     }
 
-    sealed class Loaded :
-        HistoryState {
+    sealed class Loaded : HistoryState {
 
         data class Default(
             val dayList: List<Day>,
