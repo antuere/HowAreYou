@@ -24,7 +24,7 @@ fun PinCodeCreating(
     hideBottomSheet: () -> Unit,
     isSheetStartsHiding: Boolean,
     onHandleResult: (Boolean) -> Unit,
-    viewModel: PinCreatingSheetViewModel = hiltViewModel(),
+    viewModel: PinCreatingSheetViewModel = hiltViewModel()
 ) {
     Timber.i("MVI error test : composed pin code creating")
 

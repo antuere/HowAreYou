@@ -28,7 +28,7 @@ import timber.log.Timber
 
 @Composable
 fun CatsScreen(
-    viewModel: CatsViewModel = hiltViewModel(),
+    viewModel: CatsViewModel = hiltViewModel()
 ) {
     Timber.i("MVI error test : enter in catsScreen screen")
     val appState = LocalAppState.current
@@ -40,7 +40,7 @@ fun CatsScreen(
                 navigationIcon = Icons.Filled.ArrowBack,
                 navigationOnClick = appState::navigateUp,
                 isVisibleBottomBar = false
-            ),
+            )
         )
     }
 

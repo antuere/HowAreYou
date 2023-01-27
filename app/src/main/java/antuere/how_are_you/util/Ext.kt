@@ -20,6 +20,7 @@ import com.valentinilk.shimmer.ShimmerBounds
 import com.valentinilk.shimmer.defaultShimmerTheme
 import com.valentinilk.shimmer.rememberShimmer
 import com.valentinilk.shimmer.shimmer
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 
 
@@ -180,6 +181,12 @@ fun Modifier.shimmer(
     )
     shimmer(customShimmer = shimmer)
 }
+
+@Composable
+fun ((Boolean) -> Unit).toStable() = remember { this }
+
+@Composable
+fun (() -> Unit).toStable() = remember { this }
 
 private fun createCustomTheme(duration: Int) = defaultShimmerTheme.copy(
     animationSpec = infiniteRepeatable(

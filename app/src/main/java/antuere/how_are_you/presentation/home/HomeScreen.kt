@@ -36,9 +36,8 @@ fun HomeScreen(
     onNavigateToCats: () -> Unit,
     onNavigateToDetail: (Long) -> Unit,
     onNavigateToAddDay: () -> Unit,
-    viewModel: () -> HomeViewModel,
+    viewModel: () -> HomeViewModel
 ) {
-
     Timber.i("MVI error test : enter in home screen")
     val context = LocalContext.current
     val appState = LocalAppState.current
@@ -49,15 +48,17 @@ fun HomeScreen(
             is HomeSideEffect.Dialog -> {
                 appState.showDialog(sideEffect.uiDialog)
             }
-            HomeSideEffect.NavigationToAddDay -> {
-                onNavigateToAddDay()
-            }
             is HomeSideEffect.NavigationToDayDetail -> {
                 onNavigateToDetail(sideEffect.dayId)
             }
             is HomeSideEffect.Snackbar -> {
                 appState.showSnackbar(sideEffect.message.asString(context))
             }
+            HomeSideEffect.NavigationToAddDay -> onNavigateToAddDay()
+            HomeSideEffect.NavigationToCats -> onNavigateToCats()
+            HomeSideEffect.NavigationToFavorites -> onNavigateToFavorites()
+            HomeSideEffect.NavigationToHelpForYou -> onNavigateToHelpForYou()
+            HomeSideEffect.NavigationToMentalTips -> onNavigateToMentalTips()
         }
 
     }
@@ -67,7 +68,7 @@ fun HomeScreen(
             AppBarState(
                 titleId = R.string.home,
                 isVisibleBottomBar = true
-            ),
+            )
         )
         appState.dismissSnackbar()
     }
@@ -103,7 +104,7 @@ fun HomeScreen(
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     CardWithOnClick(
-                        onClick = onNavigateToMentalTips,
+                        onClick = { HomeIntent.MentalTipsClicked.run(viewModel()::onIntent) },
                         cardModifier = Modifier
                             .padding(
                                 top = dimensionResource(id = R.dimen.padding_small_1),
@@ -113,7 +114,7 @@ fun HomeScreen(
                         titleText = stringResource(id = R.string.mental_tips)
                     )
                     CardWithOnClick(
-                        onClick = onNavigateToHelpForYou,
+                        onClick = { HomeIntent.HelpForYouClicked.run(viewModel()::onIntent) },
                         cardModifier = Modifier
                             .padding(
                                 top = dimensionResource(id = R.dimen.padding_small_1),
@@ -131,7 +132,7 @@ fun HomeScreen(
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     CardWithOnClick(
-                        onClick = onNavigateToFavorites,
+                        onClick = { HomeIntent.FavoritesClicked.run(viewModel()::onIntent) },
                         cardModifier = Modifier
                             .padding(
                                 top = dimensionResource(id = R.dimen.padding_small_1),
@@ -141,7 +142,7 @@ fun HomeScreen(
                         titleText = stringResource(id = R.string.favorites),
                     )
                     CardWithOnClick(
-                        onClick = onNavigateToCats,
+                        onClick = { HomeIntent.CatsClicked.run(viewModel()::onIntent) },
                         cardModifier = Modifier
                             .padding(
                                 top = dimensionResource(id = R.dimen.padding_small_1),

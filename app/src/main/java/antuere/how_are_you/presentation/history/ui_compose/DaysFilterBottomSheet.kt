@@ -28,21 +28,13 @@ fun DaysFilterBottomSheet(
     val dialogEndDateState = rememberMaterialDialogState()
 
     val startBtnString = stringResource(R.string.start_date_field)
-    var startBtnText by remember {
-        mutableStateOf(startBtnString)
-    }
-    var startDate by remember {
-        mutableStateOf(LocalDate.MIN)
-    }
+    var startBtnText by remember { mutableStateOf(startBtnString) }
+    var startDate by remember { mutableStateOf(LocalDate.MIN) }
 
     val endBtnString = stringResource(R.string.end_date_field)
-    var endBtnText by remember {
-        mutableStateOf(endBtnString)
-    }
+    var endBtnText by remember { mutableStateOf(endBtnString) }
 
-    var endDate by remember {
-        mutableStateOf(LocalDate.now())
-    }
+    var endDate by remember { mutableStateOf(LocalDate.now()) }
 
     val isEnabledEndDateBtn by remember {
         derivedStateOf {
@@ -103,9 +95,7 @@ fun DaysFilterBottomSheet(
         Button(
             modifier = Modifier
                 .fillMaxWidth(0.6F)
-                .alpha(
-                    if (isEnabledConfirmBtn) 1F else 0.4F
-                ),
+                .alpha(if (isEnabledConfirmBtn) 1F else 0.4F),
             onClick = {
                 onDaysSelected(startDate, endDate)
                 hideBottomSheet()

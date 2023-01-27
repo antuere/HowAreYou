@@ -6,57 +6,73 @@ import antuere.domain.authentication_manager.AuthenticationManager
 import antuere.domain.authentication_manager.ResetPassResultListener
 import antuere.how_are_you.R
 import antuere.how_are_you.presentation.base.ui_text.UiText
+import antuere.how_are_you.presentation.reset_password.state.ResetPasswordIntent
+import antuere.how_are_you.presentation.reset_password.state.ResetPasswordSideEffect
+import antuere.how_are_you.presentation.reset_password.state.ResetPasswordState
+import antuere.how_are_you.util.ContainerHostPlus
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import org.orbitmvi.orbit.Container
+import org.orbitmvi.orbit.annotation.OrbitExperimental
+import org.orbitmvi.orbit.syntax.simple.blockingIntent
+import org.orbitmvi.orbit.syntax.simple.intent
+import org.orbitmvi.orbit.syntax.simple.postSideEffect
+import org.orbitmvi.orbit.syntax.simple.reduce
+import org.orbitmvi.orbit.viewmodel.container
 import javax.inject.Inject
 
+@OptIn(OrbitExperimental::class)
 @HiltViewModel
 class ResetPasswordViewModel @Inject constructor(
     private val authenticationManager: AuthenticationManager
-) : ViewModel() {
+) : ContainerHostPlus<ResetPasswordState, ResetPasswordSideEffect, ResetPasswordIntent>,
+    ViewModel() {
 
-    private var _resetState = MutableStateFlow<ResetPasswordState?>(null)
-    val resetState: StateFlow<ResetPasswordState?>
-        get() = _resetState
-
-    private var _isShowProgressIndicator = MutableStateFlow(false)
-    val isShowProgressIndicator: StateFlow<Boolean>
-        get() = _isShowProgressIndicator
+    override val container: Container<ResetPasswordState, ResetPasswordSideEffect> =
+        container(ResetPasswordState())
 
     private val resetPassResultListener = object : ResetPassResultListener {
-        override fun resetSuccess() {
-            _resetState.value =
-                ResetPasswordState.Successful(UiText.StringResource(R.string.email_reset_successful))
+        override fun resetSuccess() = intent {
+            reduce { ResetPasswordState() }
+            postSideEffect(
+                ResetPasswordSideEffect.Snackbar(UiText.StringResource(R.string.email_reset_successful))
+            )
+            postSideEffect(ResetPasswordSideEffect.NavigateUp)
         }
 
-        override fun resetError(message: String) {
-            _resetState.value = ResetPasswordState.ErrorFromFireBase(UiText.DefaultString(message))
+        override fun resetError(message: String) = intent {
+            reduce { state.copy(isShowProgressIndicator = false) }
+            postSideEffect(
+                ResetPasswordSideEffect.Snackbar(UiText.DefaultString(message))
+            )
         }
     }
 
-    fun onClickResetPassword(email: String) {
-        if (email.isNotEmpty()) {
-            _isShowProgressIndicator.value = true
-            viewModelScope.launch(Dispatchers.IO) {
-                authenticationManager.resetPassword(
-                    email = email,
-                    resetPassResultListener = resetPassResultListener
-                )
+    override fun onIntent(intent: ResetPasswordIntent) {
+        when (intent) {
+            is ResetPasswordIntent.EmailChanged -> blockingIntent {
+                reduce {
+                    state.copy(email = intent.value)
+                }
             }
-        } else {
-            _resetState.value =
-                ResetPasswordState.EmptyFields(UiText.StringResource(R.string.empty_fields))
+            is ResetPasswordIntent.ResetBtnClicked -> intent {
+                if (intent.userEmail.isNotEmpty()) {
+                    reduce {
+                        state.copy(isShowProgressIndicator = true)
+                    }
+                    viewModelScope.launch(Dispatchers.IO) {
+                        authenticationManager.resetPassword(
+                            email = intent.userEmail,
+                            resetPassResultListener = resetPassResultListener
+                        )
+                    }
+                } else {
+                    postSideEffect(
+                        ResetPasswordSideEffect.Snackbar(UiText.StringResource(R.string.empty_fields))
+                    )
+                }
+            }
         }
-    }
-
-    fun nullifyState() {
-        _resetState.value = null
-    }
-
-    fun resetIsShowLoginProgressIndicator() {
-        _isShowProgressIndicator.value = false
     }
 }

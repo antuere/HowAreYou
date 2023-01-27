@@ -4,9 +4,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.navigation.NavController
 
+
+@Composable
+fun NavController.navigateToHome(): () -> Unit = remember {
+    { this.navigate(Screen.Home.route) }
+}
+
 @Composable
 fun NavController.navigateToDayDetail(): (Long) -> Unit = remember {
     { this.navigate(Screen.Detail.route + "/$it") }
+}
+
+@Composable
+fun NavController.navigateToMentalTips(): (String) -> Unit = remember {
+    { this.navigate(Screen.MentalTips.route + "/$it") }
 }
 
 @Composable
@@ -20,7 +31,7 @@ fun NavController.navigateToHelplines(): () -> Unit = remember {
 }
 
 @Composable
-fun NavController.navigateToMentalTips(): () -> Unit = remember {
+fun NavController.navigateToMentalTipsCategories(): () -> Unit = remember {
     { this.navigate(Screen.MentalTipsCategories.route) }
 }
 

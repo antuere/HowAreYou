@@ -26,7 +26,7 @@ import timber.log.Timber
 
 @Composable
 fun HelplinesScreen(
-    viewModel: HelplinesViewModel = hiltViewModel(),
+    viewModel: HelplinesViewModel = hiltViewModel()
 ) {
     Timber.i("MVI error test : enter in helplines screen")
     val appState = LocalAppState.current
@@ -38,7 +38,7 @@ fun HelplinesScreen(
                 navigationIcon = Icons.Filled.ArrowBack,
                 navigationOnClick = appState::navigateUp,
                 isVisibleBottomBar = false
-            ),
+            )
         )
     }
 

@@ -27,7 +27,7 @@ import timber.log.Timber
 
 @Composable
 fun DetailScreen(
-    viewModel: DetailViewModel = hiltViewModel(),
+    viewModel: DetailViewModel = hiltViewModel()
 ) {
     Timber.i("MVI error test : enter in detail screen")
     val appState = LocalAppState.current

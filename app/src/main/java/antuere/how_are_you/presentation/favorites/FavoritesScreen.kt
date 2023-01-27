@@ -28,7 +28,7 @@ import timber.log.Timber
 @Composable
 fun FavoritesScreen(
     onNavigateToDetail: (Long) -> Unit,
-    viewModel: FavoritesViewModel = hiltViewModel(),
+    viewModel: FavoritesViewModel = hiltViewModel()
 ) {
     Timber.i("MVI error test : enter in fav screen")
     val appState = LocalAppState.current
@@ -40,7 +40,7 @@ fun FavoritesScreen(
                 navigationIcon = Icons.Filled.ArrowBack,
                 navigationOnClick = appState::navigateUp,
                 isVisibleBottomBar = false
-            ),
+            )
         )
     }
     val viewState by viewModel.collectAsState()

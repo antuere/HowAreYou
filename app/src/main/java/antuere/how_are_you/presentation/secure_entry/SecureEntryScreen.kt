@@ -1,10 +1,7 @@
 package antuere.how_are_you.presentation.secure_entry
 
-import android.content.Intent
-import android.provider.Settings
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.biometric.BiometricManager
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -15,25 +12,54 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
+import antuere.how_are_you.LocalAppState
 import antuere.how_are_you.R
-import antuere.how_are_you.presentation.base.ui_biometric_dialog.BiometricsAvailableState
 import antuere.how_are_you.presentation.base.ui_compose_components.top_bar.AppBarState
 import antuere.how_are_you.presentation.base.ui_compose_components.IconApp
 import antuere.how_are_you.presentation.base.ui_compose_components.pin_code.NumericKeyPad
 import antuere.how_are_you.presentation.base.ui_compose_components.pin_code.PinCirclesIndicates
+import antuere.how_are_you.presentation.secure_entry.state.SecureEntryIntent
+import antuere.how_are_you.presentation.secure_entry.state.SecureEntrySideEffect
 import antuere.how_are_you.util.findFragmentActivity
 import antuere.how_are_you.util.paddingTopBar
+import org.orbitmvi.orbit.compose.collectAsState
+import org.orbitmvi.orbit.compose.collectSideEffect
+import timber.log.Timber
 
 
 @Composable
 fun SecureEntryScreen(
-    updateAppBar: (AppBarState) -> Unit,
-    showSnackbar: (String) -> Unit,
     onNavigateHomeScreen: () -> Unit,
-    secureEntryViewModel: SecureEntryViewModel = hiltViewModel()
+    viewModel: SecureEntryViewModel = hiltViewModel(),
 ) {
+    Timber.i("MVI error test : enter in secure entry screen")
+
+    val appState = LocalAppState.current
+    val fragmentActivity = LocalContext.current.findFragmentActivity()
+    val context = LocalContext.current
+    val launcher =
+        rememberLauncherForActivityResult(contract = ActivityResultContracts.StartActivityForResult()) {}
+
+    val viewState by viewModel.collectAsState()
+
+    val onClickNumber: (String) -> Unit = remember {
+        { SecureEntryIntent.NumberClicked(it).run(viewModel::onIntent) }
+    }
+
+    val onClickBiometricBtn: () -> Unit = remember {
+        { SecureEntryIntent.BiometricBtnClicked.run(viewModel::onIntent) }
+    }
+
+    val onClickClearBtn: () -> Unit = remember {
+        { SecureEntryIntent.PinStateReset.run(viewModel::onIntent) }
+    }
+
+    val onClickSignOutBtn: () -> Unit = remember {
+        { SecureEntryIntent.SignOutBtnClicked.run(viewModel::onIntent) }
+    }
+
     LaunchedEffect(true) {
-        updateAppBar(
+        appState.updateAppBar(
             AppBarState(
                 isVisibleTopBar = false,
                 isVisibleBottomBar = false
@@ -41,73 +67,29 @@ fun SecureEntryScreen(
         )
     }
 
-    val fragmentActivity = LocalContext.current.findFragmentActivity()
-    val context = LocalContext.current
-
-    val uiBiometricDialog = secureEntryViewModel.uiBiometricDialog
-    val uiDialog by secureEntryViewModel.uiDialog.collectAsState()
-    val isShowBiometricAuth by secureEntryViewModel.isShowBiometricAuth.collectAsState()
-    val isNavigateToHomeScreen by secureEntryViewModel.isNavigateToHomeScreen.collectAsState()
-    val isShowPinCodeError by secureEntryViewModel.isShowErrorMessage.collectAsState()
-    val biometricsAvailableState by secureEntryViewModel.biometricAvailableState.collectAsState()
-    val pinCodeCirclesState by secureEntryViewModel.pinCodeCirclesState.collectAsState()
-
-
-//    uiDialog?.let {
-//        Dialog(dialog = it)
-//    }
-
-    if (isShowPinCodeError) {
-        showSnackbar(stringResource(id = R.string.wrong_pin_code))
-        secureEntryViewModel.resetIsShowError()
-    }
-
-    LaunchedEffect(isShowBiometricAuth) {
-        if (isShowBiometricAuth) {
-            uiBiometricDialog.startBiometricAuth(
-                biometricListener = secureEntryViewModel.biometricAuthStateListener,
-                activity = fragmentActivity
-            )
-            secureEntryViewModel.resetIsShowBiometricAuth()
-        }
-    }
-
-    biometricsAvailableState?.let { availableState ->
-        when (availableState) {
-            is BiometricsAvailableState.NoneEnrolled -> {
-                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
-                    val enrollIntent = Intent(Settings.ACTION_BIOMETRIC_ENROLL).apply {
-                        putExtra(
-                            Settings.EXTRA_BIOMETRIC_AUTHENTICATORS_ALLOWED,
-                            BiometricManager.Authenticators.BIOMETRIC_STRONG or BiometricManager.Authenticators.BIOMETRIC_WEAK
-                        )
-                    }
-                    val launcher =
-                        rememberLauncherForActivityResult(contract = ActivityResultContracts.StartActivityForResult()) {
-                        }
-                    SideEffect {
-                        launcher.launch(enrollIntent)
-                    }
-                } else {
-                    showSnackbar(availableState.message.asString(context))
-                }
+    viewModel.collectSideEffect { sideEffect ->
+        when (sideEffect) {
+            is SecureEntrySideEffect.BiometricDialog -> {
+                sideEffect.dialog.startBiometricAuth(
+                    biometricListener = viewModel.biometricAuthStateListener,
+                    activity = fragmentActivity
+                )
             }
-            else -> {}
-        }
-        secureEntryViewModel.nullifyBiometricAvailableState()
-    }
-
-    LaunchedEffect(isNavigateToHomeScreen) {
-        if (isNavigateToHomeScreen) {
-            onNavigateHomeScreen()
-            secureEntryViewModel.resetIsNavigateToHomeScreen()
+            is SecureEntrySideEffect.BiometricNoneEnroll -> launcher.launch(sideEffect.enrollIntent)
+            is SecureEntrySideEffect.Dialog -> appState.showDialog(sideEffect.uiDialog)
+            is SecureEntrySideEffect.NavigateToHome -> onNavigateHomeScreen()
+            is SecureEntrySideEffect.Snackbar -> {
+                appState.showSnackbar(sideEffect.message.asString(context))
+            }
         }
     }
 
     Column(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.fillMaxSize().paddingTopBar()
+        modifier = Modifier
+            .fillMaxSize()
+            .paddingTopBar()
     ) {
         IconApp(modifier = Modifier.padding(top = dimensionResource(id = R.dimen.padding_small_1)))
         Spacer(modifier = Modifier.weight(0.2F))
@@ -115,20 +97,20 @@ fun SecureEntryScreen(
         Text(text = stringResource(id = R.string.enter_a_pin))
         Spacer(modifier = Modifier.weight(0.1F))
 
-        PinCirclesIndicates(pinCodeCirclesState = pinCodeCirclesState)
+        PinCirclesIndicates(pinCodeCirclesState = viewState.pinCirclesState)
         Spacer(modifier = Modifier.weight(0.4F))
 
         NumericKeyPad(
-            onClick = { secureEntryViewModel.onClickNumber(it) },
-            onClickClear = { secureEntryViewModel.resetAllPinCodeStates() },
-            isShowBiometricBtn = biometricsAvailableState !is BiometricsAvailableState.NoHardware,
-            onClickBiometric = { secureEntryViewModel.onClickBiometricBtn() })
+            onClick = onClickNumber,
+            onClickClear = onClickClearBtn,
+            isShowBiometricBtn = viewState.isShowBiometricBtn,
+            onClickBiometric = onClickBiometricBtn
+        )
         Spacer(modifier = Modifier.weight(0.4F))
 
-        TextButton(onClick = { secureEntryViewModel.onClickSignOut() }) {
+        TextButton(onClick = onClickSignOutBtn) {
             Text(text = stringResource(id = R.string.sign_out))
         }
         Spacer(modifier = Modifier.weight(0.1F))
-
     }
 }

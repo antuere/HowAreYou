@@ -1,7 +1,6 @@
 package antuere.how_are_you.presentation.favorites
 
 import androidx.lifecycle.*
-import antuere.domain.dto.Day
 import antuere.domain.repository.DayRepository
 import antuere.how_are_you.R
 import antuere.how_are_you.presentation.base.ui_compose_components.dialog.UIDialog
@@ -14,7 +13,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.Container
-import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
@@ -25,7 +23,6 @@ import javax.inject.Inject
 class FavoritesViewModel @Inject constructor(
     private val dayRepository: DayRepository,
 ) : ContainerHostPlus<FavoritesState, FavoritesSideEffect, FavoritesIntent>, ViewModel() {
-
 
     override val container: Container<FavoritesState, FavoritesSideEffect> =
         container(FavoritesState.LoadingShimmer())

@@ -1,26 +1,35 @@
 package antuere.how_are_you.presentation.secure_entry
 
+import android.content.Intent
+import android.provider.Settings
+import androidx.biometric.BiometricManager
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import antuere.domain.authentication_manager.AuthenticationManager
-import antuere.domain.dto.Settings
 import antuere.domain.repository.DayRepository
 import antuere.domain.repository.SettingsRepository
+import antuere.domain.util.Constants
 import antuere.how_are_you.R
 import antuere.how_are_you.presentation.base.ui_text.UiText
 import antuere.how_are_you.presentation.base.ui_biometric_dialog.IUIBiometricListener
 import antuere.how_are_you.presentation.pin_code_creation.PinCirclesState
-import antuere.how_are_you.presentation.base.ui_biometric_dialog.BiometricsAvailableState
 import antuere.how_are_you.presentation.base.ui_biometric_dialog.UIBiometricDialog
 import antuere.how_are_you.presentation.base.ui_compose_components.dialog.UIDialog
+import antuere.how_are_you.presentation.secure_entry.state.SecureEntryIntent
+import antuere.how_are_you.presentation.secure_entry.state.SecureEntrySideEffect
+import antuere.how_are_you.presentation.secure_entry.state.SecureEntryState
+import antuere.how_are_you.util.ContainerHostPlus
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import org.orbitmvi.orbit.Container
+import org.orbitmvi.orbit.syntax.simple.intent
+import org.orbitmvi.orbit.syntax.simple.postSideEffect
+import org.orbitmvi.orbit.syntax.simple.reduce
+import org.orbitmvi.orbit.viewmodel.container
 import javax.inject.Inject
 
 @HiltViewModel
@@ -28,254 +37,168 @@ class SecureEntryViewModel @Inject constructor(
     private val settingsRepository: SettingsRepository,
     private val dayRepository: DayRepository,
     private val authenticationManager: AuthenticationManager,
-    val uiBiometricDialog: UIBiometricDialog
-) : ViewModel() {
+    private val uiBiometricDialog: UIBiometricDialog,
+) : ContainerHostPlus<SecureEntryState, SecureEntrySideEffect, SecureEntryIntent>, ViewModel() {
 
-    private lateinit var num1: String
-    private lateinit var num2: String
-    private lateinit var num3: String
-    private lateinit var num4: String
+    override val container: Container<SecureEntryState, SecureEntrySideEffect> =
+        container(SecureEntryState())
 
+    private var num1: String? = null
+    private var num2: String? = null
+    private var num3: String? = null
+    private var num4: String? = null
     private var currentNumbers = mutableListOf<String>()
 
-    private var _uiDialog = MutableStateFlow<UIDialog?>(null)
-    val uiDialog: StateFlow<UIDialog?>
-        get() = _uiDialog
-
-    private var _isShowBiometricAuth = MutableStateFlow(false)
-    val isShowBiometricAuth: StateFlow<Boolean>
-        get() = _isShowBiometricAuth
-
-    private var _pinCodeCirclesState = MutableStateFlow(PinCirclesState.NONE)
-    val pinCodeCirclesState: StateFlow<PinCirclesState>
-        get() = _pinCodeCirclesState
-
-    private var _settings = MutableStateFlow<Settings?>(null)
-    val settings: StateFlow<Settings?>
-        get() = _settings
-
-    private var _isShowErrorMessage = MutableStateFlow(false)
-    val isShowErrorMessage: StateFlow<Boolean>
-        get() = _isShowErrorMessage
-
-    private var _isNavigateToHomeScreen = MutableStateFlow(false)
-    val isNavigateToHomeScreen: StateFlow<Boolean>
-        get() = _isNavigateToHomeScreen
-
-    private var _biometricAvailableState = MutableStateFlow<BiometricsAvailableState?>(null)
-    val biometricAvailableState: StateFlow<BiometricsAvailableState?>
-        get() = _biometricAvailableState
-
-    private var savedPinCode: String? = null
-    private var userPinCode = MutableStateFlow<String?>(null)
+    private var savedPinCode = Constants.PIN_NOT_SET
+    private var currentPinCode = Constants.PIN_NOT_SET
 
     private var wrongPinAnimationJob: Job? = null
 
+    init {
+        intent {
+            reduce {
+                state.copy(isShowBiometricBtn = uiBiometricDialog.deviceHasBiometricHardware)
+            }
+            viewModelScope.launch(Dispatchers.IO) {
+                val isSetBiometricSetting = settingsRepository.getBiomAuthSetting().first()
+                savedPinCode = settingsRepository.getPinCode().first()
+                delay(350)
+
+                if (isSetBiometricSetting) {
+                    intent {
+                        postSideEffect(SecureEntrySideEffect.BiometricDialog(uiBiometricDialog))
+                    }
+                }
+            }
+        }
+    }
+
     val biometricAuthStateListener = object : IUIBiometricListener {
 
-        override fun onBiometricAuthFailed() {
-        }
+        override fun onBiometricAuthFailed() {}
 
-        override fun onBiometricAuthSuccess() {
-            _pinCodeCirclesState.value = PinCirclesState.CORRECT_PIN
-
-            saveSettings()
-            _isNavigateToHomeScreen.value = true
+        override fun onBiometricAuthSuccess() = intent {
+            reduce {
+                state.copy(pinCirclesState = PinCirclesState.CORRECT_PIN)
+            }
+            postSideEffect(SecureEntrySideEffect.NavigateToHome)
+            viewModelScope.launch(Dispatchers.IO) {
+                settingsRepository.saveBiomAuthSetting(isEnable = true)
+            }
         }
 
         override fun noneEnrolled() {
-            _biometricAvailableState.value =
-                BiometricsAvailableState.NoneEnrolled(UiText.StringResource(R.string.biometric_none_enroll))
+            defineEnrollAction()
+        }
+    }
+
+    override fun onIntent(intent: SecureEntryIntent) = intent {
+        when (intent) {
+            SecureEntryIntent.BiometricBtnClicked -> {
+                postSideEffect(SecureEntrySideEffect.BiometricDialog(uiBiometricDialog))
+            }
+            is SecureEntryIntent.NumberClicked -> {
+                if (intent.number.length != 1) {
+                    throw IllegalArgumentException("Invalid number: ${intent.number}")
+                }
+
+                currentNumbers.add(intent.number)
+                checkPassword(currentNumbers)
+            }
+            SecureEntryIntent.PinStateReset -> {
+                reduce { state.copy(pinCirclesState = PinCirclesState.NONE) }
+                currentPinCode = Constants.PIN_NOT_SET
+                currentNumbers.clear()
+            }
+            SecureEntryIntent.SignOutBtnClicked -> {
+                val dialog = UIDialog(
+                    title = R.string.dialog_sign_out_title,
+                    desc = R.string.dialog_sign_out_desc,
+                    icon = R.drawable.ic_log_out,
+                    positiveButton = UIDialog.UiButton(
+                        text = R.string.dialog_sign_out_positive,
+                        onClick = {
+                            resetAllUserData()
+                        }),
+                    negativeButton = UIDialog.UiButton(
+                        text = R.string.dialog_sign_out_negative,
+                        onClick = {})
+                )
+
+                postSideEffect(SecureEntrySideEffect.Dialog(dialog))
+            }
         }
     }
 
 
-    init {
-        getSettings()
-        checkBiometricsAvailable()
-        getSavedPinCode()
-    }
-
-    private fun getSettings() {
-        viewModelScope.launch(Dispatchers.IO) {
-            _settings.value = settingsRepository.getAllSettings().first()
-            delay(350)
-            if (_settings.value!!.isBiometricEnabled) {
-                _isShowBiometricAuth.value = true
-            }
-        }
-    }
-
-    fun saveSettings() {
-        viewModelScope.launch(Dispatchers.IO) {
-            _settings.value!!.isBiometricEnabled = true
-            settingsRepository.saveSettings(_settings.value!!)
-        }
-    }
-
-    private fun getSavedPinCode() {
-        viewModelScope.launch(Dispatchers.IO) {
-            savedPinCode = settingsRepository.getPinCode().first()
-        }
-    }
-
-    private fun checkBiometricsAvailable() {
-//        _biometricAvailableState.value =
-//            uiBiometricDialog.deviceHasBiometricHardware
-    }
-
-
-    fun onClickNumber(value: String) {
-        when (value) {
-            "0" -> {
-                currentNumbers.add(value)
-                checkPassword(currentNumbers)
-            }
-            "1" -> {
-                currentNumbers.add(value)
-                checkPassword(currentNumbers)
-            }
-            "2" -> {
-                currentNumbers.add(value)
-                checkPassword(currentNumbers)
-            }
-            "3" -> {
-                currentNumbers.add(value)
-                checkPassword(currentNumbers)
-            }
-            "4" -> {
-                currentNumbers.add(value)
-                checkPassword(currentNumbers)
-            }
-            "5" -> {
-                currentNumbers.add(value)
-                checkPassword(currentNumbers)
-            }
-            "6" -> {
-                currentNumbers.add(value)
-                checkPassword(currentNumbers)
-            }
-            "7" -> {
-                currentNumbers.add(value)
-                checkPassword(currentNumbers)
-            }
-            "8" -> {
-                currentNumbers.add(value)
-                checkPassword(currentNumbers)
-            }
-            "9" -> {
-                currentNumbers.add(value)
-                checkPassword(currentNumbers)
-            }
-            else -> throw IllegalArgumentException("Invalid number")
-
-        }
-    }
-
-    private fun checkPassword(list: List<String>) {
+    private fun checkPassword(list: List<String>) = intent {
         wrongPinAnimationJob?.cancel()
-
         when (list.size) {
             1 -> {
                 num1 = list[0]
-                _pinCodeCirclesState.value = PinCirclesState.FIRST
+                reduce { state.copy(pinCirclesState = PinCirclesState.FIRST) }
             }
             2 -> {
                 num2 = list[1]
-                _pinCodeCirclesState.value = PinCirclesState.SECOND
+                reduce { state.copy(pinCirclesState = PinCirclesState.SECOND) }
             }
             3 -> {
                 num3 = list[2]
-                _pinCodeCirclesState.value = PinCirclesState.THIRD
+                reduce { state.copy(pinCirclesState = PinCirclesState.THIRD) }
             }
             4 -> {
                 num4 = list[3]
-                _pinCodeCirclesState.value = PinCirclesState.FOURTH
-                userPinCode.value = num1 + num2 + num3 + num4
+                reduce { state.copy(pinCirclesState = PinCirclesState.FOURTH) }
+                currentPinCode = num1 + num2 + num3 + num4
 
-                validateEnteredPinCode(userPinCode.value!!)
+                validateEnteredPinCode(currentPinCode)
             }
             else -> throw IllegalArgumentException("Too much list size")
         }
     }
 
-    private fun resetAllUserData() {
+    private fun defineEnrollAction() = intent {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
+            val enrollIntent = Intent(Settings.ACTION_BIOMETRIC_ENROLL).apply {
+                putExtra(
+                    Settings.EXTRA_BIOMETRIC_AUTHENTICATORS_ALLOWED,
+                    BiometricManager.Authenticators.BIOMETRIC_STRONG or BiometricManager.Authenticators.BIOMETRIC_WEAK
+                )
+            }
+            postSideEffect(SecureEntrySideEffect.BiometricNoneEnroll(enrollIntent))
+        } else {
+            postSideEffect(
+                SecureEntrySideEffect.Snackbar(UiText.StringResource(R.string.biometric_none_enroll))
+            )
+        }
+    }
+
+    private fun validateEnteredPinCode(pinCode: String) = intent {
+        if (pinCode == savedPinCode) {
+            reduce { state.copy(pinCirclesState = PinCirclesState.CORRECT_PIN) }
+            postSideEffect(SecureEntrySideEffect.NavigateToHome)
+        } else {
+            wrongPinAnimationJob = viewModelScope.launch {
+                postSideEffect(SecureEntrySideEffect.Snackbar(UiText.StringResource(R.string.wrong_pin_code)))
+                reduce { state.copy(pinCirclesState = PinCirclesState.WRONG_PIN) }
+                currentPinCode = Constants.PIN_NOT_SET
+                currentNumbers.clear()
+
+                delay(500)
+
+                reduce { state.copy(pinCirclesState = PinCirclesState.NONE) }
+            }
+        }
+    }
+
+    private fun resetAllUserData() = intent {
         viewModelScope.launch(Dispatchers.IO) {
             authenticationManager.signOut()
             dayRepository.deleteAllDaysLocal()
             settingsRepository.resetAllSettings()
 
-            delay(150)
-            _isNavigateToHomeScreen.value = true
-        }
-
-    }
-
-    private fun validateEnteredPinCode(pinCode: String) {
-        if (pinCode == savedPinCode) {
-            _isNavigateToHomeScreen.value = true
-            _pinCodeCirclesState.value = PinCirclesState.CORRECT_PIN
-        } else {
-            wrongPinAnimationJob = viewModelScope.launch {
-                _isShowErrorMessage.value = true
-                _pinCodeCirclesState.value = PinCirclesState.WRONG_PIN
-                userPinCode.value = null
-                currentNumbers.clear()
-
-                delay(500)
-
-                _pinCodeCirclesState.value = PinCirclesState.NONE
-            }
+            delay(100)
+            postSideEffect(SecureEntrySideEffect.NavigateToHome)
         }
     }
-
-    fun resetAllPinCodeStates() {
-        userPinCode.value = null
-        currentNumbers.clear()
-        _pinCodeCirclesState.value = PinCirclesState.NONE
-    }
-
-    fun onClickSignOut() {
-        _uiDialog.value = UIDialog(
-            title = R.string.dialog_sign_out_title,
-            desc = R.string.dialog_sign_out_desc,
-            icon = R.drawable.ic_log_out,
-            positiveButton = UIDialog.UiButton(
-                text = R.string.dialog_sign_out_positive,
-                onClick = {
-                    resetAllUserData()
-                    _uiDialog.value = null
-                }),
-            negativeButton = UIDialog.UiButton(
-                text = R.string.dialog_sign_out_negative,
-                onClick = {
-                    _uiDialog.value = null
-                }),
-            dismissAction = {
-                _uiDialog.value = null
-            }
-
-        )
-    }
-
-    fun onClickBiometricBtn() {
-        _isShowBiometricAuth.value = true
-    }
-
-    fun resetIsShowError() {
-        _isShowErrorMessage.value = false
-    }
-
-    fun nullifyBiometricAvailableState() {
-        _biometricAvailableState.value = null
-    }
-
-    fun resetIsNavigateToHomeScreen() {
-        _isNavigateToHomeScreen.value = false
-    }
-
-    fun resetIsShowBiometricAuth() {
-        _isShowBiometricAuth.value = false
-    }
-
 }

@@ -5,7 +5,6 @@ import androidx.biometric.BiometricManager
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import antuere.domain.authentication_manager.AuthenticationManager
-import antuere.domain.dto.Settings
 import antuere.domain.repository.DayRepository
 import antuere.domain.repository.SettingsRepository
 import antuere.domain.repository.ToggleBtnRepository
@@ -14,15 +13,16 @@ import antuere.how_are_you.presentation.base.ui_text.UiText
 import antuere.how_are_you.presentation.base.ui_biometric_dialog.IUIBiometricListener
 import antuere.how_are_you.presentation.base.ui_biometric_dialog.UIBiometricDialog
 import antuere.how_are_you.presentation.base.ui_compose_components.dialog.UIDialog
+import antuere.how_are_you.presentation.settings.state.SettingsIntent
 import antuere.how_are_you.presentation.settings.state.SettingsSideEffect
 import antuere.how_are_you.presentation.settings.state.SettingsState
+import antuere.how_are_you.util.ContainerHostPlus
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.orbitmvi.orbit.Container
-import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
@@ -38,7 +38,7 @@ class SettingsViewModel @Inject constructor(
     private val toggleBtnRepository: ToggleBtnRepository,
     private val authenticationManager: AuthenticationManager,
     private val uiBiometricDialog: UIBiometricDialog,
-) : ContainerHost<SettingsState, SettingsSideEffect>, ViewModel() {
+) : ContainerHostPlus<SettingsState, SettingsSideEffect, SettingsIntent>, ViewModel() {
 
     override val container: Container<SettingsState, SettingsSideEffect> =
         container(SettingsState())
@@ -54,15 +54,11 @@ class SettingsViewModel @Inject constructor(
     val biometricAuthStateListener = object : IUIBiometricListener {
 
         override fun onBiometricAuthFailed() = intent {
-            reduce {
-                state.copy(isCheckedBiomAuth = false)
-            }
+            reduce { state.copy(isCheckedBiomAuth = false) }
         }
 
         override fun onBiometricAuthSuccess() = intent {
-            reduce {
-                state.copy(isCheckedBiomAuth = true)
-            }
+            reduce { state.copy(isCheckedBiomAuth = true) }
             withContext(Dispatchers.IO) {
                 settingsRepository.saveBiomAuthSetting(true)
             }
@@ -72,90 +68,75 @@ class SettingsViewModel @Inject constructor(
         }
 
         override fun noneEnrolled() = intent {
-            reduce {
-                state.copy(isCheckedBiomAuth = false)
-            }
-
+            reduce { state.copy(isCheckedBiomAuth = false) }
             defineEnrollAction()
         }
     }
 
-    fun onClickSignIn() = intent {
-        postSideEffect(SettingsSideEffect.NavigateToSignIn)
-    }
-
-    fun onClickSignOut() = intent {
-        if (isShowDialogSignOut) {
-            val dialog = UIDialog(
-                title = R.string.dialog_delete_local_data_title,
-                desc = R.string.dialog_delete_local_data_desc,
-                icon = R.drawable.ic_delete_black,
-                positiveButton = UIDialog.UiButton(
-                    text = R.string.dialog_delete_local_data_positive,
-                    onClick = {
-                        signOut(isSaveDayEntities = true)
-                    }),
-                negativeButton = UIDialog.UiButton(
-                    text = R.string.dialog_delete_local_data_negative,
-                    onClick = {
-                        signOut(isSaveDayEntities = false)
-                    }),
-            )
-            postSideEffect(SettingsSideEffect.Dialog(dialog))
-        } else {
-            signOut(false)
-        }
-    }
-
-    fun onChangeWorriedDialogSetting(isShowWorriedDialog: Boolean) = intent {
-        reduce {
-            state.copy(isCheckedWorriedDialog = isShowWorriedDialog)
-        }
-
-        viewModelScope.launch(Dispatchers.IO) {
-            settingsRepository.saveWorriedDialogSetting(isShowWorriedDialog)
-        }
-    }
-
-    fun onChangePinSetting(isEnablePin: Boolean) = intent {
-        reduce {
-            state.copy(isCheckedPin = isEnablePin)
-        }
-
-        if (isEnablePin) {
-            postSideEffect(SettingsSideEffect.ShowBottomSheet)
-        } else {
-            resetPinCodeAuth()
-
-            withContext(Dispatchers.IO) {
-                settingsRepository.savePinSetting(false)
-                settingsRepository.saveBiomAuthSetting(false)
+    override fun onIntent(intent: SettingsIntent) = intent {
+        when (intent) {
+            is SettingsIntent.BiometricAuthSettingChanged -> {
+                reduce { state.copy(isCheckedBiomAuth = intent.isChecked) }
+                if (intent.isChecked) {
+                    postSideEffect(SettingsSideEffect.BiometricDialog(uiBiometricDialog))
+                } else {
+                    withContext(Dispatchers.IO) {
+                        settingsRepository.saveBiomAuthSetting(false)
+                    }
+                }
             }
-        }
-    }
-
-    fun onChangeBiomAuthSetting(isEnableBiom: Boolean) = intent {
-        reduce {
-            state.copy(isCheckedBiomAuth = isEnableBiom)
-        }
-        if (isEnableBiom) {
-            postSideEffect(SettingsSideEffect.BiometricDialog(uiBiometricDialog))
-        } else {
-            withContext(Dispatchers.IO) {
-                settingsRepository.saveBiomAuthSetting(false)
+            is SettingsIntent.PinSettingChanged -> {
+                reduce { state.copy(isCheckedPin = intent.isChecked) }
+                if (intent.isChecked) {
+                    postSideEffect(SettingsSideEffect.ShowBottomSheet)
+                } else {
+                    viewModelScope.launch(Dispatchers.IO) {
+                        settingsRepository.resetPinCode()
+                        settingsRepository.savePinSetting(false)
+                        settingsRepository.saveBiomAuthSetting(false)
+                    }
+                }
             }
-        }
-    }
-
-    fun onHandlePinCreationResult(isCreated: Boolean) = intent {
-        reduce {
-            state.copy(isCheckedPin = isCreated)
-        }
-        if (isCreated) {
-            withContext(Dispatchers.IO) {
-                settingsRepository.savePinSetting(true)
+            is SettingsIntent.WorriedDialogSettingChanged -> {
+                reduce { state.copy(isCheckedWorriedDialog = intent.isChecked) }
+                viewModelScope.launch(Dispatchers.IO) {
+                    settingsRepository.saveWorriedDialogSetting(intent.isChecked)
+                }
             }
-            postSideEffect(SettingsSideEffect.Snackbar(UiText.StringResource(R.string.pin_code_create_success)))
+            is SettingsIntent.SignInBtnClicked -> postSideEffect(SettingsSideEffect.NavigateToSignIn)
+            is SettingsIntent.SignOutBtnClicked -> {
+                if (isShowDialogSignOut) {
+                    val dialog = UIDialog(
+                        title = R.string.dialog_delete_local_data_title,
+                        desc = R.string.dialog_delete_local_data_desc,
+                        icon = R.drawable.ic_delete_black,
+                        positiveButton = UIDialog.UiButton(
+                            text = R.string.dialog_delete_local_data_positive,
+                            onClick = {
+                                signOut(isSaveDayEntities = true)
+                            }),
+                        negativeButton = UIDialog.UiButton(
+                            text = R.string.dialog_delete_local_data_negative,
+                            onClick = {
+                                signOut(isSaveDayEntities = false)
+                            }),
+                    )
+                    postSideEffect(SettingsSideEffect.Dialog(dialog))
+                } else {
+                    signOut(false)
+                }
+            }
+            is SettingsIntent.PinCreationSheetClosed -> {
+                reduce {
+                    state.copy(isCheckedPin = intent.isPinCreated)
+                }
+                if (intent.isPinCreated) {
+                    withContext(Dispatchers.IO) {
+                        settingsRepository.savePinSetting(true)
+                    }
+                    postSideEffect(SettingsSideEffect.Snackbar(UiText.StringResource(R.string.pin_code_create_success)))
+                }
+            }
         }
     }
 
@@ -221,12 +202,6 @@ class SettingsViewModel @Inject constructor(
             postSideEffect(
                 SettingsSideEffect.Snackbar(UiText.StringResource(R.string.biometric_none_enroll))
             )
-        }
-    }
-
-    private fun resetPinCodeAuth() {
-        viewModelScope.launch(Dispatchers.IO) {
-            settingsRepository.resetPinCode()
         }
     }
 }

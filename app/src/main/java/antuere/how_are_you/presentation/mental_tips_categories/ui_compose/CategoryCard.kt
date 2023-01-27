@@ -15,6 +15,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import antuere.domain.dto.mental_tips.MentalTipsCategory
 import antuere.how_are_you.R
+import timber.log.Timber
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -23,6 +24,8 @@ fun CategoryCard(
     category: MentalTipsCategory,
     onClick: (String) -> Unit
 ) {
+    Timber.i("MVI error test : enter in category card")
+
     Card(
         modifier = modifier,
         onClick = { onClick(category.categoryName.name) },

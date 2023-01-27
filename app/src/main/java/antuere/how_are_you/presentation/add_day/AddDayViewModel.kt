@@ -13,6 +13,7 @@ import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.Container
 import org.orbitmvi.orbit.annotation.OrbitExperimental
 import org.orbitmvi.orbit.syntax.simple.blockingIntent
+import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
@@ -26,14 +27,18 @@ class AddDayViewModel @Inject constructor(
 
     override val container: Container<AddDayState, AddDaySideEffect> = container(AddDayState())
 
-    override fun onIntent(intent: AddDayIntent) = blockingIntent {
+    override fun onIntent(intent: AddDayIntent) {
         when (intent) {
-            is AddDayIntent.DayDescChanged -> reduce {
-                state.copy(dayDesc = intent.value)
+            is AddDayIntent.DayDescChanged -> blockingIntent {
+                reduce {
+                    state.copy(dayDesc = intent.value)
+                }
             }
-            is AddDayIntent.SmileClicked -> viewModelScope.launch(Dispatchers.IO) {
-                addDayUseCase(intent.day)
-                postSideEffect(AddDaySideEffect.NavigateUp)
+            is AddDayIntent.SmileClicked -> intent {
+                viewModelScope.launch(Dispatchers.IO) {
+                    addDayUseCase(intent.day)
+                    postSideEffect(AddDaySideEffect.NavigateUp)
+                }
             }
         }
     }

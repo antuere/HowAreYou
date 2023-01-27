@@ -62,13 +62,11 @@ object AppModule {
         return GoogleSignIn.getClient(context, gso)
     }
 
-
     @Provides
     @Singleton
     fun provideNetworkInfo(@ApplicationContext context: Context) : NetworkInfo {
         return NetworkInfo(context)
     }
-
 
     @Provides
     @Singleton

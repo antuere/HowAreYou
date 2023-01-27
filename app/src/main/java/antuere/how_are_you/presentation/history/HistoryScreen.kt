@@ -128,7 +128,7 @@ fun HistoryScreen(
             is HistorySideEffect.AnimationHistoryHeader -> {
                 rotation.animateTo(
                     targetValue = if (rotation.value == 360F) 0f else 360f,
-                    animationSpec = tween(durationMillis = 300),
+                    animationSpec = tween(durationMillis = 300)
                 )
             }
             is HistorySideEffect.Dialog -> appState.showDialog(sideEffect.uiDialog)
@@ -196,7 +196,7 @@ fun HistoryScreen(
                             AppBarState(
                                 titleId = R.string.history,
                                 isVisibleBottomBar = true
-                            ),
+                            )
                         )
                     }
 
@@ -209,7 +209,7 @@ fun HistoryScreen(
                         toggleButtons = state.toggleButtons,
                         onClick = {
                             HistoryIntent.ToggleBtnChanged(it).run(viewModel::onIntent)
-                        },
+                        }
                     )
 
                     HistoryHeaderText(
@@ -257,7 +257,7 @@ fun HistoryScreen(
                         toggleButtons = state.toggleButtons,
                         onClick = {
                             HistoryIntent.ToggleBtnChanged(it).run(viewModel::onIntent)
-                        },
+                        }
                     )
 
                     HistoryHeaderText(headerText = state.dateTextPlug.asString())

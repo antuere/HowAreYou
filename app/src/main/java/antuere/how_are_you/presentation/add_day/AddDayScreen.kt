@@ -28,7 +28,7 @@ import timber.log.Timber
 
 @Composable
 fun AddDayScreen(
-    viewModel: AddDayViewModel = hiltViewModel(),
+    viewModel: AddDayViewModel = hiltViewModel()
 ) {
     Timber.i("MVI error test : enter in add day screen")
     val appState = LocalAppState.current

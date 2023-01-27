@@ -64,7 +64,6 @@ import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
 
-
 val LocalAppState = compositionLocalOf<AppState> { error("App state not set yet!") }
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -80,14 +79,14 @@ class MainActivity : FragmentActivity() {
     @Inject
     lateinit var signInClient: GoogleSignInClient
 
-    private var settings: Settings? = null
-
     @OptIn(ExperimentalAnimationApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Timber.plant(Timber.DebugTree())
         WindowCompat.setDecorFitsSystemWindows(window, false)
         TimeZone.setDefault(TimeZone.getTimeZone("UTC"))
+
+        var settings: Settings? = null
 
         val job = lifecycleScope.launch(Dispatchers.IO) {
             settings = settingsRepository.getAllSettings().first()
@@ -191,7 +190,7 @@ class MainActivity : FragmentActivity() {
                                     startDestination = Screen.Home.route
                                 }
                                 HomeScreen(
-                                    onNavigateToMentalTips = navController.navigateToMentalTips(),
+                                    onNavigateToMentalTips = navController.navigateToMentalTipsCategories(),
                                     onNavigateToFavorites = navController.navigateToFavorites(),
                                     onNavigateToHelpForYou = navController.navigateToHelpForYou(),
                                     onNavigateToCats = navController.navigateToCats(),
@@ -245,7 +244,7 @@ class MainActivity : FragmentActivity() {
                                 popEnterTransition = { materialSlideIn(false) }
                             ) {
                                 MentalTipsCategoriesScreen(
-                                    onNavigateToMentalTip = { navController.navigate(Screen.MentalTips.route + "/$it") }
+                                    onNavigateToMentalTips = navController.navigateToMentalTips()
                                 )
                             }
 
@@ -274,7 +273,7 @@ class MainActivity : FragmentActivity() {
                                 exitTransition = { materialFadeThroughOut() },
                             ) {
                                 HistoryScreen(
-                                    onNavigateToDetail = navController.navigateToDayDetail(),
+                                    onNavigateToDetail = navController.navigateToDayDetail()
                                 )
                             }
 
@@ -295,7 +294,7 @@ class MainActivity : FragmentActivity() {
                                 exitTransition = { materialFadeThroughOut() }
                             ) {
                                 SettingsScreen(
-                                    onNavigateSignIn = navController.navigateToSignIn(),
+                                    onNavigateSignIn = navController.navigateToSignIn()
                                 )
                             }
 
@@ -369,15 +368,7 @@ class MainActivity : FragmentActivity() {
                                 enterTransition = { materialSlideIn(true) },
                                 exitTransition = { materialSlideOut(true) }
                             ) {
-                                ResetPasswordScreen(
-                                    updateAppBar = { barState: AppBarState ->
-                                        appState.appBarState.value = barState
-                                    },
-                                    showSnackbar = { message: String ->
-                                        appState.showSnackbar(message)
-                                    },
-                                    onNavigateUp = { navController.navigateUp() },
-                                )
+                                ResetPasswordScreen()
                             }
 
                             composable(
@@ -386,13 +377,7 @@ class MainActivity : FragmentActivity() {
                                 exitTransition = { materialFadeThroughOut() },
                             ) {
                                 SecureEntryScreen(
-                                    updateAppBar = { barState: AppBarState ->
-                                        appState.appBarState.value = barState
-                                    },
-                                    showSnackbar = { message: String ->
-                                        appState.showSnackbar(message)
-                                    },
-                                    onNavigateHomeScreen = { navController.navigate(Screen.Home.route) },
+                                    onNavigateHomeScreen = navController.navigateToHome()
                                 )
                             }
                         }

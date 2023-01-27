@@ -20,7 +20,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.Container
-import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
@@ -31,7 +30,7 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
     private val dayRepository: DayRepository,
     private val quoteRepository: QuoteRepository,
-    private val settingsRepository: SettingsRepository,
+    private val settingsRepository: SettingsRepository
 ) : ContainerHostPlus<HomeState, HomeSideEffect, HomeIntent>, ViewModel() {
 
     override val container: Container<HomeState, HomeSideEffect> =
@@ -49,7 +48,7 @@ class HomeViewModel @Inject constructor(
     }
 
     override fun onIntent(intent: HomeIntent) = intent {
-        when(intent){
+        when (intent) {
             HomeIntent.FabClicked -> {
                 val currentFabState = (state as HomeState.Loaded).fabButtonState
                 when (currentFabState) {
@@ -65,6 +64,10 @@ class HomeViewModel @Inject constructor(
                     }
                 }
             }
+            HomeIntent.CatsClicked -> postSideEffect(HomeSideEffect.NavigationToCats)
+            HomeIntent.FavoritesClicked -> postSideEffect(HomeSideEffect.NavigationToFavorites)
+            HomeIntent.HelpForYouClicked -> postSideEffect(HomeSideEffect.NavigationToHelpForYou)
+            HomeIntent.MentalTipsClicked -> postSideEffect(HomeSideEffect.NavigationToMentalTips)
         }
     }
 

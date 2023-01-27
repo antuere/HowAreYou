@@ -12,65 +12,59 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import antuere.how_are_you.LocalAppState
 import antuere.how_are_you.R
 import antuere.how_are_you.presentation.base.ui_compose_components.top_bar.AppBarState
 import antuere.how_are_you.presentation.base.ui_compose_components.buttons.DefaultButton
+import antuere.how_are_you.presentation.base.ui_compose_components.placeholder.FullScreenProgressIndicator
 import antuere.how_are_you.presentation.base.ui_compose_components.text_field.EmailTextField
+import antuere.how_are_you.presentation.reset_password.state.ResetPasswordIntent
+import antuere.how_are_you.presentation.reset_password.state.ResetPasswordSideEffect
 import antuere.how_are_you.util.paddingTopBar
+import org.orbitmvi.orbit.compose.collectAsState
+import org.orbitmvi.orbit.compose.collectSideEffect
+import timber.log.Timber
 
 @Composable
 fun ResetPasswordScreen(
-    onNavigateUp: () -> Unit,
-    updateAppBar: (AppBarState) -> Unit,
-    showSnackbar: (String) -> Unit,
-    resetPasswordViewModel: ResetPasswordViewModel = hiltViewModel()
+    viewModel: ResetPasswordViewModel = hiltViewModel()
 ) {
+    Timber.i("MVI error test : enter in reset password screen")
     val context = LocalContext.current
+    val appState = LocalAppState.current
 
-    val isShowProgressIndicator by resetPasswordViewModel.isShowProgressIndicator.collectAsState()
-    val resetState by resetPasswordViewModel.resetState.collectAsState()
-    var userEmail by remember { mutableStateOf("") }
-    
+    val viewState by viewModel.collectAsState()
+
     LaunchedEffect(true) {
-        updateAppBar(
+        appState.updateAppBar(
             AppBarState(
                 titleId = R.string.reset_password,
                 navigationIcon = Icons.Filled.ArrowBack,
-                navigationOnClick = { onNavigateUp() },
+                navigationOnClick = appState::navigateUp,
                 isVisibleBottomBar = false
             )
         )
     }
 
-   LaunchedEffect(resetState){
-       resetState?.let { state ->
-           when (state) {
-               is ResetPasswordState.Successful -> {
-                   showSnackbar(state.message.asString(context))
-                   onNavigateUp()
-                   resetPasswordViewModel.resetIsShowLoginProgressIndicator()
-               }
-               is ResetPasswordState.EmptyFields -> {
-                   showSnackbar(state.message.asString(context))
-               }
+    viewModel.collectSideEffect { sideEffect ->
+        when (sideEffect) {
+            ResetPasswordSideEffect.NavigateUp -> appState.navigateUp()
+            is ResetPasswordSideEffect.Snackbar -> appState.showSnackbar(
+                sideEffect.message.asString(context)
+            )
+        }
+    }
 
-               is ResetPasswordState.ErrorFromFireBase -> {
-                   showSnackbar(state.message.asString(context))
-                   resetPasswordViewModel.resetIsShowLoginProgressIndicator()
-               }
-           }
-           resetPasswordViewModel.nullifyState()
-       }
-   }
-
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .paddingTopBar(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-        if (!isShowProgressIndicator) {
+    if (viewState.isShowProgressIndicator) {
+        FullScreenProgressIndicator()
+    } else {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .paddingTopBar(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
             Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_2)))
             Text(text = stringResource(id = R.string.reset_password_plug), fontSize = 18.sp)
 
@@ -79,19 +73,19 @@ fun ResetPasswordScreen(
                 modifier = Modifier
                     .padding(horizontal = dimensionResource(id = R.dimen.padding_normal_3))
                     .fillMaxWidth(),
-                value = userEmail,
-                onValueChange = { userEmail = it })
+                value = viewState.email,
+                onValueChange = { ResetPasswordIntent.EmailChanged(it).run(viewModel::onIntent) })
 
             Spacer(modifier = Modifier.weight(1F))
 
             DefaultButton(
                 modifier = Modifier.padding(bottom = dimensionResource(id = R.dimen.padding_large_1)),
                 labelId = R.string.reset_password,
-                onClick = { resetPasswordViewModel.onClickResetPassword(userEmail) }
+                onClick = {
+                    ResetPasswordIntent.ResetBtnClicked(userEmail = viewState.email)
+                        .run(viewModel::onIntent)
+                }
             )
-        } else {
-            CircularProgressIndicator()
         }
-
     }
 }

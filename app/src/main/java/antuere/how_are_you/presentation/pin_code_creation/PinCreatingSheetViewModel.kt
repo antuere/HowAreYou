@@ -12,7 +12,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.Container
-import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
@@ -27,14 +26,13 @@ class PinCreatingSheetViewModel @Inject constructor(
     override val container: Container<PinCirclesState, PinCreationSideEffect> =
         container(PinCirclesState.NONE)
 
-    private var userPinCode = Constants.PIN_NOT_SET
-
     private var num1: String? = null
     private var num2: String? = null
     private var num3: String? = null
     private var num4: String? = null
-
     private var currentNumbers = mutableListOf<String>()
+
+    private var currentPinCode = Constants.PIN_NOT_SET
 
     override fun onIntent(intent: PinCreationIntent) = intent {
         when (intent) {
@@ -50,7 +48,7 @@ class PinCreatingSheetViewModel @Inject constructor(
                 reduce {
                     PinCirclesState.NONE
                 }
-                userPinCode = Constants.PIN_NOT_SET
+                currentPinCode = Constants.PIN_NOT_SET
                 currentNumbers.clear()
             }
         }
@@ -60,28 +58,20 @@ class PinCreatingSheetViewModel @Inject constructor(
         when (list.size) {
             1 -> {
                 num1 = list[0]
-                reduce {
-                    PinCirclesState.FIRST
-                }
+                reduce { PinCirclesState.FIRST }
             }
             2 -> {
                 num2 = list[1]
-                reduce {
-                    PinCirclesState.SECOND
-                }
+                reduce { PinCirclesState.SECOND }
             }
             3 -> {
                 num3 = list[2]
-                reduce {
-                    PinCirclesState.THIRD
-                }
+                reduce { PinCirclesState.THIRD }
             }
             4 -> {
                 num4 = list[3]
-                reduce {
-                    PinCirclesState.FOURTH
-                }
-                userPinCode = num1 + num2 + num3 + num4
+                reduce { PinCirclesState.FOURTH }
+                currentPinCode = num1 + num2 + num3 + num4
                 pinCodeCreated()
             }
             else -> throw IllegalArgumentException("Too much list size")
@@ -91,7 +81,7 @@ class PinCreatingSheetViewModel @Inject constructor(
 
     private fun pinCodeCreated() = intent {
         viewModelScope.launch(Dispatchers.IO) {
-            savePinCode(userPinCode)
+            savePinCode(currentPinCode)
             delay(100)
 
             postSideEffect(PinCreationSideEffect.PinCreated)

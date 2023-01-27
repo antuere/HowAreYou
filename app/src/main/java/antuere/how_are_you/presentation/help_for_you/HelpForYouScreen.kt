@@ -41,7 +41,7 @@ fun HelpForYouScreen(
                 navigationIcon = Icons.Filled.ArrowBack,
                 navigationOnClick = appState::navigateUp,
                 isVisibleBottomBar = false
-            ),
+            )
         )
     }
 
