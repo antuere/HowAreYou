@@ -1,7 +1,6 @@
 package antuere.how_are_you.presentation.detail
 
 import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import antuere.domain.dto.Day
 import antuere.domain.repository.DayRepository
@@ -11,15 +10,12 @@ import antuere.how_are_you.presentation.base.ui_compose_components.dialog.UIDial
 import antuere.how_are_you.presentation.detail.state.DetailIntent
 import antuere.how_are_you.presentation.detail.state.DetailSideEffect
 import antuere.how_are_you.presentation.detail.state.DetailState
-import antuere.how_are_you.util.ContainerHostPlus
+import antuere.how_are_you.presentation.base.ViewModelMvi
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.Container
-import org.orbitmvi.orbit.syntax.simple.intent
-import org.orbitmvi.orbit.syntax.simple.postSideEffect
-import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
 import javax.inject.Inject
 
@@ -27,7 +23,7 @@ import javax.inject.Inject
 class DetailViewModel @Inject constructor(
     private val dayRepository: DayRepository,
     state: SavedStateHandle,
-) : ContainerHostPlus<DetailState, DetailSideEffect, DetailIntent>, ViewModel() {
+) : ViewModelMvi<DetailState, DetailSideEffect, DetailIntent>() {
 
     override val container: Container<DetailState, DetailSideEffect> =
         container(DetailState())
@@ -38,7 +34,7 @@ class DetailViewModel @Inject constructor(
         getDay()
     }
 
-    override fun onIntent(intent: DetailIntent) = intent {
+    override fun onIntent(intent: DetailIntent) {
         when (intent) {
             DetailIntent.DeleteBtnClicked -> {
                 val dialog = UIDialog(
@@ -54,17 +50,17 @@ class DetailViewModel @Inject constructor(
                         text = R.string.no,
                         onClick = {})
                 )
-                postSideEffect(DetailSideEffect.Dialog(dialog))
+                sideEffect(DetailSideEffect.Dialog(dialog))
             }
             DetailIntent.FavoriteBtnClicked -> {
-                postSideEffect(DetailSideEffect.AnimateFavoriteBtn)
+                sideEffect(DetailSideEffect.AnimateFavoriteBtn)
                 val newFabBtnRes =
                     if (state.isFavorite) {
                         R.drawable.ic_baseline_favorite_border
                     } else {
                         R.drawable.ic_baseline_favorite
                     }
-                reduce {
+                updateState {
                     state.copy(
                         isFavorite = state.isFavorite.not(),
                         favoriteBtnRes = newFabBtnRes
@@ -84,7 +80,7 @@ class DetailViewModel @Inject constructor(
         }
     }
 
-    private fun getDay() = intent {
+    private fun getDay() {
         viewModelScope.launch(Dispatchers.IO) {
             val day = dayRepository.getDayById(dayId).first()!!
 
@@ -94,7 +90,7 @@ class DetailViewModel @Inject constructor(
                 R.drawable.ic_baseline_favorite_border
             }
 
-            reduce {
+            updateState {
                 state.copy(
                     isLoading = false,
                     daySmileRes = day.imageResId,
@@ -107,10 +103,10 @@ class DetailViewModel @Inject constructor(
         }
     }
 
-    private fun deleteDay() = intent {
+    private fun deleteDay() {
         viewModelScope.launch(Dispatchers.IO) {
             dayRepository.deleteDay(dayId)
         }
-        postSideEffect(DetailSideEffect.NavigateUp)
+        sideEffect(DetailSideEffect.NavigateUp)
     }
 }

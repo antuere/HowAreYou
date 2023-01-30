@@ -1,6 +1,5 @@
 package antuere.how_are_you.presentation.home
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import antuere.domain.repository.DayRepository
 import antuere.domain.repository.QuoteRepository
@@ -13,16 +12,13 @@ import antuere.how_are_you.presentation.home.state.FabButtonState
 import antuere.how_are_you.presentation.home.state.HomeIntent
 import antuere.how_are_you.presentation.home.state.HomeSideEffect
 import antuere.how_are_you.presentation.home.state.HomeState
-import antuere.how_are_you.util.ContainerHostPlus
+import antuere.how_are_you.presentation.base.ViewModelMvi
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.Container
-import org.orbitmvi.orbit.syntax.simple.intent
-import org.orbitmvi.orbit.syntax.simple.postSideEffect
-import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
 import javax.inject.Inject
 
@@ -30,8 +26,8 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
     private val dayRepository: DayRepository,
     private val quoteRepository: QuoteRepository,
-    private val settingsRepository: SettingsRepository
-) : ContainerHostPlus<HomeState, HomeSideEffect, HomeIntent>, ViewModel() {
+    private val settingsRepository: SettingsRepository,
+) : ViewModelMvi<HomeState, HomeSideEffect, HomeIntent>() {
 
     override val container: Container<HomeState, HomeSideEffect> =
         container(HomeState.Loading)
@@ -47,31 +43,31 @@ class HomeViewModel @Inject constructor(
         checkLastFiveDays()
     }
 
-    override fun onIntent(intent: HomeIntent) = intent {
+    override fun onIntent(intent: HomeIntent) {
         when (intent) {
             HomeIntent.FabClicked -> {
                 val currentFabState = (state as HomeState.Loaded).fabButtonState
                 when (currentFabState) {
                     FabButtonState.Add -> {
-                        postSideEffect(HomeSideEffect.NavigationToAddDay)
+                        sideEffect(HomeSideEffect.NavigateToAddDay)
                     }
                     is FabButtonState.Smile -> {
-                        postSideEffect(
-                            HomeSideEffect.NavigationToDayDetail(
+                        sideEffect(
+                            HomeSideEffect.NavigateToDayDetail(
                                 dayId = currentFabState.dayId
                             )
                         )
                     }
                 }
             }
-            HomeIntent.CatsClicked -> postSideEffect(HomeSideEffect.NavigationToCats)
-            HomeIntent.FavoritesClicked -> postSideEffect(HomeSideEffect.NavigationToFavorites)
-            HomeIntent.HelpForYouClicked -> postSideEffect(HomeSideEffect.NavigationToHelpForYou)
-            HomeIntent.MentalTipsClicked -> postSideEffect(HomeSideEffect.NavigationToMentalTips)
+            HomeIntent.CatsClicked -> sideEffect(HomeSideEffect.NavigateToCats)
+            HomeIntent.FavoritesClicked -> sideEffect(HomeSideEffect.NavigateToFavorites)
+            HomeIntent.HelpForYouClicked -> sideEffect(HomeSideEffect.NavigateToHelpForYou)
+            HomeIntent.MentalTipsClicked -> sideEffect(HomeSideEffect.NavigateToMentalTips)
         }
     }
 
-    private fun getSavedData() = intent {
+    private fun getSavedData() {
         viewModelScope.launch(Dispatchers.IO) {
             val savedQuote = quoteRepository.getDayQuoteLocal()
             if (_isShowSplash.value) _isShowSplash.value = false
@@ -86,7 +82,7 @@ class HomeViewModel @Inject constructor(
                 isShowWorriedDialogSetting = isEnableWorriedSetting
 
                 if (day == null) {
-                    reduce {
+                    updateState {
                         HomeState.Loaded(
                             quoteText = savedQuote.text,
                             quoteAuthor = savedQuote.author,
@@ -95,7 +91,7 @@ class HomeViewModel @Inject constructor(
                         )
                     }
                 } else {
-                    reduce {
+                    updateState {
                         HomeState.Loaded(
                             quoteText = savedQuote.text,
                             quoteAuthor = savedQuote.author,
@@ -137,13 +133,11 @@ class HomeViewModel @Inject constructor(
                     negativeButton = UIDialog.UiButton(
                         text = R.string.dialog_warning_negative,
                         onClick = {
-                            intent {
-                                postSideEffect(
-                                    HomeSideEffect.Snackbar(
-                                        message = UiText.StringResource(R.string.snack_bar_warning_negative)
-                                    )
+                            sideEffect(
+                                HomeSideEffect.Snackbar(
+                                    message = UiText.StringResource(R.string.snack_bar_warning_negative)
                                 )
-                            }
+                            )
                         }),
 //                    neutralButton = UIDialog.UiButton(
 //                        text = R.string.dialog_warning_neutral,
@@ -154,9 +148,7 @@ class HomeViewModel @Inject constructor(
 //                    )
                 )
 
-                intent {
-                    postSideEffect(HomeSideEffect.Dialog(dialog))
-                }
+                sideEffect(HomeSideEffect.Dialog(dialog))
             }
         }
     }

@@ -40,7 +40,7 @@ fun MentalTipsScreen(
             AppBarState(
                 titleId = viewState.appBarTitleId,
                 navigationIcon = Icons.Filled.ArrowBack,
-                navigationOnClick = appState::navigateUp,
+                onClickNavigationBtn = appState::navigateUp,
                 isVisibleBottomBar = false
             )
         )

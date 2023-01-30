@@ -43,7 +43,7 @@ fun DetailScreen(
             AppBarState(
                 titleId = R.string.about_day,
                 navigationIcon = Icons.Filled.ArrowBack,
-                navigationOnClick = appState::navigateUp,
+                onClickNavigationBtn = appState::navigateUp,
                 actions = {
                     IconButton(onClick = { DetailIntent.FavoriteBtnClicked.run(viewModel::onIntent) }) {
                         Icon(

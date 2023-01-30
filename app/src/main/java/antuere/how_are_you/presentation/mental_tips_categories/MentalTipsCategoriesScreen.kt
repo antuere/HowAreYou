@@ -39,7 +39,7 @@ fun MentalTipsCategoriesScreen(
             AppBarState(
                 titleId = R.string.mental_tips,
                 navigationIcon = Icons.Filled.ArrowBack,
-                navigationOnClick = appState::navigateUp,
+                onClickNavigationBtn = appState::navigateUp,
                 isVisibleBottomBar = false
             )
         )

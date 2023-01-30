@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -13,85 +12,72 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.hilt.navigation.compose.hiltViewModel
+import antuere.how_are_you.LocalAppState
 import antuere.how_are_you.R
 import antuere.how_are_you.presentation.base.ui_compose_components.top_bar.AppBarState
 import antuere.how_are_you.presentation.base.ui_compose_components.IconApp
 import antuere.how_are_you.presentation.base.ui_compose_components.buttons.DefaultButton
+import antuere.how_are_you.presentation.base.ui_compose_components.placeholder.FullScreenProgressIndicator
 import antuere.how_are_you.presentation.base.ui_compose_components.text_field.DefaultTextField
 import antuere.how_are_you.presentation.base.ui_compose_components.text_field.EmailTextField
 import antuere.how_are_you.presentation.base.ui_compose_components.text_field.PasswordTextField
+import antuere.how_are_you.presentation.sign_up_with_email.state.SignUpEmailIntent
+import antuere.how_are_you.presentation.sign_up_with_email.state.SignUpEmailSideEffect
+import antuere.how_are_you.util.toStable
 import antuere.how_are_you.util.paddingTopBar
+import org.orbitmvi.orbit.compose.collectAsState
+import org.orbitmvi.orbit.compose.collectSideEffect
+import timber.log.Timber
 
 @Composable
 fun SignUpEmailScreen(
-    modifier: Modifier = Modifier,
-    updateAppBar: (AppBarState) -> Unit,
-    showSnackbar: (String) -> Unit,
-    onNavigateUp: () -> Unit,
     onNavigateSettings: () -> Unit,
-    signUpEmailViewModel: SignUpEmailViewModel = hiltViewModel()
+    viewModel: SignUpEmailViewModel = hiltViewModel(),
 ) {
+    Timber.i("MVI error test : enter in signUppp screen")
+
     val context = LocalContext.current
-
-    val isShowRegisterProgressIndicator by signUpEmailViewModel.isShowRegisterProgressIndicator.collectAsState()
-    val signUpState by signUpEmailViewModel.signUpState.collectAsState()
-
-    var userNickname by remember { mutableStateOf("") }
-    var userEmail by remember { mutableStateOf("") }
-    var userPassword by remember { mutableStateOf("") }
-    var userConfirmedPassword by remember { mutableStateOf("") }
+    val appState = LocalAppState.current
+    val viewState by viewModel.collectAsState()
 
     LaunchedEffect(true) {
-        updateAppBar(
+        appState.updateAppBar(
             AppBarState(
                 titleId = R.string.sign_up,
                 navigationIcon = Icons.Filled.ArrowBack,
-                navigationOnClick = { onNavigateUp() },
+                onClickNavigationBtn = appState::navigateUp,
                 isVisibleBottomBar = false
             ),
         )
     }
 
-    LaunchedEffect(signUpState){
-        signUpState?.let { state ->
-            when (state) {
-                is SignUpState.Successful -> {
-                    onNavigateSettings()
-                    signUpEmailViewModel.resetIsShowRegisterProgressIndicator(true)
-
-                }
-                is SignUpState.EmptyFields -> {
-                    showSnackbar(state.message.asString(context))
-                }
-                is SignUpState.PasswordsError -> {
-                    showSnackbar(state.message.asString(context))
-                }
-
-                is SignUpState.ErrorFromFireBase -> {
-                    showSnackbar(state.message.asString(context))
-                    signUpEmailViewModel.resetIsShowRegisterProgressIndicator()
-                }
+    viewModel.collectSideEffect { sideEffect ->
+        when (sideEffect) {
+            is SignUpEmailSideEffect.NavigateToSettings -> onNavigateSettings()
+            is SignUpEmailSideEffect.Snackbar -> {
+                appState.showSnackbar(sideEffect.message.asString(context))
             }
-            signUpEmailViewModel.nullifyState()
         }
     }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .paddingTopBar(),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        IconApp(modifier = Modifier.padding(top = dimensionResource(id = R.dimen.padding_small_1)))
-        Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_4)))
+    if (viewState.isShowProgressIndicator) {
+        FullScreenProgressIndicator()
+    } else {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .paddingTopBar(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            IconApp(modifier = Modifier.padding(top = dimensionResource(id = R.dimen.padding_small_1)))
+            Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_4)))
 
-        if (!isShowRegisterProgressIndicator) {
             DefaultTextField(
                 modifier = Modifier
                     .padding(horizontal = dimensionResource(id = R.dimen.padding_normal_3))
                     .fillMaxWidth(),
-                value = userNickname,
-                onValueChange = { userNickname = it },
+                value = viewState.nickName,
+                onValueChange = { SignUpEmailIntent.NicknameChanged(it).run(viewModel::onIntent) },
                 label = stringResource(id = R.string.nickname),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
                 singleLine = true
@@ -102,8 +88,8 @@ fun SignUpEmailScreen(
                 modifier = Modifier
                     .padding(horizontal = dimensionResource(id = R.dimen.padding_normal_3))
                     .fillMaxWidth(),
-                value = userEmail,
-                onValueChange = { userEmail = it })
+                value = viewState.email,
+                onValueChange = { SignUpEmailIntent.EmailChanged(it).run(viewModel::onIntent) })
             Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_5)))
 
             PasswordTextField(
@@ -111,8 +97,8 @@ fun SignUpEmailScreen(
                     .padding(horizontal = dimensionResource(id = R.dimen.padding_normal_3))
                     .fillMaxWidth(),
                 labelId = R.string.password,
-                value = userPassword,
-                onValueChange = { userPassword = it })
+                value = viewState.password,
+                onValueChange = { SignUpEmailIntent.PasswordChanged(it).run(viewModel::onIntent) })
             Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_5)))
 
             PasswordTextField(
@@ -120,28 +106,26 @@ fun SignUpEmailScreen(
                     .padding(horizontal = dimensionResource(id = R.dimen.padding_normal_3))
                     .fillMaxWidth(),
                 labelId = R.string.confirm_password,
-                value = userConfirmedPassword,
-                onValueChange = { userConfirmedPassword = it })
+                value = viewState.confirmPassword,
+                onValueChange = { value: String ->
+                    SignUpEmailIntent.ConfirmPasswordChanged(value).run(viewModel::onIntent)
+                }.toStable()
+            )
             Spacer(modifier = Modifier.weight(1F))
 
             DefaultButton(
-                modifier = modifier.padding(bottom = dimensionResource(id = R.dimen.padding_large_1)),
+                modifier = Modifier.padding(bottom = dimensionResource(id = R.dimen.padding_large_1)),
                 labelId = R.string.sign_up,
                 onClick = {
-                    signUpEmailViewModel.onClickSignUp(
-                        email = userEmail,
-                        password = userPassword,
-                        confirmPassword = userConfirmedPassword,
-                        name = userNickname
-                    )
-                }
+                    SignUpEmailIntent.SignInBtnClicked(
+                        email = viewState.email,
+                        nickName = viewState.nickName,
+                        password = viewState.password,
+                        confirmPassword = viewState.confirmPassword
+                    ).run(viewModel::onIntent)
+                }.toStable()
             )
-
             Spacer(modifier = Modifier.weight(1F))
-        } else {
-            CircularProgressIndicator()
         }
     }
-
-
 }

@@ -38,7 +38,7 @@ fun AddDayScreen(
             AppBarState(
                 titleId = R.string.today,
                 navigationIcon = Icons.Filled.ArrowBack,
-                navigationOnClick = appState::navigateUp,
+                onClickNavigationBtn = appState::navigateUp,
                 isVisibleBottomBar = false
             )
         )

@@ -38,7 +38,7 @@ fun CatsScreen(
             AppBarState(
                 titleId = R.string.cats,
                 navigationIcon = Icons.Filled.ArrowBack,
-                navigationOnClick = appState::navigateUp,
+                onClickNavigationBtn = appState::navigateUp,
                 isVisibleBottomBar = false
             )
         )

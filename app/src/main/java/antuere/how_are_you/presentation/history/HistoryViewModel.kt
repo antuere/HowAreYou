@@ -13,7 +13,7 @@ import antuere.how_are_you.presentation.history.state.FilterState
 import antuere.how_are_you.presentation.history.state.HistoryIntent
 import antuere.how_are_you.presentation.history.state.HistorySideEffect
 import antuere.how_are_you.presentation.history.state.HistoryState
-import antuere.how_are_you.util.ContainerHostPlus
+import antuere.how_are_you.presentation.base.ViewModelMvi
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -32,7 +32,7 @@ import javax.inject.Inject
 class HistoryViewModel @Inject constructor(
     private val dayRepository: DayRepository,
     private val toggleBtnRepository: ToggleBtnRepository,
-) : ContainerHostPlus<HistoryState, HistorySideEffect, HistoryIntent>, ViewModel() {
+) : ViewModelMvi<HistoryState, HistorySideEffect, HistoryIntent>() {
 
     override val container: Container<HistoryState, HistorySideEffect> =
         container(HistoryState.LoadingShimmer())
@@ -44,10 +44,10 @@ class HistoryViewModel @Inject constructor(
         getToggleButtonState()
     }
 
-    override fun onIntent(intent: HistoryIntent) = intent {
+    override fun onIntent(intent: HistoryIntent) {
         when (intent) {
             is HistoryIntent.DayClicked -> {
-                postSideEffect(
+                sideEffect(
                     HistorySideEffect.NavigationToDayDetail(
                         dayId = intent.day.dayId
                     )
@@ -65,10 +65,10 @@ class HistoryViewModel @Inject constructor(
                         }),
                     negativeButton = UIDialog.UiButton(text = R.string.no)
                 )
-                postSideEffect(HistorySideEffect.Dialog(uiDialog))
+                sideEffect(HistorySideEffect.Dialog(uiDialog))
             }
             is HistoryIntent.DaysInFilterSelected -> {
-                postSideEffect(HistorySideEffect.AnimationHistoryHeader)
+                sideEffect(HistorySideEffect.AnimationHistoryHeader)
                 filterState.update {
                     FilterState.Activated(
                         firstDate = intent.startDate,
@@ -81,12 +81,12 @@ class HistoryViewModel @Inject constructor(
                     FilterState.Disabled(intent.toggleBtnState)
                 }
                 saveToggleButtonState(intent.toggleBtnState)
-                postSideEffect(HistorySideEffect.AnimationHistoryHeader)
+                sideEffect(HistorySideEffect.AnimationHistoryHeader)
             }
         }
     }
 
-    private fun getToggleButtonState() = intent {
+    private fun getToggleButtonState() {
         viewModelScope.launch(Dispatchers.IO) {
             val savedToggleState = toggleBtnRepository.getToggleButtonState().first()
 
@@ -97,7 +97,7 @@ class HistoryViewModel @Inject constructor(
         }
     }
 
-    private fun subscribeOnDaysFlow() = intent {
+    private fun subscribeOnDaysFlow() {
         val daysFlow = filterState.flatMapLatest { filterState ->
             when (filterState) {
                 is FilterState.Activated -> {
@@ -109,7 +109,7 @@ class HistoryViewModel @Inject constructor(
                 is FilterState.Disabled -> {
                     when (filterState.toggleBtnState) {
                         ToggleBtnState.ALL_DAYS -> {
-                            reduce {
+                            updateState {
                                 HistoryState.LoadingShimmer(
                                     cellsAmount = 4,
                                     aspectRatioForItem = 3.5f / 4f,
@@ -129,20 +129,22 @@ class HistoryViewModel @Inject constructor(
             }
         }
 
-        daysFlow.collectLatest { days ->
-            when (val filterState = filterState.first()) {
-                is FilterState.Activated -> {
-                    getDaysByFilter(days)
-                }
-                is FilterState.Disabled -> {
-                    getDaysByToggleState(days, filterState.toggleBtnState)
+        viewModelScope.launch {
+            daysFlow.collectLatest { days ->
+                when (val filterState = filterState.first()) {
+                    is FilterState.Activated -> {
+                        getDaysByFilter(days)
+                    }
+                    is FilterState.Disabled -> {
+                        getDaysByToggleState(days, filterState.toggleBtnState)
+                    }
                 }
             }
         }
     }
 
-    private fun getDaysByFilter(days: List<Day>) = intent {
-        reduce {
+    private fun getDaysByFilter(days: List<Day>) {
+        updateState {
             if (days.isEmpty()) {
                 HistoryState.Empty.FromFilter(
                     message = UiText.StringResource(R.string.no_days_filter)
@@ -156,10 +158,10 @@ class HistoryViewModel @Inject constructor(
         }
     }
 
-    private fun getDaysByToggleState(days: List<Day>, toggleState: ToggleBtnState) = intent {
+    private fun getDaysByToggleState(days: List<Day>, toggleState: ToggleBtnState) {
         when (toggleState) {
             ToggleBtnState.ALL_DAYS -> {
-                reduce {
+                updateState {
                     if (days.isEmpty()) {
                         HistoryState.Empty.NoEntriesYet(
                             UiText.StringResource(R.string.no_days_all)
@@ -175,7 +177,7 @@ class HistoryViewModel @Inject constructor(
                 }
             }
             ToggleBtnState.LAST_WEEK -> {
-                reduce {
+                updateState {
                     if (days.isEmpty()) {
                         HistoryState.Empty.FromToggleGroup(
                             message = UiText.StringResource(R.string.no_days_week),
@@ -192,7 +194,7 @@ class HistoryViewModel @Inject constructor(
                 }
             }
             ToggleBtnState.CURRENT_MONTH -> {
-                reduce {
+                updateState {
                     if (days.isEmpty()) {
                         HistoryState.Empty.FromToggleGroup(
                             message = UiText.StringResource(R.string.no_days_month),

@@ -40,7 +40,7 @@ fun ResetPasswordScreen(
             AppBarState(
                 titleId = R.string.reset_password,
                 navigationIcon = Icons.Filled.ArrowBack,
-                navigationOnClick = appState::navigateUp,
+                onClickNavigationBtn = appState::navigateUp,
                 isVisibleBottomBar = false
             )
         )

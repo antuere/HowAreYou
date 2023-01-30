@@ -1,27 +1,23 @@
 package antuere.how_are_you.presentation.cats
 
-import androidx.lifecycle.ViewModel
 import antuere.how_are_you.presentation.cats.state.CatsIntent
 import antuere.how_are_you.presentation.cats.state.CatsState
-import antuere.how_are_you.util.ContainerHostPlus
+import antuere.how_are_you.presentation.base.ViewModelMvi
 import dagger.hilt.android.lifecycle.HiltViewModel
 import org.orbitmvi.orbit.Container
-import org.orbitmvi.orbit.ContainerHost
-import org.orbitmvi.orbit.syntax.simple.intent
-import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
 import javax.inject.Inject
 
 
 @HiltViewModel
 class CatsViewModel @Inject constructor() :
-    ContainerHostPlus<CatsState, Nothing, CatsIntent>, ViewModel() {
+    ViewModelMvi<CatsState, Nothing, CatsIntent>() {
 
     override val container: Container<CatsState, Nothing> = container(CatsState())
 
-    override fun onIntent(intent: CatsIntent) = intent {
+    override fun onIntent(intent: CatsIntent) {
         when (intent) {
-            CatsIntent.UpdateCatsClicked -> reduce {
+            CatsIntent.UpdateCatsClicked -> updateState {
                 state.copy(urlList = state.urlList.reversed())
             }
         }

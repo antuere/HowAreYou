@@ -55,7 +55,6 @@ import antuere.how_are_you.presentation.sign_up_with_email.SignUpEmailScreen
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
@@ -75,9 +74,6 @@ class MainActivity : FragmentActivity() {
 
     @Inject
     lateinit var settingsRepository: SettingsRepository
-
-    @Inject
-    lateinit var signInClient: GoogleSignInClient
 
     @OptIn(ExperimentalAnimationApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -168,7 +164,7 @@ class MainActivity : FragmentActivity() {
                             DefaultTopBar(
                                 titleId = appBarState.titleId,
                                 navigationIcon = appBarState.navigationIcon,
-                                navigationOnClick = appBarState.navigationOnClick,
+                                navigationOnClick = appBarState.onClickNavigationBtn,
                                 actions = appBarState.actions
                             )
                         }
@@ -304,15 +300,7 @@ class MainActivity : FragmentActivity() {
                                 exitTransition = { materialFadeThroughOut() }
                             ) {
                                 SignInMethodsScreen(
-                                    updateAppBar = { barState: AppBarState ->
-                                        appState.appBarState.value = barState
-                                    },
-                                    showSnackbar = { message: String ->
-                                        appState.showSnackbar(message)
-                                    },
-                                    onNavigateUp = { navController.navigateUp() },
-                                    onNavigateSignInEmail = { navController.navigate(Screen.SignInWithEmail.route) },
-                                    signInClient = signInClient,
+                                    onNavigateSignInEmail = navController.navigateToSignInEmail()
                                 )
                             }
 
@@ -323,21 +311,9 @@ class MainActivity : FragmentActivity() {
                                 popEnterTransition = { materialSlideIn(false) }
                             ) {
                                 SignInEmailScreen(
-                                    updateAppBar = { barState: AppBarState ->
-                                        appState.appBarState.value = barState
-                                    },
-                                    showSnackbar = { message: String ->
-                                        appState.showSnackbar(message)
-                                    },
-                                    onNavigateUp = { navController.navigateUp() },
-                                    onNavigateSettings = {
-                                        navController.popBackStack(
-                                            Screen.Settings.route,
-                                            false
-                                        )
-                                    },
-                                    onNavigateSignUp = { navController.navigate(Screen.SignUpWithEmail.route) },
-                                    onNavigateResetPassword = { navController.navigate(Screen.ResetPassEmail.route) },
+                                    onNavigateSettings = navController.popBackStackToSettings(),
+                                    onNavigateSignUp = navController.navigateToSignUpEmail(),
+                                    onNavigateResetPassword = navController.navigateToResetPassword()
                                 )
                             }
 
@@ -347,19 +323,7 @@ class MainActivity : FragmentActivity() {
                                 exitTransition = { materialSlideOut(true) }
                             ) {
                                 SignUpEmailScreen(
-                                    updateAppBar = { barState: AppBarState ->
-                                        appState.appBarState.value = barState
-                                    },
-                                    showSnackbar = { message: String ->
-                                        appState.showSnackbar(message)
-                                    },
-                                    onNavigateSettings = {
-                                        navController.popBackStack(
-                                            Screen.Settings.route,
-                                            false
-                                        )
-                                    },
-                                    onNavigateUp = { navController.navigateUp() },
+                                    onNavigateSettings = navController.popBackStackToSettings()
                                 )
                             }
 

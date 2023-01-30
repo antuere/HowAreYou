@@ -36,7 +36,7 @@ fun HelplinesScreen(
             AppBarState(
                 titleId = R.string.helplines,
                 navigationIcon = Icons.Filled.ArrowBack,
-                navigationOnClick = appState::navigateUp,
+                onClickNavigationBtn = appState::navigateUp,
                 isVisibleBottomBar = false
             )
         )

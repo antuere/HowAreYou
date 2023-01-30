@@ -26,6 +26,27 @@ fun NavController.navigateToSignIn(): () -> Unit = remember {
 }
 
 @Composable
+fun NavController.navigateToSignInEmail(): () -> Unit = remember {
+    { this.navigate(Screen.SignInWithEmail.route) }
+}
+
+@Composable
+fun NavController.navigateToSignUpEmail(): () -> Unit = remember {
+    { this.navigate(Screen.SignUpWithEmail.route) }
+}
+
+@Composable
+fun NavController.navigateToResetPassword(): () -> Unit = remember {
+    { this.navigate(Screen.ResetPassEmail.route) }
+}
+
+@Composable
+fun NavController.popBackStackToSettings(): () -> Unit = remember {
+    { this.popBackStack(Screen.Settings.route, false) }
+}
+
+
+@Composable
 fun NavController.navigateToHelplines(): () -> Unit = remember {
     { this.navigate(Screen.Helplines.route) }
 }

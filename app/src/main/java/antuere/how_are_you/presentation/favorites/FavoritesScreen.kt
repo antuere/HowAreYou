@@ -38,7 +38,7 @@ fun FavoritesScreen(
             AppBarState(
                 titleId = R.string.favorites,
                 navigationIcon = Icons.Filled.ArrowBack,
-                navigationOnClick = appState::navigateUp,
+                onClickNavigationBtn = appState::navigateUp,
                 isVisibleBottomBar = false
             )
         )

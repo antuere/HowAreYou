@@ -2,7 +2,6 @@ package antuere.how_are_you.presentation.settings
 
 import android.content.Intent
 import androidx.biometric.BiometricManager
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import antuere.domain.authentication_manager.AuthenticationManager
 import antuere.domain.repository.DayRepository
@@ -16,16 +15,12 @@ import antuere.how_are_you.presentation.base.ui_compose_components.dialog.UIDial
 import antuere.how_are_you.presentation.settings.state.SettingsIntent
 import antuere.how_are_you.presentation.settings.state.SettingsSideEffect
 import antuere.how_are_you.presentation.settings.state.SettingsState
-import antuere.how_are_you.util.ContainerHostPlus
+import antuere.how_are_you.presentation.base.ViewModelMvi
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import org.orbitmvi.orbit.Container
-import org.orbitmvi.orbit.syntax.simple.intent
-import org.orbitmvi.orbit.syntax.simple.postSideEffect
-import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
 import timber.log.Timber
 import javax.inject.Inject
@@ -38,7 +33,7 @@ class SettingsViewModel @Inject constructor(
     private val toggleBtnRepository: ToggleBtnRepository,
     private val authenticationManager: AuthenticationManager,
     private val uiBiometricDialog: UIBiometricDialog,
-) : ContainerHostPlus<SettingsState, SettingsSideEffect, SettingsIntent>, ViewModel() {
+) : ViewModelMvi<SettingsState, SettingsSideEffect, SettingsIntent>() {
 
     override val container: Container<SettingsState, SettingsSideEffect> =
         container(SettingsState())
@@ -53,42 +48,42 @@ class SettingsViewModel @Inject constructor(
 
     val biometricAuthStateListener = object : IUIBiometricListener {
 
-        override fun onBiometricAuthFailed() = intent {
-            reduce { state.copy(isCheckedBiomAuth = false) }
+        override fun onBiometricAuthFailed() {
+            updateState { state.copy(isCheckedBiomAuth = false) }
         }
 
-        override fun onBiometricAuthSuccess() = intent {
-            reduce { state.copy(isCheckedBiomAuth = true) }
-            withContext(Dispatchers.IO) {
+        override fun onBiometricAuthSuccess() {
+            updateState { state.copy(isCheckedBiomAuth = true) }
+            viewModelScope.launch(Dispatchers.IO) {
                 settingsRepository.saveBiomAuthSetting(true)
             }
-            postSideEffect(
+            sideEffect(
                 SettingsSideEffect.Snackbar(UiText.StringResource(R.string.biom_auth_create_success))
             )
         }
 
-        override fun noneEnrolled() = intent {
-            reduce { state.copy(isCheckedBiomAuth = false) }
+        override fun noneEnrolled() {
+            updateState { state.copy(isCheckedBiomAuth = false) }
             defineEnrollAction()
         }
     }
 
-    override fun onIntent(intent: SettingsIntent) = intent {
+    override fun onIntent(intent: SettingsIntent) {
         when (intent) {
             is SettingsIntent.BiometricAuthSettingChanged -> {
-                reduce { state.copy(isCheckedBiomAuth = intent.isChecked) }
+                updateState { state.copy(isCheckedBiomAuth = intent.isChecked) }
                 if (intent.isChecked) {
-                    postSideEffect(SettingsSideEffect.BiometricDialog(uiBiometricDialog))
+                    sideEffect(SettingsSideEffect.BiometricDialog(uiBiometricDialog))
                 } else {
-                    withContext(Dispatchers.IO) {
+                    viewModelScope.launch(Dispatchers.IO) {
                         settingsRepository.saveBiomAuthSetting(false)
                     }
                 }
             }
             is SettingsIntent.PinSettingChanged -> {
-                reduce { state.copy(isCheckedPin = intent.isChecked) }
+                updateState { state.copy(isCheckedPin = intent.isChecked) }
                 if (intent.isChecked) {
-                    postSideEffect(SettingsSideEffect.ShowBottomSheet)
+                    sideEffect(SettingsSideEffect.ShowBottomSheet)
                 } else {
                     viewModelScope.launch(Dispatchers.IO) {
                         settingsRepository.resetPinCode()
@@ -98,12 +93,12 @@ class SettingsViewModel @Inject constructor(
                 }
             }
             is SettingsIntent.WorriedDialogSettingChanged -> {
-                reduce { state.copy(isCheckedWorriedDialog = intent.isChecked) }
+                updateState { state.copy(isCheckedWorriedDialog = intent.isChecked) }
                 viewModelScope.launch(Dispatchers.IO) {
                     settingsRepository.saveWorriedDialogSetting(intent.isChecked)
                 }
             }
-            is SettingsIntent.SignInBtnClicked -> postSideEffect(SettingsSideEffect.NavigateToSignIn)
+            is SettingsIntent.SignInBtnClicked -> sideEffect(SettingsSideEffect.NavigateToSignIn)
             is SettingsIntent.SignOutBtnClicked -> {
                 if (isShowDialogSignOut) {
                     val dialog = UIDialog(
@@ -121,27 +116,27 @@ class SettingsViewModel @Inject constructor(
                                 signOut(isSaveDayEntities = false)
                             }),
                     )
-                    postSideEffect(SettingsSideEffect.Dialog(dialog))
+                    sideEffect(SettingsSideEffect.Dialog(dialog))
                 } else {
                     signOut(false)
                 }
             }
             is SettingsIntent.PinCreationSheetClosed -> {
-                reduce {
+                updateState {
                     state.copy(isCheckedPin = intent.isPinCreated)
                 }
                 if (intent.isPinCreated) {
-                    withContext(Dispatchers.IO) {
+                    viewModelScope.launch(Dispatchers.IO) {
                         settingsRepository.savePinSetting(true)
                     }
-                    postSideEffect(SettingsSideEffect.Snackbar(UiText.StringResource(R.string.pin_code_create_success)))
+                    sideEffect(SettingsSideEffect.Snackbar(UiText.StringResource(R.string.pin_code_create_success)))
                 }
             }
         }
     }
 
-    private fun checkBiometricsAvailable() = intent {
-        reduce {
+    private fun checkBiometricsAvailable() {
+        updateState {
             state.copy(isEnableBiomAuthOnDevice = uiBiometricDialog.deviceHasBiometricHardware)
         }
     }
@@ -166,7 +161,7 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
-    private fun getSettings() = intent {
+    private fun getSettings() {
         viewModelScope.launch(Dispatchers.IO) {
             combine(
                 settingsRepository.getAllSettings(),
@@ -175,7 +170,7 @@ class SettingsViewModel @Inject constructor(
             ) { settings, username, pinCode ->
 
                 Timber.i("MVI error test : collect from combine")
-                reduce {
+                updateState {
                     state.copy(
                         isLoading = false,
                         isCheckedWorriedDialog = settings.isShowWorriedDialog,
@@ -189,7 +184,7 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
-    private fun defineEnrollAction() = intent {
+    private fun defineEnrollAction() {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
             val enrollIntent = Intent(android.provider.Settings.ACTION_BIOMETRIC_ENROLL).apply {
                 putExtra(
@@ -197,9 +192,9 @@ class SettingsViewModel @Inject constructor(
                     BiometricManager.Authenticators.BIOMETRIC_STRONG or BiometricManager.Authenticators.BIOMETRIC_WEAK
                 )
             }
-            postSideEffect(SettingsSideEffect.BiometricNoneEnroll(enrollIntent))
+            sideEffect(SettingsSideEffect.BiometricNoneEnroll(enrollIntent))
         } else {
-            postSideEffect(
+            sideEffect(
                 SettingsSideEffect.Snackbar(UiText.StringResource(R.string.biometric_none_enroll))
             )
         }

@@ -45,7 +45,6 @@ fun SettingsScreen(
     val fragmentActivity = LocalContext.current.findFragmentActivity()
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
-
     val viewState by viewModel.collectAsState()
 
     val bottomSheetState = rememberModalBottomSheetState(

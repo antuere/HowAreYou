@@ -9,56 +9,63 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.hilt.navigation.compose.hiltViewModel
+import antuere.how_are_you.LocalAppState
 import antuere.how_are_you.R
 import antuere.how_are_you.presentation.base.ui_compose_components.top_bar.AppBarState
 import antuere.how_are_you.presentation.base.ui_compose_components.buttons.ButtonWithIcon
+import antuere.how_are_you.presentation.sign_in_methods.state.SignInMethodsIntent
+import antuere.how_are_you.presentation.sign_in_methods.state.SignInMethodsSideEffect
 import antuere.how_are_you.util.paddingTopBar
 import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import org.orbitmvi.orbit.compose.collectAsState
+import org.orbitmvi.orbit.compose.collectSideEffect
+import timber.log.Timber
 
 @Composable
 fun SignInMethodsScreen(
-    updateAppBar: (AppBarState) -> Unit,
-    showSnackbar: (String) -> Unit,
-    onNavigateUp: () -> Unit,
     onNavigateSignInEmail: () -> Unit,
-    signInClient: GoogleSignInClient,
-    signInMethodsViewModel: SignInMethodsViewModel = hiltViewModel()
+    viewModel: SignInMethodsViewModel = hiltViewModel(),
 ) {
-    val signInState by signInMethodsViewModel.signInState.collectAsState()
+    Timber.i("MVI error test : composed in signinmethods screen")
+
+    val appState = LocalAppState.current
+    val context = LocalContext.current
+    val viewState by viewModel.collectAsState()
 
     val launcher =
         rememberLauncherForActivityResult(contract = ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
                 val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
-                signInMethodsViewModel.handleResult(task)
+                SignInMethodsIntent.GoogleAccAdded(task).run(viewModel::onIntent)
             }
         }
 
     LaunchedEffect(true) {
-        updateAppBar(
+        appState.updateAppBar(
             AppBarState(
                 titleId = R.string.login_methods,
                 navigationIcon = Icons.Filled.ArrowBack,
-                navigationOnClick = { onNavigateUp() },
+                onClickNavigationBtn = appState::navigateUp,
                 isVisibleBottomBar = false
             )
         )
     }
 
-    LaunchedEffect(signInState) {
-        signInState?.let { state ->
-            when (state) {
-                is SignInMethodsState.UserAuthorized -> {
-                    onNavigateUp()
-                }
-                is SignInMethodsState.Error -> {
-                    showSnackbar(state.message)
-                }
+    viewModel.collectSideEffect { sideEffect ->
+        when (sideEffect) {
+            is SignInMethodsSideEffect.GoogleSignInDialog -> {
+                launcher.launch(sideEffect.signInClient.signInIntent)
             }
-            signInMethodsViewModel.nullifyState()
+            SignInMethodsSideEffect.NavigateToEmailMethod -> onNavigateSignInEmail()
+            SignInMethodsSideEffect.NavigateUp -> appState.navigateUp()
+            is SignInMethodsSideEffect.Snackbar -> {
+                appState.showSnackbar(
+                    sideEffect.message.asString(context)
+                )
+            }
         }
     }
 
@@ -71,17 +78,17 @@ fun SignInMethodsScreen(
     ) {
         ButtonWithIcon(
             modifier = Modifier.fillMaxWidth(0.7F),
-            onClick = { onNavigateSignInEmail() },
-            labelId = R.string.login_email,
-            iconId = R.drawable.ic_email
+            onClick = { SignInMethodsIntent.EmailMethodClicked.run(viewModel::onIntent) },
+            labelId = viewState.emailMethod.nameId,
+            iconId = viewState.emailMethod.iconId
         )
         Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_1)))
 
         ButtonWithIcon(
             modifier = Modifier.fillMaxWidth(0.7F),
-            onClick = { launcher.launch(signInClient.signInIntent) },
-            labelId = R.string.login_google,
-            iconId = R.drawable.ic_google
+            onClick = { SignInMethodsIntent.GoogleMethodClicked.run(viewModel::onIntent) },
+            labelId = viewState.googleMethod.nameId,
+            iconId = viewState.googleMethod.iconId,
         )
     }
 }

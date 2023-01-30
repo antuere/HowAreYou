@@ -48,17 +48,17 @@ fun HomeScreen(
             is HomeSideEffect.Dialog -> {
                 appState.showDialog(sideEffect.uiDialog)
             }
-            is HomeSideEffect.NavigationToDayDetail -> {
+            is HomeSideEffect.NavigateToDayDetail -> {
                 onNavigateToDetail(sideEffect.dayId)
             }
             is HomeSideEffect.Snackbar -> {
                 appState.showSnackbar(sideEffect.message.asString(context))
             }
-            HomeSideEffect.NavigationToAddDay -> onNavigateToAddDay()
-            HomeSideEffect.NavigationToCats -> onNavigateToCats()
-            HomeSideEffect.NavigationToFavorites -> onNavigateToFavorites()
-            HomeSideEffect.NavigationToHelpForYou -> onNavigateToHelpForYou()
-            HomeSideEffect.NavigationToMentalTips -> onNavigateToMentalTips()
+            HomeSideEffect.NavigateToAddDay -> onNavigateToAddDay()
+            HomeSideEffect.NavigateToCats -> onNavigateToCats()
+            HomeSideEffect.NavigateToFavorites -> onNavigateToFavorites()
+            HomeSideEffect.NavigateToHelpForYou -> onNavigateToHelpForYou()
+            HomeSideEffect.NavigateToMentalTips -> onNavigateToMentalTips()
         }
 
     }

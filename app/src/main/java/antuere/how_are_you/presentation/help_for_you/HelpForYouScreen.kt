@@ -39,7 +39,7 @@ fun HelpForYouScreen(
             AppBarState(
                 titleId = R.string.help_for_you,
                 navigationIcon = Icons.Filled.ArrowBack,
-                navigationOnClick = appState::navigateUp,
+                onClickNavigationBtn = appState::navigateUp,
                 isVisibleBottomBar = false
             )
         )

@@ -9,7 +9,7 @@ import antuere.how_are_you.R
 data class AppBarState(
     @StringRes var titleId: Int = R.string.home,
     var navigationIcon: ImageVector? = null,
-    var navigationOnClick: () -> Unit = {},
+    var onClickNavigationBtn: () -> Unit = {},
     var actions: (@Composable RowScope.() -> Unit) = {},
     var isVisibleTopBar : Boolean = true,
     var isVisibleBottomBar : Boolean = true

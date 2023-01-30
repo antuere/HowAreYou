@@ -3,89 +3,82 @@ package antuere.how_are_you.presentation.sign_in_with_email
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.hilt.navigation.compose.hiltViewModel
+import antuere.how_are_you.LocalAppState
 import antuere.how_are_you.R
 import antuere.how_are_you.presentation.base.ui_compose_components.top_bar.AppBarState
 import antuere.how_are_you.presentation.base.ui_compose_components.IconApp
 import antuere.how_are_you.presentation.base.ui_compose_components.buttons.DefaultButton
 import antuere.how_are_you.presentation.base.ui_compose_components.buttons.DefaultTextButton
+import antuere.how_are_you.presentation.base.ui_compose_components.placeholder.FullScreenProgressIndicator
 import antuere.how_are_you.presentation.base.ui_compose_components.text_field.EmailTextField
 import antuere.how_are_you.presentation.base.ui_compose_components.text_field.PasswordTextField
+import antuere.how_are_you.presentation.sign_in_with_email.state.SignInEmailIntent
+import antuere.how_are_you.presentation.sign_in_with_email.state.SignInEmailSideEffect
 import antuere.how_are_you.util.paddingTopBar
+import org.orbitmvi.orbit.compose.collectAsState
+import org.orbitmvi.orbit.compose.collectSideEffect
+import timber.log.Timber
 
 @Composable
 fun SignInEmailScreen(
-    modifier: Modifier = Modifier,
-    updateAppBar: (AppBarState) -> Unit,
-    showSnackbar: (String) -> Unit,
-    onNavigateUp: () -> Unit,
     onNavigateSettings: () -> Unit,
     onNavigateSignUp: () -> Unit,
     onNavigateResetPassword: () -> Unit,
-    signInEmailViewModel: SignInEmailViewModel = hiltViewModel()
+    viewModel: SignInEmailViewModel = hiltViewModel(),
 ) {
+    Timber.i("MVI error test : enter in signIn screen")
+
     val context = LocalContext.current
-
-    val isShowLoginProgressIndicator by signInEmailViewModel.isShowLoginProgressIndicator.collectAsState()
-    val signInState by signInEmailViewModel.signInState.collectAsState()
-
-    var userEmail by remember { mutableStateOf("") }
-    var userPassword by remember { mutableStateOf("") }
+    val appState = LocalAppState.current
+    val viewState by viewModel.collectAsState()
 
     LaunchedEffect(true) {
-        updateAppBar(
+        appState.updateAppBar(
             AppBarState(
                 titleId = R.string.sign_in,
                 navigationIcon = Icons.Filled.ArrowBack,
-                navigationOnClick = { onNavigateUp() },
+                onClickNavigationBtn = appState::navigateUp,
                 isVisibleBottomBar = false
             )
         )
     }
 
-    LaunchedEffect(signInState) {
-        signInState?.let { state ->
-            when (state) {
-                is SignInState.Successful -> {
-                    onNavigateSettings()
-                    signInEmailViewModel.resetIsShowLoginProgressIndicator(true)
-                }
-                is SignInState.EmptyFields -> {
-                    showSnackbar(state.message.asString(context))
-                }
-
-                is SignInState.ErrorFromFireBase -> {
-                    showSnackbar(state.message.asString((context)))
-                    signInEmailViewModel.resetIsShowLoginProgressIndicator()
-                }
+    viewModel.collectSideEffect { sideEffect ->
+        when (sideEffect) {
+            SignInEmailSideEffect.NavigateToResetPassword -> onNavigateResetPassword()
+            SignInEmailSideEffect.NavigateToSettings -> onNavigateSettings()
+            SignInEmailSideEffect.NavigateToSignUp -> onNavigateSignUp()
+            is SignInEmailSideEffect.Snackbar -> {
+                appState.showSnackbar(sideEffect.message.asString(context))
             }
-            signInEmailViewModel.nullifyState()
         }
     }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .paddingTopBar(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-        IconApp(modifier = Modifier.padding(top = dimensionResource(id = R.dimen.padding_small_1)))
-        Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_4)))
+    if (viewState.isShowProgressIndicator) {
+        FullScreenProgressIndicator()
+    } else {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .paddingTopBar(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            IconApp(modifier = Modifier.padding(top = dimensionResource(id = R.dimen.padding_small_1)))
+            Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_4)))
 
-        if (!isShowLoginProgressIndicator) {
             EmailTextField(
                 modifier = Modifier
                     .padding(horizontal = dimensionResource(id = R.dimen.padding_normal_3))
                     .fillMaxWidth(),
-                value = userEmail,
-                onValueChange = { userEmail = it })
+                value = viewState.email,
+                onValueChange = { SignInEmailIntent.EmailChanged(it).run(viewModel::onIntent) })
             Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_5)))
 
             PasswordTextField(
@@ -93,8 +86,8 @@ fun SignInEmailScreen(
                     .padding(horizontal = dimensionResource(id = R.dimen.padding_normal_3))
                     .fillMaxWidth(),
                 labelId = R.string.password,
-                value = userPassword,
-                onValueChange = { userPassword = it })
+                value = viewState.password,
+                onValueChange = { SignInEmailIntent.PasswordChanged(it).run(viewModel::onIntent) })
             Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_2)))
 
             DefaultTextButton(
@@ -102,7 +95,7 @@ fun SignInEmailScreen(
                     .padding(end = dimensionResource(id = R.dimen.padding_normal_3))
                     .align(Alignment.End),
                 labelId = R.string.reset_password_hint,
-                onClick = { onNavigateResetPassword() })
+                onClick = { SignInEmailIntent.ResetPassBtnClicked.run(viewModel::onIntent) })
             Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_11)))
 
             DefaultButton(
@@ -110,20 +103,20 @@ fun SignInEmailScreen(
                     .padding(horizontal = dimensionResource(id = R.dimen.padding_normal_3))
                     .fillMaxWidth(),
                 labelId = R.string.sign_in,
-                onClick = { signInEmailViewModel.onClickSignIn(userEmail, userPassword) }
+                onClick = {
+                    SignInEmailIntent.SignInBtnClicked(
+                        email = viewState.email,
+                        password = viewState.password
+                    ).run(viewModel::onIntent)
+                }
             )
             Spacer(modifier = Modifier.weight(1F))
 
             DefaultTextButton(
-                modifier = modifier.padding(bottom = dimensionResource(id = R.dimen.padding_large_1)),
+                modifier = Modifier.padding(bottom = dimensionResource(id = R.dimen.padding_large_1)),
                 labelId = R.string.don_have_acc,
-                onClick = { onNavigateSignUp() }
+                onClick = { SignInEmailIntent.SignUpBtnClicked.run(viewModel::onIntent) }
             )
-            Spacer(modifier = Modifier.weight(1F))
-
-        } else {
-            Spacer(modifier = Modifier.weight(0.7F))
-            CircularProgressIndicator()
             Spacer(modifier = Modifier.weight(1F))
         }
     }
