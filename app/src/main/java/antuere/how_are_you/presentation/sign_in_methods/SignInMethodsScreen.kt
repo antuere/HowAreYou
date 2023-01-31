@@ -19,6 +19,7 @@ import antuere.how_are_you.presentation.base.ui_compose_components.buttons.Butto
 import antuere.how_are_you.presentation.sign_in_methods.state.SignInMethodsIntent
 import antuere.how_are_you.presentation.sign_in_methods.state.SignInMethodsSideEffect
 import antuere.how_are_you.util.paddingTopBar
+import antuere.how_are_you.util.toStable
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
@@ -78,7 +79,7 @@ fun SignInMethodsScreen(
     ) {
         ButtonWithIcon(
             modifier = Modifier.fillMaxWidth(0.7F),
-            onClick = { SignInMethodsIntent.EmailMethodClicked.run(viewModel::onIntent) },
+            onClick = { SignInMethodsIntent.EmailMethodClicked.run(viewModel::onIntent) }.toStable(),
             labelId = viewState.emailMethod.nameId,
             iconId = viewState.emailMethod.iconId
         )
@@ -86,7 +87,7 @@ fun SignInMethodsScreen(
 
         ButtonWithIcon(
             modifier = Modifier.fillMaxWidth(0.7F),
-            onClick = { SignInMethodsIntent.GoogleMethodClicked.run(viewModel::onIntent) },
+            onClick = { SignInMethodsIntent.GoogleMethodClicked.run(viewModel::onIntent) }.toStable(),
             labelId = viewState.googleMethod.nameId,
             iconId = viewState.googleMethod.iconId,
         )

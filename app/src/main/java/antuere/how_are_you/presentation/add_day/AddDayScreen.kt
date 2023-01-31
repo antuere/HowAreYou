@@ -22,16 +22,18 @@ import antuere.how_are_you.presentation.base.ui_compose_components.top_bar.AppBa
 import antuere.how_are_you.presentation.base.ui_compose_components.text_field.DefaultTextField
 import antuere.how_are_you.presentation.base.ui_theme.PlayfairDisplay
 import antuere.how_are_you.util.paddingTopBar
+import antuere.how_are_you.util.toStable
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 import timber.log.Timber
 
 @Composable
 fun AddDayScreen(
-    viewModel: AddDayViewModel = hiltViewModel()
+    viewModel: AddDayViewModel = hiltViewModel(),
 ) {
     Timber.i("MVI error test : enter in add day screen")
     val appState = LocalAppState.current
+    val viewState by viewModel.collectAsState()
 
     LaunchedEffect(true) {
         appState.updateAppBar(
@@ -43,7 +45,6 @@ fun AddDayScreen(
             )
         )
     }
-    val viewState by viewModel.collectAsState()
 
     viewModel.collectSideEffect { sideEffect ->
         when (sideEffect) {
@@ -71,7 +72,9 @@ fun AddDayScreen(
                 .fillMaxWidth(),
             label = stringResource(id = R.string.desc_you_day),
             value = viewState.dayDesc,
-            onValueChange = { AddDayIntent.DayDescChanged(value = it).run(viewModel::onIntent) },
+            onValueChange = { value: String ->
+                AddDayIntent.DayDescChanged(value).run(viewModel::onIntent)
+            }.toStable(),
             maxLength = 100,
         )
         Spacer(modifier = Modifier.weight(0.25F))
@@ -88,7 +91,8 @@ fun AddDayScreen(
                             descDay = viewState.dayDesc
                         ).run(viewModel::onIntent)
                         AddDayIntent.DayDescChanged(value = "").run(viewModel::onIntent)
-                    }) {
+                    }.toStable()
+                ) {
                     Icon(painter = painterResource(id = imageRes), contentDescription = null)
                 }
             }

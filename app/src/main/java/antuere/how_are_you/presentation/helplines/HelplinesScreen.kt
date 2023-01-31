@@ -30,6 +30,7 @@ fun HelplinesScreen(
 ) {
     Timber.i("MVI error test : enter in helplines screen")
     val appState = LocalAppState.current
+    val viewState by viewModel.collectAsState()
 
     LaunchedEffect(true) {
       appState.updateAppBar(
@@ -41,8 +42,6 @@ fun HelplinesScreen(
             )
         )
     }
-
-    val viewState by viewModel.collectAsState()
 
     when (val state = viewState) {
         is HelplinesState.Loaded -> {

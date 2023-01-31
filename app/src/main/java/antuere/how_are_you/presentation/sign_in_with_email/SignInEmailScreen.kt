@@ -21,6 +21,7 @@ import antuere.how_are_you.presentation.base.ui_compose_components.text_field.Pa
 import antuere.how_are_you.presentation.sign_in_with_email.state.SignInEmailIntent
 import antuere.how_are_you.presentation.sign_in_with_email.state.SignInEmailSideEffect
 import antuere.how_are_you.util.paddingTopBar
+import antuere.how_are_you.util.toStable
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 import timber.log.Timber
@@ -78,7 +79,10 @@ fun SignInEmailScreen(
                     .padding(horizontal = dimensionResource(id = R.dimen.padding_normal_3))
                     .fillMaxWidth(),
                 value = viewState.email,
-                onValueChange = { SignInEmailIntent.EmailChanged(it).run(viewModel::onIntent) })
+                onValueChange = { value: String ->
+                    SignInEmailIntent.EmailChanged(value).run(viewModel::onIntent)
+                }.toStable()
+            )
             Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_5)))
 
             PasswordTextField(
@@ -87,7 +91,10 @@ fun SignInEmailScreen(
                     .fillMaxWidth(),
                 labelId = R.string.password,
                 value = viewState.password,
-                onValueChange = { SignInEmailIntent.PasswordChanged(it).run(viewModel::onIntent) })
+                onValueChange = { value: String ->
+                    SignInEmailIntent.PasswordChanged(value).run(viewModel::onIntent)
+                }.toStable()
+            )
             Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_2)))
 
             DefaultTextButton(
@@ -95,7 +102,8 @@ fun SignInEmailScreen(
                     .padding(end = dimensionResource(id = R.dimen.padding_normal_3))
                     .align(Alignment.End),
                 labelId = R.string.reset_password_hint,
-                onClick = { SignInEmailIntent.ResetPassBtnClicked.run(viewModel::onIntent) })
+                onClick = { SignInEmailIntent.ResetPassBtnClicked.run(viewModel::onIntent) }.toStable()
+            )
             Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_11)))
 
             DefaultButton(
@@ -108,14 +116,14 @@ fun SignInEmailScreen(
                         email = viewState.email,
                         password = viewState.password
                     ).run(viewModel::onIntent)
-                }
+                }.toStable()
             )
             Spacer(modifier = Modifier.weight(1F))
 
             DefaultTextButton(
                 modifier = Modifier.padding(bottom = dimensionResource(id = R.dimen.padding_large_1)),
                 labelId = R.string.don_have_acc,
-                onClick = { SignInEmailIntent.SignUpBtnClicked.run(viewModel::onIntent) }
+                onClick = { SignInEmailIntent.SignUpBtnClicked.run(viewModel::onIntent) }.toStable()
             )
             Spacer(modifier = Modifier.weight(1F))
         }

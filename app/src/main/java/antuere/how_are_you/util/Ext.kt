@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.dp
 import androidx.fragment.app.FragmentActivity
 import antuere.domain.dto.helplines.SupportedCountry
 import antuere.how_are_you.R
+import antuere.how_are_you.presentation.base.ui_text.UiText
 import com.valentinilk.shimmer.ShimmerBounds
 import com.valentinilk.shimmer.defaultShimmerTheme
 import com.valentinilk.shimmer.rememberShimmer
@@ -162,12 +163,11 @@ fun Modifier.animateScaleUpOnce() = composed(
     }
 )
 
-@Composable
-fun SupportedCountry.getName(): String {
+fun SupportedCountry.getName(): UiText {
     return when (this) {
-        is SupportedCountry.Italy -> stringResource(id = R.string.italy)
-        is SupportedCountry.Russia -> stringResource(id = R.string.russia)
-        is SupportedCountry.USA -> stringResource(id = R.string.usa)
+        is SupportedCountry.Italy -> UiText.StringResource(R.string.italy)
+        is SupportedCountry.Russia -> UiText.StringResource(R.string.russia)
+        is SupportedCountry.USA -> UiText.StringResource(R.string.usa)
     }
 }
 

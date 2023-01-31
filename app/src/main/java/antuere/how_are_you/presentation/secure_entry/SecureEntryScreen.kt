@@ -22,6 +22,7 @@ import antuere.how_are_you.presentation.secure_entry.state.SecureEntryIntent
 import antuere.how_are_you.presentation.secure_entry.state.SecureEntrySideEffect
 import antuere.how_are_you.util.findFragmentActivity
 import antuere.how_are_you.util.paddingTopBar
+import antuere.how_are_you.util.toStable
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 import timber.log.Timber
@@ -41,22 +42,6 @@ fun SecureEntryScreen(
         rememberLauncherForActivityResult(contract = ActivityResultContracts.StartActivityForResult()) {}
 
     val viewState by viewModel.collectAsState()
-
-    val onClickNumber: (String) -> Unit = remember {
-        { SecureEntryIntent.NumberClicked(it).run(viewModel::onIntent) }
-    }
-
-    val onClickBiometricBtn: () -> Unit = remember {
-        { SecureEntryIntent.BiometricBtnClicked.run(viewModel::onIntent) }
-    }
-
-    val onClickClearBtn: () -> Unit = remember {
-        { SecureEntryIntent.PinStateReset.run(viewModel::onIntent) }
-    }
-
-    val onClickSignOutBtn: () -> Unit = remember {
-        { SecureEntryIntent.SignOutBtnClicked.run(viewModel::onIntent) }
-    }
 
     LaunchedEffect(true) {
         appState.updateAppBar(
@@ -101,14 +86,16 @@ fun SecureEntryScreen(
         Spacer(modifier = Modifier.weight(0.4F))
 
         NumericKeyPad(
-            onClick = onClickNumber,
-            onClickClear = onClickClearBtn,
+            onClick = { number: String ->
+                SecureEntryIntent.NumberClicked(number).run(viewModel::onIntent)
+            }.toStable(),
+            onClickClear = { SecureEntryIntent.PinStateReset.run(viewModel::onIntent) }.toStable(),
             isShowBiometricBtn = viewState.isShowBiometricBtn,
-            onClickBiometric = onClickBiometricBtn
+            onClickBiometric = { SecureEntryIntent.BiometricBtnClicked.run(viewModel::onIntent) }.toStable()
         )
         Spacer(modifier = Modifier.weight(0.4F))
 
-        TextButton(onClick = onClickSignOutBtn) {
+        TextButton(onClick = { SecureEntryIntent.SignOutBtnClicked.run(viewModel::onIntent) }.toStable()) {
             Text(text = stringResource(id = R.string.sign_out))
         }
         Spacer(modifier = Modifier.weight(0.1F))

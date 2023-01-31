@@ -9,10 +9,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -21,21 +21,26 @@ import antuere.how_are_you.LocalAppState
 import antuere.how_are_you.R
 import antuere.how_are_you.presentation.base.ui_compose_components.card.CardWithIcons
 import antuere.how_are_you.presentation.base.ui_compose_components.top_bar.AppBarState
+import antuere.how_are_you.presentation.help_for_you.state.HelpForYouIntent
+import antuere.how_are_you.presentation.help_for_you.state.HelpForYouSideEffect
 import antuere.how_are_you.util.paddingTopBar
+import antuere.how_are_you.util.toStable
+import org.orbitmvi.orbit.compose.collectAsState
+import org.orbitmvi.orbit.compose.collectSideEffect
 import timber.log.Timber
 
 @Composable
 fun HelpForYouScreen(
-    onNavigateToHelplines : () -> Unit,
-    viewModel: HelpForYouViewModel = hiltViewModel()
+    onNavigateToHelplines: () -> Unit,
+    viewModel: HelpForYouViewModel = hiltViewModel(),
 ) {
-    Timber.i("MVI error test : helpfory screen model id is ${viewModel.hashCode()}")
     Timber.i("MVI error test : enter in help for u screen")
 
     val appState = LocalAppState.current
+    val viewState by viewModel.collectAsState()
 
     LaunchedEffect(true) {
-      appState.updateAppBar(
+        appState.updateAppBar(
             AppBarState(
                 titleId = R.string.help_for_you,
                 navigationIcon = Icons.Filled.ArrowBack,
@@ -43,6 +48,12 @@ fun HelpForYouScreen(
                 isVisibleBottomBar = false
             )
         )
+    }
+
+    viewModel.collectSideEffect { sideEffect ->
+        when (sideEffect) {
+            HelpForYouSideEffect.NavigateToHelplines -> onNavigateToHelplines()
+        }
     }
 
     Column(
@@ -70,7 +81,7 @@ fun HelpForYouScreen(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    text = stringResource(id = R.string.help_for_you_title_card),
+                    text = viewState.titleText.asString(),
                     textAlign = TextAlign.Center,
                     fontSize = dimensionResource(id = R.dimen.textSize_normal_1).value.sp
                 )
@@ -83,10 +94,10 @@ fun HelpForYouScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(0.2F),
-            onClick = onNavigateToHelplines,
-            labelRes = R.string.helplines,
-            leadingIconRes = R.drawable.ic_hotlines,
-            trailingIconRes = R.drawable.ic_round_chevron_right
+            onClick = { HelpForYouIntent.HelplinesCardClicked.run(viewModel::onIntent) }.toStable(),
+            labelRes = viewState.helplinesCard.nameRes,
+            leadingIconRes = viewState.helplinesCard.leadIconRes,
+            trailingIconRes = viewState.helplinesCard.trailingIconRes
         )
         Spacer(modifier = Modifier.weight(0.05F))
 
@@ -94,9 +105,9 @@ fun HelpForYouScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(0.2F),
-            onClick = {},
-            labelRes = R.string.telegram_chat,
-            leadingIconRes = R.drawable.ic_telegram
+            onClick = { HelpForYouIntent.TelegramCardClicked.run(viewModel::onIntent) }.toStable(),
+            labelRes = viewState.telegramCard.nameRes,
+            leadingIconRes = viewState.telegramCard.leadIconRes
         )
         Spacer(modifier = Modifier.weight(0.05F))
 
@@ -104,11 +115,10 @@ fun HelpForYouScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(0.2F),
-            onClick = {},
-            labelRes = R.string.email_chat,
-            leadingIconRes = R.drawable.ic_email
+            onClick = { HelpForYouIntent.EmailCardClicked.run(viewModel::onIntent) }.toStable(),
+            labelRes = viewState.emailCard.nameRes,
+            leadingIconRes = viewState.emailCard.leadIconRes
         )
-
         Spacer(modifier = Modifier.weight(0.1F))
     }
 }

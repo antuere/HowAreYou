@@ -34,6 +34,7 @@ import antuere.how_are_you.presentation.history.state.HistorySideEffect
 import antuere.how_are_you.presentation.history.state.HistoryState
 import antuere.how_are_you.presentation.history.ui_compose.*
 import antuere.how_are_you.util.paddingBotAndTopBar
+import antuere.how_are_you.util.toStable
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
@@ -44,7 +45,7 @@ import java.time.LocalDate
 @Composable
 fun HistoryScreen(
     onNavigateToDetail: (Long) -> Unit,
-    viewModel: HistoryViewModel = hiltViewModel()
+    viewModel: HistoryViewModel = hiltViewModel(),
 ) {
     Timber.i("MVI error test : enter in history screen")
     val appState = LocalAppState.current
@@ -65,19 +66,11 @@ fun HistoryScreen(
     }
 
     val hideBottomSheet: () -> Unit = remember {
-        {
-            scope.launch {
-                bottomSheetState.hide()
-            }
-        }
+        { scope.launch { bottomSheetState.hide() } }
     }
 
     val showBottomSheet: () -> Unit = remember {
-        {
-            scope.launch {
-                bottomSheetState.animateTo(ModalBottomSheetValue.Expanded)
-            }
-        }
+        { scope.launch { bottomSheetState.animateTo(ModalBottomSheetValue.Expanded) } }
     }
 
     val onDaysSelected: (LocalDate, LocalDate) -> Unit = remember {
@@ -96,11 +89,11 @@ fun HistoryScreen(
     }
 
     LaunchedEffect(true) {
-      appState.dismissSnackbar()
+        appState.dismissSnackbar()
     }
 
     LaunchedEffect(bottomSheetState.targetValue) {
-       appState.updateAppBar(
+        appState.updateAppBar(
             AppBarState(
                 titleId = R.string.history,
                 actions = {
@@ -165,7 +158,7 @@ fun HistoryScreen(
                         onClick = {
                             HistoryIntent.ToggleBtnChanged(ToggleBtnState.CURRENT_MONTH)
                                 .run(viewModel::onIntent)
-                        },
+                        }.toStable(),
                         isIconInStart = false,
                         labelId = R.string.close_filter,
                         iconId = R.drawable.ic_round_close
@@ -192,7 +185,7 @@ fun HistoryScreen(
                 }
                 is HistoryState.Empty.NoEntriesYet -> {
                     LaunchedEffect(true) {
-                      appState.updateAppBar(
+                        appState.updateAppBar(
                             AppBarState(
                                 titleId = R.string.history,
                                 isVisibleBottomBar = true
@@ -231,7 +224,7 @@ fun HistoryScreen(
                         onClick = {
                             HistoryIntent.ToggleBtnChanged(ToggleBtnState.CURRENT_MONTH)
                                 .run(viewModel::onIntent)
-                        },
+                        }.toStable(),
                         isIconInStart = false,
                         labelId = R.string.close_filter,
                         iconId = R.drawable.ic_round_close

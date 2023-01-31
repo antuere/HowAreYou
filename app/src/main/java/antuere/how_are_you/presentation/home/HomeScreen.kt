@@ -24,6 +24,7 @@ import antuere.how_are_you.presentation.home.state.HomeIntent
 import antuere.how_are_you.presentation.home.state.HomeSideEffect
 import antuere.how_are_you.presentation.home.state.HomeState
 import antuere.how_are_you.util.paddingBotAndTopBar
+import antuere.how_are_you.util.toStable
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 import timber.log.Timber
@@ -36,7 +37,7 @@ fun HomeScreen(
     onNavigateToCats: () -> Unit,
     onNavigateToDetail: (Long) -> Unit,
     onNavigateToAddDay: () -> Unit,
-    viewModel: () -> HomeViewModel
+    viewModel: () -> HomeViewModel,
 ) {
     Timber.i("MVI error test : enter in home screen")
     val context = LocalContext.current
@@ -74,10 +75,9 @@ fun HomeScreen(
     }
 
     when (val state = viewState) {
-        HomeState.Loading -> {
+        is HomeState.Loading -> {
             FullScreenProgressIndicator()
         }
-
         is HomeState.Loaded -> {
             Column(
                 modifier = Modifier
@@ -104,7 +104,7 @@ fun HomeScreen(
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     CardWithOnClick(
-                        onClick = { HomeIntent.MentalTipsClicked.run(viewModel()::onIntent) },
+                        onClick = { HomeIntent.MentalTipsClicked.run(viewModel()::onIntent) }.toStable(),
                         cardModifier = Modifier
                             .padding(
                                 top = dimensionResource(id = R.dimen.padding_small_1),
@@ -114,7 +114,7 @@ fun HomeScreen(
                         titleText = stringResource(id = R.string.mental_tips)
                     )
                     CardWithOnClick(
-                        onClick = { HomeIntent.HelpForYouClicked.run(viewModel()::onIntent) },
+                        onClick = { HomeIntent.HelpForYouClicked.run(viewModel()::onIntent) }.toStable(),
                         cardModifier = Modifier
                             .padding(
                                 top = dimensionResource(id = R.dimen.padding_small_1),
@@ -132,7 +132,7 @@ fun HomeScreen(
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     CardWithOnClick(
-                        onClick = { HomeIntent.FavoritesClicked.run(viewModel()::onIntent) },
+                        onClick = { HomeIntent.FavoritesClicked.run(viewModel()::onIntent) }.toStable(),
                         cardModifier = Modifier
                             .padding(
                                 top = dimensionResource(id = R.dimen.padding_small_1),
@@ -142,7 +142,7 @@ fun HomeScreen(
                         titleText = stringResource(id = R.string.favorites),
                     )
                     CardWithOnClick(
-                        onClick = { HomeIntent.CatsClicked.run(viewModel()::onIntent) },
+                        onClick = { HomeIntent.CatsClicked.run(viewModel()::onIntent) }.toStable(),
                         cardModifier = Modifier
                             .padding(
                                 top = dimensionResource(id = R.dimen.padding_small_1),
@@ -176,7 +176,7 @@ fun HomeScreen(
                                 start = dimensionResource(id = R.dimen.padding_normal_1),
                                 end = dimensionResource(id = R.dimen.padding_normal_1)
                             ),
-                        onClick = { HomeIntent.FabClicked.run(viewModel()::onIntent) },
+                        onClick = { HomeIntent.FabClicked.run(viewModel()::onIntent) }.toStable(),
                         containerColor = TealMain
                     ) {
                         Icon(

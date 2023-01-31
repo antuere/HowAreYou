@@ -21,18 +21,18 @@ import antuere.how_are_you.presentation.base.ui_compose_components.text_field.Em
 import antuere.how_are_you.presentation.reset_password.state.ResetPasswordIntent
 import antuere.how_are_you.presentation.reset_password.state.ResetPasswordSideEffect
 import antuere.how_are_you.util.paddingTopBar
+import antuere.how_are_you.util.toStable
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 import timber.log.Timber
 
 @Composable
 fun ResetPasswordScreen(
-    viewModel: ResetPasswordViewModel = hiltViewModel()
+    viewModel: ResetPasswordViewModel = hiltViewModel(),
 ) {
     Timber.i("MVI error test : enter in reset password screen")
     val context = LocalContext.current
     val appState = LocalAppState.current
-
     val viewState by viewModel.collectAsState()
 
     LaunchedEffect(true) {
@@ -74,7 +74,10 @@ fun ResetPasswordScreen(
                     .padding(horizontal = dimensionResource(id = R.dimen.padding_normal_3))
                     .fillMaxWidth(),
                 value = viewState.email,
-                onValueChange = { ResetPasswordIntent.EmailChanged(it).run(viewModel::onIntent) })
+                onValueChange = { value: String ->
+                    ResetPasswordIntent.EmailChanged(value).run(viewModel::onIntent)
+                }.toStable()
+            )
 
             Spacer(modifier = Modifier.weight(1F))
 
@@ -84,7 +87,7 @@ fun ResetPasswordScreen(
                 onClick = {
                     ResetPasswordIntent.ResetBtnClicked(userEmail = viewState.email)
                         .run(viewModel::onIntent)
-                }
+                }.toStable()
             )
         }
     }

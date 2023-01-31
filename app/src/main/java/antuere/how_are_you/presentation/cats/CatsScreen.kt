@@ -23,6 +23,7 @@ import antuere.how_are_you.presentation.cats.ui_compose.DefaultGlideImage
 import antuere.how_are_you.presentation.base.ui_theme.PlayfairDisplay
 import antuere.how_are_you.presentation.cats.state.CatsIntent
 import antuere.how_are_you.util.paddingTopBar
+import antuere.how_are_you.util.toStable
 import org.orbitmvi.orbit.compose.collectAsState
 import timber.log.Timber
 
@@ -32,6 +33,7 @@ fun CatsScreen(
 ) {
     Timber.i("MVI error test : enter in catsScreen screen")
     val appState = LocalAppState.current
+    val viewState by viewModel.collectAsState()
 
     LaunchedEffect(true) {
        appState.updateAppBar(
@@ -43,8 +45,6 @@ fun CatsScreen(
             )
         )
     }
-
-    val viewState by viewModel.collectAsState()
 
     Column(
         modifier = Modifier
@@ -101,7 +101,7 @@ fun CatsScreen(
 
         Button(
             modifier = Modifier.fillMaxWidth(0.7F),
-            onClick = { CatsIntent.UpdateCatsClicked.run(viewModel::onIntent) }
+            onClick = { CatsIntent.UpdateCatsClicked.run(viewModel::onIntent) }.toStable()
         ) {
             Text(
                 text = stringResource(id = R.string.getCats),

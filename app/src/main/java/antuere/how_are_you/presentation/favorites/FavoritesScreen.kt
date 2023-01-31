@@ -32,6 +32,7 @@ fun FavoritesScreen(
 ) {
     Timber.i("MVI error test : enter in fav screen")
     val appState = LocalAppState.current
+    val viewState by viewModel.collectAsState()
 
     LaunchedEffect(true) {
         appState.updateAppBar(
@@ -43,7 +44,6 @@ fun FavoritesScreen(
             )
         )
     }
-    val viewState by viewModel.collectAsState()
 
     viewModel.collectSideEffect { sideEffect ->
         when (sideEffect) {
@@ -63,7 +63,6 @@ fun FavoritesScreen(
             is FavoritesState.Empty -> {
                 Text(text = state.message.asString())
             }
-
             is FavoritesState.Loaded -> {
                 DaysGrid(
                     cellsAmount = state.cellsAmountForGrid,
@@ -71,7 +70,6 @@ fun FavoritesScreen(
                     onClick = { FavoritesIntent.DayClicked(it).run(viewModel::onIntent) },
                     onLongClick = { FavoritesIntent.DayLongClicked(it).run(viewModel::onIntent) })
             }
-
             is FavoritesState.LoadingShimmer -> {
                 DaysGridShimmer(
                     cellsAmount = state.cellsAmount,

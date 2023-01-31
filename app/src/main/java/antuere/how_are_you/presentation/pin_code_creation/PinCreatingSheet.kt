@@ -15,6 +15,7 @@ import antuere.how_are_you.presentation.base.ui_compose_components.pin_code.Nume
 import antuere.how_are_you.presentation.base.ui_compose_components.pin_code.PinCirclesIndicates
 import antuere.how_are_you.presentation.pin_code_creation.state.PinCreationIntent
 import antuere.how_are_you.presentation.pin_code_creation.state.PinCreationSideEffect
+import antuere.how_are_you.util.toStable
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 import timber.log.Timber
@@ -24,15 +25,10 @@ fun PinCodeCreating(
     hideBottomSheet: () -> Unit,
     isSheetStartsHiding: Boolean,
     onHandleResult: (Boolean) -> Unit,
-    viewModel: PinCreatingSheetViewModel = hiltViewModel()
+    viewModel: PinCreatingSheetViewModel = hiltViewModel(),
 ) {
     Timber.i("MVI error test : composed pin code creating")
-
     val viewState by viewModel.collectAsState()
-
-    val onClickNumber: (String) -> Unit = remember {
-        { PinCreationIntent.NumberClicked(it).run(viewModel::onIntent) }
-    }
 
     val resetPinState: () -> Unit = remember {
         { PinCreationIntent.PinStateReset.run(viewModel::onIntent) }
@@ -76,7 +72,9 @@ fun PinCodeCreating(
         Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_11)))
 
         NumericKeyPad(
-            onClick = onClickNumber,
+            onClick = { number: String ->
+                PinCreationIntent.NumberClicked(number).run(viewModel::onIntent)
+            }.toStable(),
             onClickClear = resetPinState
         )
 

@@ -32,7 +32,6 @@ fun MentalTipsScreen(
     Timber.i("MVI error test : enter in mental tips screen")
     val pagerState = rememberPagerState()
     val appState = LocalAppState.current
-
     val viewState by viewModel.collectAsState()
 
     LaunchedEffect(viewState.appBarTitleId) {

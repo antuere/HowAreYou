@@ -77,7 +77,9 @@ fun SignUpEmailScreen(
                     .padding(horizontal = dimensionResource(id = R.dimen.padding_normal_3))
                     .fillMaxWidth(),
                 value = viewState.nickName,
-                onValueChange = { SignUpEmailIntent.NicknameChanged(it).run(viewModel::onIntent) },
+                onValueChange = { value: String ->
+                    SignUpEmailIntent.NicknameChanged(value).run(viewModel::onIntent)
+                }.toStable(),
                 label = stringResource(id = R.string.nickname),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
                 singleLine = true
@@ -89,7 +91,10 @@ fun SignUpEmailScreen(
                     .padding(horizontal = dimensionResource(id = R.dimen.padding_normal_3))
                     .fillMaxWidth(),
                 value = viewState.email,
-                onValueChange = { SignUpEmailIntent.EmailChanged(it).run(viewModel::onIntent) })
+                onValueChange = { value: String ->
+                    SignUpEmailIntent.EmailChanged(value).run(viewModel::onIntent)
+                }.toStable()
+            )
             Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_5)))
 
             PasswordTextField(
@@ -98,7 +103,10 @@ fun SignUpEmailScreen(
                     .fillMaxWidth(),
                 labelId = R.string.password,
                 value = viewState.password,
-                onValueChange = { SignUpEmailIntent.PasswordChanged(it).run(viewModel::onIntent) })
+                onValueChange = { value: String ->
+                    SignUpEmailIntent.PasswordChanged(value).run(viewModel::onIntent)
+                }.toStable()
+            )
             Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_5)))
 
             PasswordTextField(

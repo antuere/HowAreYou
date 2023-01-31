@@ -23,7 +23,7 @@ fun materialFadeThroughIn(duration: Int = 200): EnterTransition {
     return scaleIn(
         initialScale = 0.92F,
         animationSpec = tween(duration)
-    ) + fadeIn(animationSpec = tween(duration/2))
+    ) + fadeIn(animationSpec = tween(duration / 2))
 }
 
 @ExperimentalAnimationApi
@@ -31,30 +31,30 @@ fun materialFadeThroughOut(duration: Int = 200): ExitTransition {
     return scaleOut(
         targetScale = 0.92F,
         animationSpec = tween(duration)
-    ) + fadeOut(animationSpec = tween(duration/2))
+    ) + fadeOut(animationSpec = tween(duration / 2))
 }
 
 @ExperimentalAnimationApi
-fun materialSlideIn(forward: Boolean): EnterTransition {
+fun materialSlideIn(forward: Boolean, duration: Int = 200): EnterTransition {
     return if (forward) {
-        slideInHorizontally(animationSpec = tween(200)) { fullWidth: Int ->
+        slideInHorizontally(animationSpec = tween(duration)) { fullWidth: Int ->
             fullWidth / 3
         } + materialFadeThroughIn()
     } else {
-        slideInHorizontally(animationSpec = tween(200)) { fullWidth: Int ->
+        slideInHorizontally(animationSpec = tween(duration)) { fullWidth: Int ->
             -fullWidth / 3
         } + materialFadeThroughIn()
     }
 }
 
 @ExperimentalAnimationApi
-fun materialSlideOut(forward: Boolean): ExitTransition {
+fun materialSlideOut(forward: Boolean, duration: Int = 200): ExitTransition {
     return if (forward) {
-        slideOutHorizontally(animationSpec = tween(200)) { fullWidth: Int ->
+        slideOutHorizontally(animationSpec = tween(duration)) { fullWidth: Int ->
             fullWidth / 3
         } + materialFadeThroughOut()
     } else {
-        slideOutHorizontally(animationSpec = tween(200)) { fullWidth: Int ->
+        slideOutHorizontally(animationSpec = tween(duration)) { fullWidth: Int ->
             -fullWidth / 3
         } + materialFadeThroughOut()
     }
