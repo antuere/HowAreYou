@@ -21,13 +21,11 @@
 
         <Button
                 style="@style/Widget.App.Button.Default.ToggleGroup"
-                android:id="@+id/button_all_days"
-                android:text="@string/all_days_title"
-                android:contentDescription="@string/all_days_desc"
+                android:id="@+id/button_last_week"
+                android:text="@string/last_week_title"
+                android:contentDescription="@string/week_days_desc"
                 android:layout_width="@dimen/checked_button_width"
-                android:layout_height="wrap_content">
-
-        </Button>
+                android:layout_height="wrap_content" />
 
         <Button
                 style="@style/Widget.App.Button.Default.ToggleGroup"
@@ -35,19 +33,16 @@
                 android:text="@string/current_month_title"
                 android:contentDescription="@string/month_days_desc"
                 android:layout_width="@dimen/checked_button_width"
-                android:layout_height="wrap_content">
-
-        </Button>
+                android:layout_height="wrap_content" />
 
         <Button
                 style="@style/Widget.App.Button.Default.ToggleGroup"
-                android:id="@+id/button_last_week"
-                android:text="@string/last_week_title"
-                android:contentDescription="@string/week_days_desc"
+                android:id="@+id/button_all_days"
+                android:text="@string/all_days_title"
+                android:contentDescription="@string/all_days_desc"
                 android:layout_width="@dimen/checked_button_width"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content" />
 
-        </Button>
     </com.google.android.material.button.MaterialButtonToggleGroup>
 
     <androidx.recyclerview.widget.RecyclerView

@@ -18,6 +18,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.material.transition.MaterialElevationScale
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -55,6 +56,8 @@ class SignInMethodsFragment :
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+
+        Timber.i("navigate upd : createView signInMethods")
         binding = this.inflater(inflater, container, false)
         binding!!.buttonEmailMethod.setOnClickListener {
             val transitionName = getString(R.string.transition_name_for_sign_in)
@@ -79,7 +82,6 @@ class SignInMethodsFragment :
             startPostponedEnterTransition()
         }
 
-        viewModel.checkCurrentAuth()
         viewModel.signInState.observe(viewLifecycleOwner) { state ->
             state?.let {
                 when (it) {

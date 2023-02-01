@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.example.zeroapp.R
 import com.example.zeroapp.databinding.FragmentLoginEmailBinding
 import com.example.zeroapp.presentation.base.BaseBindingFragment
 import com.example.zeroapp.util.createSharedElementEnterTransition
@@ -42,9 +43,6 @@ class LoginEmailFragment :
     }
 
     private fun setupBinding(binding: FragmentLoginEmailBinding) {
-
-        viewModel.checkCurrentAuth()
-
         binding.apply {
             buttonSignIn.setOnClickListener {
                 val email = emailText.text.toString()
@@ -75,13 +73,13 @@ class LoginEmailFragment :
             state?.let {
                 when (it) {
                     is LoginState.Successful -> {
-                        findNavController().navigateUp()
-                        viewModel.resetIsLoginProgressIndicator(withDelay = true)
+                        findNavController().popBackStack(R.id.signInMethodsFragment, true)
+                        viewModel.resetIsShowLoginProgressIndicator(withDelay = true)
                     }
                     is LoginState.EmptyFields -> showSnackBar(stringResId = it.res)
                     is LoginState.ErrorFromFireBase -> {
                         showSnackBarByString(string = it.message)
-                        viewModel.resetIsLoginProgressIndicator()
+                        viewModel.resetIsShowLoginProgressIndicator()
                     }
                 }
                 viewModel.nullifyState()
@@ -99,8 +97,11 @@ class LoginEmailFragment :
 
     private fun showProgressIndicator() {
         binding!!.apply {
-            loginProgressIndicator.visibility = View.VISIBLE
-            loginProgressText.visibility = View.VISIBLE
+            if (stubProgressLogin.root.parent != null) {
+                stubProgressLogin.root.inflate()
+            } else {
+                stubProgressLogin.root.visibility = View.VISIBLE
+            }
             emailLayout.visibility = View.INVISIBLE
             passwordLayout.visibility = View.INVISIBLE
             resetPasswordHint.visibility = View.INVISIBLE
@@ -112,8 +113,7 @@ class LoginEmailFragment :
 
     private fun hideProgressIndicator() {
         binding!!.apply {
-            loginProgressIndicator.visibility = View.INVISIBLE
-            loginProgressText.visibility = View.INVISIBLE
+            stubProgressLogin.root.visibility = View.GONE
             emailLayout.visibility = View.VISIBLE
             passwordLayout.visibility = View.VISIBLE
             resetPasswordHint.visibility = View.VISIBLE
@@ -121,5 +121,4 @@ class LoginEmailFragment :
             buttonSignIn.visibility = View.VISIBLE
         }
     }
-
 }

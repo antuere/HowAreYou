@@ -4,8 +4,10 @@ import antuere.data.preferences_data_store.toggle_btn_data_store.ToggleBtnDataSt
 import antuere.data.preferences_data_store.toggle_btn_data_store.mapping.ToggleBtnStateEntityMapper
 import antuere.domain.dto.ToggleBtnState
 import antuere.domain.repository.ToggleBtnRepository
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class ToggleBtnRepositoryImpl @Inject constructor(
@@ -14,13 +16,13 @@ class ToggleBtnRepositoryImpl @Inject constructor(
 ) :
     ToggleBtnRepository {
 
-    override suspend fun getToggleButtonState(): Flow<ToggleBtnState> {
-        return toggleBtnDataStore.toggleButtonState.map {
+    override suspend fun getToggleButtonState(): Flow<ToggleBtnState> = withContext(Dispatchers.IO) {
+         toggleBtnDataStore.toggleButtonState.map {
             toggleBtnStateMapperPref.mapToDomainModel(it)
         }
     }
 
-    override suspend fun saveToggleButtonState(state: ToggleBtnState) {
+    override suspend fun saveToggleButtonState(state: ToggleBtnState) = withContext(Dispatchers.IO) {
         toggleBtnDataStore.saveToggleButtonState(state.id)
     }
 }

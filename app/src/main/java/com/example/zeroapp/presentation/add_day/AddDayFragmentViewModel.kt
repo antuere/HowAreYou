@@ -12,8 +12,8 @@ import javax.inject.Inject
 class AddDayFragmentViewModel @Inject constructor(private val addDayUseCase: AddDayUseCase) :
     ViewModel() {
 
-    fun onClickSmile(imageName: String, descDay: String) {
-        val day = Day(imageName = imageName, dayText = descDay)
+    fun onClickSmile(imageResId: Int, descDay: String) {
+        val day = Day(imageResId = imageResId, dayText = descDay)
 
         viewModelScope.launch {
             addDayUseCase(day)

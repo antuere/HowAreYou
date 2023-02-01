@@ -7,8 +7,8 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.zeroapp.databinding.FragmentAddDayBinding
 import com.example.zeroapp.presentation.base.BaseBindingFragment
-import com.example.zeroapp.util.SmileProvider
 import com.example.zeroapp.util.createSharedElementEnterTransition
+import com.example.zeroapp.util.getSmileResFromBtnId
 import com.example.zeroapp.util.startOnClickAnimation
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -41,7 +41,7 @@ class AddDayFragment : BaseBindingFragment<FragmentAddDayBinding>(FragmentAddDay
         button.setOnClickListener {
             startOnClickAnimation(it)
             val dayText = binding?.textDescribeDay?.text.toString()
-            val imageName = SmileProvider.getSmileNameFromBtnId(it.id)
+            val imageName = it.getSmileResFromBtnId()
 
             viewModel.onClickSmile(imageName, dayText)
             binding?.textDescribeDay?.text?.clear()

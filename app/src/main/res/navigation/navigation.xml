@@ -3,7 +3,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/navigation"
-        app:startDestination="@id/secureEntryFragment">
+        app:startDestination="@id/mentalTipsFragment">
 
     <fragment
             android:id="@+id/addDayFragment"
@@ -63,6 +63,9 @@
         <action
                 android:id="@+id/action_summaryFragment_to_catsFragment"
                 app:destination="@id/catsFragment" />
+        <action
+                android:id="@+id/action_summaryFragment_to_mentalTipsFragment"
+                app:destination="@id/mentalTipsFragment" />
     </fragment>
     <fragment
             android:id="@+id/favoritesFragment"
@@ -126,4 +129,9 @@
                 app:popUpTo="@+id/navigation"
                 app:popUpToInclusive="true"/>
     </fragment>
+    <fragment
+            android:id="@+id/mentalTipsFragment"
+            android:name="com.example.zeroapp.presentation.mental_tips.MentalTipsFragment"
+            android:label="@string/mental_tips"
+            tools:layout="@layout/fragment_mental_tips" />
 </navigation>

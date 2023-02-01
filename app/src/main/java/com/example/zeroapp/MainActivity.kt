@@ -11,36 +11,51 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import antuere.domain.dto.Settings
+import antuere.domain.usecases.user_settings.GetSettingsUseCase
 import com.example.zeroapp.databinding.ActivityMainBinding
 import com.example.zeroapp.presentation.summary.SummaryViewModel
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import javax.inject.Inject
 
 
-// TODO Попробовать Cicerone вместо гугловой навигации
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private var binding: ActivityMainBinding? = null
+
     private var _bottomNavView: BottomNavigationView? = null
     val bottomNavView: BottomNavigationView?
         get() = _bottomNavView
 
+    var toolbar: MaterialToolbar? = null
     private var navController: NavController? = null
 
     private val viewModel by viewModels<SummaryViewModel>()
 
-    var toolbar: MaterialToolbar? = null
+    @Inject
+    lateinit var getSettingsUseCase: GetSettingsUseCase
+    private var settings: Settings? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        lifecycleScope.launch(Dispatchers.IO) {
+            settings = getSettingsUseCase(Unit).first()
+        }
+
         installSplashScreen().apply {
-            setKeepOnScreenCondition {
-                viewModel.isShowSplash.value!!
+            if (BuildConfig.BUILD_TYPE != "benchmark") {
+                setKeepOnScreenCondition {
+                    viewModel.isShowSplash.value!!
+                }
             }
         }
 
@@ -52,9 +67,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupBinding(binding: ActivityMainBinding) {
+        Timber.plant(Timber.DebugTree())
+
         toolbar = binding.toolBarApp
         setSupportActionBar(toolbar)
-
         _bottomNavView = binding.bottomView
 
         val navHostFragment =
@@ -68,6 +84,17 @@ class MainActivity : AppCompatActivity() {
                 R.id.summaryFragment,
             )
         )
+
+        val navInflater = navController!!.navInflater
+        val graph = navInflater.inflate(R.navigation.navigation)
+
+        if (!settings!!.isPinCodeEnabled && !settings!!.isBiometricEnabled) {
+            graph.setStartDestination(R.id.summaryFragment)
+        } else {
+            graph.setStartDestination(R.id.secureEntryFragment)
+        }
+
+        navController?.graph = graph
 
         navController?.addOnDestinationChangedListener { _, dest, _ ->
             when (dest.id) {
@@ -89,18 +116,16 @@ class MainActivity : AppCompatActivity() {
                 R.id.registerFragment -> hideBottomBar()
                 R.id.resetPasswordFragment -> hideBottomBar()
                 R.id.signInMethodsFragment -> hideBottomBar()
+                R.id.mentalTipsFragment -> hideBottomBar()
                 R.id.secureEntryFragment -> {
                     goneBottomBar()
                     goneAppBar()
                 }
             }
-
         }
 
         setupActionBarWithNavController(navController!!, appBarConfiguration)
         _bottomNavView?.setupWithNavController(navController!!)
-
-        Timber.plant(Timber.DebugTree())
     }
 
     override fun onSupportNavigateUp(): Boolean {

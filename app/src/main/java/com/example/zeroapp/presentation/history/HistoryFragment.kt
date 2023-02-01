@@ -11,9 +11,13 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.transition.TransitionManager
 import antuere.domain.dto.ToggleBtnState
+import com.example.zeroapp.presentation.base.recycle_view_animator.custom.DefaultCustomAnimator
+import com.example.zeroapp.presentation.base.recycle_view_animator.custom.ScaleCustomAnimator
+import com.example.zeroapp.presentation.base.recycle_view_animator.custom.SlideInTopCustomAnimator
 import com.example.zeroapp.R
 import com.example.zeroapp.databinding.FragmentHistoryBinding
 import com.example.zeroapp.presentation.base.BaseBindingFragment
+import com.example.zeroapp.presentation.base.recycle_view_animator.CustomItemAnimatorFactory
 import com.example.zeroapp.presentation.base.ui_date_picker.UIDatePickerListener
 import com.example.zeroapp.presentation.base.ui_dialog.UIDialogListener
 import com.example.zeroapp.presentation.history.adapter.DayAdapter
@@ -60,38 +64,54 @@ class HistoryFragment :
     ): View {
         binding = FragmentHistoryBinding.inflate(inflater, container, false)
 
-        val adapter =  DayAdapter(viewModel.dayClickListener, myAnalystForHistory)
+        val dayAdapter = DayAdapter(viewModel.dayClickListener, myAnalystForHistory)
         val manager = GridLayoutManager(mainActivity!!, 4)
 
-        binding!!.dayList.layoutManager = manager
-        binding!!.dayList.adapter = adapter
+        binding!!.dayList.apply {
+            layoutManager = manager
+            adapter = dayAdapter
+
+            itemAnimator = CustomItemAnimatorFactory(DefaultCustomAnimator()).also { animator ->
+                animator.addViewTypeAnimator(R.layout.day_item, ScaleCustomAnimator())
+                animator.addViewTypeAnimator(R.layout.header_history, SlideInTopCustomAnimator())
+                animator.addDuration = 400L
+                animator.removeDuration = 400L
+            }
+        }
 
         binding!!.toggleButton.addOnButtonCheckedListener { group, _, _ ->
             when (group.checkedButtonId) {
                 R.id.button_all_days -> viewModel.onClickCheckedItem(ToggleBtnState.AllDays(1))
-                R.id.button_current_month -> viewModel.onClickCheckedItem(ToggleBtnState.CurrentMonth(2))
+                R.id.button_current_month -> viewModel.onClickCheckedItem(
+                    ToggleBtnState.CurrentMonth(2)
+                )
                 R.id.button_last_week -> viewModel.onClickCheckedItem(ToggleBtnState.LastWeek(3))
             }
         }
         viewModel.listDays.observe(viewLifecycleOwner) {
             it?.let {
                 if (it.isEmpty()) {
+                    if (dayAdapter.currentList.isNotEmpty()) {
+                        binding!!.dayList.itemAnimator!!.removeDuration = 350L
+                        dayAdapter.addHeaderAndSubmitList(it)
+                    }
+
                     val materialFade = MaterialFade().apply {
-                        duration = 250L
+                        duration = 3500L
                     }
                     TransitionManager.beginDelayedTransition(container!!, materialFade)
-
                     binding!!.historyHint.visibility = View.VISIBLE
-                } else {
-                    binding!!.historyHint.visibility = View.GONE
-                }
 
-                adapter.addHeaderAndSubmitList(it)
+                } else {
+                    binding!!.dayList.itemAnimator!!.removeDuration = 500L
+                    binding!!.historyHint.visibility = View.GONE
+                    dayAdapter.addHeaderAndSubmitList(it)
+                }
             }
         }
 
         viewModel.isFilterSelected.observe(viewLifecycleOwner) {
-            if(it) {
+            if (it) {
                 manager.setManagerSpanCount(3)
                 binding!!.toggleButton.clearChecked()
                 viewModel.resetIsFilterSelected()
@@ -102,20 +122,29 @@ class HistoryFragment :
             it?.let { state ->
                 when (state) {
                     is ToggleBtnState.AllDays -> {
-                        viewModel.checkedAllDaysButton()
+//                        if (viewModel.currentJob !is JobType.AllDays) {
+//                            dayAdapter.submitList(emptyList())
+//                        }
 
+                        viewModel.checkedAllDaysButton()
                         manager.setManagerSpanCount(4)
                         binding!!.toggleButton.check(R.id.button_all_days)
                     }
                     is ToggleBtnState.LastWeek -> {
-                        viewModel.checkedLastWeekButton()
+//                        if (viewModel.currentJob !is JobType.Week) {
+//                            dayAdapter.submitList(emptyList())
+//                        }
 
+                        viewModel.checkedLastWeekButton()
                         manager.setManagerSpanCount(2)
                         binding!!.toggleButton.check(R.id.button_last_week)
                     }
                     is ToggleBtnState.CurrentMonth -> {
-                        viewModel.checkedCurrentMonthButton()
+//                        if (viewModel.currentJob !is JobType.Month) {
+//                            dayAdapter.submitList(emptyList())
+//                        }
 
+                        viewModel.checkedCurrentMonthButton()
                         manager.setManagerSpanCount(3)
                         binding!!.toggleButton.check(R.id.button_current_month)
                     }
@@ -170,6 +199,11 @@ class HistoryFragment :
             }
 
         }, viewLifecycleOwner, Lifecycle.State.STARTED)
+    }
+
+    override fun onStop() {
+        super.onStop()
+//        binding!!.toggleButton.visibility = View.INVISIBLE
     }
 
 

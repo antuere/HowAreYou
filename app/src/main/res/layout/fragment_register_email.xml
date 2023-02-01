@@ -7,11 +7,15 @@
         tools:theme="@style/Theme.ZeroApp"
         android:fillViewport="true">
 
-
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:transitionGroup="true">
+
+        <include
+                android:id="@+id/stub_progress_register"
+                layout="@layout/view_progress_indicator"
+                />
 
         <ImageView
                 android:id="@+id/entry_icon_app"

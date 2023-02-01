@@ -30,7 +30,6 @@ class DayRepositoryImpl @Inject constructor(
         if (daysFromServer.isNotEmpty()) {
             CoroutineScope(Dispatchers.IO).launch {
                 deleteAllDaysLocal()
-                Timber.i("days not null")
                 daysFromServer.forEach { day ->
                     insertLocal(day)
                 }
@@ -42,16 +41,16 @@ class DayRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getAllDays(): Flow<List<Day>> {
-        return dayDataBaseRoom.dayDatabaseDao.getAllDays().map {
+    override suspend fun getAllDays(): Flow<List<Day>> = withContext(Dispatchers.IO) {
+        dayDataBaseRoom.dayDatabaseDao.getAllDays().map {
             it.map { dayEntity ->
                 dayEntityMapper.mapToDomainModel(dayEntity)
             }
         }
     }
 
-    override suspend fun getFavoritesDays(): Flow<List<Day>> {
-        return dayDataBaseRoom.dayDatabaseDao.getFavoritesDays().map {
+    override suspend fun getFavoritesDays(): Flow<List<Day>> = withContext(Dispatchers.IO) {
+        dayDataBaseRoom.dayDatabaseDao.getFavoritesDays().map {
             it.map { dayEntity ->
                 dayEntityMapper.mapToDomainModel(dayEntity)
             }
@@ -72,6 +71,7 @@ class DayRepositoryImpl @Inject constructor(
         withContext(Dispatchers.IO) {
             dayDataBaseRoom.dayDatabaseDao.getCertainDays(dayStart)
                 .map {
+                    Timber.i("recycle view error : current start time is $dayStart")
                     it.map { dayEntity ->
                         dayEntityMapper.mapToDomainModel(dayEntity)
                     }
@@ -87,9 +87,11 @@ class DayRepositoryImpl @Inject constructor(
             }
     }
 
-    override suspend fun getDay(): Day? = withContext(Dispatchers.IO) {
+    override suspend fun getDay(): Flow<Day?> = withContext(Dispatchers.IO) {
         val dayEntity = dayDataBaseRoom.dayDatabaseDao.getDay()
-        dayEntity?.let(dayEntityMapper::mapToDomainModel)
+        dayEntity.map {
+            it?.let(dayEntityMapper::mapToDomainModel)
+        }
     }
 
     override suspend fun getDayById(id: Long): Day? = withContext(Dispatchers.IO) {

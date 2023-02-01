@@ -28,6 +28,7 @@ import com.google.android.material.transition.MaterialFadeThrough
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -106,7 +107,7 @@ class SettingsFragment :
 
         viewModel.userNickname.observe(viewLifecycleOwner) {
             it?.let { userName ->
-                if(userName != "UserUnknownError175"){
+                if (userName != "UserUnknownError175") {
                     val welcomeText = "${getString(R.string.hello_user)} $userName"
                     binding!!.userNickname.text = welcomeText
 
@@ -119,10 +120,11 @@ class SettingsFragment :
 
         viewModel.settings.observe(viewLifecycleOwner) {
             it?.let { settings ->
-                binding!!.settingBiomAuthSwitch.isChecked = settings.isBiometricEnabled
-                binding!!.settingWorriedDialogSwitch.isChecked = settings.isShowWorriedDialog
-
-                binding!!.settingPinCodeSwitch.isChecked = settings.isPinCodeEnabled
+                binding!!.apply {
+                    settingBiomAuthSwitch.isChecked = settings.isBiometricEnabled
+                    settingWorriedDialogSwitch.isChecked = settings.isShowWorriedDialog
+                    settingPinCodeSwitch.isChecked = settings.isPinCodeEnabled
+                }
 
                 if (settings.isPinCodeEnabled && viewModel.biometricAvailableState.value is BiometricsAvailableState.Available) {
                     showBiometricSetting(container!!)
@@ -138,7 +140,7 @@ class SettingsFragment :
                             val enrollIntent = Intent(Settings.ACTION_BIOMETRIC_ENROLL).apply {
                                 putExtra(
                                     Settings.EXTRA_BIOMETRIC_AUTHENTICATORS_ALLOWED,
-                                    BiometricManager.Authenticators.BIOMETRIC_STRONG or BiometricManager.Authenticators.DEVICE_CREDENTIAL
+                                    BiometricManager.Authenticators.BIOMETRIC_STRONG or BiometricManager.Authenticators.BIOMETRIC_WEAK
                                 )
                             }
                             startActivity(enrollIntent)
@@ -161,7 +163,7 @@ class SettingsFragment :
         viewModel.biometricAuthState.observe(viewLifecycleOwner) {
             it?.let { state ->
                 when (state) {
-                    is BiometricAuthState.Successful -> {
+                    BiometricAuthState.SUCCESS -> {
                         binding!!.settingBiomAuthSwitch.isChecked = true
                         viewModel.saveSettings(
                             binding!!.settingBiomAuthSwitch.isChecked,
@@ -170,7 +172,7 @@ class SettingsFragment :
                         viewModel.nullifyBiometricAuthState()
                         showSnackBar(stringResId = R.string.biom_auth_create_success)
                     }
-                    is BiometricAuthState.Error -> binding!!.settingBiomAuthSwitch.isChecked = false
+                    BiometricAuthState.ERROR -> binding!!.settingBiomAuthSwitch.isChecked = false
                 }
             }
         }
@@ -221,18 +223,17 @@ class SettingsFragment :
     }
 
     private fun showSignOutButton() {
-        binding!!.signInAdviceText.visibility = View.GONE
-
-        binding!!.buttonSignIn.updateLayoutParams<ConstraintLayout.LayoutParams> {
-            topToBottom = binding!!.howAreYouText.id
+        binding!!.apply {
+            signInAdviceText.visibility = View.GONE
+            buttonSignIn.updateLayoutParams<ConstraintLayout.LayoutParams> {
+                topToBottom = howAreYouText.id
+            }
+            buttonSignOut.updateLayoutParams<ConstraintLayout.LayoutParams> {
+                topToBottom = howAreYouText.id
+            }
+            buttonSignIn.visibility = View.INVISIBLE
+            buttonSignOut.visibility = View.VISIBLE
         }
-
-        binding!!.buttonSignOut.updateLayoutParams<ConstraintLayout.LayoutParams> {
-            topToBottom = binding!!.howAreYouText.id
-        }
-
-        binding!!.buttonSignIn.visibility = View.INVISIBLE
-        binding!!.buttonSignOut.visibility = View.VISIBLE
     }
 
     private fun showSignInButton(viewGroup: ViewGroup) {
@@ -241,18 +242,18 @@ class SettingsFragment :
         }
         TransitionManager.beginDelayedTransition(viewGroup, materialFade)
 
-        binding!!.buttonSignIn.visibility = View.VISIBLE
-        binding!!.signInAdviceText.visibility = View.VISIBLE
-        binding!!.buttonSignOut.visibility = View.INVISIBLE
-
-        binding!!.buttonSignIn.updateLayoutParams<ConstraintLayout.LayoutParams> {
-            topToBottom = binding!!.signInAdviceText.id
+        binding!!.apply {
+            buttonSignIn.visibility = View.VISIBLE
+            signInAdviceText.visibility = View.VISIBLE
+            buttonSignOut.visibility = View.INVISIBLE
+            buttonSignIn.updateLayoutParams<ConstraintLayout.LayoutParams> {
+                topToBottom = binding!!.signInAdviceText.id
+            }
+            buttonSignOut.updateLayoutParams<ConstraintLayout.LayoutParams> {
+                topToBottom = signInAdviceText.id
+            }
+            userNickname.text = getString(R.string.hello_user_plug)
         }
-
-        binding!!.buttonSignOut.updateLayoutParams<ConstraintLayout.LayoutParams> {
-            topToBottom = binding!!.signInAdviceText.id
-        }
-        binding!!.userNickname.text = getString(R.string.hello_user_plug)
     }
 
     private fun showBiometricSetting(viewGroup: ViewGroup, withAnimation: Boolean = true) {
@@ -263,12 +264,15 @@ class SettingsFragment :
             TransitionManager.beginDelayedTransition(viewGroup, materialFade)
         }
 
-        binding!!.settingBiomAuthSwitch.visibility = View.VISIBLE
-        binding!!.settingBiomAuthTitle.visibility = View.VISIBLE
-        binding!!.settingBiomAuthDesc.visibility = View.VISIBLE
 
-        binding!!.materialDividerUnderPrivacy.updateLayoutParams<ConstraintLayout.LayoutParams> {
-            topToBottom = binding!!.settingBiomAuthSwitch.id
+        binding!!.apply {
+            settingBiomAuthSwitch.visibility = View.VISIBLE
+            settingBiomAuthTitle.visibility = View.VISIBLE
+            settingBiomAuthDesc.visibility = View.VISIBLE
+
+            materialDividerUnderPrivacy.updateLayoutParams<ConstraintLayout.LayoutParams> {
+                topToBottom = binding!!.settingBiomAuthSwitch.id
+            }
         }
     }
 
@@ -278,16 +282,17 @@ class SettingsFragment :
         }
         TransitionManager.beginDelayedTransition(viewGroup, materialFade)
 
-        binding!!.settingBiomAuthSwitch.visibility = View.INVISIBLE
-        binding!!.settingBiomAuthTitle.visibility = View.INVISIBLE
-        binding!!.settingBiomAuthDesc.visibility = View.INVISIBLE
+        binding!!.apply {
+            settingBiomAuthSwitch.visibility = View.INVISIBLE
+            settingBiomAuthTitle.visibility = View.INVISIBLE
+            settingBiomAuthDesc.visibility = View.INVISIBLE
 
-        lifecycleScope.launch {
-            delay(250L)
-            binding!!.materialDividerUnderPrivacy.updateLayoutParams<ConstraintLayout.LayoutParams> {
-                topToBottom = binding!!.settingPinCodeSwitch.id
+            lifecycleScope.launch {
+                delay(250L)
+                materialDividerUnderPrivacy.updateLayoutParams<ConstraintLayout.LayoutParams> {
+                    topToBottom = settingPinCodeSwitch.id
+                }
             }
         }
-
     }
 }

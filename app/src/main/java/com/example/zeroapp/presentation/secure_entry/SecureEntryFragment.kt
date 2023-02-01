@@ -21,6 +21,7 @@ import com.example.zeroapp.presentation.base.ui_biometric_dialog.BiometricsAvail
 import com.example.zeroapp.util.startOnClickAnimation
 import com.google.android.material.transition.MaterialSharedAxis
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 import javax.inject.Inject
 
 
@@ -54,6 +55,7 @@ class SecureEntryFragment :
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Timber.i("fuck error : init secure fragment")
         exitTransition = MaterialSharedAxis(MaterialSharedAxis.X, true)
         reenterTransition = MaterialSharedAxis(MaterialSharedAxis.X, false)
     }
@@ -95,6 +97,17 @@ class SecureEntryFragment :
             viewModel.onClickSignOut()
         }
 
+        viewModel.settings.observe(viewLifecycleOwner) {
+            it?.let { settings ->
+                if (!settings.isPinCodeEnabled && !settings.isBiometricEnabled) {
+                    viewModel.navigateToHomeFragment()
+                }
+                if (settings.isBiometricEnabled) {
+                    viewModel.showBiometricAuth(withDelay = true)
+                }
+            }
+        }
+
         viewModel.isNavigateToHomeFragment.observe(viewLifecycleOwner) {
             if (it) {
                 findNavController().navigate(
@@ -106,8 +119,8 @@ class SecureEntryFragment :
         viewModel.biometricAuthState.observe(viewLifecycleOwner) {
             it?.let { state ->
                 when (state) {
-                    is BiometricAuthState.Successful -> viewModel.navigateToHomeFragment()
-                    is BiometricAuthState.Error -> viewModel.biomAuthDialogCanceled()
+                    BiometricAuthState.SUCCESS -> viewModel.navigateToHomeFragment()
+                    BiometricAuthState.ERROR -> viewModel.biomAuthDialogCanceled()
                 }
             }
         }
@@ -141,16 +154,6 @@ class SecureEntryFragment :
             }
         }
 
-        viewModel.settings.observe(viewLifecycleOwner) {
-            it?.let { settings ->
-                if (!settings.isPinCodeEnabled && !settings.isBiometricEnabled) {
-                    viewModel.navigateToHomeFragment()
-                }
-                if (settings.isBiometricEnabled) {
-                    viewModel.showBiometricAuth(withDelay = true)
-                }
-            }
-        }
 
         viewModel.isShowBiometricAuth.observe(viewLifecycleOwner) {
             if (it) {
@@ -184,29 +187,33 @@ class SecureEntryFragment :
         viewModel.pinCodeCirclesState.observe(viewLifecycleOwner) {
             it?.let { state ->
                 when (state) {
-                    is PinCodeCirclesState.IsShowNone -> {
-                        binding.entryCircle1.setImageResource(R.drawable.ic_outline_outlined)
-                        binding.entryCircle2.setImageResource(R.drawable.ic_outline_outlined)
-                        binding.entryCircle3.setImageResource(R.drawable.ic_outline_outlined)
-                        binding.entryCircle4.setImageResource(R.drawable.ic_outline_outlined)
+                    PinCodeCirclesState.NONE -> {
+                        binding.apply {
+                            entryCircle1.setImageResource(R.drawable.ic_outline_outlined)
+                            entryCircle2.setImageResource(R.drawable.ic_outline_outlined)
+                            entryCircle3.setImageResource(R.drawable.ic_outline_outlined)
+                            entryCircle4.setImageResource(R.drawable.ic_outline_outlined)
+                        }
                     }
-                    is PinCodeCirclesState.IsShowFirst -> {
+                    PinCodeCirclesState.FIRST -> {
                         binding.entryCircle1.setImageResource(R.drawable.ic_circle_filled)
                     }
-                    is PinCodeCirclesState.IsShowSecond -> {
+                    PinCodeCirclesState.SECOND -> {
                         binding.entryCircle2.setImageResource(R.drawable.ic_circle_filled)
                     }
-                    is PinCodeCirclesState.IsShowThird -> {
+                    PinCodeCirclesState.THIRD -> {
                         binding.entryCircle3.setImageResource(R.drawable.ic_circle_filled)
                     }
-                    is PinCodeCirclesState.IsShowFourth -> {
+                    PinCodeCirclesState.FOURTH -> {
                         binding.entryCircle4.setImageResource(R.drawable.ic_circle_filled)
                     }
-                    is PinCodeCirclesState.IsShowAll -> {
-                        binding.entryCircle1.setImageResource(R.drawable.ic_circle_filled)
-                        binding.entryCircle2.setImageResource(R.drawable.ic_circle_filled)
-                        binding.entryCircle3.setImageResource(R.drawable.ic_circle_filled)
-                        binding.entryCircle4.setImageResource(R.drawable.ic_circle_filled)
+                    PinCodeCirclesState.ALL -> {
+                        binding.apply {
+                            entryCircle1.setImageResource(R.drawable.ic_circle_filled)
+                            entryCircle2.setImageResource(R.drawable.ic_circle_filled)
+                            entryCircle3.setImageResource(R.drawable.ic_circle_filled)
+                            entryCircle4.setImageResource(R.drawable.ic_circle_filled)
+                        }
                     }
                 }
             }

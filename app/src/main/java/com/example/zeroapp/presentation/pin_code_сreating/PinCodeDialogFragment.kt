@@ -94,27 +94,28 @@ class PinCodeDialogFragment : BottomSheetDialogFragment() {
         viewModel.pinCodeCirclesState.observe(viewLifecycleOwner) {
             it?.let { state ->
                 when (state) {
-                    is PinCodeCirclesState.IsShowFirst -> {
+                    PinCodeCirclesState.FIRST -> {
                         binding!!.circle1.setImageResource(R.drawable.ic_circle_filled)
                     }
-                    is PinCodeCirclesState.IsShowSecond -> {
+                    PinCodeCirclesState.SECOND -> {
                         binding!!.circle2.setImageResource(R.drawable.ic_circle_filled)
                     }
-                    is PinCodeCirclesState.IsShowThird -> {
+                    PinCodeCirclesState.THIRD -> {
                         binding!!.circle3.setImageResource(R.drawable.ic_circle_filled)
                     }
-                    is PinCodeCirclesState.IsShowFourth -> {
+                    PinCodeCirclesState.FOURTH -> {
                         binding!!.circle4.setImageResource(R.drawable.ic_circle_filled)
                     }
-                    is PinCodeCirclesState.IsShowNone -> {
-                        binding!!.circle1.setImageResource(R.drawable.ic_outline_outlined)
-                        binding!!.circle2.setImageResource(R.drawable.ic_outline_outlined)
-                        binding!!.circle3.setImageResource(R.drawable.ic_outline_outlined)
-                        binding!!.circle4.setImageResource(R.drawable.ic_outline_outlined)
+                    PinCodeCirclesState.NONE -> {
+                        binding!!.apply {
+                            circle1.setImageResource(R.drawable.ic_outline_outlined)
+                            circle2.setImageResource(R.drawable.ic_outline_outlined)
+                            circle3.setImageResource(R.drawable.ic_outline_outlined)
+                            circle4.setImageResource(R.drawable.ic_outline_outlined)
+                        }
                     }
-                    is PinCodeCirclesState.IsShowAll -> {}
+                    PinCodeCirclesState.ALL -> {}
                 }
-
             }
         }
     }

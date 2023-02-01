@@ -19,6 +19,7 @@ import com.example.zeroapp.presentation.base.ui_dialog.IUIDialogAction
 import com.example.zeroapp.presentation.base.ui_dialog.UIDialog
 import com.example.zeroapp.presentation.history.adapter.DayClickListener
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -61,6 +62,10 @@ class HistoryViewModel @Inject constructor(
     private var _isFilterSelected = MutableLiveData<Boolean>()
     val isFilterSelected: LiveData<Boolean>
         get() = _isFilterSelected
+
+    private var _currentJob: JobType? = null
+    val currentJob: JobType?
+        get() = _currentJob
 
     init {
         getToggleButtonState()
@@ -131,45 +136,65 @@ class HistoryViewModel @Inject constructor(
     }
 
     private fun checkedFilterButton(pair: Pair<Long, Long>) {
-        viewModelScope.launch {
-            getSelectedDaysUseCase(pair).collectLatest {
-                _listDays.postValue(it)
-            }
+        if (_currentJob !is JobType.Filter) {
+            _currentJob?.job?.cancel()
+
+            _currentJob = JobType.Filter(viewModelScope.launch {
+                getSelectedDaysUseCase(pair).cancellable().collectLatest {
+                    _listDays.postValue(it)
+                }
+            })
         }
     }
 
     fun checkedCurrentMonthButton() {
-        viewModelScope.launch {
-            getCertainDaysUseCase(TimeUtility.getCurrentMonthTime()).collectLatest {
-                _listDays.postValue(it)
-            }
+        if (_currentJob !is JobType.Month) {
+            _currentJob?.job?.cancel()
+
+            _currentJob = JobType.Month(viewModelScope.launch {
+                getCertainDaysUseCase(TimeUtility.getCurrentMonthTime()).cancellable()
+                    .collectLatest {
+                        _listDays.postValue(it)
+                    }
+            })
         }
     }
 
     fun checkedLastWeekButton() {
-        viewModelScope.launch {
-            getCertainDaysUseCase(TimeUtility.getCurrentWeekTime()).collectLatest {
-                _listDays.postValue(it)
-            }
+        if (_currentJob !is JobType.Week) {
+            _currentJob?.job?.cancel()
+
+            _currentJob = JobType.Week(viewModelScope.launch {
+                getCertainDaysUseCase(TimeUtility.getCurrentWeekTime()).cancellable()
+                    .collectLatest {
+                        _listDays.postValue(it)
+                    }
+            })
         }
     }
 
     fun checkedAllDaysButton() {
-        viewModelScope.launch {
-            getAllDaysUseCase(Unit).collectLatest {
-                _listDays.postValue(it)
-            }
+        if (_currentJob !is JobType.AllDays) {
+            _currentJob?.job?.cancel()
+
+            _currentJob = JobType.AllDays(viewModelScope.launch {
+                getAllDaysUseCase(Unit).cancellable().collectLatest {
+                    _listDays.postValue(it)
+                }
+            })
         }
     }
 
     fun onClickCheckedItem(state: ToggleBtnState) {
-        viewModelScope.launch {
-            saveToggleBtnUseCase(state)
+        if (_toggleBtnState.value != state) {
+            viewModelScope.launch {
+                saveToggleBtnUseCase(state)
+            }
         }
     }
 
     private fun getToggleButtonState() {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             getToggleBtnStateUseCase(Unit).collectLatest {
                 _toggleBtnState.postValue(it)
             }

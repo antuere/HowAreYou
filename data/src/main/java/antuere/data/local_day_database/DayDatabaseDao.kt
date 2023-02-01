@@ -17,7 +17,7 @@ interface DayDatabaseDao {
     fun clear()
 
     @Query("SELECT * FROM day_table ORDER BY dayId DESC LIMIT 1")
-    fun getDay(): DayEntity?
+    fun getDay(): Flow<DayEntity?>
 
     @Query("DELETE FROM day_table WHERE dayId = :id ")
     fun deleteDay(id: Long)
