@@ -8,4 +8,7 @@ interface ToggleBtnRepository {
     suspend fun getToggleButtonState() : Flow<ToggleBtnState>
 
     suspend fun saveToggleButtonState(state : ToggleBtnState)
+
+    suspend fun resetToggleButtonState()
+
 }

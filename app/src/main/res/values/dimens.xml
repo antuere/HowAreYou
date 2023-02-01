@@ -1,10 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="padding_very_small">6dp</dimen>
-    <dimen name="padding_small_one">12dp</dimen>
-    <dimen name="padding_small_two">16dp</dimen>
-    <dimen name="padding_normal">32dp</dimen>
+    <dimen name="padding_small_0">4dp</dimen>
+    <dimen name="padding_small_1">8dp</dimen>
+    <dimen name="padding_small_2">12dp</dimen>
+    <dimen name="padding_normal_0">16dp</dimen>
+    <dimen name="padding_normal_1">20dp</dimen>
+    <dimen name="padding_normal_2">24dp</dimen>
+    <dimen name="padding_normal_3">32dp</dimen>
+    <dimen name="padding_normal_4">36dp</dimen>
+    <dimen name="padding_normal_5">42dp</dimen>
+    <dimen name="padding_large_0">48dp</dimen>
+    <dimen name="padding_large_1">54dp</dimen>
+    <dimen name="padding_large_2">62dp</dimen>
 
+    <!-- Spacers height -->
+    <dimen name="spacer_height_0">8dp</dimen>
+    <dimen name="spacer_height_1">12dp</dimen>
+    <dimen name="spacer_height_2">16dp</dimen>
+    <dimen name="spacer_height_3">18dp</dimen>
+    <dimen name="spacer_height_4">20dp</dimen>
+    <dimen name="spacer_height_5">32dp</dimen>
+    <dimen name="spacer_height_6">32dp</dimen>
+    <dimen name="spacer_height_7">36dp</dimen>
+    <dimen name="spacer_height_8">42dp</dimen>
+    <dimen name="spacer_height_9">46dp</dimen>
+    <dimen name="spacer_height_10">52dp</dimen>
+    <dimen name="spacer_height_11">72dp</dimen>
 
     <dimen name="margin_very_small">6dp</dimen>
     <dimen name="margin_very_smallest">4dp</dimen>
@@ -20,13 +41,20 @@
     <dimen name="margin_high_one">72dp</dimen>
     <dimen name="margin_high_two">80dp</dimen>
 
-    <dimen name="textSize_smallest">13sp</dimen>
-    <dimen name="textSize_small_ultra">15sp</dimen>
-    <dimen name="textSize_small">16sp</dimen>
-    <dimen name="textSize_small_one">18sp</dimen>
-    <dimen name="textSize_small_two">20sp</dimen>
-    <dimen name="textSize_big">24sp</dimen>
-    <dimen name="textSize_large">32sp</dimen>
+    <dimen name="textSize_small_0">13sp</dimen>
+    <dimen name="textSize_small_1">15sp</dimen>
+    <dimen name="textSize_normal_0">16sp</dimen>
+    <dimen name="textSize_normal_1">18sp</dimen>
+    <dimen name="textSize_normal_2">20sp</dimen>
+    <dimen name="textSize_big_0">24sp</dimen>
+    <dimen name="textSize_big_1">32sp</dimen>
+
+    <dimen name="textLine_height_default">16sp</dimen>
+
+
+    <!-- Buttons -->
+    <dimen name="default_elevation">4dp</dimen>
+    <dimen name="pressed_elevation">1dp</dimen>
 
     <dimen name="button_width">60dp</dimen>
     <dimen name="button_height">60dp</dimen>
@@ -46,7 +74,7 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">0dp</dimen>
     <dimen name="activity_vertical_margin">0dp</dimen>
-    <dimen name="checked_button_width">120dp</dimen>
+    <dimen name="checked_button_width">115dp</dimen>
     <dimen name="divider_inset">32dp</dimen>
 
 

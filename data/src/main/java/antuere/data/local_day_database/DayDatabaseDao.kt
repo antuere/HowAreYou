@@ -5,25 +5,19 @@ import antuere.data.local_day_database.entities.DayEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface DayDatabaseDao {
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(dayEntity: DayEntity)
-
-    @Update
-    fun update(dayEntity: DayEntity)
+interface DayDatabaseDao : BaseDao<DayEntity> {
 
     @Query("DELETE FROM day_table")
     fun clear()
 
     @Query("SELECT * FROM day_table ORDER BY dayId DESC LIMIT 1")
-    fun getDay(): Flow<DayEntity?>
+    fun getLastDay(): Flow<DayEntity?>
 
     @Query("DELETE FROM day_table WHERE dayId = :id ")
     fun deleteDay(id: Long)
 
     @Query("SELECT * FROM day_table WHERE dayId = :id")
-    fun getDayById(id: Long): DayEntity?
+    fun getDayById(id: Long): Flow<DayEntity?>
 
     @Query("SELECT * FROM day_table ORDER BY dayId DESC")
     fun getAllDays(): Flow<List<DayEntity>>

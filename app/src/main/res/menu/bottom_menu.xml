@@ -3,7 +3,7 @@
 
     <item
             android:id="@+id/summaryFragment"
-            android:title="@string/summary"
+            android:title="@string/home"
             android:icon="@drawable/ic_summary"
             android:orderInCategory="1" />
 

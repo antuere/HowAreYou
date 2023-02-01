@@ -12,8 +12,6 @@ data class Day(
 
     val dateString: String = TimeUtility.formatCurrentTime(),
 
-    val transitionName: String = "transition_name_unique_%s".format(dayId.toString()),
-
     var isFavorite: Boolean = false
 
 )

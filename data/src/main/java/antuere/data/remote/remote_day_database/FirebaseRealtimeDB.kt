@@ -14,7 +14,7 @@ data class FirebaseRealtimeDB @Inject constructor(
     private val realTimeDb: DatabaseReference,
     private val authManager: AuthenticationManager,
     private val networkInfo: NetworkInfo,
-    private val dayEntityMapperRemote: DayEntityRemoteMapper
+    private val dayEntityMapperRemote: DayEntityRemoteMapper,
 ) : RemoteDbApi {
 
     companion object {
@@ -23,76 +23,62 @@ data class FirebaseRealtimeDB @Inject constructor(
         private const val QUOTE_PATH = "quotes"
     }
 
-    private var daysNode: DatabaseReference? = null
-
-    private fun getDaysNode(): DatabaseReference? {
-        return if (authManager.isHasUser()) realTimeDb.child(USERS_PATH)
+    private val daysNode: DatabaseReference?
+        get() = if (authManager.isHasUser()) realTimeDb.child(USERS_PATH)
             .child(authManager.userId)
             .child(DAYS_PATH) else null
-    }
 
 
-    fun getQuotesNode(): DatabaseReference {
-        return realTimeDb.child(QUOTE_PATH)
-    }
+    fun getQuotesNode(): DatabaseReference = realTimeDb.child(QUOTE_PATH)
+
 
     override suspend fun getDays(): List<Day> {
-        val result = arrayListOf<Day>()
-        daysNode = getDaysNode()
-        if (daysNode != null && networkInfo.isNetworkAvailable()) {
-            val query = daysNode!!.get().await()
-            if (query.exists()) {
-                query.children.forEach {
-                    val dayRemote = it.getValue(DayEntityRemote::class.java)
-                    if (dayRemote != null) {
-                        val day = dayEntityMapperRemote.mapToDomainModel(dayRemote)
-                        result.add(day)
-                    }
-                }
-            }
+        if (!networkInfo.isNetworkAvailable()) return emptyList()
+        val daysNode = daysNode ?: return emptyList()
+        val query = daysNode.get().await()
+        if (!query.exists()) return emptyList()
+        return query.children.mapNotNull {
+            it.getValue(DayEntityRemote::class.java)?.let(dayEntityMapperRemote::mapToDomainModel)
         }
-        return result.toList()
-
     }
 
     override suspend fun deleteDay(id: Long) {
-        if (authManager.isHasUser()) {
-            val query = daysNode
-                ?.orderByChild("dayId")
-                ?.equalTo(id.toDouble())
-                ?.get()
-                ?.await()
-
-            query?.children?.forEach {
+        if (!authManager.isHasUser()) return
+        val daysNode = daysNode ?: return
+        daysNode
+            .orderByChild("dayId")
+            .equalTo(id.toDouble())
+            .get()
+            .await()
+            .children.forEach {
                 it.ref.removeValue()
             }
-        }
     }
 
     override suspend fun deleteAllDays() {
-        if (authManager.isHasUser()) {
-            val query = daysNode?.get()?.await()
-            if (query?.exists() == true) {
-                query.children.forEach {
-                    it.ref.removeValue()
-                }
-            }
+        if (!authManager.isHasUser()) return
+        val query = daysNode?.get()?.await() ?: return
+        if (!query.exists()) return
+        query.children.forEach {
+            it.ref.removeValue()
         }
     }
 
     override suspend fun insert(day: Day) {
-        if (authManager.isHasUser()) {
-            val dayRemote = dayEntityMapperRemote.mapFromDomainModel(day)
-            daysNode?.child(dayRemote.dayId.toString())?.setValue(dayRemote)?.await()
-        }
+        if (!authManager.isHasUser()) return
+        val daysNode = daysNode ?: return
+        val dayRemote = dayEntityMapperRemote.mapFromDomainModel(day)
+        daysNode.child(dayRemote.dayId.toString())
+            .setValue(dayRemote).await()
     }
 
 
     override suspend fun update(day: Day) {
-        if(authManager.isHasUser()){
-            val dayRemote = dayEntityMapperRemote.mapFromDomainModel(day)
-            daysNode?.child(dayRemote.dayId.toString())?.setValue(dayRemote)?.await()
-        }
+        if (!authManager.isHasUser()) return
+        val daysNode = daysNode ?: return
+        val dayRemote = dayEntityMapperRemote.mapFromDomainModel(day)
+        daysNode.child(dayRemote.dayId.toString())
+            .setValue(dayRemote).await()
     }
 
 }

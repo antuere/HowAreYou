@@ -27,8 +27,7 @@ interface AuthenticationManager {
 
     fun isHasUser(): Boolean
 
-
-    fun setUserNickname(name: String)
+    fun setUserNicknameOnServer(name: String)
 
     fun resetPassword(email: String, resetPassResultListener: ResetPassResultListener)
 

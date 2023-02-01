@@ -1,13 +1,30 @@
 package antuere.domain.repository
 
 import antuere.domain.dto.Settings
+import antuere.domain.dto.helplines.SupportedCountry
 import kotlinx.coroutines.flow.Flow
 
 interface SettingsRepository {
 
-    suspend fun getSettings(): Flow<Settings>
+    suspend fun getAllSettings(): Flow<Settings>
+
+    suspend fun getWorriedDialogSetting(): Flow<Boolean>
+
+    suspend fun getPinSetting(): Flow<Boolean>
+
+    suspend fun getBiomAuthSetting(): Flow<Boolean>
+
+    suspend fun getSelectedCountryId(): Int
 
     suspend fun saveSettings(settings: Settings)
+
+    suspend fun saveWorriedDialogSetting(isEnable: Boolean)
+
+    suspend fun savePinSetting(isEnable: Boolean)
+
+    suspend fun saveBiomAuthSetting(isEnable: Boolean)
+
+    suspend fun saveSelectedCountryId(supportedCountry: SupportedCountry)
 
     suspend fun saveUserNickname(nickname: String)
 

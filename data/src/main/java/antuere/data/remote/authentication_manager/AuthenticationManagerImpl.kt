@@ -30,7 +30,7 @@ class AuthenticationManagerImpl @Inject constructor(
         return firebaseAuth.currentUser != null
     }
 
-    override fun setUserNickname(name: String) {
+    override fun setUserNicknameOnServer(name: String) {
         getUserNode()?.child("nickName")?.setValue(name)
     }
 

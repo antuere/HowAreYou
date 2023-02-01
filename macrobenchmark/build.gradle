@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace 'com.example.macrobenchmark'
+    namespace 'antuere.macrobenchmark'
     compileSdk 33
 
     compileOptions {
