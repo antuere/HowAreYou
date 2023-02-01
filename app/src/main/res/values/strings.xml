@@ -200,5 +200,7 @@
     <string name="click_less">Click less</string>
     <string name="click_more">Click more</string>
     <string name="too_many_chars_default">Cannot be more characters</string>
+    <string name="helpline_phone">Phone</string>
+    <string name="helpline_website">Website</string>
 
 </resources>

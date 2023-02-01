@@ -1,55 +1,78 @@
 package antuere.how_are_you.presentation.helplines.ui_compose
 
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import antuere.domain.dto.helplines.Helpline
 import antuere.how_are_you.R
-import antuere.how_are_you.presentation.base.ui_theme.PlayfairDisplay
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HelplineItem(
-    modifier: Modifier = Modifier,
-    helpline: Helpline
+    helpline: Helpline,
+    onClickPhone: (String) -> Unit,
+    onClickWebsite: (String) -> Unit,
 ) {
-    Card(
-        modifier = modifier,
-        shape = MaterialTheme.shapes.large,
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
-    ) {
-        Text(
-            modifier = Modifier
-                .padding(horizontal = dimensionResource(id = R.dimen.padding_normal_1))
-                .align(Alignment.Start),
-            fontSize = dimensionResource(id = R.dimen.textSize_big_0).value.sp,
-            fontWeight = FontWeight.Medium,
-            fontFamily = PlayfairDisplay,
-            textAlign = TextAlign.Center,
-            text = stringResource(id = helpline.nameResId),
-        )
-        Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_3)))
+    var isExpanded by remember { mutableStateOf(false) }
+    val rotationState by animateFloatAsState(
+        targetValue = if (isExpanded) 180f else 0f
+    )
 
-        Text(
-            modifier = Modifier
-                .padding(horizontal = dimensionResource(id = R.dimen.padding_normal_1))
-                .align(Alignment.CenterHorizontally),
-            fontSize = dimensionResource(id = R.dimen.textSize_normal_2).value.sp,
-            fontWeight = FontWeight.Medium,
-            textAlign = TextAlign.Center,
-            text = helpline.phone,
-        )
-        Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_3)))
+    Card(
+        modifier = Modifier
+            .fillMaxWidth(0.9F)
+            .padding(vertical = dimensionResource(id = R.dimen.padding_normal_0))
+            .animateContentSize(
+                animationSpec = tween(
+                    durationMillis = 300
+                )
+            ),
+        shape = MaterialTheme.shapes.large,
+        onClick = { isExpanded = !isExpanded },
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
+    ) {
+        Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_1)))
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Start
+        ) {
+            Text(
+                modifier = Modifier
+                    .padding(horizontal = dimensionResource(id = R.dimen.padding_normal_1)),
+                fontSize = dimensionResource(id = R.dimen.textSize_big_0).value.sp,
+                fontWeight = FontWeight.Medium,
+                text = stringResource(id = helpline.nameResId),
+            )
+            Spacer(modifier = Modifier.weight(1f))
+            Icon(
+                modifier = Modifier
+                    .rotate(rotationState)
+                    .padding(horizontal = dimensionResource(id = R.dimen.padding_normal_1)),
+                imageVector = Icons.Default.ArrowDropDown,
+                contentDescription = "DropDown Arrow",
+                tint = MaterialTheme.colorScheme.onSecondary
+            )
+
+        }
+        if (isExpanded) {
+            Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_2)))
+            DetailsForHelpline(
+                phone = helpline.phone,
+                onClickPhone = onClickPhone,
+                onClickWebsite = onClickWebsite
+            )
+        }
+        Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_1)))
     }
 }

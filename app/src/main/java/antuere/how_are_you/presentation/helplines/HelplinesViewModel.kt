@@ -6,6 +6,7 @@ import antuere.domain.repository.SettingsRepository
 import antuere.how_are_you.presentation.helplines.state.HelplinesIntent
 import antuere.how_are_you.presentation.helplines.state.HelplinesState
 import antuere.how_are_you.presentation.base.ViewModelMvi
+import antuere.how_are_you.presentation.helplines.state.HelplinesSideEffect
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -17,9 +18,9 @@ import javax.inject.Inject
 class HelplinesViewModel @Inject constructor(
     private val helplinesRepository: HelplinesRepository,
     private val settingsRepository: SettingsRepository,
-) : ViewModelMvi<HelplinesState, Nothing, HelplinesIntent>() {
+) : ViewModelMvi<HelplinesState, HelplinesSideEffect, HelplinesIntent>() {
 
-    override val container: Container<HelplinesState, Nothing> =
+    override val container: Container<HelplinesState, HelplinesSideEffect> =
         container(HelplinesState.Loading)
 
     init {
@@ -43,6 +44,12 @@ class HelplinesViewModel @Inject constructor(
                 viewModelScope.launch(Dispatchers.IO) {
                     settingsRepository.saveSelectedCountryId(intent.country)
                 }
+            }
+            is HelplinesIntent.PhoneClicked -> {
+                sideEffect(HelplinesSideEffect.NavigateToDialNumber(intent.phone))
+            }
+            is HelplinesIntent.WebsiteClicked -> {
+                sideEffect(HelplinesSideEffect.NavigateToWebsite(intent.website))
             }
         }
     }
