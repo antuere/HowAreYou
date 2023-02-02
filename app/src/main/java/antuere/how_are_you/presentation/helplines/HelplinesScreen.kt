@@ -4,12 +4,11 @@ import android.content.Intent
 import android.net.Uri
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -25,7 +24,11 @@ import antuere.how_are_you.presentation.helplines.state.HelplinesSideEffect
 import antuere.how_are_you.presentation.helplines.state.HelplinesState
 import antuere.how_are_you.presentation.helplines.ui_compose.CountrySelectionMenu
 import antuere.how_are_you.presentation.helplines.ui_compose.HelplineItem
+import antuere.how_are_you.util.animateScrollAndCentralize
+import antuere.how_are_you.util.getName
 import antuere.how_are_you.util.paddingTopBar
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 import timber.log.Timber
@@ -38,6 +41,8 @@ fun HelplinesScreen(
     val appState = LocalAppState.current
     val context = LocalContext.current
     val uriHandler = LocalUriHandler.current
+    val lazyListState = rememberLazyListState()
+    val scope = rememberCoroutineScope()
     val viewState by viewModel.collectAsState()
 
     viewModel.collectSideEffect { sideEffect ->
@@ -53,6 +58,17 @@ fun HelplinesScreen(
             }
             is HelplinesSideEffect.NavigateToWebsite -> {
                 uriHandler.openUri(sideEffect.website)
+            }
+            is HelplinesSideEffect.ScrollToCenterItem -> {
+                scope.launch {
+                    delay(200)
+                    lazyListState.animateScrollAndCentralize(sideEffect.itemIndex, this)
+                }
+            }
+            HelplinesSideEffect.ScrollToTop -> {
+                scope.launch {
+                    lazyListState.animateScrollToItem(0)
+                }
             }
         }
     }
@@ -70,6 +86,13 @@ fun HelplinesScreen(
 
     when (val state = viewState) {
         is HelplinesState.Loaded -> {
+            val sortedListCountries = remember(state.supportedCountries) {
+                state.supportedCountries.sortedBy {
+                    Timber.i("we in sorting list, now it is ${it.id}")
+                    it.getName().asString(context)
+                }
+            }
+
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -81,7 +104,7 @@ fun HelplinesScreen(
                 Spacer(modifier = Modifier.weight(0.05F))
                 CountrySelectionMenu(
                     modifier = Modifier.fillMaxWidth(0.6F),
-                    countries = state.supportedCountries,
+                    countries = sortedListCountries,
                     selectedCountry = state.selectedCountry,
                     onSelectedCountryChange = {
                         HelplinesIntent.CountrySelected(it).run(viewModel::onIntent)
@@ -93,12 +116,13 @@ fun HelplinesScreen(
                     modifier = Modifier
                         .fillMaxSize()
                         .weight(1F),
+                    state = lazyListState,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    items(
+                    itemsIndexed(
                         items = state.selectedCountry.helplines,
-                        key = { it.nameResId }
-                    ) { helpline ->
+                        key = { _, helpline -> helpline.nameResId }
+                    ) { index, helpline ->
                         HelplineItem(
                             helpline = helpline,
                             onClickPhone = { phone: String ->
@@ -107,6 +131,9 @@ fun HelplinesScreen(
                             onClickWebsite = { website: String ->
                                 HelplinesIntent.WebsiteClicked(website).run(viewModel::onIntent)
                             },
+                            onClickToItem = {
+                                HelplinesIntent.HelplineClicked(index).run(viewModel::onIntent)
+                            }
                         )
                     }
                 }

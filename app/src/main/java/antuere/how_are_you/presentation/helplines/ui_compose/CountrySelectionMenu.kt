@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import antuere.domain.dto.helplines.SupportedCountry
 import antuere.how_are_you.R
 import antuere.how_are_you.util.getName
+import timber.log.Timber
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -29,7 +30,10 @@ fun CountrySelectionMenu(
     val focusManager = LocalFocusManager.current
     val context = LocalContext.current
 
-    val selectedCountryName = selectedCountry.getName().asString()
+    val selectedCountryName = remember(selectedCountry) {
+        selectedCountry.getName().asString(context)
+    }
+
     var expanded by remember { mutableStateOf(false) }
     var selectedCountryText by remember(selectedCountry) { mutableStateOf(selectedCountryName) }
 

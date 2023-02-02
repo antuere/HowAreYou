@@ -4,14 +4,15 @@ import android.app.Activity
 import android.content.Context
 import android.content.ContextWrapper
 import androidx.compose.animation.core.*
+import androidx.compose.foundation.gestures.animateScrollBy
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.debugInspectorInfo
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.FragmentActivity
 import antuere.domain.dto.helplines.SupportedCountry
@@ -21,7 +22,10 @@ import com.valentinilk.shimmer.ShimmerBounds
 import com.valentinilk.shimmer.defaultShimmerTheme
 import com.valentinilk.shimmer.rememberShimmer
 import com.valentinilk.shimmer.shimmer
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import timber.log.Timber
 
 
 fun Context.findFragmentActivity(): FragmentActivity {
@@ -163,14 +167,6 @@ fun Modifier.animateScaleUpOnce() = composed(
     }
 )
 
-fun SupportedCountry.getName(): UiText {
-    return when (this) {
-        is SupportedCountry.Italy -> UiText.StringResource(R.string.italy)
-        is SupportedCountry.Russia -> UiText.StringResource(R.string.russia)
-        is SupportedCountry.USA -> UiText.StringResource(R.string.usa)
-    }
-}
-
 fun Modifier.shimmer(
     duration: Int,
 ): Modifier = composed {
@@ -179,6 +175,28 @@ fun Modifier.shimmer(
         theme = createCustomTheme(duration),
     )
     shimmer(customShimmer = shimmer)
+}
+
+fun SupportedCountry.getName(): UiText {
+    Timber.i("we in sorting list, enter in getName functions")
+    return when (this) {
+        is SupportedCountry.Italy -> UiText.StringResource(R.string.italy)
+        is SupportedCountry.Russia -> UiText.StringResource(R.string.russia)
+        is SupportedCountry.USA -> UiText.StringResource(R.string.usa)
+    }
+}
+
+fun LazyListState.animateScrollAndCentralize(index: Int, scope: CoroutineScope) {
+    val itemInfo = this.layoutInfo.visibleItemsInfo.firstOrNull { it.index == index }
+    scope.launch {
+        if (itemInfo != null) {
+            val center = this@animateScrollAndCentralize.layoutInfo.viewportEndOffset / 2
+            val childCenter = itemInfo.offset + itemInfo.size / 2
+            this@animateScrollAndCentralize.animateScrollBy((childCenter - center).toFloat())
+        } else {
+            this@animateScrollAndCentralize.animateScrollToItem(index)
+        }
+    }
 }
 
 @Composable

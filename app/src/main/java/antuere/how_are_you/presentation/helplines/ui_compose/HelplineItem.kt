@@ -13,6 +13,7 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.sp
 import antuere.domain.dto.helplines.Helpline
 import antuere.how_are_you.R
@@ -21,6 +22,7 @@ import antuere.how_are_you.R
 @Composable
 fun HelplineItem(
     helpline: Helpline,
+    onClickToItem: () -> Unit,
     onClickPhone: (String) -> Unit,
     onClickWebsite: (String) -> Unit,
 ) {
@@ -34,41 +36,56 @@ fun HelplineItem(
             .fillMaxWidth(0.9F)
             .padding(vertical = dimensionResource(id = R.dimen.padding_normal_0))
             .animateContentSize(
-                animationSpec = tween(
-                    durationMillis = 300
-                )
+                animationSpec = tween(durationMillis = 200)
             ),
         shape = MaterialTheme.shapes.large,
-        onClick = { isExpanded = !isExpanded },
+        onClick = {
+            isExpanded = !isExpanded
+            if (isExpanded) {
+                onClickToItem()
+            }
+        },
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
     ) {
         Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_1)))
         Row(
+            modifier = Modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_normal_1)),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Start
         ) {
             Text(
                 modifier = Modifier
-                    .padding(horizontal = dimensionResource(id = R.dimen.padding_normal_1)),
-                fontSize = dimensionResource(id = R.dimen.textSize_big_0).value.sp,
+                    .weight(8f),
+                fontSize = dimensionResource(id = R.dimen.textSize_normal_2).value.sp,
                 fontWeight = FontWeight.Medium,
+                maxLines = if (isExpanded) Int.MAX_VALUE else 1,
+                overflow = if (isExpanded) TextOverflow.Visible else TextOverflow.Ellipsis,
                 text = stringResource(id = helpline.nameResId),
             )
-            Spacer(modifier = Modifier.weight(1f))
-            Icon(
-                modifier = Modifier
-                    .rotate(rotationState)
-                    .padding(horizontal = dimensionResource(id = R.dimen.padding_normal_1)),
-                imageVector = Icons.Default.ArrowDropDown,
-                contentDescription = "DropDown Arrow",
-                tint = MaterialTheme.colorScheme.onSecondary
-            )
 
+            IconButton(
+                modifier = Modifier
+                    .weight(1f)
+                    .rotate(rotationState),
+                onClick = {
+                    isExpanded = !isExpanded
+                    if (isExpanded) {
+                        onClickToItem()
+                    }
+                }
+            ) {
+                Icon(
+                    imageVector = Icons.Default.ArrowDropDown,
+                    contentDescription = "DropDown Arrow",
+                    tint = MaterialTheme.colorScheme.onSecondary
+                )
+            }
         }
         if (isExpanded) {
-            Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_2)))
             DetailsForHelpline(
+                description = stringResource(id = helpline.descResId),
                 phone = helpline.phone,
+                website = helpline.website,
                 onClickPhone = onClickPhone,
                 onClickWebsite = onClickWebsite
             )

@@ -41,9 +41,13 @@ class HelplinesViewModel @Inject constructor(
                 updateState {
                     (state as HelplinesState.Loaded).copy(selectedCountry = intent.country)
                 }
+                sideEffect(HelplinesSideEffect.ScrollToTop)
                 viewModelScope.launch(Dispatchers.IO) {
                     settingsRepository.saveSelectedCountryId(intent.country)
                 }
+            }
+            is HelplinesIntent.HelplineClicked -> {
+                sideEffect(HelplinesSideEffect.ScrollToCenterItem(intent.itemIndex))
             }
             is HelplinesIntent.PhoneClicked -> {
                 sideEffect(HelplinesSideEffect.NavigateToDialNumber(intent.phone))

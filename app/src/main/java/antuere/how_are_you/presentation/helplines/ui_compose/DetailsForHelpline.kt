@@ -14,7 +14,9 @@ import antuere.how_are_you.R
 
 @Composable
 fun DetailsForHelpline(
+    description: String,
     phone: String,
+    website: String,
     onClickPhone: (String) -> Unit,
     onClickWebsite: (String) -> Unit,
 ) {
@@ -22,9 +24,8 @@ fun DetailsForHelpline(
         Text(
             fontSize = dimensionResource(id = R.dimen.textSize_normal_1).value.sp,
             textAlign = TextAlign.Start,
-            text = "Telefono Azzurro provides 24/7, free, compassionate and confidential support by phone and online chat. We support youth in Italy who may require support with abuse & domestic violence, anxiety, bullying, depression, eating & body image, family issues, gambling, gender & sexual identity, grief & loss, loneliness, parenting, pregnancy & abortion, relationships, school or work issues, self-harm, stress, substance use, suicide, supporting a friend or family member, physical illness, trauma & PTSD.",
+            text = description
         )
-
         Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_1)))
         Row(
             modifier = Modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_small_1)),
@@ -32,7 +33,7 @@ fun DetailsForHelpline(
         ) {
             OutlinedButton(
                 modifier = Modifier.weight(5F),
-                onClick = { onClickPhone("89289296581") },
+                onClick = { onClickPhone(phone) },
                 contentPadding = ButtonDefaults.ButtonWithIconContentPadding
             ) {
                 Icon(
@@ -53,7 +54,7 @@ fun DetailsForHelpline(
 
             OutlinedButton(
                 modifier = Modifier.weight(5F),
-                onClick = { onClickWebsite("https://azzurro.it/") },
+                onClick = { onClickWebsite(website) },
                 contentPadding = ButtonDefaults.ButtonWithIconContentPadding
             ) {
                 Icon(
