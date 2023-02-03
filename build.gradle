@@ -36,6 +36,7 @@ buildscript {
         version_kotlin = "1.7.20"
         version_kotlin_compiler_ext = "1.3.2"
         version_kotlin_coroutines = "1.4.1"
+        version_landscapist_glide = "2.1.2"
         version_leak_canary = "2.9.1"
         version_lifecycle = "2.6.0-alpha04"
         version_lifecycle_extensions = "2.2.0"

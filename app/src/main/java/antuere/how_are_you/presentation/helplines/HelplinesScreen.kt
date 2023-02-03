@@ -86,11 +86,10 @@ fun HelplinesScreen(
 
     when (val state = viewState) {
         is HelplinesState.Loaded -> {
-            val sortedListCountries = remember(state.supportedCountries) {
-                state.supportedCountries.sortedBy {
-                    Timber.i("we in sorting list, now it is ${it.id}")
-                    it.getName().asString(context)
-                }
+            val sortedCountriesMap = remember(state.supportedCountries) {
+                state.supportedCountries.associateBy {
+                    it.getName().asString(context).lowercase()
+                }.toSortedMap()
             }
 
             Column(
@@ -104,7 +103,7 @@ fun HelplinesScreen(
                 Spacer(modifier = Modifier.weight(0.05F))
                 CountrySelectionMenu(
                     modifier = Modifier.fillMaxWidth(0.6F),
-                    countries = sortedListCountries,
+                    countriesMap = sortedCountriesMap,
                     selectedCountry = state.selectedCountry,
                     onSelectedCountryChange = {
                         HelplinesIntent.CountrySelected(it).run(viewModel::onIntent)

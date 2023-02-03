@@ -17,24 +17,24 @@ import androidx.compose.ui.unit.dp
 import antuere.domain.dto.helplines.SupportedCountry
 import antuere.how_are_you.R
 import antuere.how_are_you.util.getName
-import timber.log.Timber
+import antuere.how_are_you.util.upperCaseFirstCharacter
+import java.util.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CountrySelectionMenu(
     modifier: Modifier = Modifier,
-    countries: List<SupportedCountry>,
+    countriesMap: Map<String, SupportedCountry>,
     selectedCountry: SupportedCountry,
     onSelectedCountryChange: (SupportedCountry) -> Unit,
 ) {
     val focusManager = LocalFocusManager.current
     val context = LocalContext.current
+    var expanded by remember { mutableStateOf(false) }
 
     val selectedCountryName = remember(selectedCountry) {
         selectedCountry.getName().asString(context)
     }
-
-    var expanded by remember { mutableStateOf(false) }
     var selectedCountryText by remember(selectedCountry) { mutableStateOf(selectedCountryName) }
 
     var currentFlagId by remember { mutableStateOf(selectedCountry.flagId) }
@@ -54,17 +54,16 @@ fun CountrySelectionMenu(
         OutlinedTextField(
             modifier = Modifier.menuAnchor(),
             value = selectedCountryText,
-            onValueChange = {
-                val foundCountry = countries.find { country ->
-                    (country.getName().asString(context).equals(it, ignoreCase = true))
-                }
+            onValueChange = { newValue ->
+                val lowerCaseValue = newValue.lowercase()
+                val foundCountry = countriesMap[lowerCaseValue]
                 if (foundCountry != null) {
                     isCountryCurrentText = true
                     currentFlagId = foundCountry.flagId
                 } else {
                     isCountryCurrentText = false
                 }
-                selectedCountryText = it
+                selectedCountryText = newValue
             },
             label = { Text(stringResource(id = R.string.country)) },
             singleLine = true,
@@ -92,11 +91,8 @@ fun CountrySelectionMenu(
         )
 
         val filteringCountries =
-            countries.filter {
-                it.getName().asString().contains(
-                    selectedCountryText,
-                    ignoreCase = true
-                )
+            countriesMap.filterKeys {
+                it.contains(selectedCountryText, ignoreCase = true)
             }
 
         ExposedDropdownMenu(
@@ -110,23 +106,29 @@ fun CountrySelectionMenu(
             },
         ) {
             if (filteringCountries.isNotEmpty()) {
-                filteringCountries.forEach { selectionCountry ->
-                    val countryName = selectionCountry.getName().asString()
-
+                filteringCountries.forEach { (name, country) ->
                     DropdownMenuItem(
-                        text = { Text(countryName) },
+                        text = {
+                            Text(
+                                if (country is SupportedCountry.USA) {
+                                    name.uppercase()
+                                } else {
+                                    name.upperCaseFirstCharacter()
+                                }
+                            )
+                        },
                         onClick = {
                             focusManager.clearFocus()
-                            selectedCountryText = countryName
-                            currentFlagId = selectionCountry.flagId
+                            selectedCountryText = name.upperCaseFirstCharacter()
+                            currentFlagId = country.flagId
                             isCountryCurrentText = true
-                            onSelectedCountryChange(selectionCountry)
+                            onSelectedCountryChange(country)
                             expanded = false
                         },
                         leadingIcon = {
                             Icon(
                                 modifier = Modifier.size(30.dp),
-                                painter = painterResource(id = selectionCountry.flagId),
+                                painter = painterResource(id = country.flagId),
                                 contentDescription = "Flag of country",
                                 tint = Color.Unspecified
                             )

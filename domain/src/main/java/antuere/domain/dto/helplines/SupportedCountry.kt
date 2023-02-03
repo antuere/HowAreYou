@@ -13,4 +13,10 @@ sealed class SupportedCountry(
 
     data class Italy(val helplinesList: List<Helpline>, val flagResId: Int) :
         SupportedCountry(3, flagResId, helplinesList)
+
+    data class France(val helplinesList: List<Helpline>, val flagResId: Int) :
+        SupportedCountry(4, flagResId, helplinesList)
+
+    data class China(val helplinesList: List<Helpline>, val flagResId: Int) :
+        SupportedCountry(5, flagResId, helplinesList)
 }

@@ -22,7 +22,7 @@ import timber.log.Timber
 fun CategoryCard(
     modifier: Modifier = Modifier,
     category: MentalTipsCategory,
-    onClick: (String) -> Unit
+    onClick: (String) -> Unit,
 ) {
     Timber.i("MVI error test : enter in category card")
 
@@ -49,7 +49,11 @@ fun CategoryCard(
             Text(text = stringResource(id = category.textRes))
             Spacer(modifier = Modifier.weight(1F))
 
-            Icon(imageVector = Icons.Rounded.ChevronRight, contentDescription = null)
+            Icon(
+                imageVector = Icons.Rounded.ChevronRight,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.onSecondary
+            )
             Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.spacer_height_2)))
         }
     }

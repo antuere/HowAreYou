@@ -194,6 +194,8 @@
     <string name="russia">Russia</string>
     <string name="usa">USA</string>
     <string name="italy">Italy</string>
+    <string name="france">France</string>
+    <string name="china">China</string>
 
     <!-- Other -->
     <string name="leak_canary_test_class_name">assertk.Assert</string>
@@ -202,5 +204,6 @@
     <string name="too_many_chars_default">Cannot be more characters</string>
     <string name="helpline_phone">Phone</string>
     <string name="helpline_website">Website</string>
+    <string name="cats_no_internet">No internet...</string>
 
 </resources>
