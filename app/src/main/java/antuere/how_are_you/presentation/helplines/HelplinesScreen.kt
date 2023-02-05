@@ -24,6 +24,7 @@ import antuere.how_are_you.presentation.helplines.state.HelplinesSideEffect
 import antuere.how_are_you.presentation.helplines.state.HelplinesState
 import antuere.how_are_you.presentation.helplines.ui_compose.CountrySelectionMenu
 import antuere.how_are_you.presentation.helplines.ui_compose.HelplineItem
+import antuere.how_are_you.presentation.helplines.ui_compose.TestKeyboard
 import antuere.how_are_you.util.animateScrollAndCentralize
 import antuere.how_are_you.util.getName
 import antuere.how_are_you.util.paddingTopBar
@@ -109,6 +110,7 @@ fun HelplinesScreen(
                         HelplinesIntent.CountrySelected(it).run(viewModel::onIntent)
                     }
                 )
+//                TestKeyboard()
                 Spacer(modifier = Modifier.weight(0.05F))
 
                 LazyColumn(

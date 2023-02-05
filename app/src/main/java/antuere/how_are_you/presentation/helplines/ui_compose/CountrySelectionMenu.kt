@@ -18,6 +18,7 @@ import antuere.domain.dto.helplines.SupportedCountry
 import antuere.how_are_you.R
 import antuere.how_are_you.util.getName
 import antuere.how_are_you.util.upperCaseFirstCharacter
+import timber.log.Timber
 import java.util.*
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -49,7 +50,9 @@ fun CountrySelectionMenu(
     ExposedDropdownMenuBox(
         modifier = modifier,
         expanded = expanded,
-        onExpandedChange = { expanded = !expanded },
+        onExpandedChange = {
+            expanded = !expanded
+        },
     ) {
         OutlinedTextField(
             modifier = Modifier.menuAnchor(),
@@ -98,11 +101,11 @@ fun CountrySelectionMenu(
         ExposedDropdownMenu(
             expanded = expanded,
             onDismissRequest = {
-                focusManager.clearFocus()
-                selectedCountryText = selectedCountryName
-                currentFlagId = selectedCountry.flagId
-                isCountryCurrentText = true
-                expanded = false
+//                focusManager.clearFocus()
+//                selectedCountryText = selectedCountryName
+//                currentFlagId = selectedCountry.flagId
+//                isCountryCurrentText = true
+//                expanded = false
             },
         ) {
             if (filteringCountries.isNotEmpty()) {
@@ -149,6 +152,57 @@ fun CountrySelectionMenu(
                     },
                     contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding,
                 )
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun TestKeyboard() {
+    val options = listOf("Option 1", "Option 2", "Option 3", "Option 4", "Option 5")
+    var expanded by remember { mutableStateOf(false) }
+    var selectedOptionText by remember { mutableStateOf("") }
+    ExposedDropdownMenuBox(
+        expanded = expanded,
+        onExpandedChange = {
+            Timber.i("Keyboard error: expand change, now it is ${!expanded}")
+            expanded = !expanded
+        },
+    ) {
+        TextField(
+            // The `menuAnchor` modifier must be passed to the text field for correctness.
+            modifier = Modifier.menuAnchor(),
+            value = selectedOptionText,
+            onValueChange = {
+                Timber.i("Keyboard error: text field value change, now its: $it")
+                selectedOptionText = it
+            },
+            label = { Text("Label") },
+            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
+            colors = ExposedDropdownMenuDefaults.textFieldColors(),
+        )
+        // filter options based on text field value
+        val filteringOptions = options.filter { it.contains(selectedOptionText, ignoreCase = true) }
+        if (filteringOptions.isNotEmpty()) {
+            ExposedDropdownMenu(
+                expanded = expanded,
+                onDismissRequest = {
+                    Timber.i("Keyboard error: dismiss request")
+                    expanded = false
+                },
+            ) {
+                filteringOptions.forEach { selectionOption ->
+                    DropdownMenuItem(
+                        text = { Text(selectionOption) },
+                        onClick = {
+                            Timber.i("Keyboard error: item selected")
+                            selectedOptionText = selectionOption
+                            expanded = false
+                        },
+                        contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding,
+                    )
+                }
             }
         }
     }
