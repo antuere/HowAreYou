@@ -15,7 +15,7 @@ import antuere.how_are_you.presentation.base.ui_compose_components.pin_code.Nume
 import antuere.how_are_you.presentation.base.ui_compose_components.pin_code.PinCirclesIndicates
 import antuere.how_are_you.presentation.pin_code_creation.state.PinCreationIntent
 import antuere.how_are_you.presentation.pin_code_creation.state.PinCreationSideEffect
-import antuere.how_are_you.util.toStable
+import antuere.how_are_you.util.extensions.toStable
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 import timber.log.Timber

@@ -18,7 +18,7 @@ import antuere.how_are_you.presentation.base.ui_compose_components.placeholder.F
 import antuere.how_are_you.presentation.base.ui_compose_components.top_bar.AppBarState
 import antuere.how_are_you.presentation.mental_tips.state.MentalTipsState
 import antuere.how_are_you.presentation.mental_tips.ui_compose.MentalTipItem
-import antuere.how_are_you.util.paddingTopBar
+import antuere.how_are_you.util.extensions.paddingTopBar
 import com.google.accompanist.pager.*
 import org.orbitmvi.orbit.compose.collectAsState
 import timber.log.Timber

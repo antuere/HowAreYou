@@ -20,7 +20,7 @@ import antuere.how_are_you.presentation.mental_tips_categories.state.MentalTipsC
 import antuere.how_are_you.presentation.mental_tips_categories.state.MentalTipsCategoriesSideEffect
 import antuere.how_are_you.presentation.mental_tips_categories.state.MentalTipsCategoriesState
 import antuere.how_are_you.presentation.mental_tips_categories.ui_compose.CategoryCard
-import antuere.how_are_you.util.paddingTopBar
+import antuere.how_are_you.util.extensions.paddingTopBar
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 import timber.log.Timber

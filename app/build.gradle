@@ -8,7 +8,6 @@ plugins {
 }
 
 android {
-
     signingConfigs {
         release {
             storeFile file('C:\\Users\\AntuE\\AndroidStudioProjects\\HowAreYou\\keyStore\\keyStoreApp.jks')
@@ -72,6 +71,7 @@ android {
 }
 
 dependencies {
+    implementation("org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.5")
 
     implementation "androidx.core:core-ktx:$version_core"
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'

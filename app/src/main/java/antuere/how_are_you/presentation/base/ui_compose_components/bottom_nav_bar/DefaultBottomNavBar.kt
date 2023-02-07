@@ -30,7 +30,7 @@ import antuere.how_are_you.presentation.base.ui_theme.Gray800
 import antuere.how_are_you.presentation.base.ui_theme.TealMain
 import antuere.how_are_you.presentation.base.ui_theme.Typography
 import antuere.how_are_you.R
-import antuere.how_are_you.util.findFragmentActivity
+import antuere.how_are_you.util.extensions.findFragmentActivity
 
 
 @Composable

@@ -23,8 +23,8 @@ import antuere.how_are_you.presentation.base.ui_compose_components.text_field.Em
 import antuere.how_are_you.presentation.base.ui_compose_components.text_field.PasswordTextField
 import antuere.how_are_you.presentation.sign_up_with_email.state.SignUpEmailIntent
 import antuere.how_are_you.presentation.sign_up_with_email.state.SignUpEmailSideEffect
-import antuere.how_are_you.util.toStable
-import antuere.how_are_you.util.paddingTopBar
+import antuere.how_are_you.util.extensions.toStable
+import antuere.how_are_you.util.extensions.paddingTopBar
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 import timber.log.Timber

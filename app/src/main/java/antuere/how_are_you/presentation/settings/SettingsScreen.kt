@@ -26,9 +26,9 @@ import antuere.how_are_you.presentation.pin_code_creation.PinCodeCreating
 import antuere.how_are_you.presentation.settings.state.SettingsIntent
 import antuere.how_are_you.presentation.settings.state.SettingsSideEffect
 import antuere.how_are_you.presentation.settings.ui_compose.PrivacySettings
-import antuere.how_are_you.util.findFragmentActivity
-import antuere.how_are_you.util.paddingBotAndTopBar
-import antuere.how_are_you.util.toStable
+import antuere.how_are_you.util.extensions.findFragmentActivity
+import antuere.how_are_you.util.extensions.paddingBotAndTopBar
+import antuere.how_are_you.util.extensions.toStable
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect

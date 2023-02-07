@@ -1,13 +1,7 @@
-package antuere.how_are_you.util
+package antuere.how_are_you.util.extensions
 
-import android.app.Activity
-import android.content.Context
-import android.content.ContextWrapper
 import androidx.compose.animation.core.*
-import androidx.compose.foundation.gestures.animateScrollBy
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
@@ -17,32 +11,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.debugInspectorInfo
 import androidx.compose.ui.unit.dp
-import androidx.fragment.app.FragmentActivity
-import antuere.domain.dto.helplines.SupportedCountry
-import antuere.how_are_you.R
-import antuere.how_are_you.presentation.base.ui_text.UiText
 import com.valentinilk.shimmer.ShimmerBounds
 import com.valentinilk.shimmer.defaultShimmerTheme
 import com.valentinilk.shimmer.rememberShimmer
 import com.valentinilk.shimmer.shimmer
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import java.util.*
 
-
-fun Context.findFragmentActivity(): FragmentActivity {
-    var context = this
-    while (context is ContextWrapper) {
-        if (context is Activity) return context as FragmentActivity
-        context = context.baseContext
-    }
-    throw IllegalStateException("no activity")
-}
-
-fun String.upperCaseFirstCharacter(): String {
-    return this.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
-}
 
 fun Modifier.paddingBotAndTopBar(): Modifier {
     return padding(top = 64.dp, bottom = 80.dp)
@@ -96,7 +70,9 @@ fun Modifier.animateMoving() = composed(
             )
         )
 
-        Modifier.rotate(rotation).scale(scale)
+        Modifier
+            .rotate(rotation)
+            .scale(scale)
     },
     inspectorInfo = debugInspectorInfo {
         name = "animateMoving"
@@ -211,39 +187,6 @@ fun Modifier.shimmer(
     )
     shimmer(customShimmer = shimmer)
 }
-
-fun SupportedCountry.getName(): UiText {
-    return when (this) {
-        is SupportedCountry.Italy -> UiText.StringResource(R.string.italy)
-        is SupportedCountry.Russia -> UiText.StringResource(R.string.russia)
-        is SupportedCountry.USA -> UiText.StringResource(R.string.usa)
-        is SupportedCountry.France -> UiText.StringResource(R.string.france)
-        is SupportedCountry.China -> UiText.StringResource(R.string.china)
-    }
-}
-
-fun LazyListState.animateScrollAndCentralize(index: Int, scope: CoroutineScope) {
-    val itemInfo = this.layoutInfo.visibleItemsInfo.firstOrNull { it.index == index }
-    scope.launch {
-        if (itemInfo != null) {
-            val center = this@animateScrollAndCentralize.layoutInfo.viewportEndOffset / 2
-            val childCenter = itemInfo.offset + itemInfo.size / 2
-            this@animateScrollAndCentralize.animateScrollBy((childCenter - center).toFloat())
-        } else {
-            this@animateScrollAndCentralize.animateScrollToItem(index)
-        }
-    }
-}
-
-@Composable
-fun ((Boolean) -> Unit).toStable() = remember { this }
-
-@JvmName("toStableStringUnit")
-@Composable
-fun ((String) -> Unit).toStable() = remember { this }
-
-@Composable
-fun (() -> Unit).toStable() = remember { this }
 
 private fun createCustomTheme(duration: Int) = defaultShimmerTheme.copy(
     animationSpec = infiniteRepeatable(

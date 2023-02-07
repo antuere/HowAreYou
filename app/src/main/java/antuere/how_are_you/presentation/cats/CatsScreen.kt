@@ -1,6 +1,5 @@
 package antuere.how_are_you.presentation.cats
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -12,7 +11,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -24,8 +22,8 @@ import antuere.how_are_you.presentation.base.ui_compose_components.top_bar.AppBa
 import antuere.how_are_you.presentation.cats.ui_compose.CatImage
 import antuere.how_are_you.presentation.base.ui_theme.PlayfairDisplay
 import antuere.how_are_you.presentation.cats.state.CatsIntent
-import antuere.how_are_you.util.paddingTopBar
-import antuere.how_are_you.util.toStable
+import antuere.how_are_you.util.extensions.paddingTopBar
+import antuere.how_are_you.util.extensions.toStable
 import org.orbitmvi.orbit.compose.collectAsState
 import timber.log.Timber
 

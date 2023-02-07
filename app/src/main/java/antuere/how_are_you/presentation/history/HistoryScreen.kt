@@ -33,8 +33,8 @@ import antuere.how_are_you.presentation.history.state.HistoryIntent
 import antuere.how_are_you.presentation.history.state.HistorySideEffect
 import antuere.how_are_you.presentation.history.state.HistoryState
 import antuere.how_are_you.presentation.history.ui_compose.*
-import antuere.how_are_you.util.paddingBotAndTopBar
-import antuere.how_are_you.util.toStable
+import antuere.how_are_you.util.extensions.paddingBotAndTopBar
+import antuere.how_are_you.util.extensions.toStable
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
@@ -71,15 +71,6 @@ fun HistoryScreen(
 
     val showBottomSheet: () -> Unit = remember {
         { scope.launch { bottomSheetState.animateTo(ModalBottomSheetValue.Expanded) } }
-    }
-
-    val onDaysSelected: (LocalDate, LocalDate) -> Unit = remember {
-        { startDate, endDate ->
-            HistoryIntent.DaysInFilterSelected(
-                startDate = startDate,
-                endDate = endDate
-            ).run(viewModel::onIntent)
-        }
     }
 
     BackHandler(enabled = isEnabledHandler) {
@@ -140,7 +131,12 @@ fun HistoryScreen(
             ) {
                 DaysFilterBottomSheet(
                     hideBottomSheet = hideBottomSheet,
-                    onDaysSelected = onDaysSelected
+                    onDaysSelected = { startDate : LocalDate, endDate : LocalDate ->
+                        HistoryIntent.DaysInFilterSelected(
+                            startDate = startDate,
+                            endDate = endDate
+                        ).run(viewModel::onIntent)
+                    }.toStable()
                 )
             }
         }) {

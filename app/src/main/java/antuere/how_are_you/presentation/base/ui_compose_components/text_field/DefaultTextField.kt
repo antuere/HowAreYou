@@ -2,6 +2,7 @@ package antuere.how_are_you.presentation.base.ui_compose_components.text_field
 
 import android.widget.Toast
 import androidx.annotation.StringRes
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -26,8 +27,10 @@ fun DefaultTextField(
     maxLength: Int = Int.MAX_VALUE,
     @StringRes toastTextId: Int? = null,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+    keyboardActions: KeyboardActions = KeyboardActions.Default,
     visualTransformation: VisualTransformation = VisualTransformation.None,
-    trailingIcon: @Composable() (() -> Unit)? = null
+    trailingIcon: @Composable() (() -> Unit)? = null,
+    leadingIcon: @Composable() (() -> Unit)? = null
 ) {
     val context = LocalContext.current
     val toastText = stringResource(toastTextId ?: R.string.too_many_chars_default)
@@ -61,8 +64,10 @@ fun DefaultTextField(
             )
         },
         keyboardOptions = keyboardOptions,
+        keyboardActions = keyboardActions,
         singleLine = singleLine,
         visualTransformation = visualTransformation,
-        trailingIcon = trailingIcon
+        trailingIcon = trailingIcon,
+        leadingIcon = leadingIcon
     )
 }

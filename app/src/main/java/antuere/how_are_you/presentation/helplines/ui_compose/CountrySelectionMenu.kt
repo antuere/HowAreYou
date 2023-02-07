@@ -1,208 +1,91 @@
 package antuere.how_are_you.presentation.helplines.ui_compose
 
+import androidx.annotation.DrawableRes
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import antuere.domain.dto.helplines.SupportedCountry
 import antuere.how_are_you.R
-import antuere.how_are_you.util.getName
-import antuere.how_are_you.util.upperCaseFirstCharacter
-import timber.log.Timber
-import java.util.*
+import antuere.how_are_you.util.extensions.getName
+import antuere.how_are_you.util.extensions.upperCaseFirstCharacter
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CountrySelectionMenu(
     modifier: Modifier = Modifier,
-    countriesMap: Map<String, SupportedCountry>,
-    selectedCountry: SupportedCountry,
+    isExpanded: Boolean,
+    countries: List<SupportedCountry>,
+    @DrawableRes flagId: Int,
+    textFieldValue: String,
     onSelectedCountryChange: (SupportedCountry) -> Unit,
+    onExpandedChange: () -> Unit,
 ) {
-    val focusManager = LocalFocusManager.current
     val context = LocalContext.current
-    var expanded by remember { mutableStateOf(false) }
-
-    val selectedCountryName = remember(selectedCountry) {
-        selectedCountry.getName().asString(context)
-    }
-    var selectedCountryText by remember(selectedCountry) { mutableStateOf(selectedCountryName) }
-
-    var currentFlagId by remember { mutableStateOf(selectedCountry.flagId) }
-    var isCountryCurrentText by remember { mutableStateOf(true) }
-
-    LaunchedEffect(expanded) {
-        if (!expanded) {
-            focusManager.clearFocus()
-        }
+    val countriesMap = remember(countries) {
+        countries.associateBy {
+            it.getName().asString(context).lowercase()
+        }.toSortedMap()
     }
 
     ExposedDropdownMenuBox(
         modifier = modifier,
-        expanded = expanded,
-        onExpandedChange = {
-            expanded = !expanded
-        },
+        expanded = isExpanded,
+        onExpandedChange = { onExpandedChange() },
     ) {
         OutlinedTextField(
             modifier = Modifier.menuAnchor(),
-            value = selectedCountryText,
-            onValueChange = { newValue ->
-                val lowerCaseValue = newValue.lowercase()
-                val foundCountry = countriesMap[lowerCaseValue]
-                if (foundCountry != null) {
-                    isCountryCurrentText = true
-                    currentFlagId = foundCountry.flagId
-                } else {
-                    isCountryCurrentText = false
-                }
-                selectedCountryText = newValue
-            },
-            label = { Text(stringResource(id = R.string.country)) },
-            singleLine = true,
-            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-            keyboardActions = KeyboardActions(onDone = {
-                focusManager.clearFocus()
-                selectedCountryText = selectedCountryName
-                currentFlagId = selectedCountry.flagId
-                isCountryCurrentText = true
-                expanded = false
-            }),
+            readOnly = true,
+            value = textFieldValue,
+            onValueChange = {},
+            label = { Text(text = stringResource(id = R.string.country)) },
             leadingIcon = {
                 Icon(
                     modifier = Modifier
                         .size(30.dp)
                         .padding(start = 5.dp),
-                    painter = if (isCountryCurrentText) painterResource(id = currentFlagId) else painterResource(
-                        id = antuere.data.R.drawable.flag_plug
-                    ),
+                    painter = painterResource(id = flagId),
                     contentDescription = "Flag of country",
                     tint = Color.Unspecified
                 )
             },
-            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
+            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = isExpanded) },
         )
 
-        val filteringCountries =
-            countriesMap.filterKeys {
-                it.contains(selectedCountryText, ignoreCase = true)
-            }
-
         ExposedDropdownMenu(
-            expanded = expanded,
-            onDismissRequest = {
-//                focusManager.clearFocus()
-//                selectedCountryText = selectedCountryName
-//                currentFlagId = selectedCountry.flagId
-//                isCountryCurrentText = true
-//                expanded = false
-            },
+            expanded = isExpanded,
+            onDismissRequest = { onExpandedChange() },
         ) {
-            if (filteringCountries.isNotEmpty()) {
-                filteringCountries.forEach { (name, country) ->
-                    DropdownMenuItem(
-                        text = {
-                            Text(
-                                if (country is SupportedCountry.USA) {
-                                    name.uppercase()
-                                } else {
-                                    name.upperCaseFirstCharacter()
-                                }
-                            )
-                        },
-                        onClick = {
-                            focusManager.clearFocus()
-                            selectedCountryText = name.upperCaseFirstCharacter()
-                            currentFlagId = country.flagId
-                            isCountryCurrentText = true
-                            onSelectedCountryChange(country)
-                            expanded = false
-                        },
-                        leadingIcon = {
-                            Icon(
-                                modifier = Modifier.size(30.dp),
-                                painter = painterResource(id = country.flagId),
-                                contentDescription = "Flag of country",
-                                tint = Color.Unspecified
-                            )
-                        },
-                        contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding,
-                    )
-                }
-            } else {
-                val notSupportedCountry = stringResource(id = R.string.notSupportedCountry)
+            countriesMap.forEach { (name, country) ->
                 DropdownMenuItem(
-                    text = { Text(notSupportedCountry) },
+                    text = {
+                        Text(
+                            if (country is SupportedCountry.USA) {
+                                name.uppercase()
+                            } else {
+                                name.upperCaseFirstCharacter()
+                            }
+                        )
+                    },
                     onClick = {
-                        focusManager.clearFocus()
-                        selectedCountryText = selectedCountryName
-                        currentFlagId = selectedCountry.flagId
-                        isCountryCurrentText = true
-                        expanded = false
+                        onSelectedCountryChange(country)
+                    },
+                    leadingIcon = {
+                        Icon(
+                            modifier = Modifier.size(30.dp),
+                            painter = painterResource(id = country.flagId),
+                            contentDescription = "Flag of country",
+                            tint = Color.Unspecified
+                        )
                     },
                     contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding,
                 )
-            }
-        }
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun TestKeyboard() {
-    val options = listOf("Option 1", "Option 2", "Option 3", "Option 4", "Option 5")
-    var expanded by remember { mutableStateOf(false) }
-    var selectedOptionText by remember { mutableStateOf("") }
-    ExposedDropdownMenuBox(
-        expanded = expanded,
-        onExpandedChange = {
-            Timber.i("Keyboard error: expand change, now it is ${!expanded}")
-            expanded = !expanded
-        },
-    ) {
-        TextField(
-            // The `menuAnchor` modifier must be passed to the text field for correctness.
-            modifier = Modifier.menuAnchor(),
-            value = selectedOptionText,
-            onValueChange = {
-                Timber.i("Keyboard error: text field value change, now its: $it")
-                selectedOptionText = it
-            },
-            label = { Text("Label") },
-            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
-            colors = ExposedDropdownMenuDefaults.textFieldColors(),
-        )
-        // filter options based on text field value
-        val filteringOptions = options.filter { it.contains(selectedOptionText, ignoreCase = true) }
-        if (filteringOptions.isNotEmpty()) {
-            ExposedDropdownMenu(
-                expanded = expanded,
-                onDismissRequest = {
-                    Timber.i("Keyboard error: dismiss request")
-                    expanded = false
-                },
-            ) {
-                filteringOptions.forEach { selectionOption ->
-                    DropdownMenuItem(
-                        text = { Text(selectionOption) },
-                        onClick = {
-                            Timber.i("Keyboard error: item selected")
-                            selectedOptionText = selectionOption
-                            expanded = false
-                        },
-                        contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding,
-                    )
-                }
             }
         }
     }

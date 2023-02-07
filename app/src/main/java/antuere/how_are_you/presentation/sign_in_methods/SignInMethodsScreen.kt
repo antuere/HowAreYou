@@ -18,8 +18,8 @@ import antuere.how_are_you.presentation.base.ui_compose_components.top_bar.AppBa
 import antuere.how_are_you.presentation.base.ui_compose_components.buttons.ButtonWithIcon
 import antuere.how_are_you.presentation.sign_in_methods.state.SignInMethodsIntent
 import antuere.how_are_you.presentation.sign_in_methods.state.SignInMethodsSideEffect
-import antuere.how_are_you.util.paddingTopBar
-import antuere.how_are_you.util.toStable
+import antuere.how_are_you.util.extensions.paddingTopBar
+import antuere.how_are_you.util.extensions.toStable
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect

@@ -23,8 +23,8 @@ import antuere.how_are_you.presentation.base.ui_compose_components.card.CardWith
 import antuere.how_are_you.presentation.base.ui_compose_components.top_bar.AppBarState
 import antuere.how_are_you.presentation.help_for_you.state.HelpForYouIntent
 import antuere.how_are_you.presentation.help_for_you.state.HelpForYouSideEffect
-import antuere.how_are_you.util.paddingTopBar
-import antuere.how_are_you.util.toStable
+import antuere.how_are_you.util.extensions.paddingTopBar
+import antuere.how_are_you.util.extensions.toStable
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 import timber.log.Timber

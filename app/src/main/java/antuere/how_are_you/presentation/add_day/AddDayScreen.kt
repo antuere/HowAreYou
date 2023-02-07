@@ -21,8 +21,8 @@ import antuere.how_are_you.presentation.add_day.state.AddDaySideEffect
 import antuere.how_are_you.presentation.base.ui_compose_components.top_bar.AppBarState
 import antuere.how_are_you.presentation.base.ui_compose_components.text_field.DefaultTextField
 import antuere.how_are_you.presentation.base.ui_theme.PlayfairDisplay
-import antuere.how_are_you.util.paddingTopBar
-import antuere.how_are_you.util.toStable
+import antuere.how_are_you.util.extensions.paddingTopBar
+import antuere.how_are_you.util.extensions.toStable
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 import timber.log.Timber

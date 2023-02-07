@@ -3,7 +3,6 @@ package antuere.how_are_you.presentation.cats.ui_compose
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -16,7 +15,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import antuere.how_are_you.R
-import antuere.how_are_you.util.animateMoving
+import antuere.how_are_you.util.extensions.animateMoving
 import com.bumptech.glide.request.RequestOptions
 import com.skydoves.landscapist.ImageOptions
 import com.skydoves.landscapist.animation.crossfade.CrossfadePlugin

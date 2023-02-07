@@ -14,7 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
 import antuere.how_are_you.R
-import antuere.how_are_you.util.shimmer
+import antuere.how_are_you.util.extensions.shimmer
 import timber.log.Timber
 
 

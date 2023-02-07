@@ -3,8 +3,6 @@ package antuere.how_are_you.presentation.helplines
 import android.content.Intent
 import android.net.Uri
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -15,6 +13,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.dimensionResource
 import androidx.hilt.navigation.compose.hiltViewModel
+import antuere.domain.dto.helplines.SupportedCountry
 import antuere.how_are_you.LocalAppState
 import antuere.how_are_you.R
 import antuere.how_are_you.presentation.base.ui_compose_components.placeholder.FullScreenProgressIndicator
@@ -23,11 +22,11 @@ import antuere.how_are_you.presentation.helplines.state.HelplinesIntent
 import antuere.how_are_you.presentation.helplines.state.HelplinesSideEffect
 import antuere.how_are_you.presentation.helplines.state.HelplinesState
 import antuere.how_are_you.presentation.helplines.ui_compose.CountrySelectionMenu
-import antuere.how_are_you.presentation.helplines.ui_compose.HelplineItem
-import antuere.how_are_you.presentation.helplines.ui_compose.TestKeyboard
-import antuere.how_are_you.util.animateScrollAndCentralize
-import antuere.how_are_you.util.getName
-import antuere.how_are_you.util.paddingTopBar
+import antuere.how_are_you.presentation.helplines.ui_compose.CountrySelectionMenuEditable
+import antuere.how_are_you.presentation.helplines.ui_compose.HelplinesColumn
+import antuere.how_are_you.util.extensions.animateScrollAndCentralize
+import antuere.how_are_you.util.extensions.paddingTopBar
+import antuere.how_are_you.util.extensions.toStable
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.compose.collectAsState
@@ -87,12 +86,6 @@ fun HelplinesScreen(
 
     when (val state = viewState) {
         is HelplinesState.Loaded -> {
-            val sortedCountriesMap = remember(state.supportedCountries) {
-                state.supportedCountries.associateBy {
-                    it.getName().asString(context).lowercase()
-                }.toSortedMap()
-            }
-
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -102,42 +95,55 @@ fun HelplinesScreen(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Spacer(modifier = Modifier.weight(0.05F))
-                CountrySelectionMenu(
-                    modifier = Modifier.fillMaxWidth(0.6F),
-                    countriesMap = sortedCountriesMap,
-                    selectedCountry = state.selectedCountry,
-                    onSelectedCountryChange = {
-                        HelplinesIntent.CountrySelected(it).run(viewModel::onIntent)
-                    }
-                )
-//                TestKeyboard()
+
+                if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.R) {
+                    CountrySelectionMenu(
+                        modifier = Modifier.fillMaxWidth(0.6F),
+                        isExpanded = state.isMenuExpanded,
+                        countries = state.supportedCountries,
+                        flagId = state.currentFlagId,
+                        textFieldValue = state.textFieldValue.asString(),
+                        onSelectedCountryChange = {
+                            HelplinesIntent.CountrySelected(it).run(viewModel::onIntent)
+                        },
+                        onExpandedChange = { HelplinesIntent.CountyMenuClicked.run(viewModel::onIntent) }
+                    )
+                } else {
+                    CountrySelectionMenuEditable(
+                        modifier = Modifier.fillMaxWidth(0.6F),
+                        countries = state.supportedCountries,
+                        isExpanded = state.isMenuExpanded,
+                        textFieldValue = state.textFieldValue.asString(),
+                        flagId = state.currentFlagId,
+                        onSelectedCountryChange = {
+                            HelplinesIntent.CountrySelected(it).run(viewModel::onIntent)
+                        },
+                        onSelectedCountryFieldChange = { value: String, countriesMap: Map<String, SupportedCountry> ->
+                            HelplinesIntent.CountryFieldChanged(value, countriesMap)
+                                .run(viewModel::onIntent)
+                        },
+                        onExpandedChange = { HelplinesIntent.CountyMenuClicked.run(viewModel::onIntent) },
+                        onDismiss = { HelplinesIntent.CountyMenuDismissed.run(viewModel::onIntent) }
+                    )
+                }
                 Spacer(modifier = Modifier.weight(0.05F))
 
-                LazyColumn(
+                HelplinesColumn(
                     modifier = Modifier
                         .fillMaxSize()
                         .weight(1F),
-                    state = lazyListState,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    itemsIndexed(
-                        items = state.selectedCountry.helplines,
-                        key = { _, helpline -> helpline.nameResId }
-                    ) { index, helpline ->
-                        HelplineItem(
-                            helpline = helpline,
-                            onClickPhone = { phone: String ->
-                                HelplinesIntent.PhoneClicked(phone).run(viewModel::onIntent)
-                            },
-                            onClickWebsite = { website: String ->
-                                HelplinesIntent.WebsiteClicked(website).run(viewModel::onIntent)
-                            },
-                            onClickToItem = {
-                                HelplinesIntent.HelplineClicked(index).run(viewModel::onIntent)
-                            }
-                        )
-                    }
-                }
+                    lazyListState = lazyListState,
+                    helplines = state.selectedCountry.helplines.toStable(key = state.selectedCountry),
+                    onClickPhone = { phone: String ->
+                        HelplinesIntent.PhoneClicked(phone).run(viewModel::onIntent)
+                    }.toStable(),
+                    onClickWebsite = { website: String ->
+                        HelplinesIntent.WebsiteClicked(website).run(viewModel::onIntent)
+                    }.toStable(),
+                    onClickItem = { index: Int ->
+                        HelplinesIntent.HelplineClicked(index).run(viewModel::onIntent)
+                    }.toStable()
+                )
             }
         }
         is HelplinesState.Loading -> {

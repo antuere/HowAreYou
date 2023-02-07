@@ -17,6 +17,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.sp
 import antuere.domain.dto.helplines.Helpline
 import antuere.how_are_you.R
+import timber.log.Timber
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -26,6 +27,8 @@ fun HelplineItem(
     onClickPhone: (String) -> Unit,
     onClickWebsite: (String) -> Unit,
 ) {
+
+    Timber.i("Recompose error : we in Helpline")
     var isExpanded by remember { mutableStateOf(false) }
     val rotationState by animateFloatAsState(
         targetValue = if (isExpanded) 180f else 0f

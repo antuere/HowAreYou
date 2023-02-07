@@ -23,8 +23,8 @@ import antuere.how_are_you.presentation.base.ui_theme.TealMain
 import antuere.how_are_you.presentation.home.state.HomeIntent
 import antuere.how_are_you.presentation.home.state.HomeSideEffect
 import antuere.how_are_you.presentation.home.state.HomeState
-import antuere.how_are_you.util.paddingBotAndTopBar
-import antuere.how_are_you.util.toStable
+import antuere.how_are_you.util.extensions.paddingBotAndTopBar
+import antuere.how_are_you.util.extensions.toStable
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 import timber.log.Timber

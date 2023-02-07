@@ -20,7 +20,7 @@ import antuere.how_are_you.presentation.base.ui_compose_components.top_bar.AppBa
 import antuere.how_are_you.presentation.favorites.state.FavoritesIntent
 import antuere.how_are_you.presentation.favorites.state.FavoritesSideEffect
 import antuere.how_are_you.presentation.favorites.state.FavoritesState
-import antuere.how_are_you.util.paddingTopBar
+import antuere.how_are_you.util.extensions.paddingTopBar
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 import timber.log.Timber

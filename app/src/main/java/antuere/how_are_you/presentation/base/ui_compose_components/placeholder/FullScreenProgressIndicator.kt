@@ -9,7 +9,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import antuere.how_are_you.R
-import antuere.how_are_you.util.paddingBotAndTopBar
+import antuere.how_are_you.util.extensions.paddingBotAndTopBar
 
 @Composable
 fun FullScreenProgressIndicator() {
