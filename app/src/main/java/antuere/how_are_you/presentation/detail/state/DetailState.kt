@@ -9,5 +9,4 @@ data class DetailState(
     @DrawableRes val favoriteBtnRes: Int = R.drawable.ic_baseline_favorite_border,
     val dayText: String = "",
     val dateString: String = "",
-    val isFavorite: Boolean = false
 )

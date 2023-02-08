@@ -19,6 +19,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
+import androidx.navigation.navigation
 import androidx.viewbinding.BuildConfig
 import antuere.domain.dto.Settings
 import antuere.domain.repository.SettingsRepository
@@ -59,6 +60,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
@@ -78,29 +80,21 @@ class MainActivity : FragmentActivity() {
     @OptIn(ExperimentalAnimationApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        var isEnabledPin = false
+        lifecycleScope.launch(Dispatchers.IO) {
+            isEnabledPin = settingsRepository.getPinSetting().first()
+        }
+
         Timber.plant(Timber.DebugTree())
         WindowCompat.setDecorFitsSystemWindows(window, false)
         TimeZone.setDefault(TimeZone.getTimeZone("UTC"))
-
-        var settings: Settings? = null
-
-        val job = lifecycleScope.launch(Dispatchers.IO) {
-            settings = settingsRepository.getAllSettings().first()
-        }
 
         installSplashScreen().apply {
             if (BuildConfig.BUILD_TYPE != "benchmark") {
                 setKeepOnScreenCondition {
                     homeViewModel.isShowSplash.value
                 }
-            }
-        }
-
-        var startDestination = Screen.SecureEntry.route
-        lifecycleScope.launch(Dispatchers.Main) {
-            job.join()
-            if (!settings!!.isPinCodeEnabled && !settings!!.isBiometricEnabled) {
-                startDestination = Screen.Home.route
             }
         }
 
@@ -120,6 +114,10 @@ class MainActivity : FragmentActivity() {
                     !(isSystemInDarkTheme() || (!isSystemInDarkTheme() && appBarState.isVisibleBottomBar))
                 val colorNavBarColor =
                     if (appBarState.isVisibleBottomBar) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onPrimary
+
+                var startDestination = remember(isEnabledPin) {
+                    if (isEnabledPin) Screen.SecureEntry.route else Screen.Home.route
+                }
 
                 LaunchedEffect(isUseDarkIcons, colorNavBarColor) {
                     systemUiController.setNavigationBarColor(
@@ -170,6 +168,7 @@ class MainActivity : FragmentActivity() {
                         }
                     }) { inner ->
                     CompositionLocalProvider(LocalAppState provides appState) {
+                        Timber.i("MVI error test : enter composable, before host start is $startDestination")
                         AnimatedNavHost(
                             modifier = Modifier
                                 .systemBarsPadding()
@@ -177,6 +176,7 @@ class MainActivity : FragmentActivity() {
                             navController = navController,
                             startDestination = startDestination
                         ) {
+                            Timber.i("MVI error test : enter composable, after host start is $startDestination")
                             composable(
                                 route = Screen.Home.route,
                                 enterTransition = { materialFadeThroughIn() },

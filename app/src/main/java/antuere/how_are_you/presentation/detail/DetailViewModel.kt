@@ -54,15 +54,16 @@ class DetailViewModel @Inject constructor(
             }
             DetailIntent.FavoriteBtnClicked -> {
                 sideEffect(DetailSideEffect.AnimateFavoriteBtn)
+                var isFavorite = true
                 val newFabBtnRes =
-                    if (state.isFavorite) {
-                        R.drawable.ic_baseline_favorite_border
-                    } else {
+                    if (state.favoriteBtnRes == R.drawable.ic_baseline_favorite_border) {
                         R.drawable.ic_baseline_favorite
+                    } else {
+                        isFavorite = false
+                        R.drawable.ic_baseline_favorite_border
                     }
                 updateState {
                     state.copy(
-                        isFavorite = state.isFavorite.not(),
                         favoriteBtnRes = newFabBtnRes
                     )
                 }
@@ -72,7 +73,7 @@ class DetailViewModel @Inject constructor(
                         imageResId = state.daySmileRes,
                         dayText = state.dayText,
                         dateString = state.dateString,
-                        isFavorite = state.isFavorite
+                        isFavorite = isFavorite
                     )
                     dayRepository.update(newDay)
                 }
@@ -96,7 +97,6 @@ class DetailViewModel @Inject constructor(
                     daySmileRes = day.imageResId,
                     dayText = day.dayText,
                     dateString = day.dateString,
-                    isFavorite = day.isFavorite,
                     favoriteBtnRes = favBtnRes
                 )
             }

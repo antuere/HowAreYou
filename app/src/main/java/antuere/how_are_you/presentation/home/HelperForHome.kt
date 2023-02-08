@@ -20,7 +20,7 @@ object HelperForHome {
     }
 
     fun isShowWarningForSummary(days: List<Day>): Boolean {
-        if (days.isEmpty()) return false
+        if (days.isEmpty() || days.size != 5) return false
 
         var result = true
 

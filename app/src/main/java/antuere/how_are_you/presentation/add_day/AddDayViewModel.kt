@@ -2,6 +2,7 @@ package antuere.how_are_you.presentation.add_day
 
 
 import androidx.lifecycle.*
+import antuere.domain.dto.Day
 import antuere.domain.usecases.AddDayUseCase
 import antuere.how_are_you.presentation.add_day.state.AddDayIntent
 import antuere.how_are_you.presentation.add_day.state.AddDaySideEffect
@@ -27,8 +28,9 @@ class AddDayViewModel @Inject constructor(
                 state.copy(dayDesc = intent.value)
             }
             is AddDayIntent.SmileClicked -> {
+                val day = Day(imageResId = intent.imageResId, dayText = state.dayDesc)
                 viewModelScope.launch(Dispatchers.IO) {
-                    addDayUseCase(intent.day)
+                    addDayUseCase(day)
                 }
                 sideEffect(AddDaySideEffect.NavigateUp)
             }

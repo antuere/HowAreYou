@@ -27,6 +27,7 @@ fun NumericKeyPad(
         modifier = Modifier
             .padding(horizontal = dimensionResource(id = R.dimen.padding_normal_1))
     ) {
+        Timber.i("MVI error test : draw numeric keypad")
         val numbersList = listOf(
             "1",
             "2",

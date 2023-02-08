@@ -76,6 +76,8 @@ fun SecureEntryScreen(
             .fillMaxSize()
             .paddingTopBar()
     ) {
+        Timber.i("MVI error test : enter in secure column")
+
         IconApp(modifier = Modifier.padding(top = dimensionResource(id = R.dimen.padding_small_1)))
         Spacer(modifier = Modifier.weight(0.2F))
 
