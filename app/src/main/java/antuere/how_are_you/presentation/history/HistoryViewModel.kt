@@ -7,22 +7,19 @@ import antuere.domain.repository.DayRepository
 import antuere.domain.repository.ToggleBtnRepository
 import antuere.domain.util.TimeUtility
 import antuere.how_are_you.R
+import antuere.how_are_you.presentation.base.ViewModelMvi
 import antuere.how_are_you.presentation.base.ui_compose_components.dialog.UIDialog
 import antuere.how_are_you.presentation.base.ui_text.UiText
 import antuere.how_are_you.presentation.history.state.FilterState
 import antuere.how_are_you.presentation.history.state.HistoryIntent
 import antuere.how_are_you.presentation.history.state.HistorySideEffect
 import antuere.how_are_you.presentation.history.state.HistoryState
-import antuere.how_are_you.presentation.base.ViewModelMvi
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.Container
-import org.orbitmvi.orbit.syntax.simple.intent
-import org.orbitmvi.orbit.syntax.simple.postSideEffect
-import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
 import javax.inject.Inject
 
@@ -75,6 +72,7 @@ class HistoryViewModel @Inject constructor(
                         secondDate = intent.endDate
                     )
                 }
+                sideEffect(HistorySideEffect.HideBottomSheet)
             }
             is HistoryIntent.ToggleBtnChanged -> {
                 filterState.update {
@@ -82,6 +80,12 @@ class HistoryViewModel @Inject constructor(
                 }
                 saveToggleButtonState(intent.toggleBtnState)
                 sideEffect(HistorySideEffect.AnimationHistoryHeader)
+            }
+            HistoryIntent.FilterBtnClicked -> {
+                sideEffect(HistorySideEffect.ShowBottomSheet)
+            }
+            HistoryIntent.FilterSheetClosed -> {
+                sideEffect(HistorySideEffect.HideBottomSheet)
             }
         }
     }

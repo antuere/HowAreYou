@@ -1,4 +1,4 @@
-package antuere.how_are_you.presentation.history.ui_compose
+package antuere.how_are_you.presentation.history.ui_compose.components
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*

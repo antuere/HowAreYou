@@ -1,4 +1,4 @@
-package antuere.how_are_you.presentation.history.ui_compose
+package antuere.how_are_you.presentation.history.ui_compose.components
 
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable

@@ -10,4 +10,6 @@ sealed interface HistoryIntent {
     data class ToggleBtnChanged(val toggleBtnState: ToggleBtnState) : HistoryIntent
     data class DaysInFilterSelected(val startDate: LocalDate, val endDate: LocalDate) :
         HistoryIntent
+    object FilterBtnClicked : HistoryIntent
+    object FilterSheetClosed : HistoryIntent
 }

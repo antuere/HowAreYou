@@ -8,6 +8,7 @@ import antuere.how_are_you.presentation.base.ui_text.UiText
 sealed interface SettingsSideEffect {
     object NavigateToSignIn : SettingsSideEffect
     object ShowBottomSheet : SettingsSideEffect
+    object HideBottomSheet : SettingsSideEffect
     data class BiometricNoneEnroll(val enrollIntent: Intent) : SettingsSideEffect
     data class Snackbar(val message: UiText) : SettingsSideEffect
     data class Dialog(val uiDialog: UIDialog) : SettingsSideEffect

@@ -11,13 +11,11 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.sp
 import antuere.how_are_you.R
-import antuere.how_are_you.presentation.base.ui_image.DefaultImage
-import antuere.how_are_you.presentation.sign_in_with_email.ColumnWrapper
 import antuere.how_are_you.util.extensions.paddingTopBar
 import timber.log.Timber
 
 @Composable
-fun DetailDay(
+fun DetailScreenState(
     isLoading: Boolean,
     daySmileImage: Int,
     dateString: String,

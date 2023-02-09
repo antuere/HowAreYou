@@ -11,6 +11,10 @@ interface AppState {
 
     fun dismissSnackbar()
 
+    fun changeVisibilityBottomBar(isVisible: Boolean)
+
+    fun changeVisibilityTopBar(isVisible: Boolean)
+
     fun updateAppBar(newState: AppBarState)
 
     fun navigateUp()

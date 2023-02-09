@@ -47,13 +47,13 @@ class ResetPasswordViewModel @Inject constructor(
                 state.copy(email = intent.value)
             }
             is ResetPasswordIntent.ResetBtnClicked -> {
-                if (intent.userEmail.isNotEmpty()) {
+                if (state.email.isNotEmpty()) {
                     updateState {
                         state.copy(isShowProgressIndicator = true)
                     }
                     viewModelScope.launch(Dispatchers.IO) {
                         authenticationManager.resetPassword(
-                            email = intent.userEmail,
+                            email = state.email,
                             resetPassResultListener = resetPassResultListener
                         )
                     }

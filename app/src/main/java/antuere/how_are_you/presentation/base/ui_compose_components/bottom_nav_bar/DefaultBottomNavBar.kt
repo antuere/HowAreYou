@@ -1,6 +1,5 @@
 package antuere.how_are_you.presentation.base.ui_compose_components.bottom_nav_bar
 
-import androidx.activity.compose.BackHandler
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
@@ -18,29 +17,27 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
+import antuere.how_are_you.R
 import antuere.how_are_you.presentation.base.navigation.Screen
 import antuere.how_are_you.presentation.base.ui_theme.Gray800
 import antuere.how_are_you.presentation.base.ui_theme.TealMain
 import antuere.how_are_you.presentation.base.ui_theme.Typography
-import antuere.how_are_you.R
-import antuere.how_are_you.util.extensions.findFragmentActivity
-
+import timber.log.Timber
 
 @Composable
 fun DefaultBottomNavBar(navController: NavController) {
+
+    Timber.i("MVI error test : we in bottom bar compose")
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
+
     val destinations = listOf(Screen.Home, Screen.History, Screen.Settings)
-
-    val activity = LocalContext.current.findFragmentActivity()
-
     val iconsTitle = listOf(
         stringResource(id = R.string.home),
         stringResource(id = R.string.history),
@@ -58,10 +55,6 @@ fun DefaultBottomNavBar(navController: NavController) {
         iconsTitle.forEachIndexed { index, dest ->
             val isSelected =
                 currentDestination?.hierarchy?.any { it.route == destinations[index].route } == true
-
-            BackHandler(isSelected) {
-                activity.finish()
-            }
 
             val interactionSource = remember { MutableInteractionSource() }
             val isPressed by interactionSource.collectIsPressedAsState()
@@ -89,12 +82,14 @@ fun DefaultBottomNavBar(navController: NavController) {
                 },
                 selected = isSelected,
                 onClick = {
-                    navController.navigate(destinations[index].route) {
-                        popUpTo(navController.graph.findStartDestination().id) {
-                            saveState = true
+                    if (!isSelected) {
+                        navController.navigate(destinations[index].route) {
+                            popUpTo(navController.graph.findStartDestination().id) {
+                                saveState = true
+                            }
+                            launchSingleTop = true
+                            restoreState = true
                         }
-                        launchSingleTop = true
-                        restoreState = true
                     }
                 },
                 colors = NavigationBarItemDefaults.colors(

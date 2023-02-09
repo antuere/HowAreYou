@@ -1,4 +1,4 @@
-package antuere.how_are_you.presentation.history.ui_compose.date_picker
+package antuere.how_are_you.presentation.history.ui_compose.components.date_picker
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ShapeDefaults

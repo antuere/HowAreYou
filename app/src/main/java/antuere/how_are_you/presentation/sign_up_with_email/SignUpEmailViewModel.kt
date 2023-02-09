@@ -43,18 +43,18 @@ class SignUpEmailViewModel @Inject constructor(
             }
             is SignUpEmailIntent.SignInBtnClicked -> {
                 if (isValidateFields(
-                        intent.email,
-                        intent.password,
-                        intent.confirmPassword,
-                        intent.nickName
+                        state.email,
+                        state.password,
+                        state.confirmPassword,
+                        state.nickName
                     )
                 ) {
                     updateState { state.copy(isShowProgressIndicator = true) }
                     viewModelScope.launch(Dispatchers.IO) {
                         authenticationManager.startRegister(
-                            email = intent.email,
-                            password = intent.password,
-                            name = intent.nickName,
+                            email = state.email,
+                            password = state.password,
+                            name = state.nickName,
                             registerResultListener = firebaseRegisterListener
                         )
                     }

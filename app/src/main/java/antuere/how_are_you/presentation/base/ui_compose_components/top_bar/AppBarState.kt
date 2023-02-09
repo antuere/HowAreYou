@@ -7,10 +7,10 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import antuere.how_are_you.R
 
 data class AppBarState(
-    @StringRes var titleId: Int = R.string.home,
-    var navigationIcon: ImageVector? = null,
-    var onClickNavigationBtn: () -> Unit = {},
-    var actions: (@Composable RowScope.() -> Unit) = {},
-    var isVisibleTopBar : Boolean = true,
-    var isVisibleBottomBar : Boolean = true
+    @StringRes val titleId: Int = R.string.home,
+    val navigationIcon: ImageVector? = null,
+    val onClickNavigationBtn: () -> Unit = {},
+    val actions: (@Composable RowScope.() -> Unit) = {},
+    val isVisibleTopBar : Boolean = true,
+    val isVisibleBottomBar : Boolean = true
 )

@@ -1,4 +1,4 @@
-package antuere.how_are_you.presentation.sign_in_with_email
+package antuere.how_are_you.util
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

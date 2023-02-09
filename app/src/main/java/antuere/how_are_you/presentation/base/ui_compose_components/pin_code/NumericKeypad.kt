@@ -15,7 +15,7 @@ import antuere.how_are_you.R
 import timber.log.Timber
 
 @Composable
-fun NumericKeyPad(
+fun NumericKeypad(
     onClick: (String) -> Unit,
     onClickClear: () -> Unit,
     isShowBiometricBtn: Boolean = false,

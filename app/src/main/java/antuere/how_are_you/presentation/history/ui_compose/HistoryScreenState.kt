@@ -1,15 +1,17 @@
 package antuere.how_are_you.presentation.history.ui_compose
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetLayout
 import androidx.compose.material.ModalBottomSheetState
+import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.unit.dp
 import antuere.domain.dto.ToggleBtnState
@@ -21,7 +23,12 @@ import antuere.how_are_you.presentation.base.ui_compose_components.days_list.Day
 import antuere.how_are_you.presentation.base.ui_compose_components.top_bar.AppBarState
 import antuere.how_are_you.presentation.history.state.HistoryIntent
 import antuere.how_are_you.presentation.history.state.HistoryState
+import antuere.how_are_you.presentation.history.ui_compose.components.DaysFilterBottomSheet
+import antuere.how_are_you.presentation.history.ui_compose.components.HistoryHeaderText
+import antuere.how_are_you.presentation.history.ui_compose.components.ToggleBtnGroup
+import antuere.how_are_you.util.extensions.findFragmentActivity
 import antuere.how_are_you.util.extensions.paddingBotAndTopBar
+import timber.log.Timber
 import java.time.LocalDate
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -29,14 +36,36 @@ import java.time.LocalDate
 fun HistoryScreenState(
     viewState: () -> HistoryState,
     onIntent: (HistoryIntent) -> Unit,
-    bottomSheetState: () -> ModalBottomSheetState,
-    hideBottomSheet: () -> Unit,
+    bottomSheetState: ModalBottomSheetState,
     rotation: () -> Float,
 ) {
+    Timber.i("MVI error test : historyScreenState")
+    val activity = LocalContext.current.findFragmentActivity()
     val appState = LocalAppState.current
+    val isEnabledHandler = remember(bottomSheetState.currentValue) {
+        bottomSheetState.currentValue == ModalBottomSheetValue.Expanded
+    }
+
+    val isSheetStartsHiding by remember {
+        derivedStateOf { bottomSheetState.direction == 1F }
+    }
+
+    LaunchedEffect(isSheetStartsHiding) {
+        if (isSheetStartsHiding) {
+            onIntent(HistoryIntent.FilterSheetClosed)
+        }
+    }
+
+    BackHandler(enabled = isEnabledHandler) {
+        onIntent(HistoryIntent.FilterSheetClosed)
+    }
+
+    BackHandler(enabled = !isEnabledHandler) {
+        activity.finish()
+    }
 
     ModalBottomSheetLayout(
-        sheetState = bottomSheetState(),
+        sheetState = bottomSheetState,
         sheetShape = RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp),
         sheetContent = {
             Box(
@@ -45,7 +74,6 @@ fun HistoryScreenState(
                 contentAlignment = Alignment.Center
             ) {
                 DaysFilterBottomSheet(
-                    hideBottomSheet = hideBottomSheet,
                     onDaysSelected = { startDate: LocalDate, endDate: LocalDate ->
                         onIntent(
                             HistoryIntent.DaysInFilterSelected(

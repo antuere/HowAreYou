@@ -3,23 +3,19 @@ package antuere.how_are_you.presentation.sign_in_methods
 import android.app.Activity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.dimensionResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import antuere.how_are_you.LocalAppState
 import antuere.how_are_you.R
 import antuere.how_are_you.presentation.base.ui_compose_components.top_bar.AppBarState
-import antuere.how_are_you.presentation.base.ui_compose_components.buttons.ButtonWithIcon
 import antuere.how_are_you.presentation.sign_in_methods.state.SignInMethodsIntent
 import antuere.how_are_you.presentation.sign_in_methods.state.SignInMethodsSideEffect
-import antuere.how_are_you.util.extensions.paddingTopBar
-import antuere.how_are_you.util.extensions.toStable
+import antuere.how_are_you.presentation.sign_in_methods.ui_compose.SignInMethodsScreenState
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
@@ -30,7 +26,7 @@ fun SignInMethodsScreen(
     onNavigateSignInEmail: () -> Unit,
     viewModel: SignInMethodsViewModel = hiltViewModel(),
 ) {
-    Timber.i("MVI error test : composed in signinmethods screen")
+    Timber.i("MVI error test : composed in sign in methods screen")
 
     val appState = LocalAppState.current
     val context = LocalContext.current
@@ -70,26 +66,5 @@ fun SignInMethodsScreen(
         }
     }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .paddingTopBar(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        ButtonWithIcon(
-            modifier = Modifier.fillMaxWidth(0.7F),
-            onClick = { SignInMethodsIntent.EmailMethodClicked.run(viewModel::onIntent) }.toStable(),
-            labelId = viewState.emailMethod.nameId,
-            iconId = viewState.emailMethod.iconId
-        )
-        Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_1)))
-
-        ButtonWithIcon(
-            modifier = Modifier.fillMaxWidth(0.7F),
-            onClick = { SignInMethodsIntent.GoogleMethodClicked.run(viewModel::onIntent) }.toStable(),
-            labelId = viewState.googleMethod.nameId,
-            iconId = viewState.googleMethod.iconId,
-        )
-    }
+    SignInMethodsScreenState(viewState = { viewState }, onIntent = { viewModel.onIntent(it) })
 }

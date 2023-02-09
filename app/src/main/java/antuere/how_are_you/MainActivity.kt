@@ -19,9 +19,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
-import androidx.navigation.navigation
 import androidx.viewbinding.BuildConfig
-import antuere.domain.dto.Settings
 import antuere.domain.repository.SettingsRepository
 import antuere.domain.util.Constants
 import antuere.how_are_you.presentation.add_day.AddDayScreen
@@ -34,7 +32,6 @@ import antuere.how_are_you.presentation.base.ui_animations.materialFadeThroughOu
 import antuere.how_are_you.presentation.base.ui_animations.materialSlideIn
 import antuere.how_are_you.presentation.base.ui_animations.materialSlideOut
 import antuere.how_are_you.presentation.base.ui_compose_components.bottom_nav_bar.DefaultBottomNavBar
-import antuere.how_are_you.presentation.base.ui_compose_components.top_bar.AppBarState
 import antuere.how_are_you.presentation.base.ui_compose_components.top_bar.DefaultTopBar
 import antuere.how_are_you.presentation.base.ui_theme.HowAreYouTheme
 import antuere.how_are_you.presentation.cats.CatsScreen
@@ -60,7 +57,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
@@ -168,7 +164,6 @@ class MainActivity : FragmentActivity() {
                         }
                     }) { inner ->
                     CompositionLocalProvider(LocalAppState provides appState) {
-                        Timber.i("MVI error test : enter composable, before host start is $startDestination")
                         AnimatedNavHost(
                             modifier = Modifier
                                 .systemBarsPadding()
@@ -176,7 +171,6 @@ class MainActivity : FragmentActivity() {
                             navController = navController,
                             startDestination = startDestination
                         ) {
-                            Timber.i("MVI error test : enter composable, after host start is $startDestination")
                             composable(
                                 route = Screen.Home.route,
                                 enterTransition = { materialFadeThroughIn() },

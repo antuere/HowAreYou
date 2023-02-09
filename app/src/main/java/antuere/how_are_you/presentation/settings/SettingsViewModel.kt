@@ -125,6 +125,7 @@ class SettingsViewModel @Inject constructor(
                 updateState {
                     state.copy(isCheckedPin = intent.isPinCreated)
                 }
+                sideEffect(SettingsSideEffect.HideBottomSheet)
                 if (intent.isPinCreated) {
                     viewModelScope.launch(Dispatchers.IO) {
                         settingsRepository.savePinSetting(true)

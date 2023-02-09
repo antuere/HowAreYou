@@ -21,7 +21,7 @@ import antuere.how_are_you.presentation.detail.state.DetailIntent
 import timber.log.Timber
 
 @Composable
-fun DetailTopBar(
+fun DetailScreenTopBar(
     favoriteBtnRes: () -> Int,
     rotation: () -> Float,
     onIntent: (DetailIntent) -> Unit,

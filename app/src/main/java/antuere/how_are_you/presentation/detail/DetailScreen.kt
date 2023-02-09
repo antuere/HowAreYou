@@ -8,9 +8,8 @@ import androidx.compose.runtime.remember
 import androidx.hilt.navigation.compose.hiltViewModel
 import antuere.how_are_you.LocalAppState
 import antuere.how_are_you.presentation.detail.state.DetailSideEffect
-import antuere.how_are_you.presentation.detail.ui_compose.DetailDay
-import antuere.how_are_you.presentation.detail.ui_compose.DetailTopBar
-import antuere.how_are_you.util.extensions.toStable
+import antuere.how_are_you.presentation.detail.ui_compose.DetailScreenState
+import antuere.how_are_you.presentation.detail.ui_compose.DetailScreenTopBar
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 import timber.log.Timber
@@ -38,13 +37,13 @@ fun DetailScreen(
         }
     }
 
-    DetailTopBar(
+    DetailScreenTopBar(
         favoriteBtnRes = { viewState.favoriteBtnRes },
         rotation = { rotation.value },
         onIntent = { viewModel.onIntent(it) }
     )
 
-    DetailDay(
+    DetailScreenState(
         isLoading = viewState.isLoading,
         daySmileImage = viewState.daySmileRes,
         dateString = viewState.dateString,

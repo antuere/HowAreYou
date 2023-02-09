@@ -1,6 +1,5 @@
 package antuere.how_are_you.presentation.history
 
-import androidx.activity.compose.BackHandler
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -20,6 +19,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import antuere.how_are_you.LocalAppState
 import antuere.how_are_you.R
 import antuere.how_are_you.presentation.base.ui_compose_components.top_bar.AppBarState
+import antuere.how_are_you.presentation.history.state.HistoryIntent
 import antuere.how_are_you.presentation.history.state.HistorySideEffect
 import antuere.how_are_you.presentation.history.ui_compose.*
 import kotlinx.coroutines.launch
@@ -33,43 +33,21 @@ fun HistoryScreen(
     onNavigateToDetail: (Long) -> Unit,
     viewModel: HistoryViewModel = hiltViewModel(),
 ) {
-    Timber.i("MVI error test : enter in history screen")
+    Timber.i("MVI error test : enter in history screen, view model is ${viewModel.toString()}")
     val appState = LocalAppState.current
-    val bottomSheetState = rememberModalBottomSheetState(
-        initialValue = ModalBottomSheetValue.Hidden,
-    )
-    val scope = rememberCoroutineScope()
-    val rotation = remember { Animatable(initialValue = 360f) }
 
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed by interactionSource.collectIsPressedAsState()
     val scaleFilterBtn by animateFloatAsState(if (isPressed) 0.75f else 1f)
 
+    val bottomSheetState = rememberModalBottomSheetState(
+        initialValue = ModalBottomSheetValue.Hidden,
+    )
+    val scope = rememberCoroutineScope()
+    val rotation = remember { Animatable(initialValue = 360f) }
     val viewState by viewModel.collectAsState()
 
-    val isEnabledHandler = remember(bottomSheetState.currentValue) {
-        bottomSheetState.currentValue == ModalBottomSheetValue.Expanded
-    }
-
-    val hideBottomSheet: () -> Unit = remember {
-        { scope.launch { bottomSheetState.hide() } }
-    }
-
-    val showBottomSheet: () -> Unit = remember {
-        { scope.launch { bottomSheetState.animateTo(ModalBottomSheetValue.Expanded) } }
-    }
-
-    BackHandler(enabled = isEnabledHandler) {
-        scope.launch {
-            bottomSheetState.hide()
-        }
-    }
-
     LaunchedEffect(true) {
-        appState.dismissSnackbar()
-    }
-
-    LaunchedEffect(bottomSheetState.targetValue) {
         appState.updateAppBar(
             AppBarState(
                 titleId = R.string.history,
@@ -79,7 +57,7 @@ fun HistoryScreen(
                             scaleY = scaleFilterBtn
                             scaleX = scaleFilterBtn
                         },
-                        onClick = showBottomSheet,
+                        onClick = { viewModel.onIntent(HistoryIntent.FilterBtnClicked) },
                         interactionSource = interactionSource
                     ) {
                         Icon(
@@ -88,9 +66,10 @@ fun HistoryScreen(
                         )
                     }
                 },
-                isVisibleBottomBar = bottomSheetState.targetValue == ModalBottomSheetValue.Hidden
+                isVisibleBottomBar = true
             ),
         )
+        appState.dismissSnackbar()
     }
 
     viewModel.collectSideEffect { sideEffect ->
@@ -103,14 +82,23 @@ fun HistoryScreen(
             }
             is HistorySideEffect.Dialog -> appState.showDialog(sideEffect.uiDialog)
             is HistorySideEffect.NavigationToDayDetail -> onNavigateToDetail(sideEffect.dayId)
+            HistorySideEffect.ShowBottomSheet -> {
+                scope.launch {
+                    bottomSheetState.animateTo(ModalBottomSheetValue.Expanded)
+                }
+                appState.changeVisibilityBottomBar(false)
+            }
+            HistorySideEffect.HideBottomSheet -> {
+                scope.launch { bottomSheetState.hide() }
+                appState.changeVisibilityBottomBar(true)
+            }
         }
     }
 
     HistoryScreenState(
         viewState = { viewState },
         onIntent = { viewModel.onIntent(it) },
-        bottomSheetState = { bottomSheetState },
-        hideBottomSheet = hideBottomSheet,
+        bottomSheetState = bottomSheetState,
         rotation = { rotation.value }
     )
 }

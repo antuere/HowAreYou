@@ -42,8 +42,8 @@ class SignInEmailViewModel @Inject constructor(
                 sideEffect(SignInEmailSideEffect.NavigateToResetPassword)
             }
             is SignInEmailIntent.SignInBtnClicked -> {
-                val email = intent.email
-                val password = intent.password
+                val email = state.email
+                val password = state.password
 
                 if (email.isNotEmpty() && password.isNotEmpty()) {
                     updateState { state.copy(isShowProgressIndicator = true) }

@@ -1,4 +1,4 @@
-package antuere.how_are_you.presentation.sign_in_with_email
+package antuere.how_are_you.presentation.sign_in_with_email.ui_compose
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
@@ -72,14 +72,7 @@ fun SignInEmailScreenState(
                     .padding(horizontal = dimensionResource(id = R.dimen.padding_normal_3))
                     .fillMaxWidth(),
                 labelId = R.string.sign_in,
-                onClick = {
-                    onIntent(
-                        SignInEmailIntent.SignInBtnClicked(
-                            email = viewState().email,
-                            password = viewState().password
-                        )
-                    )
-                }
+                onClick = { onIntent(SignInEmailIntent.SignInBtnClicked) }
             )
             Spacer(modifier = Modifier.weight(1F))
 

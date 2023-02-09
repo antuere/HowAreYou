@@ -1,4 +1,4 @@
-package antuere.how_are_you.presentation.history.ui_compose
+package antuere.how_are_you.presentation.history.ui_compose.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
@@ -11,15 +11,14 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import antuere.how_are_you.R
-import antuere.how_are_you.presentation.history.ui_compose.date_picker.EndDatePicker
-import antuere.how_are_you.presentation.history.ui_compose.date_picker.StartDatePicker
+import antuere.how_are_you.presentation.history.ui_compose.components.date_picker.EndDatePicker
+import antuere.how_are_you.presentation.history.ui_compose.components.date_picker.StartDatePicker
 import com.vanpra.composematerialdialogs.rememberMaterialDialogState
 import timber.log.Timber
 import java.time.LocalDate
 
 @Composable
 fun DaysFilterBottomSheet(
-    hideBottomSheet: () -> Unit,
     onDaysSelected: (LocalDate, LocalDate) -> Unit,
 ) {
     Timber.i("MVI error test : composed in daysFilter")
@@ -98,7 +97,6 @@ fun DaysFilterBottomSheet(
                 .alpha(if (isEnabledConfirmBtn) 1F else 0.4F),
             onClick = {
                 onDaysSelected(startDate, endDate)
-                hideBottomSheet()
             },
             enabled = isEnabledConfirmBtn,
             colors = ButtonDefaults.buttonColors(

@@ -46,6 +46,14 @@ class AppStateImpl(
         appBarState.value = newState
     }
 
+    override fun changeVisibilityBottomBar(isVisible: Boolean) {
+        appBarState.value = appBarState.value.copy(isVisibleBottomBar = isVisible)
+    }
+
+    override fun changeVisibilityTopBar(isVisible: Boolean) {
+        appBarState.value = appBarState.value.copy(isVisibleTopBar = isVisible)
+    }
+
     override fun navigateUp() {
         navController.navigateUp()
     }
