@@ -106,8 +106,7 @@ class MainActivity : FragmentActivity() {
                 val getHomeViewModel: () -> HomeViewModel = remember { { homeViewModel } }
 
                 val systemUiController = rememberSystemUiController()
-                val isUseDarkIcons =
-                    !(isSystemInDarkTheme() || (!isSystemInDarkTheme() && appBarState.isVisibleBottomBar))
+                val isUseDarkIcons = !appBarState.isVisibleBottomBar
                 val colorNavBarColor =
                     if (appBarState.isVisibleBottomBar) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onPrimary
 

@@ -1,36 +1,64 @@
 package antuere.how_are_you.presentation.cats.ui_compose
 
+import android.graphics.Bitmap
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.asAndroidBitmap
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import com.bumptech.glide.load.engine.DiskCacheStrategy
 import antuere.how_are_you.R
 import antuere.how_are_you.util.extensions.animateMoving
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.skydoves.landscapist.ImageOptions
 import com.skydoves.landscapist.animation.crossfade.CrossfadePlugin
 import com.skydoves.landscapist.components.rememberImageComponent
 import com.skydoves.landscapist.glide.GlideImage
+import com.skydoves.landscapist.glide.GlideImageState
 
 @Composable
 fun CatImage(
     modifier: Modifier = Modifier,
     url: String,
     contentDescription: String = "Cat",
+    onLongClicked: (Bitmap?) -> Unit,
 ) {
+    var imageAsBitmap: Bitmap? = null
+    var selected by remember { mutableStateOf(false) }
+    val scale by animateFloatAsState(if (selected) 0.96f else 1f)
+
     GlideImage(
         modifier = modifier
-            .clip(MaterialTheme.shapes.extraLarge),
+            .clip(MaterialTheme.shapes.extraLarge)
+            .graphicsLayer {
+                scaleY = scale
+                scaleX = scale
+            }
+            .pointerInput(Unit) {
+                detectTapGestures(
+                    onLongPress = {
+                        onLongClicked(imageAsBitmap)
+                    },
+                    onPress = {
+                        selected = true
+                        awaitRelease()
+                        selected = false
+                    }
+                )
+            },
 //            .aspectRatio(0.9F),
         imageModel = { url },
         imageOptions = ImageOptions(
@@ -39,7 +67,8 @@ fun CatImage(
             contentScale = ContentScale.Crop,
         ),
         requestOptions = {
-            RequestOptions().skipMemoryCache(true)
+            RequestOptions()
+                .skipMemoryCache(true)
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
         },
         component = rememberImageComponent {
@@ -71,6 +100,11 @@ fun CatImage(
                 Text(text = stringResource(R.string.cats_no_internet))
             }
 
+        },
+        onImageStateChanged = { imageState ->
+            if (imageState is GlideImageState.Success) {
+                imageAsBitmap = imageState.imageBitmap!!.asAndroidBitmap()
+            }
         }
     )
 }

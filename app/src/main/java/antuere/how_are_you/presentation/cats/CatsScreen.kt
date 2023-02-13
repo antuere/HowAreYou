@@ -5,12 +5,16 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import antuere.how_are_you.LocalAppState
 import antuere.how_are_you.R
+import antuere.how_are_you.presentation.base.GalleryProvider
 import antuere.how_are_you.presentation.base.ui_compose_components.top_bar.AppBarState
+import antuere.how_are_you.presentation.cats.state.CatsSideEffect
 import antuere.how_are_you.presentation.cats.ui_compose.CatsScreenState
 import org.orbitmvi.orbit.compose.collectAsState
+import org.orbitmvi.orbit.compose.collectSideEffect
 import timber.log.Timber
 
 @Composable
@@ -19,6 +23,7 @@ fun CatsScreen(
 ) {
     Timber.i("MVI error test : enter in catsScreen screen")
     val appState = LocalAppState.current
+    val context = LocalContext.current
     val viewState by viewModel.collectAsState()
 
     LaunchedEffect(true) {
@@ -30,6 +35,21 @@ fun CatsScreen(
                 isVisibleBottomBar = false
             )
         )
+    }
+
+    viewModel.collectSideEffect { sideEffect ->
+        when (sideEffect) {
+            is CatsSideEffect.SaveImageToGallery -> {
+                GalleryProvider.saveImage(
+                    bitmap = sideEffect.bitmap,
+                    context = context,
+                    onSuccess = sideEffect.onSuccessSaved
+                )
+            }
+            is CatsSideEffect.Snackbar -> {
+                appState.showSnackbar(sideEffect.message.asString(context))
+            }
+        }
     }
 
     CatsScreenState(viewState = { viewState }, onIntent = { viewModel.onIntent(it) })

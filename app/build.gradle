@@ -104,6 +104,13 @@ dependencies {
     implementation 'androidx.compose.runtime:runtime-livedata'
     implementation "androidx.activity:activity-compose:$version_compose_activity"
 
+    // Accompanist
+    implementation "com.google.accompanist:accompanist-navigation-animation:$version_accompanist"
+    implementation "com.google.accompanist:accompanist-pager:$version_accompanist"
+    implementation "com.google.accompanist:accompanist-pager-indicators:$version_accompanist"
+    implementation "com.google.accompanist:accompanist-permissions:$version_accompanist"
+    implementation "com.google.accompanist:accompanist-systemuicontroller:$version_accompanist"
+
     // Leak canary
     debugImplementation "com.squareup.leakcanary:leakcanary-android:$version_leak_canary"
 
@@ -117,12 +124,6 @@ dependencies {
     implementation "androidx.navigation:navigation-fragment-ktx:$version_navigation"
     implementation "androidx.navigation:navigation-ui-ktx:$version_navigation"
     implementation "androidx.navigation:navigation-compose:$version_navigation"
-
-    // Accompanist
-    implementation "com.google.accompanist:accompanist-navigation-animation:$version_accompanist"
-    implementation "com.google.accompanist:accompanist-pager:$version_accompanist"
-    implementation "com.google.accompanist:accompanist-pager-indicators:$version_accompanist"
-    implementation "com.google.accompanist:accompanist-systemuicontroller:$version_accompanist"
 
     // Preferences DataStore
     implementation "androidx.datastore:datastore-preferences:$version_data_store"
