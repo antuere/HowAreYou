@@ -4,9 +4,7 @@ import android.graphics.Bitmap
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.gestures.detectTapGestures
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.*
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
@@ -20,6 +18,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import antuere.how_are_you.R
+import antuere.how_are_you.presentation.base.ui_compose_components.progress_indicator.LinearProgressBarOrientation
+import antuere.how_are_you.presentation.base.ui_compose_components.progress_indicator.LinearProgressBarWrapper
 import antuere.how_are_you.util.extensions.animateMoving
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
@@ -40,71 +40,90 @@ fun CatImage(
     var selected by remember { mutableStateOf(false) }
     val scale by animateFloatAsState(if (selected) 0.96f else 1f)
 
-    GlideImage(
-        modifier = modifier
-            .clip(MaterialTheme.shapes.extraLarge)
-            .graphicsLayer {
-                scaleY = scale
-                scaleX = scale
-            }
-            .pointerInput(Unit) {
-                detectTapGestures(
-                    onLongPress = {
-                        onLongClicked(imageAsBitmap)
-                    },
-                    onPress = {
-                        selected = true
-                        awaitRelease()
-                        selected = false
-                    }
-                )
-            },
-//            .aspectRatio(0.9F),
-        imageModel = { url },
-        imageOptions = ImageOptions(
-            alignment = Alignment.Center,
-            contentDescription = contentDescription,
-            contentScale = ContentScale.Crop,
-        ),
-        requestOptions = {
-            RequestOptions()
-                .skipMemoryCache(true)
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
-        },
-        component = rememberImageComponent {
-            +CrossfadePlugin(duration = 300)
-        },
-        loading = {
-            Image(
-                modifier = Modifier
-                    .fillMaxSize(0.5F)
-                    .animateMoving()
-                    .align(Alignment.Center),
-                painter = painterResource(id = R.drawable.cat_placeholder),
-                contentDescription = "Cat loading"
+    Column(modifier = modifier) {
+        LinearProgressBarWrapper(scale = { scale })
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+        ) {
+            LinearProgressBarWrapper(
+                scale = { scale },
+                orientation = LinearProgressBarOrientation.VERTICAL
             )
-        },
-        failure = {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize(),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Image(
-                    modifier = Modifier
-                        .fillMaxSize(0.7F),
-                    painter = painterResource(id = R.drawable.cat_black),
-                    contentDescription = "Cat loading error, no internet"
-                )
-                Text(text = stringResource(R.string.cats_no_internet))
-            }
 
-        },
-        onImageStateChanged = { imageState ->
-            if (imageState is GlideImageState.Success) {
-                imageAsBitmap = imageState.imageBitmap!!.asAndroidBitmap()
-            }
+            GlideImage(
+                modifier = Modifier
+                    .graphicsLayer {
+                        scaleY = scale
+                        scaleX = scale
+                    }
+                    .pointerInput(Unit) {
+                        detectTapGestures(
+                            onLongPress = {
+                                onLongClicked(imageAsBitmap)
+                            },
+                            onPress = {
+                                selected = true
+                                awaitRelease()
+                                selected = false
+                            }
+                        )
+                    }
+                    .clip(MaterialTheme.shapes.extraLarge)
+                    .aspectRatio(0.9F),
+                imageModel = { url },
+                imageOptions = ImageOptions(
+                    alignment = Alignment.Center,
+                    contentDescription = contentDescription,
+                    contentScale = ContentScale.Crop,
+                ),
+                requestOptions = {
+                    RequestOptions()
+                        .skipMemoryCache(true)
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+                },
+                component = rememberImageComponent {
+                    +CrossfadePlugin(duration = 300)
+                },
+                loading = {
+                    Image(
+                        modifier = Modifier
+                            .fillMaxSize(0.5F)
+                            .animateMoving()
+                            .align(Alignment.Center),
+                        painter = painterResource(id = R.drawable.cat_placeholder),
+                        contentDescription = "Cat loading"
+                    )
+                },
+                failure = {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize(),
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Image(
+                            modifier = Modifier
+                                .fillMaxSize(0.7F),
+                            painter = painterResource(id = R.drawable.cat_black),
+                            contentDescription = "Cat loading error, no internet"
+                        )
+                        Text(text = stringResource(R.string.cats_no_internet))
+                    }
+
+                },
+                onImageStateChanged = { imageState ->
+                    if (imageState is GlideImageState.Success) {
+                        imageAsBitmap = imageState.imageBitmap?.asAndroidBitmap()
+                    }
+                }
+            )
+
+            LinearProgressBarWrapper(
+                scale = { scale },
+                orientation = LinearProgressBarOrientation.VERTICAL
+            )
         }
-    )
+        LinearProgressBarWrapper(scale = { scale })
+    }
 }

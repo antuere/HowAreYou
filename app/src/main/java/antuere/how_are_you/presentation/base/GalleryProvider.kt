@@ -7,15 +7,18 @@ import android.net.Uri
 import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
-import com.skydoves.landscapist.glide.GlideImageState
-import timber.log.Timber
 import java.io.File
 import java.io.FileOutputStream
 import java.io.OutputStream
 
 object GalleryProvider {
 
-    fun saveImage(bitmap: Bitmap, context: Context, onSuccess: () -> Unit) {
+    fun saveImage(
+        bitmap: Bitmap,
+        context: Context,
+        onSuccess: () -> Unit,
+        isHasPermission: Boolean,
+    ) {
         val filename = "Cat-${System.currentTimeMillis()}.jpg"
         var fos: OutputStream? = null
 
@@ -44,9 +47,8 @@ object GalleryProvider {
 
         fos?.use {
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, it)
-            Timber.i("CATS ERROR : WE IN catsScreenState, is before onSuccess in provider")
             onSuccess()
-            Timber.i("CATS ERROR : WE IN catsScreenState, is after onSuccess in provider")
         }
     }
+
 }

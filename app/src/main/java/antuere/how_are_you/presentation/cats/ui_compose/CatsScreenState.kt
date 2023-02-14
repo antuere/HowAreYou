@@ -32,14 +32,14 @@ fun CatsScreenState(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Spacer(modifier = Modifier.weight(2F))
+        Spacer(modifier = Modifier.weight(1.5F))
 
         Text(
             text = stringResource(id = R.string.title_cats),
             fontSize = dimensionResource(id = R.dimen.textSize_big_0).value.sp,
             fontFamily = PlayfairDisplay
         )
-        Spacer(modifier = Modifier.weight(2F))
+        Spacer(modifier = Modifier.weight(1.5F))
 
         Row(
             modifier = Modifier.weight(10F),
@@ -60,7 +60,7 @@ fun CatsScreenState(
                 onLongClicked = { onIntent(CatsIntent.CatOnLongClicked(it)) },
             )
         }
-        Spacer(modifier = Modifier.weight(1f))
+        Spacer(modifier = Modifier.weight(0.5f))
 
         Row(
             modifier = Modifier.weight(10f),
@@ -81,7 +81,7 @@ fun CatsScreenState(
                 onLongClicked = { onIntent(CatsIntent.CatOnLongClicked(it)) },
             )
         }
-        Spacer(modifier = Modifier.weight(2F))
+        Spacer(modifier = Modifier.weight(1.5F))
 
         Button(
             modifier = Modifier.fillMaxWidth(0.7F),
@@ -92,6 +92,6 @@ fun CatsScreenState(
                 color = MaterialTheme.colorScheme.onPrimary
             )
         }
-        Spacer(modifier = Modifier.weight(2F))
+        Spacer(modifier = Modifier.weight(1.5F))
     }
 }

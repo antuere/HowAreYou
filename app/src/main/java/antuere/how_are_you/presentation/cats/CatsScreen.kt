@@ -13,10 +13,14 @@ import antuere.how_are_you.presentation.base.GalleryProvider
 import antuere.how_are_you.presentation.base.ui_compose_components.top_bar.AppBarState
 import antuere.how_are_you.presentation.cats.state.CatsSideEffect
 import antuere.how_are_you.presentation.cats.ui_compose.CatsScreenState
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.isGranted
+import com.google.accompanist.permissions.rememberPermissionState
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 import timber.log.Timber
 
+@OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun CatsScreen(
     viewModel: CatsViewModel = hiltViewModel(),
@@ -25,6 +29,10 @@ fun CatsScreen(
     val appState = LocalAppState.current
     val context = LocalContext.current
     val viewState by viewModel.collectAsState()
+
+    val writeExternalPermissionState = rememberPermissionState(
+        android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+    )
 
     LaunchedEffect(true) {
         appState.updateAppBar(
@@ -43,7 +51,8 @@ fun CatsScreen(
                 GalleryProvider.saveImage(
                     bitmap = sideEffect.bitmap,
                     context = context,
-                    onSuccess = sideEffect.onSuccessSaved
+                    onSuccess = sideEffect.onSuccessSaved,
+                    isHasPermission = writeExternalPermissionState.status.isGranted
                 )
             }
             is CatsSideEffect.Snackbar -> {

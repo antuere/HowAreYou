@@ -8,6 +8,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -22,11 +23,12 @@ fun DaysListItem(
     modifier: Modifier = Modifier,
     day: Day,
     onClick: (Day) -> Unit,
-    onLongClick: (Day) -> Unit
+    onLongClick: (Day) -> Unit,
 ) {
     Card(
         modifier = modifier
             .padding(dimensionResource(id = R.dimen.padding_small_0))
+            .clip(MaterialTheme.shapes.large)
             .combinedClickable(
                 onClick = { onClick(day) },
                 onLongClick = { onLongClick(day) }
