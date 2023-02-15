@@ -15,8 +15,8 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun LinearProgressBar(
-    modifier: Modifier = Modifier,
     progress: Float,
+    modifier: Modifier = Modifier,
     color: Color = MaterialTheme.colorScheme.primary,
     strokeWidth: Float = 6f,
     orientation: LinearProgressBarOrientation = LinearProgressBarOrientation.HORIZONTAL,
@@ -50,12 +50,10 @@ fun LinearProgressBarWrapper(
     orientation: LinearProgressBarOrientation = LinearProgressBarOrientation.HORIZONTAL,
     scale: () -> Float,
 ) {
-    var progress by remember { mutableStateOf(0f) }
     val animatedProgress by animateFloatAsState(
-        targetValue = progress,
+        targetValue = (1 - scale()) * 25,
         animationSpec = tween(600)
     )
-    progress = (1 - scale()) * 25
 
     LinearProgressBar(
         progress = animatedProgress,

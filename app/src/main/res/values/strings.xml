@@ -103,6 +103,7 @@
     <string name="title_cats">What could be better than cats?</string>
     <string name="saved_complete_cats">Cat\'s image is saved!</string>
     <string name="saved_error_cats">This image can\'t be saved</string>
+    <string name="permission_denied_cats">To save the image, please grant the permission</string>
 
     <!-- Settings screen -->
     <string name="settings_privacy_text">Privacy</string>

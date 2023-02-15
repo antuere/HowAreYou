@@ -1,26 +1,29 @@
 package antuere.how_are_you.presentation.cats
 
+import android.Manifest
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
+import antuere.data.util.GalleryProvider
 import antuere.how_are_you.LocalAppState
 import antuere.how_are_you.R
-import antuere.how_are_you.presentation.base.GalleryProvider
 import antuere.how_are_you.presentation.base.ui_compose_components.top_bar.AppBarState
+import antuere.how_are_you.presentation.cats.state.CatsIntent
 import antuere.how_are_you.presentation.cats.state.CatsSideEffect
 import antuere.how_are_you.presentation.cats.ui_compose.CatsScreenState
-import com.google.accompanist.permissions.ExperimentalPermissionsApi
-import com.google.accompanist.permissions.isGranted
-import com.google.accompanist.permissions.rememberPermissionState
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 import timber.log.Timber
 
-@OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun CatsScreen(
     viewModel: CatsViewModel = hiltViewModel(),
@@ -28,10 +31,14 @@ fun CatsScreen(
     Timber.i("MVI error test : enter in catsScreen screen")
     val appState = LocalAppState.current
     val context = LocalContext.current
+    val scope = rememberCoroutineScope()
     val viewState by viewModel.collectAsState()
 
-    val writeExternalPermissionState = rememberPermissionState(
-        android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+    val writeExternalPermissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission(),
+        onResult = { isGranted ->
+            CatsIntent.WriteExternalPermissionCalled(isGranted).run(viewModel::onIntent)
+        }
     )
 
     LaunchedEffect(true) {
@@ -48,15 +55,25 @@ fun CatsScreen(
     viewModel.collectSideEffect { sideEffect ->
         when (sideEffect) {
             is CatsSideEffect.SaveImageToGallery -> {
-                GalleryProvider.saveImage(
-                    bitmap = sideEffect.bitmap,
-                    context = context,
-                    onSuccess = sideEffect.onSuccessSaved,
-                    isHasPermission = writeExternalPermissionState.status.isGranted
-                )
+                scope.launch(Dispatchers.IO) {
+                    GalleryProvider.saveImage(
+                        bitmap = sideEffect.bitmap,
+                        context = context,
+                        onSuccess = sideEffect.onSuccessSaved,
+                    )
+                }
             }
             is CatsSideEffect.Snackbar -> {
-                appState.showSnackbar(sideEffect.message.asString(context))
+                appState.showSnackbar(
+                    message = sideEffect.message.asString(context),
+                    duration = 1000
+                )
+            }
+            CatsSideEffect.RequestPermission -> {
+                writeExternalPermissionLauncher.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            }
+            CatsSideEffect.Vibration -> {
+                appState.vibratePhone(context = context, duration = 150)
             }
         }
     }

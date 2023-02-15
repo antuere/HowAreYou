@@ -1,4 +1,4 @@
-package antuere.how_are_you.presentation.base
+package antuere.data.util
 
 import android.content.ContentValues
 import android.content.Context
@@ -13,11 +13,12 @@ import java.io.OutputStream
 
 object GalleryProvider {
 
+    private const val DIRECTORY_NAME = "Pictures/HowAreYou Cats"
+
     fun saveImage(
         bitmap: Bitmap,
         context: Context,
         onSuccess: () -> Unit,
-        isHasPermission: Boolean,
     ) {
         val filename = "Cat-${System.currentTimeMillis()}.jpg"
         var fos: OutputStream? = null
@@ -27,17 +28,18 @@ object GalleryProvider {
                 val contentValues = ContentValues().apply {
                     put(MediaStore.MediaColumns.DISPLAY_NAME, filename)
                     put(MediaStore.MediaColumns.MIME_TYPE, "image/jpg")
-                    put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_PICTURES)
+                    put(MediaStore.MediaColumns.RELATIVE_PATH, DIRECTORY_NAME)
                 }
-
                 val imageUri: Uri? =
-                    resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
+                    resolver.insert(MediaStore.Images.Media.getContentUri(
+                        MediaStore.VOLUME_EXTERNAL_PRIMARY
+                    ), contentValues)
 
                 fos = imageUri?.let { resolver.openOutputStream(it) }
             }
         } else {
             val imagesDir =
-                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
+                Environment.getExternalStoragePublicDirectory(DIRECTORY_NAME)
             if (!imagesDir.exists()) {
                 imagesDir.mkdirs()
             }
@@ -50,5 +52,4 @@ object GalleryProvider {
             onSuccess()
         }
     }
-
 }

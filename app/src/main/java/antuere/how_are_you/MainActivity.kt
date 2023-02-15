@@ -11,6 +11,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
@@ -129,7 +130,7 @@ class MainActivity : FragmentActivity() {
                                 shape = ShapeDefaults.Large,
                                 elevation = CardDefaults.cardElevation(4.dp),
                                 colors = CardDefaults.cardColors(
-                                    containerColor = MaterialTheme.colorScheme.onPrimary,
+                                    containerColor = Color.White,
                                     contentColor = MaterialTheme.colorScheme.onSecondary,
                                 )
                             ) {

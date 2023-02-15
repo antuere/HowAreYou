@@ -33,9 +33,6 @@ class QuoteRepositoryImpl @Inject constructor(
 
             val latestQuote = quoteMapper.mapToDomainModel(remoteQuote ?: defaultQuote)
             saveDayQuoteLocal(latestQuote)
-
-            delay(100)
-
             return true
         }
         return false

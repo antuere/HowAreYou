@@ -2,13 +2,11 @@ package antuere.how_are_you.presentation.cats.ui_compose
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Button
-import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -18,7 +16,6 @@ import antuere.how_are_you.presentation.base.ui_theme.PlayfairDisplay
 import antuere.how_are_you.presentation.cats.state.CatsIntent
 import antuere.how_are_you.presentation.cats.state.CatsState
 import antuere.how_are_you.util.extensions.paddingTopBar
-import timber.log.Timber
 
 @Composable
 fun CatsScreenState(
@@ -43,7 +40,8 @@ fun CatsScreenState(
 
         Row(
             modifier = Modifier.weight(10F),
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
         ) {
             CatImage(
                 modifier = Modifier
@@ -60,11 +58,12 @@ fun CatsScreenState(
                 onLongClicked = { onIntent(CatsIntent.CatOnLongClicked(it)) },
             )
         }
-        Spacer(modifier = Modifier.weight(0.5f))
+        Spacer(modifier = Modifier.weight(0.2f))
 
         Row(
             modifier = Modifier.weight(10f),
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
         ) {
             CatImage(
                 modifier = Modifier
@@ -81,7 +80,7 @@ fun CatsScreenState(
                 onLongClicked = { onIntent(CatsIntent.CatOnLongClicked(it)) },
             )
         }
-        Spacer(modifier = Modifier.weight(1.5F))
+        Spacer(modifier = Modifier.weight(1.4F))
 
         Button(
             modifier = Modifier.fillMaxWidth(0.7F),
@@ -92,6 +91,6 @@ fun CatsScreenState(
                 color = MaterialTheme.colorScheme.onPrimary
             )
         }
-        Spacer(modifier = Modifier.weight(1.5F))
+        Spacer(modifier = Modifier.weight(1.4F))
     }
 }

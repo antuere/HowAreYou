@@ -8,6 +8,7 @@ import antuere.domain.dto.Day
 import antuere.domain.remote_db.RemoteDbApi
 import com.google.firebase.database.DatabaseReference
 import kotlinx.coroutines.tasks.await
+import java.util.*
 import javax.inject.Inject
 
 data class FirebaseRealtimeDB @Inject constructor(
@@ -29,7 +30,11 @@ data class FirebaseRealtimeDB @Inject constructor(
             .child(DAYS_PATH) else null
 
 
-    fun getQuotesNode(): DatabaseReference = realTimeDb.child(QUOTE_PATH)
+    fun getQuotesNode(): DatabaseReference {
+        val userLanguage = Locale.getDefault().language
+        val languagePath = if (userLanguage == "ru") "russian" else "others"
+        return realTimeDb.child(QUOTE_PATH).child(languagePath)
+    }
 
 
     override suspend fun getDays(): List<Day> {

@@ -19,7 +19,7 @@ fun showToastByContext(
     context: Context,
     text: String? = null,
     @StringRes resId: Int? = null,
-    duration: Int = Toast.LENGTH_SHORT
+    duration: Int = Toast.LENGTH_SHORT,
 ) {
     var toastText = text
 
