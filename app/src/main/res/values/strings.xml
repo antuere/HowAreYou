@@ -101,6 +101,9 @@
     <!-- Cats screen -->
     <string name="getCats">Update cute cats!</string>
     <string name="title_cats">What could be better than cats?</string>
+    <string name="saved_complete_cats">Cat\'s image is saved!</string>
+    <string name="saved_error_cats">This image can\'t be saved</string>
+    <string name="permission_denied_cats">To save the image, please grant the permission</string>
 
     <!-- Settings screen -->
     <string name="settings_privacy_text">Privacy</string>
@@ -194,11 +197,16 @@
     <string name="russia">Russia</string>
     <string name="usa">USA</string>
     <string name="italy">Italy</string>
+    <string name="france">France</string>
+    <string name="china">China</string>
 
     <!-- Other -->
     <string name="leak_canary_test_class_name">assertk.Assert</string>
     <string name="click_less">Click less</string>
     <string name="click_more">Click more</string>
     <string name="too_many_chars_default">Cannot be more characters</string>
+    <string name="helpline_phone">Phone</string>
+    <string name="helpline_website">Website</string>
+    <string name="cats_no_internet">No internet...</string>
 
 </resources>

@@ -5,12 +5,12 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.animation.*
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
@@ -20,10 +20,9 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import androidx.viewbinding.BuildConfig
-import antuere.domain.dto.Settings
 import antuere.domain.repository.SettingsRepository
 import antuere.domain.util.Constants
-import antuere.how_are_you.presentation.add_day.AddDayScreen
+import antuere.how_are_you.presentation.screens.add_day.AddDayScreen
 import antuere.how_are_you.presentation.base.app_state.AppState
 import antuere.how_are_you.presentation.base.app_state.AppStateImpl
 import antuere.how_are_you.presentation.base.app_state.rememberAppState
@@ -33,25 +32,24 @@ import antuere.how_are_you.presentation.base.ui_animations.materialFadeThroughOu
 import antuere.how_are_you.presentation.base.ui_animations.materialSlideIn
 import antuere.how_are_you.presentation.base.ui_animations.materialSlideOut
 import antuere.how_are_you.presentation.base.ui_compose_components.bottom_nav_bar.DefaultBottomNavBar
-import antuere.how_are_you.presentation.base.ui_compose_components.top_bar.AppBarState
 import antuere.how_are_you.presentation.base.ui_compose_components.top_bar.DefaultTopBar
 import antuere.how_are_you.presentation.base.ui_theme.HowAreYouTheme
-import antuere.how_are_you.presentation.cats.CatsScreen
-import antuere.how_are_you.presentation.detail.DetailScreen
-import antuere.how_are_you.presentation.favorites.FavoritesScreen
-import antuere.how_are_you.presentation.help_for_you.HelpForYouScreen
-import antuere.how_are_you.presentation.helplines.HelplinesScreen
-import antuere.how_are_you.presentation.history.HistoryScreen
-import antuere.how_are_you.presentation.home.HomeScreen
-import antuere.how_are_you.presentation.home.HomeViewModel
-import antuere.how_are_you.presentation.mental_tips.MentalTipsScreen
-import antuere.how_are_you.presentation.mental_tips_categories.MentalTipsCategoriesScreen
-import antuere.how_are_you.presentation.reset_password.ResetPasswordScreen
-import antuere.how_are_you.presentation.secure_entry.SecureEntryScreen
-import antuere.how_are_you.presentation.settings.SettingsScreen
-import antuere.how_are_you.presentation.sign_in_methods.SignInMethodsScreen
-import antuere.how_are_you.presentation.sign_in_with_email.SignInEmailScreen
-import antuere.how_are_you.presentation.sign_up_with_email.SignUpEmailScreen
+import antuere.how_are_you.presentation.screens.cats.CatsScreen
+import antuere.how_are_you.presentation.screens.detail.DetailScreen
+import antuere.how_are_you.presentation.screens.favorites.FavoritesScreen
+import antuere.how_are_you.presentation.screens.help_for_you.HelpForYouScreen
+import antuere.how_are_you.presentation.screens.helplines.HelplinesScreen
+import antuere.how_are_you.presentation.screens.history.HistoryScreen
+import antuere.how_are_you.presentation.screens.home.HomeScreen
+import antuere.how_are_you.presentation.screens.home.HomeViewModel
+import antuere.how_are_you.presentation.screens.mental_tips.MentalTipsScreen
+import antuere.how_are_you.presentation.screens.mental_tips_categories.MentalTipsCategoriesScreen
+import antuere.how_are_you.presentation.screens.reset_password.ResetPasswordScreen
+import antuere.how_are_you.presentation.screens.secure_entry.SecureEntryScreen
+import antuere.how_are_you.presentation.screens.settings.SettingsScreen
+import antuere.how_are_you.presentation.screens.sign_in_methods.SignInMethodsScreen
+import antuere.how_are_you.presentation.screens.sign_in_with_email.SignInEmailScreen
+import antuere.how_are_you.presentation.screens.sign_up_with_email.SignUpEmailScreen
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
@@ -78,29 +76,21 @@ class MainActivity : FragmentActivity() {
     @OptIn(ExperimentalAnimationApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        var isEnabledPin = false
+        lifecycleScope.launch(Dispatchers.IO) {
+            isEnabledPin = settingsRepository.getPinSetting().first()
+        }
+
         Timber.plant(Timber.DebugTree())
         WindowCompat.setDecorFitsSystemWindows(window, false)
         TimeZone.setDefault(TimeZone.getTimeZone("UTC"))
-
-        var settings: Settings? = null
-
-        val job = lifecycleScope.launch(Dispatchers.IO) {
-            settings = settingsRepository.getAllSettings().first()
-        }
 
         installSplashScreen().apply {
             if (BuildConfig.BUILD_TYPE != "benchmark") {
                 setKeepOnScreenCondition {
                     homeViewModel.isShowSplash.value
                 }
-            }
-        }
-
-        var startDestination = Screen.SecureEntry.route
-        lifecycleScope.launch(Dispatchers.Main) {
-            job.join()
-            if (!settings!!.isPinCodeEnabled && !settings!!.isBiometricEnabled) {
-                startDestination = Screen.Home.route
             }
         }
 
@@ -116,10 +106,13 @@ class MainActivity : FragmentActivity() {
                 val getHomeViewModel: () -> HomeViewModel = remember { { homeViewModel } }
 
                 val systemUiController = rememberSystemUiController()
-                val isUseDarkIcons =
-                    !(isSystemInDarkTheme() || (!isSystemInDarkTheme() && appBarState.isVisibleBottomBar))
+                val isUseDarkIcons = !appBarState.isVisibleBottomBar
                 val colorNavBarColor =
                     if (appBarState.isVisibleBottomBar) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onPrimary
+
+                var startDestination = remember(isEnabledPin) {
+                    if (isEnabledPin) Screen.SecureEntry.route else Screen.Home.route
+                }
 
                 LaunchedEffect(isUseDarkIcons, colorNavBarColor) {
                     systemUiController.setNavigationBarColor(
@@ -136,7 +129,7 @@ class MainActivity : FragmentActivity() {
                                 shape = ShapeDefaults.Large,
                                 elevation = CardDefaults.cardElevation(4.dp),
                                 colors = CardDefaults.cardColors(
-                                    containerColor = MaterialTheme.colorScheme.onPrimary,
+                                    containerColor = Color.White,
                                     contentColor = MaterialTheme.colorScheme.onSecondary,
                                 )
                             ) {

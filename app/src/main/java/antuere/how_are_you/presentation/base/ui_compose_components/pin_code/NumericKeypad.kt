@@ -15,7 +15,7 @@ import antuere.how_are_you.R
 import timber.log.Timber
 
 @Composable
-fun NumericKeyPad(
+fun NumericKeypad(
     onClick: (String) -> Unit,
     onClickClear: () -> Unit,
     isShowBiometricBtn: Boolean = false,
@@ -27,6 +27,7 @@ fun NumericKeyPad(
         modifier = Modifier
             .padding(horizontal = dimensionResource(id = R.dimen.padding_normal_1))
     ) {
+        Timber.i("MVI error test : draw numeric keypad")
         val numbersList = listOf(
             "1",
             "2",

@@ -7,14 +7,17 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import antuere.how_are_you.R
 import antuere.how_are_you.presentation.base.ui_theme.DarkGreen
-import antuere.how_are_you.presentation.pin_code_creation.PinCirclesState
-import antuere.how_are_you.util.animateScaleDownOnce
-import antuere.how_are_you.util.animateScaleOnce
-import antuere.how_are_you.util.animateScaleUpOnce
-import antuere.how_are_you.util.shake
+import antuere.how_are_you.presentation.screens.pin_code_creation.PinCirclesState
+import antuere.how_are_you.util.extensions.animateScaleDownOnce
+import antuere.how_are_you.util.extensions.animateScaleOnce
+import antuere.how_are_you.util.extensions.animateScaleUpOnce
+import antuere.how_are_you.util.extensions.shake
+import timber.log.Timber
 
 @Composable
 fun PinCirclesIndicates(pinCodeCirclesState: PinCirclesState) {
+    Timber.i("MVI error test : composed pin indicates")
+
     Row {
         when (pinCodeCirclesState) {
             PinCirclesState.NONE -> {

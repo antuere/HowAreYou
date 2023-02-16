@@ -60,6 +60,7 @@ fun Dialog(
                 )
             }
         },
+        containerColor = MaterialTheme.colorScheme.onPrimary,
         iconContentColor = iconColor
     )
 }

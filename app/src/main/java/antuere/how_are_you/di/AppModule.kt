@@ -2,10 +2,6 @@ package antuere.how_are_you.di
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.bumptech.glide.Glide
-import com.bumptech.glide.RequestManager
-import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.bumptech.glide.request.RequestOptions
 import antuere.data.preferences_data_store.quote_data_store.QuoteDataStore
 import antuere.data.preferences_data_store.settings_data_store.SettingsDataStore
 import antuere.data.preferences_data_store.toggle_btn_data_store.ToggleBtnDataStore
@@ -32,19 +28,19 @@ object AppModule {
         return context.getString(R.string.transition_name)
     }
 
-    @Provides
-    @Singleton
-    fun provideGlide(@ApplicationContext context: Context): RequestManager {
-        return Glide.with(context)
-            .setDefaultRequestOptions(
-                RequestOptions()
-                    .circleCrop()
-                    .skipMemoryCache(true)
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .placeholder(R.drawable.cat_placeholder)
-                    .error(R.drawable.cat_black)
-            )
-    }
+//    @Provides
+//    @Singleton
+//    fun provideGlide(@ApplicationContext context: Context): RequestManager {
+//        return Glide.with(context)
+//            .setDefaultRequestOptions(
+//                RequestOptions()
+//                    .circleCrop()
+//                    .skipMemoryCache(true)
+//                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+//                    .placeholder(R.drawable.cat_placeholder)
+//                    .error(R.drawable.cat_black)
+//            )
+//    }
 
     @Provides
     @Singleton

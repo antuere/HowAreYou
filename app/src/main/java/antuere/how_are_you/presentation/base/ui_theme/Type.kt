@@ -14,11 +14,11 @@ import antuere.how_are_you.R
 
 //My fonts
 val Roboto = FontFamily(
-    Font (R.font.roboto_medium, FontWeight.Medium),
+    Font(R.font.roboto_medium, FontWeight.Medium),
     Font(R.font.roboto)
 )
 val PlayfairDisplay = FontFamily(
-    Font (R.font.playfair_display),
+    Font(R.font.playfair_display),
 )
 
 // Set of Material typography styles to start with
@@ -68,9 +68,9 @@ val Typography = Typography(
 )
 
 val MyShapes = Shapes(
-    extraSmall = RoundedCornerShape(4. dp),
-    small = RoundedCornerShape(8. dp),
-    medium = RoundedCornerShape(12. dp),
-    large = RoundedCornerShape(16. dp),
-    extraLarge = RoundedCornerShape(24. dp)
+    extraSmall = RoundedCornerShape(4.dp),
+    small = RoundedCornerShape(8.dp),
+    medium = RoundedCornerShape(12.dp),
+    large = RoundedCornerShape(16.dp),
+    extraLarge = RoundedCornerShape(48.dp)
 )

@@ -11,7 +11,7 @@ import antuere.how_are_you.R
 fun EmailTextField(
     modifier: Modifier = Modifier,
     value: String,
-    onValueChange: (String) -> Unit
+    onValueChange: (String) -> Unit,
 ) {
     DefaultTextField(
         modifier = modifier,
@@ -20,7 +20,5 @@ fun EmailTextField(
         singleLine = true,
         label = stringResource(id = R.string.email),
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
-    ) {
-
-    }
+    )
 }
