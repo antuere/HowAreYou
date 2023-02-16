@@ -24,7 +24,7 @@ android {
         minSdk 24
         targetSdk 33
         versionCode 1
-        versionName "0.1"
+        versionName "0.11"
 
         testInstrumentationRunnerArguments["androidx.benchmark.suppressErrors"] = "EMULATOR"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -36,6 +36,13 @@ android {
     }
 
     buildTypes {
+
+        applicationVariants.all { variant ->
+            variant.outputs.all {
+                outputFileName = "HowAreYou_v${variant.versionName}.apk"
+            }
+        }
+
         release {
             minifyEnabled true
             shrinkResources true

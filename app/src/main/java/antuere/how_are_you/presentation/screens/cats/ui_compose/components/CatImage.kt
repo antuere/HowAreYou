@@ -71,7 +71,7 @@ fun CatImage(
                             },
                             onPress = {
                                 selected = true
-                                awaitRelease()
+                                tryAwaitRelease()
                                 selected = false
                             }
                         )

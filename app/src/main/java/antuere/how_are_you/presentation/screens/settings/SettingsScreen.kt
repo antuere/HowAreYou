@@ -35,7 +35,8 @@ fun SettingsScreen(
     val viewState by viewModel.collectAsState()
 
     val bottomSheetState = rememberModalBottomSheetState(
-        initialValue = ModalBottomSheetValue.Hidden
+        initialValue = ModalBottomSheetValue.Hidden,
+        skipHalfExpanded = true
     )
 
     val launcher =

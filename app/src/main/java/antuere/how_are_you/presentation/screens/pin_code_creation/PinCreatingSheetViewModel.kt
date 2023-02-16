@@ -75,16 +75,10 @@ class PinCreatingSheetViewModel @Inject constructor(
 
     private fun pinCodeCreated()  {
         viewModelScope.launch(Dispatchers.IO) {
-            savePinCode(currentPinCode)
+            settingsRepository.savePinCode(currentPinCode)
             delay(100)
 
             sideEffect(PinCreationSideEffect.PinCreated)
-        }
-    }
-
-    private fun savePinCode(pinCode: String) {
-        viewModelScope.launch(Dispatchers.IO) {
-            settingsRepository.savePinCode(pinCode)
         }
     }
 }
