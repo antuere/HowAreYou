@@ -33,9 +33,7 @@ fun SettingsScreenState(
     bottomSheetState: ModalBottomSheetState,
 ) {
     val fragmentActivity = LocalContext.current.findFragmentActivity()
-    val isSheetStartsHiding by remember {
-        derivedStateOf { bottomSheetState.direction == 1F }
-    }
+
     val isEnabledHandler = remember(bottomSheetState.currentValue) {
         bottomSheetState.currentValue == ModalBottomSheetValue.Expanded
     }
@@ -59,7 +57,7 @@ fun SettingsScreenState(
             ) {
                 PinCodeCreating(
                     onHandleResult = { onIntent(SettingsIntent.PinCreationSheetClosed(it)) },
-                    isSheetStartsHiding = isSheetStartsHiding
+                    bottomSheetState = bottomSheetState
                 )
             }
         },

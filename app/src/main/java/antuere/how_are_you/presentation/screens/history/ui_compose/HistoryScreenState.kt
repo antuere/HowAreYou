@@ -45,9 +45,13 @@ fun HistoryScreenState(
     val isEnabledHandler = remember(bottomSheetState.currentValue) {
         bottomSheetState.currentValue == ModalBottomSheetValue.Expanded
     }
-
     val isSheetStartsHiding by remember {
-        derivedStateOf { bottomSheetState.direction == 1F }
+        derivedStateOf {
+            bottomSheetState.progress.from == ModalBottomSheetValue.Expanded
+                    &&
+            bottomSheetState.progress.to == ModalBottomSheetValue.Hidden
+                    && bottomSheetState.progress.fraction >= 0.85f
+        }
     }
 
     LaunchedEffect(isSheetStartsHiding) {
