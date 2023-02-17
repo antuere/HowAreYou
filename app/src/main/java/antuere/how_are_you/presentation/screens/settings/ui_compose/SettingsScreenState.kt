@@ -16,7 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import antuere.how_are_you.presentation.base.ui_compose_components.placeholder.FullScreenProgressIndicator
-import antuere.how_are_you.presentation.screens.pin_code_creation.PinCodeCreating
+import antuere.how_are_you.presentation.screens.pin_code_creation.PinCreatingSheet
 import antuere.how_are_you.presentation.screens.settings.state.SettingsIntent
 import antuere.how_are_you.presentation.screens.settings.state.SettingsState
 import antuere.how_are_you.presentation.screens.settings.ui_compose.components.AuthSection
@@ -38,6 +38,13 @@ fun SettingsScreenState(
         bottomSheetState.currentValue == ModalBottomSheetValue.Expanded
     }
 
+    val isSheetStartsHiding by remember {
+        derivedStateOf {
+            bottomSheetState.targetValue == ModalBottomSheetValue.Hidden
+                    && bottomSheetState.isAnimationRunning
+        }
+    }
+
     BackHandler(enabled = isEnabledHandler) {
         onIntent(SettingsIntent.PinCreationSheetClosed(isPinCreated = false))
     }
@@ -55,9 +62,9 @@ fun SettingsScreenState(
                     .fillMaxWidth(),
                 contentAlignment = Alignment.Center
             ) {
-                PinCodeCreating(
+                PinCreatingSheet(
                     onHandleResult = { onIntent(SettingsIntent.PinCreationSheetClosed(it)) },
-                    bottomSheetState = bottomSheetState
+                    isSheetStartsHiding = isSheetStartsHiding
                 )
             }
         },

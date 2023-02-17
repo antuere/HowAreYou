@@ -4,6 +4,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ShapeDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import antuere.domain.util.TimeUtility
 import antuere.how_are_you.R
 import com.vanpra.composematerialdialogs.MaterialDialog
@@ -20,6 +21,7 @@ fun EndDatePicker(
     onChangeFieldText: (String) -> Unit
 ) {
     MaterialDialog(
+        elevation = 0.dp,
         dialogState = dialogState,
         shape = ShapeDefaults.ExtraLarge,
         buttons = {

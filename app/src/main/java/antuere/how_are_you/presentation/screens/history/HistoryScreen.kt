@@ -50,8 +50,10 @@ fun HistoryScreen(
                 }
             }
             HistorySideEffect.HideBottomSheet -> {
+                scope.launch {
+                    bottomSheetState.animateTo(ModalBottomSheetValue.Hidden)
+                }
                 appState.changeVisibilityBottomBar(true)
-                scope.launch { bottomSheetState.hide() }
             }
         }
     }

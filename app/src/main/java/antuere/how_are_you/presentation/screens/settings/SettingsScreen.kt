@@ -75,7 +75,9 @@ fun SettingsScreen(
                 appState.changeVisibilityBottomBar(false)
             }
             SettingsSideEffect.HideBottomSheet -> {
-                scope.launch { bottomSheetState.hide() }
+                scope.launch {
+                    bottomSheetState.animateTo(ModalBottomSheetValue.Hidden)
+                }
                 appState.changeVisibilityBottomBar(true)
             }
         }

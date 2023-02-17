@@ -66,13 +66,13 @@ class HistoryViewModel @Inject constructor(
             }
             is HistoryIntent.DaysInFilterSelected -> {
                 sideEffect(HistorySideEffect.AnimationHistoryHeader)
+                sideEffect(HistorySideEffect.HideBottomSheet)
                 filterState.update {
                     FilterState.Activated(
                         firstDate = intent.startDate,
                         secondDate = intent.endDate
                     )
                 }
-                sideEffect(HistorySideEffect.HideBottomSheet)
             }
             is HistoryIntent.ToggleBtnChanged -> {
                 filterState.update {
@@ -133,7 +133,7 @@ class HistoryViewModel @Inject constructor(
             }
         }
 
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             daysFlow.collectLatest { days ->
                 when (val filterState = filterState.first()) {
                     is FilterState.Activated -> {
