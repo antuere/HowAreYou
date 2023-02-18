@@ -110,8 +110,10 @@ class MainActivity : FragmentActivity() {
                 val colorNavBarColor =
                     if (appBarState.isVisibleBottomBar) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onPrimary
 
-                var startDestination = remember(isEnabledPin) {
-                    if (isEnabledPin) Screen.SecureEntry.route else Screen.Home.route
+                var startDestination by remember(isEnabledPin) {
+                    mutableStateOf(
+                        if (isEnabledPin) Screen.SecureEntry.route else Screen.Home.route
+                    )
                 }
 
                 LaunchedEffect(isUseDarkIcons, colorNavBarColor) {
@@ -170,12 +172,14 @@ class MainActivity : FragmentActivity() {
                             navController = navController,
                             startDestination = startDestination
                         ) {
+                            Timber.i("nav error : now start destination is $startDestination")
                             composable(
                                 route = Screen.Home.route,
                                 enterTransition = { materialFadeThroughIn() },
                                 exitTransition = { materialFadeThroughOut() },
                             ) {
                                 if (startDestination != Screen.Home.route) {
+                                    Timber.i("nav error : we in if block")
                                     startDestination = Screen.Home.route
                                 }
                                 HomeScreen(

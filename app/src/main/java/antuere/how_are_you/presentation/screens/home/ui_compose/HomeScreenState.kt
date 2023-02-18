@@ -6,6 +6,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -18,6 +19,7 @@ import antuere.how_are_you.presentation.base.ui_theme.TealMain
 import antuere.how_are_you.presentation.screens.home.state.HomeIntent
 import antuere.how_are_you.presentation.screens.home.state.HomeState
 import antuere.how_are_you.presentation.screens.home.ui_compose.components.CardWithQuote
+import antuere.how_are_you.util.extensions.findFragmentActivity
 import antuere.how_are_you.util.extensions.paddingBotAndTopBar
 
 @Composable
