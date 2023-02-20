@@ -11,32 +11,35 @@ import androidx.compose.ui.res.stringResource
 @Composable
 fun DefaultTopBar(
     @StringRes titleId: Int,
+    isVisible: Boolean,
     navigationIcon: ImageVector? = null,
     navigationOnClick: () -> Unit = {},
-    actions: @Composable RowScope.() -> Unit = {}
+    actions: @Composable RowScope.() -> Unit = {},
 ) {
-    CenterAlignedTopAppBar(
-        navigationIcon = {
-            navigationIcon?.apply {
-                IconButton(onClick = { navigationOnClick() }) {
-                    Icon(
-                        imageVector = this,
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.onPrimary
-                    )
+    if (isVisible) {
+        CenterAlignedTopAppBar(
+            navigationIcon = {
+                navigationIcon?.apply {
+                    IconButton(onClick = { navigationOnClick() }) {
+                        Icon(
+                            imageVector = this,
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.onPrimary
+                        )
+                    }
                 }
-            }
-        },
-        title = {
-            Text(
-                text = stringResource(id = titleId),
-                color = MaterialTheme.colorScheme.onPrimary,
+            },
+            title = {
+                Text(
+                    text = stringResource(id = titleId),
+                    color = MaterialTheme.colorScheme.onPrimary,
+                )
+            },
+            actions = actions,
+            colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                containerColor = MaterialTheme.colorScheme.primary,
+                actionIconContentColor = MaterialTheme.colorScheme.onPrimary
             )
-        },
-        actions = actions,
-        colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-            containerColor = MaterialTheme.colorScheme.primary,
-            actionIconContentColor = MaterialTheme.colorScheme.onPrimary
         )
-    )
+    }
 }

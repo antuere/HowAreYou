@@ -65,7 +65,7 @@ fun SignInEmailScreenState(
                 labelId = R.string.reset_password_hint,
                 onClick = { onIntent(SignInEmailIntent.ResetPassBtnClicked) }
             )
-            Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_11)))
+            Spacer(modifier = Modifier.weight(1F))
 
             DefaultButton(
                 modifier = Modifier

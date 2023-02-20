@@ -59,7 +59,7 @@ fun CatsScreenState(
                 onLongClicked = { onIntent(CatsIntent.CatOnLongClicked(it)) },
             )
         }
-        Spacer(modifier = Modifier.weight(0.2f))
+        Spacer(modifier = Modifier.weight(0.25f))
 
         Row(
             modifier = Modifier.weight(10f),

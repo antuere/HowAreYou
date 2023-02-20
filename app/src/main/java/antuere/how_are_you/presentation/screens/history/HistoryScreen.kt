@@ -24,6 +24,7 @@ fun HistoryScreen(
     viewModel: HistoryViewModel = hiltViewModel(),
 ) {
     Timber.i("MVI error test : enter in history screen, view model is ${viewModel.toString()}")
+    Timber.i("killing process : in history screen")
     val appState = LocalAppState.current
 
     val bottomSheetState = rememberModalBottomSheetState(

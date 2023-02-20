@@ -6,20 +6,18 @@ import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import antuere.how_are_you.R
-import antuere.how_are_you.presentation.base.ui_compose_components.card.CardDefault
+import antuere.how_are_you.presentation.base.ui_compose_components.card.CardWithFab
 import antuere.how_are_you.presentation.base.ui_compose_components.card.CardWithOnClick
 import antuere.how_are_you.presentation.base.ui_compose_components.placeholder.FullScreenProgressIndicator
 import antuere.how_are_you.presentation.base.ui_theme.TealMain
 import antuere.how_are_you.presentation.screens.home.state.HomeIntent
 import antuere.how_are_you.presentation.screens.home.state.HomeState
 import antuere.how_are_you.presentation.screens.home.ui_compose.components.CardWithQuote
-import antuere.how_are_you.util.extensions.findFragmentActivity
 import antuere.how_are_you.util.extensions.paddingBotAndTopBar
 
 @Composable
@@ -43,13 +41,10 @@ fun HomeScreenState(
                     modifier = Modifier
                         .fillMaxSize()
                         .weight(0.3F),
-                    titleText = stringResource(
-                        id = R.string.quotes_title
-                    ),
+                    titleText = stringResource(R.string.quotes_title),
                     quoteText = state.quoteText,
                     quiteAuthor = state.quoteAuthor
                 )
-
                 Row(
                     modifier = Modifier
                         .fillMaxSize()
@@ -106,7 +101,7 @@ fun HomeScreenState(
                     )
                 }
 
-                CardDefault(
+                CardWithFab(
                     cardModifier = Modifier
                         .fillMaxSize()
                         .weight(0.3F)

@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.dp
 import antuere.how_are_you.R
 
 @Composable
-fun CardDefault(
+fun CardWithFab(
     cardModifier: Modifier = Modifier,
     textModifier: Modifier = Modifier,
     shape: Shape = MaterialTheme.shapes.large,

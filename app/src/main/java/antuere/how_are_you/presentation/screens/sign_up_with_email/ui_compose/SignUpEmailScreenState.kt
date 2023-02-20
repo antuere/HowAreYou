@@ -1,7 +1,9 @@
 package antuere.how_are_you.presentation.screens.sign_up_with_email.ui_compose
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -31,11 +33,12 @@ fun SignUpEmailScreenState(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .paddingTopBar(),
+                .paddingTopBar()
+                .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            IconApp(modifier = Modifier.padding(top = dimensionResource(id = R.dimen.padding_small_1)))
-            Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_4)))
+            IconApp()
+            Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_3)))
 
             DefaultTextField(
                 modifier = Modifier
@@ -83,7 +86,7 @@ fun SignUpEmailScreenState(
                 labelId = R.string.sign_up,
                 onClick = { onIntent(SignUpEmailIntent.SignInBtnClicked) },
             )
-            Spacer(modifier = Modifier.weight(1F))
+//            Spacer(modifier = Modifier.weight(1F))
         }
     }
 }

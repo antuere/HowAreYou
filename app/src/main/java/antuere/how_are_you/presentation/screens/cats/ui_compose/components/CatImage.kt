@@ -76,8 +76,8 @@ fun CatImage(
                             }
                         )
                     }
-                    .clip(MaterialTheme.shapes.extraLarge)
-                    .aspectRatio(0.85F),
+                    .clip(MaterialTheme.shapes.extraLarge),
+//                    .aspectRatio(0.85F),
                 imageModel = { url },
                 imageOptions = ImageOptions(
                     alignment = Alignment.Center,

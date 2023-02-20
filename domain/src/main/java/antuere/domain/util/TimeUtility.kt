@@ -75,4 +75,13 @@ object TimeUtility {
             this.timeInMillis = timeInMillis
         }
     }
+
+    fun isNeedLockApp(appClosingTime: Long): Boolean {
+        if (appClosingTime == 0L) return false
+        val tenMinutesInMillis = 600000L
+        val currentTime = System.currentTimeMillis()
+        val timeDifference = currentTime - appClosingTime
+        if (timeDifference >= tenMinutesInMillis) { return true }
+        return false
+    }
 }

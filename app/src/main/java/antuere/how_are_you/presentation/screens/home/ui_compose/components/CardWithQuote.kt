@@ -21,37 +21,36 @@ fun CardWithQuote(
     elevation: CardElevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
     titleText: String,
     quoteText: String,
-    quiteAuthor: String
+    quiteAuthor: String,
 ) {
     Card(modifier = modifier, colors = colors, shape = shape, elevation = elevation) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(
-                    dimensionResource(id = R.dimen.padding_normal_2),
-                ),
+                .padding(dimensionResource(id = R.dimen.padding_normal_1)),
             verticalArrangement = Arrangement.Top
         ) {
             Text(
+                modifier = Modifier.align(Alignment.Start),
                 text = titleText,
-                Modifier.align(Alignment.Start),
                 fontSize = dimensionResource(id = R.dimen.textSize_normal_2).value.sp
             )
-            Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_3)))
+            Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_0)))
+
             Text(
-                text = quoteText,
+                text = "\"$quoteText\"",
                 Modifier
                     .align(Alignment.Start)
                     .padding(
                         start = dimensionResource(id = R.dimen.padding_small_0)
                     ),
-                fontSize = dimensionResource(id = R.dimen.textSize_normal_1).value.sp
+                fontSize = dimensionResource(id = R.dimen.textSize_normal_0).value.sp
             )
 
             Spacer(modifier = Modifier.weight(1F))
             Text(
                 text = quiteAuthor, Modifier.align(Alignment.End),
-                fontSize = dimensionResource(id = R.dimen.textSize_normal_1).value.sp,
+                fontSize = dimensionResource(id = R.dimen.textSize_normal_0).value.sp,
                 fontStyle = FontStyle.Italic
             )
 
