@@ -17,7 +17,6 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import antuere.how_are_you.R
 import antuere.how_are_you.presentation.base.ui_compose_components.progress_indicator.LinearProgressBarOrientation
 import antuere.how_are_you.presentation.base.ui_compose_components.progress_indicator.LinearProgressBarWrapper
@@ -48,7 +47,7 @@ fun CatImage(
     ) {
         LinearProgressBarWrapper(
             scale = { scale },
-            modifier = Modifier.padding(start = 4.dp, end = 2.dp)
+            modifier = Modifier.fillMaxWidth().weight(1F)
         )
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -57,6 +56,7 @@ fun CatImage(
             LinearProgressBarWrapper(
                 scale = { scale },
                 orientation = LinearProgressBarOrientation.VERTICAL,
+                modifier = Modifier.fillMaxHeight().weight(1F)
             )
             GlideImage(
                 modifier = Modifier
@@ -80,7 +80,6 @@ fun CatImage(
 //                    .aspectRatio(0.85F),
                 imageModel = { url },
                 imageOptions = ImageOptions(
-                    alignment = Alignment.Center,
                     contentDescription = contentDescription,
                     contentScale = ContentScale.Crop,
                 ),
@@ -125,15 +124,15 @@ fun CatImage(
                     }
                 }
             )
-
             LinearProgressBarWrapper(
                 scale = { scale },
                 orientation = LinearProgressBarOrientation.VERTICAL,
+                modifier = Modifier.fillMaxHeight().weight(1F)
             )
         }
         LinearProgressBarWrapper(
             scale = { scale },
-            modifier = Modifier.padding(start = 4.dp, end = 2.dp)
+            modifier = Modifier.fillMaxWidth().weight(1F)
         )
     }
 }

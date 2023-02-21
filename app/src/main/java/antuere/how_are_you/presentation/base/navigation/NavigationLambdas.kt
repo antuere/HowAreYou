@@ -11,6 +11,7 @@ fun NavController.navigateToSecure() {
         popUpTo(this@navigateToSecure.graph.findStartDestination().id) {
             inclusive = true
         }
+        launchSingleTop = true
     }
 }
 

@@ -87,7 +87,7 @@ class MainActivity : FragmentActivity() {
 
         Timber.plant(Timber.DebugTree())
         WindowCompat.setDecorFitsSystemWindows(window, false)
-        TimeZone.setDefault(TimeZone.getTimeZone("UTC"))
+//        TimeZone.setDefault(TimeZone.getTimeZone("UTC"))
 
         installSplashScreen().apply {
             if (BuildConfig.BUILD_TYPE != "benchmark") {

@@ -6,6 +6,7 @@ import antuere.data.remote.remote_day_database.mapping.DayEntityRemoteMapper
 import antuere.domain.authentication_manager.AuthenticationManager
 import antuere.domain.dto.Day
 import antuere.domain.remote_db.RemoteDbApi
+import antuere.domain.util.TimeUtility.convertToUTC
 import com.google.firebase.database.DatabaseReference
 import kotlinx.coroutines.tasks.await
 import java.util.*
@@ -52,7 +53,7 @@ data class FirebaseRealtimeDB @Inject constructor(
         val daysNode = daysNode ?: return
         daysNode
             .orderByChild("dayId")
-            .equalTo(id.toDouble())
+            .equalTo(id.convertToUTC().toDouble())
             .get()
             .await()
             .children.forEach {

@@ -21,6 +21,7 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.Container
 import org.orbitmvi.orbit.viewmodel.container
+import timber.log.Timber
 import javax.inject.Inject
 
 
@@ -107,6 +108,9 @@ class HistoryViewModel @Inject constructor(
                 is FilterState.Activated -> {
                     val startDateInSec = TimeUtility.getTimeInMilliseconds(filterState.firstDate)
                     val endDateInSec = TimeUtility.getTimeInMilliseconds(filterState.secondDate)
+
+                    Timber.i("date error : first day from filter : $startDateInSec")
+                    Timber.i("date error : last day from filter : $endDateInSec")
 
                     dayRepository.getSelectedDays(startDateInSec, endDateInSec)
                 }
