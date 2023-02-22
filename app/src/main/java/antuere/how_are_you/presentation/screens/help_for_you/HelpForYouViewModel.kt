@@ -20,7 +20,7 @@ class HelpForYouViewModel @Inject constructor() :
     override fun onIntent(intent: HelpForYouIntent) {
         when (intent) {
             HelpForYouIntent.EmailCardClicked -> {
-                // TODO will be implemented later
+                sideEffect(HelpForYouSideEffect.NavigateToEmailClient)
             }
             HelpForYouIntent.HelplinesCardClicked -> {
                 sideEffect(HelpForYouSideEffect.NavigateToHelplines)

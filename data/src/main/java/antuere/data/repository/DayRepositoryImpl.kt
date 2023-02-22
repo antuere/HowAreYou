@@ -27,6 +27,7 @@ class DayRepositoryImpl @Inject constructor(
         val daysFromServer = firebaseRealtimeDB.getDays()
         if (daysFromServer.isNotEmpty()) {
             CoroutineScope(Dispatchers.IO).launch {
+                deleteAllDaysLocal()
                 daysFromServer.forEach { day ->
                     insertLocal(day)
                 }

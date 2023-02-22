@@ -87,7 +87,6 @@ class MainActivity : FragmentActivity() {
 
         Timber.plant(Timber.DebugTree())
         WindowCompat.setDecorFitsSystemWindows(window, false)
-//        TimeZone.setDefault(TimeZone.getTimeZone("UTC"))
 
         installSplashScreen().apply {
             if (BuildConfig.BUILD_TYPE != "benchmark") {
@@ -155,7 +154,7 @@ class MainActivity : FragmentActivity() {
                         timeWhenAppClosed = System.currentTimeMillis()
                     }
                     if (event == Lifecycle.Event.ON_RESUME) {
-                        if (TimeUtility.isNeedLockApp(timeWhenAppClosed) && isEnabledPin) {
+                        if (isEnabledPin && TimeUtility.isNeedLockApp(timeWhenAppClosed)) {
                             navController.navigateToSecure()
                         }
                     }
@@ -203,6 +202,7 @@ fun NavGraphBuilder.setupMainNavGraph(
     ) {
         CatsScreen()
     }
+
     composable(
         route = Screen.HelpForYou.route,
         enterTransition = { materialFadeThroughIn() },

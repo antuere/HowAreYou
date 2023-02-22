@@ -1,11 +1,16 @@
 package antuere.how_are_you.presentation.screens.help_for_you
 
+import android.content.ActivityNotFoundException
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
+import antuere.domain.util.Constants
 import antuere.how_are_you.LocalAppState
 import antuere.how_are_you.R
 import antuere.how_are_you.presentation.base.ui_compose_components.top_bar.AppBarState
@@ -22,6 +27,7 @@ fun HelpForYouScreen(
 ) {
     Timber.i("MVI error test : enter in help for u screen")
     val appState = LocalAppState.current
+    val context = LocalContext.current
     val viewState by viewModel.collectAsState()
 
     LaunchedEffect(true) {
@@ -38,6 +44,19 @@ fun HelpForYouScreen(
     viewModel.collectSideEffect { sideEffect ->
         when (sideEffect) {
             HelpForYouSideEffect.NavigateToHelplines -> onNavigateToHelplines()
+            HelpForYouSideEffect.NavigateToEmailClient -> {
+                val intent = Intent(Intent.ACTION_SENDTO).apply {
+                    data = Uri.parse("mailto:${Constants.HELP_EMAIL}")
+//                    type = "message/rfc822"
+//                    putExtra(Intent.EXTRA_EMAIL, )
+                }
+                val title = context.getString(R.string.choose_title)
+                try {
+                    context.startActivity(Intent.createChooser(intent, title))
+                } catch (e: ActivityNotFoundException) {
+                    appState.showSnackbar(context.getString(R.string.email_client_not_found))
+                }
+            }
         }
     }
 

@@ -109,12 +109,9 @@ class SecureEntryViewModel @Inject constructor(
                     icon = R.drawable.ic_log_out,
                     positiveButton = UIDialog.UiButton(
                         text = R.string.dialog_sign_out_positive,
-                        onClick = {
-                            resetAllUserData()
-                        }),
-                    negativeButton = UIDialog.UiButton(
-                        text = R.string.dialog_sign_out_negative,
-                        onClick = {})
+                        onClick = { resetAllUserData() }
+                    ),
+                    negativeButton = UIDialog.UiButton(text = R.string.dialog_sign_out_negative)
                 )
 
                 sideEffect(SecureEntrySideEffect.Dialog(dialog))
@@ -169,6 +166,9 @@ class SecureEntryViewModel @Inject constructor(
         if (pinCode == savedPinCode) {
             updateState { state.copy(pinCirclesState = PinCirclesState.CORRECT_PIN) }
             sideEffect(SecureEntrySideEffect.NavigateToHome)
+            updateState { state.copy(pinCirclesState = PinCirclesState.NONE) }
+            currentPinCode = Constants.PIN_NOT_SET
+            currentNumbers.clear()
         } else {
             wrongPinAnimationJob = viewModelScope.launch {
                 sideEffect(SecureEntrySideEffect.Snackbar(UiText.StringResource(R.string.wrong_pin_code)))

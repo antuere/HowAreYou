@@ -2,6 +2,9 @@ package antuere.domain.util
 
 
 object Constants {
+
+    const val HELP_EMAIL = "antuere@yandex.ru"
+
     const val USER_NOT_AUTH = "user not auth yet"
     const val PIN_NOT_SET = "user not auth yet"
 

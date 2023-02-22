@@ -83,13 +83,10 @@ object TimeUtility {
 
     fun isNeedLockApp(appClosingTime: Long): Boolean {
         if (appClosingTime == 0L) return false
-        val tenMinutesInMillis = 60000L
+        val tenMinutesInMillis = 600000L
         val currentTime = System.currentTimeMillis()
         val timeDifference = currentTime - appClosingTime
-        if (timeDifference >= tenMinutesInMillis) {
-            return true
-        }
-        return false
+        return timeDifference >= tenMinutesInMillis
     }
 
     fun Long.convertToUTC(timeZone: TimeZone = TimeZone.getTimeZone("UTC")): Long {
