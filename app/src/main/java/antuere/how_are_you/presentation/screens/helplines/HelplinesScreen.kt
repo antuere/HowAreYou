@@ -34,6 +34,7 @@ fun HelplinesScreen(
     val uriHandler = LocalUriHandler.current
     val lazyListState = rememberLazyListState()
     val scope = rememberCoroutineScope()
+
     val viewState by viewModel.collectAsState()
 
     viewModel.collectSideEffect { sideEffect ->

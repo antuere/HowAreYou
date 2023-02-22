@@ -149,6 +149,7 @@
     <string name="telegram_chat">Telegram chat</string>
     <string name="email_chat">Email chat</string>
     <string name="email_client_not_found">Email client not found</string>
+    <string name="telegram_not_found">Telegram not found</string>
     <string name="choose_title">Choose an Email client</string>
 
     <!-- Helplines screen -->
@@ -182,7 +183,7 @@
     <string name="wish_for_users_happy">Almost a perfect day, but you still have time to make it better!</string>
     <string name="wish_for_users_low">An ordinary day turns into a great one, maybe you just have to sleep?</string>
     <string name="wish_for_users_none">We are sad when you are sad. Maybe we can help, pay attention to the cards above</string>
-    <string name="wish_for_users_sad">Bad day? There is no way out of only one place :) We would be very happy if the cards above can make your day a little better</string>
+    <string name="wish_for_users_sad">Bad day? We would be very happy if the cards above can make your day a little better</string>
 
     <!-- Headers for history -->
     <string name="january">%1$d January %2$d</string>

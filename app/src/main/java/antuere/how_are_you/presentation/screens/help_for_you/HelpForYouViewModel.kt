@@ -26,7 +26,7 @@ class HelpForYouViewModel @Inject constructor() :
                 sideEffect(HelpForYouSideEffect.NavigateToHelplines)
             }
             HelpForYouIntent.TelegramCardClicked -> {
-                // TODO will be implemented later
+                sideEffect(HelpForYouSideEffect.NavigateToTelegram)
             }
         }
     }
