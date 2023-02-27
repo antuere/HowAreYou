@@ -5,8 +5,10 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.onFocusEvent
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
@@ -20,6 +22,7 @@ import antuere.how_are_you.presentation.base.ui_compose_components.text_field.Pa
 import antuere.how_are_you.presentation.screens.sign_up_with_email.state.SignUpEmailIntent
 import antuere.how_are_you.presentation.screens.sign_up_with_email.state.SignUpEmailState
 import antuere.how_are_you.util.extensions.paddingTopBar
+import kotlinx.coroutines.launch
 
 @Composable
 fun SignUpEmailScreenState(
@@ -86,7 +89,6 @@ fun SignUpEmailScreenState(
                 labelId = R.string.sign_up,
                 onClick = { onIntent(SignUpEmailIntent.SignInBtnClicked) },
             )
-//            Spacer(modifier = Modifier.weight(1F))
         }
     }
 }

@@ -9,11 +9,14 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.VisualTransformation
 import antuere.how_are_you.R
+import antuere.how_are_you.util.isKeyboardVisible
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -25,15 +28,24 @@ fun DefaultTextField(
     placeHolder: String? = null,
     singleLine: Boolean = false,
     maxLength: Int = Int.MAX_VALUE,
+    maxLines: Int = 40,
     @StringRes toastTextId: Int? = null,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
     visualTransformation: VisualTransformation = VisualTransformation.None,
-    trailingIcon: @Composable() (() -> Unit)? = null,
-    leadingIcon: @Composable() (() -> Unit)? = null
+    trailingIcon: @Composable (() -> Unit)? = null,
+    leadingIcon: @Composable (() -> Unit)? = null,
 ) {
     val context = LocalContext.current
     val toastText = stringResource(toastTextId ?: R.string.too_many_chars_default)
+    val focusManager = LocalFocusManager.current
+    val isVisibleKeyboard = isKeyboardVisible()
+
+    LaunchedEffect(isVisibleKeyboard) {
+        if (!isVisibleKeyboard) {
+            focusManager.clearFocus()
+        }
+    }
 
     OutlinedTextField(
         modifier = modifier,
@@ -68,6 +80,7 @@ fun DefaultTextField(
         singleLine = singleLine,
         visualTransformation = visualTransformation,
         trailingIcon = trailingIcon,
-        leadingIcon = leadingIcon
+        leadingIcon = leadingIcon,
+        maxLines = maxLines
     )
 }

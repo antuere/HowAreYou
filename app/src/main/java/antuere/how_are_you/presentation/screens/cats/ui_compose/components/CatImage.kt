@@ -20,7 +20,7 @@ import androidx.compose.ui.res.stringResource
 import antuere.how_are_you.R
 import antuere.how_are_you.presentation.base.ui_compose_components.progress_indicator.LinearProgressBarOrientation
 import antuere.how_are_you.presentation.base.ui_compose_components.progress_indicator.LinearProgressBarWrapper
-import antuere.how_are_you.util.extensions.animateMoving
+import antuere.how_are_you.util.extensions.animateRotation
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.skydoves.landscapist.ImageOptions
@@ -95,7 +95,7 @@ fun CatImage(
                     Image(
                         modifier = Modifier
                             .fillMaxSize(0.5F)
-                            .animateMoving()
+                            .animateRotation()
                             .align(Alignment.Center),
                         painter = painterResource(id = R.drawable.cat_placeholder),
                         contentDescription = "Cat loading"

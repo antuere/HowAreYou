@@ -146,16 +146,16 @@ class MainActivity : FragmentActivity() {
                                 homeViewModel = homeViewModel
                             )
                         }
-                    }
-                }
 
-                ComposableLifecycle { _, event ->
-                    if (event == Lifecycle.Event.ON_STOP) {
-                        timeWhenAppClosed = System.currentTimeMillis()
-                    }
-                    if (event == Lifecycle.Event.ON_RESUME) {
-                        if (isEnabledPin && TimeUtility.isNeedLockApp(timeWhenAppClosed)) {
-                            navController.navigateToSecure()
+                        ComposableLifecycle { _, event ->
+                            if (event == Lifecycle.Event.ON_STOP) {
+                                timeWhenAppClosed = System.currentTimeMillis()
+                            }
+                            if (event == Lifecycle.Event.ON_RESUME) {
+                                if (isEnabledPin && TimeUtility.isNeedLockApp(timeWhenAppClosed)) {
+                                    navController.navigateToSecure()
+                                }
+                            }
                         }
                     }
                 }

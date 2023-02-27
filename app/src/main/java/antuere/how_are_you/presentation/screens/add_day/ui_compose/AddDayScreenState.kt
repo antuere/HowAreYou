@@ -38,14 +38,15 @@ fun AddDayScreenState(
 
         DefaultTextField(
             modifier = Modifier
-                .padding(horizontal = dimensionResource(id = R.dimen.padding_normal_3))
-                .fillMaxWidth(),
+                .padding(horizontal = dimensionResource(id = R.dimen.padding_normal_2))
+                .fillMaxWidth()
+                .weight(0.5F),
             label = stringResource(id = R.string.desc_you_day),
             value = viewState().dayDesc,
             onValueChange = { onIntent(AddDayIntent.DayDescChanged(it)) },
             maxLength = 100,
         )
-        Spacer(modifier = Modifier.weight(0.25F))
+        Spacer(modifier = Modifier.weight(0.2F))
 
         SmileRow(
             smileImages = viewState().smileImages.toImmutableList(),

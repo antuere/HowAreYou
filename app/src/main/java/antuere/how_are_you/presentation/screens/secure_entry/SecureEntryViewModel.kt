@@ -57,7 +57,7 @@ class SecureEntryViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             val isSetBiometricSetting = settingsRepository.getBiomAuthSetting().first()
             savedPinCode = settingsRepository.getPinCode().first()
-            delay(350)
+            delay(450)
 
             if (isSetBiometricSetting) {
                 sideEffect(SecureEntrySideEffect.BiometricDialog(uiBiometricDialog))

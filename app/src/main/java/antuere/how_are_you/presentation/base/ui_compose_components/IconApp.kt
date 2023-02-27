@@ -13,6 +13,6 @@ fun IconApp(modifier: Modifier = Modifier) {
     Image(
         painter = painterResource(id = R.drawable.icon_app),
         contentDescription = "Icon app",
-        modifier = modifier.size(150.dp)
+        modifier = modifier.size(180.dp)
     )
 }
