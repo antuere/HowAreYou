@@ -5,7 +5,11 @@ import android.content.Context
 import android.content.ContextWrapper
 import androidx.compose.foundation.gestures.animateScrollBy
 import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleObserver
 import antuere.domain.dto.helplines.SupportedCountry
 import antuere.how_are_you.R
 import antuere.how_are_you.presentation.base.ui_text.UiText
@@ -45,6 +49,16 @@ fun LazyListState.animateScrollAndCentralize(index: Int, scope: CoroutineScope) 
             this@animateScrollAndCentralize.animateScrollBy((childCenter - center).toFloat())
         } else {
             this@animateScrollAndCentralize.animateScrollToItem(index)
+        }
+    }
+}
+
+@Composable
+fun <LO : LifecycleObserver> LO.ObserveLifecycle(lifecycle: Lifecycle) {
+    DisposableEffect(lifecycle) {
+        lifecycle.addObserver(this@ObserveLifecycle)
+        onDispose {
+            lifecycle.removeObserver(this@ObserveLifecycle)
         }
     }
 }

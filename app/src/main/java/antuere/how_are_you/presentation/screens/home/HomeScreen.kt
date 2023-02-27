@@ -52,13 +52,10 @@ fun HomeScreen(
             HomeSideEffect.NavigateToHelpForYou -> onNavigateToHelpForYou()
             HomeSideEffect.NavigateToMentalTips -> onNavigateToMentalTips()
         }
-
     }
 
     LaunchedEffect(true) {
-        appState.updateAppBar(
-            AppBarState(titleId = R.string.home)
-        )
+        appState.updateAppBar(AppBarState(titleId = R.string.home))
         appState.dismissSnackbar()
     }
 

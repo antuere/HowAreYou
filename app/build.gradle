@@ -3,8 +3,9 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
     id 'androidx.navigation.safeargs.kotlin'
-    id "com.google.dagger.hilt.android"
+    id 'com.google.dagger.hilt.android'
     id 'com.google.gms.google-services'
+    id 'com.google.firebase.crashlytics'
 }
 
 android {
@@ -86,14 +87,14 @@ dependencies {
     runtimeOnly "com.google.android.material:material:$version_material"
     runtimeOnly "androidx.constraintlayout:constraintlayout:$version_constraint_layout"
 
-    //Lifecycle
+    // Lifecycle
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$version_lifecycle"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$version_lifecycle"
     implementation "androidx.lifecycle:lifecycle-runtime-compose:$version_lifecycle"
     implementation "androidx.lifecycle:lifecycle-viewmodel-compose:$version_lifecycle"
     implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:$version_lifecycle"
 
-    //Compose
+    // Compose
     def composeBom = platform('androidx.compose:compose-bom:2023.01.00')
     implementation composeBom
     androidTestImplementation composeBom
@@ -139,11 +140,13 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$version_coroutine_android"
 
     // FireBase
-    implementation "com.google.firebase:firebase-storage-ktx:$version_firebase"
-    implementation "com.google.firebase:firebase-database-ktx:$version_firebase"
-    implementation "com.google.firebase:firebase-auth-ktx:$version_firebase_auth"
+    implementation platform('com.google.firebase:firebase-bom:31.2.2')
+    implementation "com.google.firebase:firebase-storage-ktx"
+    implementation "com.google.firebase:firebase-database-ktx"
+    implementation "com.google.firebase:firebase-auth-ktx"
+    implementation 'com.google.firebase:firebase-crashlytics-ktx'
+    implementation 'com.google.firebase:firebase-analytics-ktx'
     implementation "com.google.android.gms:play-services-auth:$version_firebase_auth_services"
-    implementation "com.firebaseui:firebase-ui-auth:$version_firebase_ui"
 
     // Dagger - Hilt
     implementation "com.google.dagger:hilt-android:$version_dagger_hilt"
@@ -186,10 +189,10 @@ dependencies {
     implementation "io.github.vanpra.compose-material-dialogs:datetime:$version_date_picker"
     coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:$version_desugar_jdk"
 
-    //Domain(module)
+    // Domain(module)
     implementation project(path: ':domain')
 
-    //Data(module)
+    // Data(module)
     implementation project(path: ':data')
 
 }
