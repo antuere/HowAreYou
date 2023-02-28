@@ -75,6 +75,7 @@ fun DefaultTextField(
                 style = MaterialTheme.typography.displaySmall,
             )
         },
+        shape = MaterialTheme.shapes.large,
         keyboardOptions = keyboardOptions,
         keyboardActions = keyboardActions,
         singleLine = singleLine,

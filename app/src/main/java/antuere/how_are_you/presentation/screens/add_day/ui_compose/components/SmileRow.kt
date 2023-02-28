@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.IconButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
@@ -23,7 +24,11 @@ fun SmileRow(
         smileImages.forEach { imageRes ->
             IconButton(
                 onClick = { onClick(imageRes) }) {
-                Icon(painter = painterResource(id = imageRes), contentDescription = null)
+                Icon(
+                    painter = painterResource(id = imageRes),
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.onSecondary
+                )
             }
         }
     }
