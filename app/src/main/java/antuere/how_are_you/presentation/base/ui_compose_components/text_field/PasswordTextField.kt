@@ -1,6 +1,7 @@
 package antuere.how_are_you.presentation.base.ui_compose_components.text_field
 
 import androidx.annotation.StringRes
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
@@ -19,6 +20,8 @@ import androidx.compose.ui.text.input.VisualTransformation
 fun PasswordTextField(
     modifier: Modifier = Modifier,
     @StringRes labelId: Int,
+    keyboardActions: KeyboardActions = KeyboardActions.Default,
+    keyboardOptions: KeyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
     value: String,
     onValueChange: (String) -> Unit,
 ) {
@@ -29,7 +32,8 @@ fun PasswordTextField(
         value = value,
         onValueChange = onValueChange,
         label = stringResource(id = labelId),
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+        keyboardActions = keyboardActions,
+        keyboardOptions = keyboardOptions.copy(keyboardType = KeyboardType.Password),
         singleLine = true,
         visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
         trailingIcon = {

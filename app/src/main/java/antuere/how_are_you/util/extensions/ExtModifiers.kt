@@ -1,12 +1,15 @@
 package antuere.how_are_you.util.extensions
 
 import androidx.compose.animation.core.*
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.relocation.BringIntoViewRequester
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.focus.onFocusEvent
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.debugInspectorInfo
@@ -15,7 +18,9 @@ import com.valentinilk.shimmer.ShimmerBounds
 import com.valentinilk.shimmer.defaultShimmerTheme
 import com.valentinilk.shimmer.rememberShimmer
 import com.valentinilk.shimmer.shimmer
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 
 fun Modifier.paddingBotAndTopBar(): Modifier {
@@ -24,6 +29,20 @@ fun Modifier.paddingBotAndTopBar(): Modifier {
 
 fun Modifier.paddingTopBar(): Modifier {
     return padding(top = 64.dp)
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+fun Modifier.bringIntoViewForFocused(
+    bringIntoViewRequester: BringIntoViewRequester,
+    scope: CoroutineScope,
+): Modifier {
+    return onFocusEvent { event ->
+        if (event.isFocused) {
+            scope.launch {
+                bringIntoViewRequester.bringIntoView()
+            }
+        }
+    }
 }
 
 fun Modifier.shake() = composed(
