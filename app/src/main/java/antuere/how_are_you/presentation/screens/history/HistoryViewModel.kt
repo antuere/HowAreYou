@@ -21,6 +21,7 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.Container
 import org.orbitmvi.orbit.viewmodel.container
+import timber.log.Timber
 import javax.inject.Inject
 
 
@@ -66,13 +67,13 @@ class HistoryViewModel @Inject constructor(
             }
             is HistoryIntent.DaysInFilterSelected -> {
                 sideEffect(HistorySideEffect.AnimationHistoryHeader)
+                sideEffect(HistorySideEffect.HideBottomSheet)
                 filterState.update {
                     FilterState.Activated(
                         firstDate = intent.startDate,
                         secondDate = intent.endDate
                     )
                 }
-                sideEffect(HistorySideEffect.HideBottomSheet)
             }
             is HistoryIntent.ToggleBtnChanged -> {
                 filterState.update {
@@ -108,6 +109,9 @@ class HistoryViewModel @Inject constructor(
                     val startDateInSec = TimeUtility.getTimeInMilliseconds(filterState.firstDate)
                     val endDateInSec = TimeUtility.getTimeInMilliseconds(filterState.secondDate)
 
+                    Timber.i("date error : first day from filter : $startDateInSec")
+                    Timber.i("date error : last day from filter : $endDateInSec")
+
                     dayRepository.getSelectedDays(startDateInSec, endDateInSec)
                 }
                 is FilterState.Disabled -> {
@@ -133,7 +137,7 @@ class HistoryViewModel @Inject constructor(
             }
         }
 
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             daysFlow.collectLatest { days ->
                 when (val filterState = filterState.first()) {
                     is FilterState.Activated -> {

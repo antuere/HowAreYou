@@ -76,7 +76,6 @@ fun CatsScreen(
             }
             CatsSideEffect.Vibration -> {
                 appState.vibratePhone(hapticFeedback)
-//                appState.vibratePhone(context = context, duration = 150)
             }
         }
     }

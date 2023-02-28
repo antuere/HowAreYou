@@ -1,12 +1,15 @@
 package antuere.how_are_you.util.extensions
 
 import androidx.compose.animation.core.*
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.relocation.BringIntoViewRequester
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.focus.onFocusEvent
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.debugInspectorInfo
@@ -15,7 +18,9 @@ import com.valentinilk.shimmer.ShimmerBounds
 import com.valentinilk.shimmer.defaultShimmerTheme
 import com.valentinilk.shimmer.rememberShimmer
 import com.valentinilk.shimmer.shimmer
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 
 fun Modifier.paddingBotAndTopBar(): Modifier {
@@ -26,10 +31,23 @@ fun Modifier.paddingTopBar(): Modifier {
     return padding(top = 64.dp)
 }
 
+@OptIn(ExperimentalFoundationApi::class)
+fun Modifier.bringIntoViewForFocused(
+    bringIntoViewRequester: BringIntoViewRequester,
+    scope: CoroutineScope,
+): Modifier {
+    return onFocusEvent { event ->
+        if (event.isFocused) {
+            scope.launch {
+                bringIntoViewRequester.bringIntoView()
+            }
+        }
+    }
+}
+
 fun Modifier.shake() = composed(
     factory = {
         val infiniteTransition = rememberInfiniteTransition()
-
         val scale by infiniteTransition.animateFloat(
             initialValue = 0.9f,
             targetValue = 1.2F,
@@ -50,7 +68,7 @@ fun Modifier.shake() = composed(
     }
 )
 
-fun Modifier.animateMoving() = composed(
+fun Modifier.animateRotation() = composed(
     factory = {
         val infiniteTransition = rememberInfiniteTransition()
         val scale by infiniteTransition.animateFloat(
@@ -81,34 +99,22 @@ fun Modifier.animateMoving() = composed(
 
 fun Modifier.animateScaleOnce() = composed(
     factory = {
-        var isAnimated by remember {
-            mutableStateOf(true)
-        }
-
+        var isAnimated by remember { mutableStateOf(true) }
         val scale by animateFloatAsState(
             targetValue = if (isAnimated) 1.2f else 1f,
             animationSpec = repeatable(
-                iterations = 2,
-                animation = tween(durationMillis = 100),
-                repeatMode = RepeatMode.Reverse
+                iterations = 1,
+                animation = tween(durationMillis = 125),
+                repeatMode = RepeatMode.Restart
             ),
         )
 
-//        val transitionY by animateFloatAsState(
-//            targetValue = if (isAnimated) 15f else 0f,
-//            animationSpec = repeatable(
-//                iterations = 1,
-//                animation = tween(durationMillis = 100),
-//                repeatMode = RepeatMode.Reverse
-//            ),
-//        )
         LaunchedEffect(key1 = isAnimated) {
-            delay(200)
+            delay(125)
             isAnimated = false
         }
 
         Modifier.graphicsLayer {
-//            translationY = if (isAnimated) -transitionY else 0f
             scaleX = if (isAnimated) scale else 1f
             scaleY = if (isAnimated) scale else 1f
         }
@@ -120,21 +126,18 @@ fun Modifier.animateScaleOnce() = composed(
 
 fun Modifier.animateScaleDownOnce() = composed(
     factory = {
-        var isAnimated by remember {
-            mutableStateOf(true)
-        }
-
+        var isAnimated by remember { mutableStateOf(true) }
         val scale by animateFloatAsState(
             targetValue = if (isAnimated) 0.8f else 1f,
             animationSpec = repeatable(
-                iterations = 2,
-                animation = tween(durationMillis = 100),
-                repeatMode = RepeatMode.Reverse
+                iterations = 1,
+                animation = tween(durationMillis = 150),
+                repeatMode = RepeatMode.Restart
             ),
         )
 
         LaunchedEffect(key1 = isAnimated) {
-            delay(175)
+            delay(150)
             isAnimated = false
         }
 
@@ -150,15 +153,12 @@ fun Modifier.animateScaleDownOnce() = composed(
 
 fun Modifier.animateScaleUpOnce() = composed(
     factory = {
-        var isAnimated by remember {
-            mutableStateOf(true)
-        }
-
+        var isAnimated by remember { mutableStateOf(true) }
         val scale by animateFloatAsState(
             targetValue = if (isAnimated) 1.2f else 1f,
             animationSpec = repeatable(
-                iterations = 2,
-                animation = tween(durationMillis = 100),
+                iterations = 1,
+                animation = tween(durationMillis = 150),
                 repeatMode = RepeatMode.Reverse
             ),
         )

@@ -1,5 +1,6 @@
 package antuere.how_are_you.presentation.screens.settings
 
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.*
@@ -13,6 +14,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import antuere.how_are_you.LocalAppState
 import antuere.how_are_you.R
 import antuere.how_are_you.presentation.base.ui_compose_components.top_bar.AppBarState
+import antuere.how_are_you.presentation.screens.settings.state.SettingsIntent
 import antuere.how_are_you.presentation.screens.settings.state.SettingsSideEffect
 import antuere.how_are_you.presentation.screens.settings.ui_compose.SettingsScreenState
 import antuere.how_are_you.util.extensions.findFragmentActivity
@@ -41,6 +43,18 @@ fun SettingsScreen(
 
     val launcher =
         rememberLauncherForActivityResult(contract = ActivityResultContracts.StartActivityForResult()) {}
+
+    val isEnabledHandler = remember(bottomSheetState.currentValue) {
+        bottomSheetState.currentValue == ModalBottomSheetValue.Expanded
+    }
+
+    BackHandler(enabled = !isEnabledHandler) {
+        fragmentActivity.finish()
+    }
+
+    BackHandler(enabled = isEnabledHandler) {
+        SettingsIntent.PinCreationSheetClosed(isPinCreated = false).run(viewModel::onIntent)
+    }
 
     LaunchedEffect(true) {
         appState.updateAppBar(
@@ -75,7 +89,9 @@ fun SettingsScreen(
                 appState.changeVisibilityBottomBar(false)
             }
             SettingsSideEffect.HideBottomSheet -> {
-                scope.launch { bottomSheetState.hide() }
+                scope.launch {
+                    bottomSheetState.animateTo(ModalBottomSheetValue.Hidden)
+                }
                 appState.changeVisibilityBottomBar(true)
             }
         }

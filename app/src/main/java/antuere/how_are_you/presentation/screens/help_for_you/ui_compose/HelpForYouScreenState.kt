@@ -17,7 +17,6 @@ import antuere.how_are_you.presentation.base.ui_compose_components.card.CardWith
 import antuere.how_are_you.presentation.screens.help_for_you.state.HelpForYouIntent
 import antuere.how_are_you.presentation.screens.help_for_you.state.HelpForYouState
 import antuere.how_are_you.util.extensions.paddingTopBar
-import antuere.how_are_you.util.extensions.toStable
 
 @Composable
 fun HelpForYouScreenState(
@@ -83,7 +82,7 @@ fun HelpForYouScreenState(
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(0.2F),
-            onClick = { onIntent(HelpForYouIntent.EmailCardClicked) }.toStable(),
+            onClick = { onIntent(HelpForYouIntent.EmailCardClicked) },
             labelRes = viewState().emailCard.nameRes,
             leadingIconRes = viewState().emailCard.leadIconRes
         )

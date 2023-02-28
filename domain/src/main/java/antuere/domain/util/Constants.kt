@@ -2,6 +2,10 @@ package antuere.domain.util
 
 
 object Constants {
+
+    const val HELP_EMAIL = "antuere@yandex.ru"
+    const val HELP_TELEGRAM = "https://telegram.me/antuere"
+
     const val USER_NOT_AUTH = "user not auth yet"
     const val PIN_NOT_SET = "user not auth yet"
 
@@ -20,6 +24,4 @@ object Constants {
     const val SETTINGS_BIOMETRIC_KEY = "biometric_auth_key"
     const val SETTINGS_PIN_CODE_KEY = "pin_code_auth_key"
     const val SETTINGS_WORRIED_DIALOG_KEY = "worried_dialog_key"
-
-
 }

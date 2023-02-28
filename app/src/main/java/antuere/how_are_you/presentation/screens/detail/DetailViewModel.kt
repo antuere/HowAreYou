@@ -17,6 +17,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.Container
 import org.orbitmvi.orbit.viewmodel.container
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -85,6 +86,7 @@ class DetailViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             val day = dayRepository.getDayById(dayId).first()!!
 
+            Timber.i("date error : day id in device ${day.dayId}")
             val favBtnRes = if (day.isFavorite) {
                 R.drawable.ic_baseline_favorite
             } else {

@@ -31,75 +31,76 @@ import antuere.how_are_you.presentation.base.ui_theme.Typography
 import timber.log.Timber
 
 @Composable
-fun DefaultBottomNavBar(navController: NavController) {
+fun DefaultBottomNavBar(navController: NavController, isVisible: Boolean) {
+    if (isVisible) {
+        Timber.i("MVI error test : we in bottom bar compose when visible")
+        val navBackStackEntry by navController.currentBackStackEntryAsState()
+        val currentDestination = navBackStackEntry?.destination
 
-    Timber.i("MVI error test : we in bottom bar compose")
-    val navBackStackEntry by navController.currentBackStackEntryAsState()
-    val currentDestination = navBackStackEntry?.destination
+        val destinations = listOf(Screen.Home, Screen.History, Screen.Settings)
+        val iconsTitle = listOf(
+            stringResource(id = R.string.home),
+            stringResource(id = R.string.history),
+            stringResource(id = R.string.settings)
+        )
 
-    val destinations = listOf(Screen.Home, Screen.History, Screen.Settings)
-    val iconsTitle = listOf(
-        stringResource(id = R.string.home),
-        stringResource(id = R.string.history),
-        stringResource(id = R.string.settings)
-    )
+        val iconsOutline =
+            listOf(Icons.Outlined.Home, Icons.Outlined.History, Icons.Outlined.Settings)
+        val iconsFilled = listOf(Icons.Filled.Home, Icons.Filled.History, Icons.Filled.Settings)
 
-    val iconsOutline =
-        listOf(Icons.Outlined.Home, Icons.Outlined.History, Icons.Outlined.Settings)
-    val iconsFilled = listOf(Icons.Filled.Home, Icons.Filled.History, Icons.Filled.Settings)
+        NavigationBar(
+            containerColor = TealMain,
+            contentColor = Color.White
+        ) {
+            iconsTitle.forEachIndexed { index, dest ->
+                val isSelected =
+                    currentDestination?.hierarchy?.any { it.route == destinations[index].route } == true
 
-    NavigationBar(
-        containerColor = TealMain,
-        contentColor = Color.White
-    ) {
-        iconsTitle.forEachIndexed { index, dest ->
-            val isSelected =
-                currentDestination?.hierarchy?.any { it.route == destinations[index].route } == true
+                val interactionSource = remember { MutableInteractionSource() }
+                val isPressed by interactionSource.collectIsPressedAsState()
+                val scaleMenuItem by animateFloatAsState(if (isPressed) 0.95f else 1f)
 
-            val interactionSource = remember { MutableInteractionSource() }
-            val isPressed by interactionSource.collectIsPressedAsState()
-            val scaleMenuItem by animateFloatAsState(if (isPressed) 0.95f else 1f)
-
-            NavigationBarItem(
-                modifier = Modifier.graphicsLayer {
-                    scaleY = scaleMenuItem
-                    scaleX = scaleMenuItem
-                },
-                interactionSource = interactionSource,
-                icon = {
-                    Icon(
-                        imageVector = if (isSelected) iconsFilled[index] else iconsOutline[index],
-                        contentDescription = null
-                    )
-                },
-                label = {
-                    Text(
-                        text = dest,
-                        style = if (isSelected) Typography.displayMedium.copy(
-                            fontSize = 15.sp
-                        ) else Typography.displaySmall.copy(fontSize = 14.sp)
-                    )
-                },
-                selected = isSelected,
-                onClick = {
-                    if (!isSelected) {
-                        navController.navigate(destinations[index].route) {
-                            popUpTo(navController.graph.findStartDestination().id) {
-                                saveState = true
+                NavigationBarItem(
+                    modifier = Modifier.graphicsLayer {
+                        scaleY = scaleMenuItem
+                        scaleX = scaleMenuItem
+                    },
+                    interactionSource = interactionSource,
+                    icon = {
+                        Icon(
+                            imageVector = if (isSelected) iconsFilled[index] else iconsOutline[index],
+                            contentDescription = null
+                        )
+                    },
+                    label = {
+                        Text(
+                            text = dest,
+                            style = if (isSelected) Typography.displayMedium.copy(
+                                fontSize = 15.sp
+                            ) else Typography.displaySmall.copy(fontSize = 14.sp)
+                        )
+                    },
+                    selected = isSelected,
+                    onClick = {
+                        if (!isSelected) {
+                            navController.navigate(destinations[index].route) {
+                                popUpTo(navController.graph.findStartDestination().id) {
+                                    saveState = true
+                                }
+                                launchSingleTop = true
+                                restoreState = true
                             }
-                            launchSingleTop = true
-                            restoreState = true
                         }
-                    }
-                },
-                colors = NavigationBarItemDefaults.colors(
-                    selectedIconColor = Color.Black,
-                    selectedTextColor = Color.Black,
-                    indicatorColor = Color.White,
-                    unselectedIconColor = Gray800,
-                    unselectedTextColor = Gray800
-                ),
-            )
+                    },
+                    colors = NavigationBarItemDefaults.colors(
+                        selectedIconColor = Color.Black,
+                        selectedTextColor = Color.Black,
+                        indicatorColor = Color.White,
+                        unselectedIconColor = Gray800,
+                        unselectedTextColor = Gray800
+                    ),
+                )
+            }
         }
     }
 }

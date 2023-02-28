@@ -18,7 +18,7 @@ fun LinearProgressBar(
     progress: Float,
     modifier: Modifier = Modifier,
     color: Color = MaterialTheme.colorScheme.primary,
-    strokeWidth: Float = 6f,
+    strokeWidth: Float = 5f,
     orientation: LinearProgressBarOrientation = LinearProgressBarOrientation.HORIZONTAL,
 ) {
     when (orientation) {
@@ -26,7 +26,7 @@ fun LinearProgressBar(
             Canvas(
                 modifier = modifier
                     .progressSemantics(progress)
-                    .size(4.dp, 240.dp)
+                    .size(4.dp, 270.dp)
             ) {
                 drawVerticalBar(progress, color, strokeWidth)
             }
@@ -35,7 +35,7 @@ fun LinearProgressBar(
             Canvas(
                 modifier = modifier
                     .progressSemantics(progress)
-                    .size(240.dp, 4.dp)
+                    .size(270.dp, 4.dp)
             ) {
                 drawHorizontalBar(progress, color, strokeWidth)
             }

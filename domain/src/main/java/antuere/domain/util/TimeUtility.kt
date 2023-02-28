@@ -17,8 +17,13 @@ object TimeUtility {
         return formatDate(currentDate, format)
     }
 
-    fun formatDate(date: Date, format: TimeFormat = TimeFormat.Default): String {
+    private fun formatDate(
+        date: Date,
+        format: TimeFormat = TimeFormat.Default,
+        timeZone: TimeZone = TimeZone.getDefault(),
+    ): String {
         val sdf = SimpleDateFormat(format.stringFormat, Locale.getDefault())
+        sdf.timeZone = timeZone
         return sdf.format(date)
     }
 
@@ -34,8 +39,8 @@ object TimeUtility {
 //        } else {
 //            localDate.toEpochDay() * 86400000 + offset
 //        }
-        return localDate.toEpochDay() * 86400000
-
+        val utcTime = localDate.toEpochDay() * 86400000
+        return utcTime.convertFromUTC()
     }
 
     fun parseCurrentTime(format: TimeFormat = TimeFormat.Default): Date {
@@ -43,7 +48,7 @@ object TimeUtility {
         return sdf.parse(formatCurrentTime())
     }
 
-    fun parse(date: Date, format: TimeFormat = TimeFormat.Default): Date {
+    private fun parse(date: Date, format: TimeFormat = TimeFormat.Default): Date {
         val currentFormat = formatDate(date)
         val sdf = SimpleDateFormat(format.stringFormat, Locale.getDefault())
         return sdf.parse(currentFormat)
@@ -74,5 +79,34 @@ object TimeUtility {
         return Calendar.getInstance(TimeZone.getDefault()).apply {
             this.timeInMillis = timeInMillis
         }
+    }
+
+    fun isNeedLockApp(appClosingTime: Long): Boolean {
+        if (appClosingTime == 0L) return false
+        val tenMinutesInMillis = 600000L
+        val currentTime = System.currentTimeMillis()
+        val timeDifference = currentTime - appClosingTime
+        return timeDifference >= tenMinutesInMillis
+    }
+
+    fun Long.convertToUTC(timeZone: TimeZone = TimeZone.getTimeZone("UTC")): Long {
+        val sdf = SimpleDateFormat(TimeFormat.Default.stringFormat, Locale.getDefault())
+        val dateStringCurrentZone = formatDate(Date(this))
+        sdf.timeZone = timeZone
+        return sdf.parse(dateStringCurrentZone).time
+    }
+
+    fun Long.convertFromUTC(): Long {
+        val calendarTemp = Calendar.getInstance(TimeZone.getTimeZone("UTC")).apply {
+            this.timeInMillis = this@convertFromUTC
+        }
+        return Calendar.getInstance().apply {
+            this.clear()
+            set(
+                calendarTemp.get(Calendar.YEAR),
+                calendarTemp.get(Calendar.MONTH),
+                calendarTemp.get(Calendar.DAY_OF_MONTH),
+            )
+        }.timeInMillis
     }
 }

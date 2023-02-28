@@ -11,7 +11,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import antuere.how_are_you.R
-import antuere.how_are_you.presentation.base.ui_compose_components.card.CardDefault
+import antuere.how_are_you.presentation.base.ui_compose_components.card.CardWithFab
 import antuere.how_are_you.presentation.base.ui_compose_components.card.CardWithOnClick
 import antuere.how_are_you.presentation.base.ui_compose_components.placeholder.FullScreenProgressIndicator
 import antuere.how_are_you.presentation.base.ui_theme.TealMain
@@ -41,13 +41,10 @@ fun HomeScreenState(
                     modifier = Modifier
                         .fillMaxSize()
                         .weight(0.3F),
-                    titleText = stringResource(
-                        id = R.string.quotes_title
-                    ),
+                    titleText = stringResource(R.string.quotes_title),
                     quoteText = state.quoteText,
                     quiteAuthor = state.quoteAuthor
                 )
-
                 Row(
                     modifier = Modifier
                         .fillMaxSize()
@@ -104,7 +101,7 @@ fun HomeScreenState(
                     )
                 }
 
-                CardDefault(
+                CardWithFab(
                     cardModifier = Modifier
                         .fillMaxSize()
                         .weight(0.3F)

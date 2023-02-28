@@ -47,20 +47,19 @@ fun CatsScreenState(
             CatImage(
                 modifier = Modifier
                     .weight(1F)
-                    .padding(start = 6.dp, end = 3.dp),
+                    .padding(start = 8.dp, end = 4.dp),
                 url = viewState().urlList[0],
                 onLongClicked = { onIntent(CatsIntent.CatOnLongClicked(it)) },
             )
             CatImage(
                 modifier = Modifier
                     .weight(1F)
-                    .padding(start = 3.dp, end = 6.dp),
+                    .padding(start = 4.dp, end = 8.dp),
                 url = viewState().urlList[1],
                 onLongClicked = { onIntent(CatsIntent.CatOnLongClicked(it)) },
             )
         }
-        Spacer(modifier = Modifier.weight(0.2f))
-
+        Spacer(modifier = Modifier.height(8.dp))
         Row(
             modifier = Modifier.weight(10f),
             verticalAlignment = Alignment.CenterVertically,
@@ -69,14 +68,14 @@ fun CatsScreenState(
             CatImage(
                 modifier = Modifier
                     .weight(1f)
-                    .padding(start = 6.dp, end = 3.dp),
+                    .padding(start = 8.dp, end = 4.dp),
                 url = viewState().urlList[2],
                 onLongClicked = { onIntent(CatsIntent.CatOnLongClicked(it)) },
             )
             CatImage(
                 modifier = Modifier
                     .weight(1f)
-                    .padding(start = 3.dp, end = 6.dp),
+                    .padding(start = 4.dp, end = 8.dp),
                 url = viewState().urlList[3],
                 onLongClicked = { onIntent(CatsIntent.CatOnLongClicked(it)) },
             )

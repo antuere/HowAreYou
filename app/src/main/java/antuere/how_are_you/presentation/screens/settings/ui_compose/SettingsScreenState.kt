@@ -1,11 +1,12 @@
 package antuere.how_are_you.presentation.screens.settings.ui_compose
 
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetLayout
 import androidx.compose.material.ModalBottomSheetState
@@ -13,16 +14,14 @@ import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import antuere.how_are_you.presentation.base.ui_compose_components.placeholder.FullScreenProgressIndicator
-import antuere.how_are_you.presentation.screens.pin_code_creation.PinCodeCreating
+import antuere.how_are_you.presentation.screens.pin_code_creation.PinCreatingSheet
 import antuere.how_are_you.presentation.screens.settings.state.SettingsIntent
 import antuere.how_are_you.presentation.screens.settings.state.SettingsState
 import antuere.how_are_you.presentation.screens.settings.ui_compose.components.AuthSection
 import antuere.how_are_you.presentation.screens.settings.ui_compose.components.GeneralSettings
 import antuere.how_are_you.presentation.screens.settings.ui_compose.components.PrivacySettings
-import antuere.how_are_you.util.extensions.findFragmentActivity
 import antuere.how_are_you.util.extensions.paddingBotAndTopBar
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -32,32 +31,23 @@ fun SettingsScreenState(
     onIntent: (SettingsIntent) -> Unit,
     bottomSheetState: ModalBottomSheetState,
 ) {
-    val fragmentActivity = LocalContext.current.findFragmentActivity()
-
-    val isEnabledHandler = remember(bottomSheetState.currentValue) {
-        bottomSheetState.currentValue == ModalBottomSheetValue.Expanded
+    val isSheetStartsHiding by remember {
+        derivedStateOf {
+            bottomSheetState.targetValue == ModalBottomSheetValue.Hidden
+                    && bottomSheetState.isAnimationRunning
+        }
     }
-
-    BackHandler(enabled = isEnabledHandler) {
-        onIntent(SettingsIntent.PinCreationSheetClosed(isPinCreated = false))
-    }
-
-    BackHandler(enabled = !isEnabledHandler) {
-        fragmentActivity.finish()
-    }
-
     ModalBottomSheetLayout(
         sheetState = bottomSheetState,
         sheetShape = RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp),
         sheetContent = {
             Box(
-                modifier = Modifier
-                    .fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth(),
                 contentAlignment = Alignment.Center
             ) {
-                PinCodeCreating(
+                PinCreatingSheet(
                     onHandleResult = { onIntent(SettingsIntent.PinCreationSheetClosed(it)) },
-                    bottomSheetState = bottomSheetState
+                    isSheetStartsHiding = isSheetStartsHiding
                 )
             }
         },
@@ -67,6 +57,7 @@ fun SettingsScreenState(
         } else {
             Column(
                 modifier = Modifier
+                    .verticalScroll(rememberScrollState())
                     .fillMaxSize()
                     .paddingBotAndTopBar()
             ) {

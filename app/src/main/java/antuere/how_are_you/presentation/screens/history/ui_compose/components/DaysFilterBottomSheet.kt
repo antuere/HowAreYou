@@ -32,7 +32,6 @@ fun DaysFilterBottomSheet(
 
     val endBtnString = stringResource(R.string.end_date_field)
     var endBtnText by remember { mutableStateOf(endBtnString) }
-
     var endDate by remember { mutableStateOf(LocalDate.now()) }
 
     val isEnabledEndDateBtn by remember {
