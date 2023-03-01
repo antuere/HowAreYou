@@ -21,7 +21,6 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.Container
 import org.orbitmvi.orbit.viewmodel.container
-import timber.log.Timber
 import javax.inject.Inject
 
 
@@ -76,9 +75,6 @@ class HistoryViewModel @Inject constructor(
                 }
             }
             is HistoryIntent.ToggleBtnChanged -> {
-                filterState.update {
-                    FilterState.Disabled(intent.toggleBtnState)
-                }
                 saveToggleButtonState(intent.toggleBtnState)
                 sideEffect(HistorySideEffect.AnimationHistoryHeader)
             }
@@ -93,13 +89,13 @@ class HistoryViewModel @Inject constructor(
 
     private fun getToggleButtonState() {
         viewModelScope.launch(Dispatchers.IO) {
-            val savedToggleState = toggleBtnRepository.getToggleButtonState().first()
-
-            filterState.update {
-                FilterState.Disabled(savedToggleState)
+            toggleBtnRepository.getToggleButtonState().collectLatest { toggleBtnState ->
+                filterState.update {
+                    FilterState.Disabled(toggleBtnState)
+                }
             }
-            subscribeOnDaysFlow()
         }
+        subscribeOnDaysFlow()
     }
 
     private fun subscribeOnDaysFlow() {
@@ -108,9 +104,6 @@ class HistoryViewModel @Inject constructor(
                 is FilterState.Activated -> {
                     val startDateInSec = TimeUtility.getTimeInMilliseconds(filterState.firstDate)
                     val endDateInSec = TimeUtility.getTimeInMilliseconds(filterState.secondDate)
-
-                    Timber.i("date error : first day from filter : $startDateInSec")
-                    Timber.i("date error : last day from filter : $endDateInSec")
 
                     dayRepository.getSelectedDays(startDateInSec, endDateInSec)
                 }
