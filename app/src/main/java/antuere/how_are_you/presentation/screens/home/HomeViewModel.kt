@@ -15,6 +15,7 @@ import antuere.how_are_you.presentation.screens.home.state.HomeSideEffect
 import antuere.how_are_you.presentation.screens.home.state.HomeState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -38,9 +39,14 @@ class HomeViewModel @Inject constructor(
     val isShowSplash: StateFlow<Boolean>
         get() = _isShowSplash
 
+    private val currentDateTimeStamp = MutableStateFlow(TimeUtility.parseCurrentTime().time)
+
     init {
-        updateDayQuoteByRemote()
-        checkLastFiveDays()
+        viewModelScope.launch(Dispatchers.IO) {
+            _isShowSplash.value = !quoteRepository.updateQuoteRemote()
+            getSavedData()
+            checkLastFiveDays()
+        }
     }
 
     override fun onIntent(intent: HomeIntent) {
@@ -67,50 +73,53 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun getSavedData() {
+    fun dayChanged() {
         viewModelScope.launch(Dispatchers.IO) {
-            val savedQuote = quoteRepository.getDayQuoteLocal()
-            if (_isShowSplash.value) _isShowSplash.value = false
-
-            val currentDayTimeStamp = TimeUtility.parseCurrentTime().time
-
-            combine(
-                dayRepository.getDayById(currentDayTimeStamp),
-                settingsRepository.getWorriedDialogSetting()
-            ) { day, isEnableWorriedSetting ->
-
-                isShowWorriedDialogSetting = isEnableWorriedSetting
-
-                if (day == null) {
-                    updateState {
-                        HomeState.Loaded(
-                            quoteText = savedQuote.text,
-                            quoteAuthor = savedQuote.author,
-                            wishText = HelperForHome.getWishStringForSummary(HelperForHome.DEFAULT_WISH),
-                            fabButtonState = FabButtonState.Add
-                        )
-                    }
-                } else {
-                    updateState {
-                        HomeState.Loaded(
-                            quoteText = savedQuote.text,
-                            quoteAuthor = savedQuote.author,
-                            wishText = HelperForHome.getWishStringForSummary(day.imageResId),
-                            fabButtonState = FabButtonState.Smile(
-                                imageId = day.imageResId,
-                                dayId = day.dayId
-                            )
-                        )
-                    }
-                }
-            }.collect()
+            quoteRepository.updateQuoteRemote()
+            delay(200)
+            currentDateTimeStamp.update {
+                TimeUtility.parseCurrentTime().time
+            }
         }
     }
 
-    private fun updateDayQuoteByRemote() {
+    @OptIn(ExperimentalCoroutinesApi::class)
+    private fun getSavedData() {
         viewModelScope.launch(Dispatchers.IO) {
-            _isShowSplash.value = !quoteRepository.updateQuoteRemote()
-            getSavedData()
+            val lastDataFlow = currentDateTimeStamp.flatMapLatest { currentDateTimeStamp ->
+                val savedQuote = quoteRepository.getDayQuoteLocal()
+                if (_isShowSplash.value) _isShowSplash.value = false
+
+                combine(
+                    dayRepository.getDayById(currentDateTimeStamp),
+                    settingsRepository.getWorriedDialogSetting()
+                ) { day, isEnableWorriedSetting ->
+                    isShowWorriedDialogSetting = isEnableWorriedSetting
+                    if (day == null) {
+                        updateState {
+                            HomeState.Loaded(
+                                quoteText = savedQuote.text,
+                                quoteAuthor = savedQuote.author,
+                                wishText = HelperForHome.getWishStringForSummary(HelperForHome.DEFAULT_WISH),
+                                fabButtonState = FabButtonState.Add
+                            )
+                        }
+                    } else {
+                        updateState {
+                            HomeState.Loaded(
+                                quoteText = savedQuote.text,
+                                quoteAuthor = savedQuote.author,
+                                wishText = HelperForHome.getWishStringForSummary(day.imageResId),
+                                fabButtonState = FabButtonState.Smile(
+                                    imageId = day.imageResId,
+                                    dayId = day.dayId
+                                )
+                            )
+                        }
+                    }
+                }
+            }
+            lastDataFlow.collect()
         }
     }
 

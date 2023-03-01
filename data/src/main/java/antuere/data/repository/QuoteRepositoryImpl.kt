@@ -15,7 +15,7 @@ class QuoteRepositoryImpl @Inject constructor(
     private val firebaseApi: FirebaseRealtimeDB,
     private val networkInfo: NetworkInfo,
     private val quoteDataStore: QuoteDataStore,
-    private val quoteMapper: QuoteEntityMapper
+    private val quoteMapper: QuoteEntityMapper,
 ) : QuoteRepository {
 
     override suspend fun updateQuoteRemote(): Boolean {

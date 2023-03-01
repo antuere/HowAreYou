@@ -1,6 +1,8 @@
 package antuere.how_are_you
 
 import android.annotation.SuppressLint
+import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -23,7 +25,7 @@ import androidx.viewbinding.BuildConfig
 import antuere.domain.repository.SettingsRepository
 import antuere.domain.util.Constants
 import antuere.domain.util.TimeUtility
-import antuere.how_are_you.presentation.screens.add_day.AddDayScreen
+import antuere.how_are_you.broadcastReceivers.DateChangeReceiver
 import antuere.how_are_you.presentation.base.app_state.AppState
 import antuere.how_are_you.presentation.base.app_state.AppStateImpl
 import antuere.how_are_you.presentation.base.app_state.rememberAppState
@@ -36,6 +38,7 @@ import antuere.how_are_you.presentation.base.ui_compose_components.bottom_nav_ba
 import antuere.how_are_you.presentation.base.ui_compose_components.snackbar.DefaultSnackbar
 import antuere.how_are_you.presentation.base.ui_compose_components.top_bar.DefaultTopBar
 import antuere.how_are_you.presentation.base.ui_theme.HowAreYouTheme
+import antuere.how_are_you.presentation.screens.add_day.AddDayScreen
 import antuere.how_are_you.presentation.screens.cats.CatsScreen
 import antuere.how_are_you.presentation.screens.detail.DetailScreen
 import antuere.how_are_you.presentation.screens.favorites.FavoritesScreen
@@ -73,13 +76,18 @@ class MainActivity : FragmentActivity() {
 
     private val homeViewModel by viewModels<HomeViewModel>()
 
+    private val dateChangeReceiver by lazy {
+        DateChangeReceiver(dateChanged = {
+            homeViewModel.dayChanged()
+        })
+    }
+
     @Inject
     lateinit var settingsRepository: SettingsRepository
 
     @OptIn(ExperimentalAnimationApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         var isEnabledPin = false
         lifecycleScope.launch(Dispatchers.IO) {
             settingsRepository.getPinSetting().collectLatest { isEnabledPin = it }
@@ -87,6 +95,7 @@ class MainActivity : FragmentActivity() {
 
         Timber.plant(Timber.DebugTree())
         WindowCompat.setDecorFitsSystemWindows(window, false)
+        registerReceiver(dateChangeReceiver, IntentFilter(Intent.ACTION_DATE_CHANGED))
 
         installSplashScreen().apply {
             if (BuildConfig.BUILD_TYPE != "benchmark") {
@@ -155,6 +164,10 @@ class MainActivity : FragmentActivity() {
                                 if (isEnabledPin && TimeUtility.isNeedLockApp(timeWhenAppClosed)) {
                                     navController.navigateToSecure()
                                 }
+                            }
+                            if (event == Lifecycle.Event.ON_DESTROY) {
+                                Timber.i("day change test : on Destroy")
+                                unregisterReceiver(dateChangeReceiver)
                             }
                         }
                     }

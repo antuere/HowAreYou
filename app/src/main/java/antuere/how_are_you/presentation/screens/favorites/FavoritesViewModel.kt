@@ -57,7 +57,6 @@ class FavoritesViewModel @Inject constructor(
     private fun getFavoritesDays() {
         viewModelScope.launch(Dispatchers.IO) {
             dayRepository.getFavoritesDays().collectLatest { favDays ->
-
                 if (favDays.isEmpty()) {
                     updateState { FavoritesState.Empty() }
                 } else {
