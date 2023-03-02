@@ -3,6 +3,7 @@ package antuere.how_are_you.presentation.screens.sign_up_with_email
 import androidx.lifecycle.viewModelScope
 import antuere.domain.authentication_manager.AuthenticationManager
 import antuere.domain.authentication_manager.RegisterResultListener
+import antuere.domain.repository.DayRepository
 import antuere.domain.repository.SettingsRepository
 import antuere.how_are_you.R
 import antuere.how_are_you.presentation.base.ViewModelMvi
@@ -22,6 +23,7 @@ import javax.inject.Inject
 class SignUpEmailViewModel @Inject constructor(
     private val settingsRepository: SettingsRepository,
     private val authenticationManager: AuthenticationManager,
+    private val dayRepository: DayRepository,
 ) : ViewModelMvi<SignUpEmailState, SignUpEmailSideEffect, SignUpEmailIntent>() {
 
     override val container: Container<SignUpEmailState, SignUpEmailSideEffect> =
@@ -67,9 +69,10 @@ class SignUpEmailViewModel @Inject constructor(
 
         override fun registerSuccess(name: String) {
             viewModelScope.launch(Dispatchers.IO) {
-                settingsRepository.saveUserNickname(name)
                 authenticationManager.setUserNicknameOnServer(name)
-                delay(100)
+                settingsRepository.saveUserNickname(name)
+                delay(150)
+                dayRepository.insertLocalDaysToRemote()
 
                 sideEffect(SignUpEmailSideEffect.NavigateToSettings)
                 updateState { SignUpEmailState() }

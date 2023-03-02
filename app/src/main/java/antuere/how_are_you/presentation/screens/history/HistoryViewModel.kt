@@ -37,8 +37,15 @@ class HistoryViewModel @Inject constructor(
     private val filterState: MutableStateFlow<FilterState> =
         MutableStateFlow(FilterState.Disabled(ToggleBtnState.ALL_DAYS))
 
+    private var isHasSavedDays = false
+
     init {
         getToggleButtonState()
+        viewModelScope.launch(Dispatchers.IO) {
+            dayRepository.getLastDay().collectLatest {
+                isHasSavedDays = it != null
+            }
+        }
     }
 
     override fun onIntent(intent: HistoryIntent) {
@@ -179,36 +186,44 @@ class HistoryViewModel @Inject constructor(
             }
             ToggleBtnState.LAST_WEEK -> {
                 updateState {
+                    if (days.isEmpty() && !isHasSavedDays) {
+                        return@updateState HistoryState.Empty.NoEntriesYet(
+                            UiText.StringResource(R.string.no_days_all)
+                        )
+                    }
                     if (days.isEmpty()) {
-                        HistoryState.Empty.FromToggleGroup(
+                        return@updateState HistoryState.Empty.FromToggleGroup(
                             message = UiText.StringResource(R.string.no_days_week),
                             toggleBtnState = toggleState
                         )
-                    } else {
-                        HistoryState.Loaded.Default(
-                            dayList = days,
-                            toggleBtnState = toggleState,
-                            cellsAmountForGrid = 2,
-                            textHeadline = HelperForHistory.getHeaderForHistory(days)
-                        )
                     }
+                    HistoryState.Loaded.Default(
+                        dayList = days,
+                        toggleBtnState = toggleState,
+                        cellsAmountForGrid = 2,
+                        textHeadline = HelperForHistory.getHeaderForHistory(days)
+                    )
                 }
             }
             ToggleBtnState.CURRENT_MONTH -> {
                 updateState {
+                    if (days.isEmpty() && !isHasSavedDays) {
+                        return@updateState HistoryState.Empty.NoEntriesYet(
+                            UiText.StringResource(R.string.no_days_all)
+                        )
+                    }
                     if (days.isEmpty()) {
-                        HistoryState.Empty.FromToggleGroup(
+                        return@updateState HistoryState.Empty.FromToggleGroup(
                             message = UiText.StringResource(R.string.no_days_month),
                             toggleBtnState = toggleState
                         )
-                    } else {
-                        HistoryState.Loaded.Default(
-                            dayList = days,
-                            toggleBtnState = toggleState,
-                            cellsAmountForGrid = 3,
-                            textHeadline = HelperForHistory.getHeaderForHistory(days)
-                        )
                     }
+                    HistoryState.Loaded.Default(
+                        dayList = days,
+                        toggleBtnState = toggleState,
+                        cellsAmountForGrid = 3,
+                        textHeadline = HelperForHistory.getHeaderForHistory(days)
+                    )
                 }
             }
         }

@@ -46,6 +46,10 @@ class AuthenticationManagerImpl @Inject constructor(
             }
     }
 
+    override suspend fun isHasThisAccountOnServer(): Boolean {
+        return getUserNickName() != null
+    }
+
     override suspend fun getUserNickName(): String? {
         return if (isHasUser() && networkInfo.isNetworkAvailable()) {
             val query = getUserNode()!!.child("nickName").get().await()
@@ -65,7 +69,7 @@ class AuthenticationManagerImpl @Inject constructor(
     override fun startAuth(
         email: String,
         password: String,
-        loginResultListener: LoginResultListener
+        loginResultListener: LoginResultListener,
     ) {
         firebaseAuth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener { signInTask ->
@@ -81,7 +85,7 @@ class AuthenticationManagerImpl @Inject constructor(
         email: String,
         password: String,
         name: String,
-        registerResultListener: RegisterResultListener
+        registerResultListener: RegisterResultListener,
     ) {
         firebaseAuth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener { signUpTask ->
@@ -96,7 +100,7 @@ class AuthenticationManagerImpl @Inject constructor(
     override fun startAuthByGoogle(
         accIdToken: String?,
         name: String,
-        registerResultListener: RegisterResultListener
+        registerResultListener: RegisterResultListener,
     ) {
         val credential = GoogleAuthProvider.getCredential(accIdToken, null)
         firebaseAuth.signInWithCredential(credential)

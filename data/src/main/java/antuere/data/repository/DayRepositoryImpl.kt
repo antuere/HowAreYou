@@ -8,6 +8,7 @@ import antuere.domain.repository.DayRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -115,6 +116,11 @@ class DayRepositoryImpl @Inject constructor(
 
     override suspend fun insertRemote(day: Day) {
         firebaseRealtimeDB.insert(day)
+    }
+
+    override suspend fun insertLocalDaysToRemote() {
+        val localDaysList = getAllDays().first()
+        firebaseRealtimeDB.insertDays(localDaysList)
     }
 
     override suspend fun update(day: Day) {

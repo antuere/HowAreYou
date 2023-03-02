@@ -12,7 +12,7 @@ import kotlinx.coroutines.tasks.await
 import java.util.*
 import javax.inject.Inject
 
-data class FirebaseRealtimeDB @Inject constructor(
+class FirebaseRealtimeDB @Inject constructor(
     private val realTimeDb: DatabaseReference,
     private val authManager: AuthenticationManager,
     private val networkInfo: NetworkInfo,
@@ -76,6 +76,17 @@ data class FirebaseRealtimeDB @Inject constructor(
         val dayRemote = dayEntityMapperRemote.mapFromDomainModel(day)
         daysNode.child(dayRemote.dayId.toString())
             .setValue(dayRemote).await()
+    }
+
+    override suspend fun insertDays(days: List<Day>) {
+        if (!authManager.isHasUser()) return
+        val daysNode = daysNode ?: return
+        val daysRemote = days.map {
+            dayEntityMapperRemote.mapFromDomainModel(it)
+        }
+        daysRemote.forEach { dayRemote ->
+            daysNode.child(dayRemote.dayId.toString()).setValue(dayRemote).await()
+        }
     }
 
 

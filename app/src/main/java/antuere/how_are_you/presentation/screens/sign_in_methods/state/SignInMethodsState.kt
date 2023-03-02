@@ -5,6 +5,7 @@ import androidx.annotation.StringRes
 import antuere.how_are_you.R
 
 data class SignInMethodsState(
+    val isLoading: Boolean = false,
     val emailMethod: SignInMethod = SignInMethod(
         nameId = R.string.login_email,
         iconId = R.drawable.ic_email,

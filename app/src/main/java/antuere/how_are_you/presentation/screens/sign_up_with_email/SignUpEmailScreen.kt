@@ -22,7 +22,6 @@ fun SignUpEmailScreen(
     viewModel: SignUpEmailViewModel = hiltViewModel(),
 ) {
     Timber.i("MVI error test : enter in sign Up screen")
-
     val context = LocalContext.current
     val appState = LocalAppState.current
     val viewState by viewModel.collectAsState()

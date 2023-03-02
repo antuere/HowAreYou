@@ -28,7 +28,7 @@ buildscript {
         version_firebase_auth_services = "20.4.1"
         version_firebase_bom = "31.2.2"
         version_firebase_ui = "7.2.0"
-        version_google_services = "4.3.14"
+        version_google_services = "4.3.15"
         version_gradle = '7.4.0'
         version_gradle_navigation = "2.5.2"
         version_glide = "4.14.2"

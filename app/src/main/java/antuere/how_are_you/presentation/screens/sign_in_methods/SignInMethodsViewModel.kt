@@ -14,6 +14,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.Container
 import org.orbitmvi.orbit.viewmodel.container
@@ -30,7 +31,6 @@ class SignInMethodsViewModel @Inject constructor(
 
     override val container: Container<SignInMethodsState, SignInMethodsSideEffect> =
         container(SignInMethodsState())
-
 
     override fun onIntent(intent: SignInMethodsIntent) {
         when (intent) {
@@ -50,7 +50,7 @@ class SignInMethodsViewModel @Inject constructor(
                     sideEffect(
                         SignInMethodsSideEffect.Snackbar(
                             message = UiText.DefaultString(
-                                intent.task.exception!!.message!!
+                                intent.task.exception?.message ?: "Error with google authentication"
                             )
                         )
                     )
@@ -63,11 +63,20 @@ class SignInMethodsViewModel @Inject constructor(
 
         override fun registerSuccess(name: String) {
             viewModelScope.launch(Dispatchers.IO) {
-                authenticationManager.setUserNicknameOnServer(name)
+                updateState { state.copy(isLoading = true) }
+
+                val isHasThisAccountOnServer = authenticationManager.isHasThisAccountOnServer()
+                if (isHasThisAccountOnServer) {
+                    dayRepository.refreshRemoteData()
+                } else {
+                    authenticationManager.setUserNicknameOnServer(name)
+                    delay(150)
+                    dayRepository.insertLocalDaysToRemote()
+                }
                 settingsRepository.saveUserNickname(name)
-                dayRepository.refreshRemoteData()
+
+                sideEffect(SignInMethodsSideEffect.NavigateUp)
             }
-            sideEffect(SignInMethodsSideEffect.NavigateUp)
         }
 
         override fun registerFailed(message: String) {
