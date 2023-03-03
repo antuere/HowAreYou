@@ -12,13 +12,11 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-        maven {
-            url 'https://s01.oss.sonatype.org/content/repositories/snapshots'
-        }
+//        maven {
+//            url 'https://s01.oss.sonatype.org/content/repositories/snapshots'
+//        }
     }
 }
+
+include(":app", ":data", ":domain", ":macrobenchmark")
 rootProject.name = "HowAreYou"
-include ':app'
-include ':data'
-include ':domain'
-include ':macrobenchmark'
