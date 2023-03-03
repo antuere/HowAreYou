@@ -1,3 +1,4 @@
+import com.android.build.api.dsl.ManagedVirtualDevice
 
 plugins {
     id 'com.android.test'
@@ -11,6 +12,18 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
+    }
+
+    testOptions {
+        managedDevices {
+            devices {
+               pixel2Api31(ManagedVirtualDevice){
+                   device = "Pixel 2"
+                   apiLevel = 31
+                   systemImageSource = "aosp"
+               }
+            }
+        }
     }
 
     kotlinOptions {
@@ -32,6 +45,7 @@ android {
             debuggable = true
             signingConfig = debug.signingConfig
             matchingFallbacks = ["release"]
+            proguardFiles("benchmark-rules.pro")
         }
     }
 

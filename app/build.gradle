@@ -54,7 +54,7 @@ android {
             initWith buildTypes.release
             signingConfig signingConfigs.debug
             matchingFallbacks = ['release']
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'benchmark-rules.pro'
+            proguardFiles 'benchmark-rules.pro'
         }
     }
     compileOptions {
