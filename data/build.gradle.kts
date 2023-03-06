@@ -23,8 +23,6 @@ android {
 
     defaultConfig {
         minSdk = 24
-        targetSdk = 33
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
         signingConfig = signingConfigs.getByName("release")
@@ -64,7 +62,7 @@ dependencies {
     implementation("androidx.datastore:datastore-preferences:1.1.0-dev01")
 
     // Coroutines
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.3")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
 
     //FireBase
@@ -75,7 +73,7 @@ dependencies {
 
     //Test
     testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.4")
+    androidTestImplementation("androidx.test.ext:junit:1.1.5")
 
     // Dagger - Hilt
     implementation("com.google.dagger:hilt-android:2.44")

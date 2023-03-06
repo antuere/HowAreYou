@@ -74,6 +74,9 @@ class SecureEntryViewModel @Inject constructor(
                 state.copy(pinCirclesState = PinCirclesState.CORRECT_PIN)
             }
             sideEffect(SecureEntrySideEffect.NavigateToHome)
+            updateState { state.copy(pinCirclesState = PinCirclesState.NONE) }
+            currentPinCode = Constants.PIN_NOT_SET
+            currentNumbers.clear()
             viewModelScope.launch(Dispatchers.IO) {
                 settingsRepository.saveBiomAuthSetting(isEnable = true)
             }

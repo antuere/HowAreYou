@@ -59,20 +59,19 @@ buildscript {
     }
 
     dependencies {
-        classpath("com.android.tools.build:gradle:7.4.2")
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.7.20")
-//        classpath("androidx.navigation:navigation-safe-args-gradle-plugin:2.5.2")
-        classpath("com.google.gms:google-services:4.3.15")
-        classpath("com.google.firebase:firebase-crashlytics-gradle:2.9.4")
+        classpath("com.android.tools.build:gradle:${libs.versions.gradle.get()}")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${libs.versions.kotlin.general.get()}")
+        classpath("com.google.gms:google-services:${libs.versions.google.services.get()}")
+        classpath("com.google.firebase:firebase-crashlytics-gradle:${libs.versions.firebase.crashlytics.get()}")
     }
 }
 
 plugins {
-    id("com.android.application") version "7.4.2" apply false
-    id("com.android.library") version "7.4.2" apply false
-    id("androidx.navigation.safeargs") version "2.5.2" apply false
-    id("org.jetbrains.kotlin.android") version "1.7.20" apply false
-    id("org.jetbrains.kotlin.jvm") version "1.7.20" apply false
-    id("com.google.dagger.hilt.android") version "2.44" apply false
-    id("com.android.test") version "7.4.2" apply false
+    alias(libs.plugins.android.app) apply false
+    alias(libs.plugins.android.lib) apply false
+    alias(libs.plugins.android.test) apply false
+    alias(libs.plugins.androidx.navigation.safeargs) apply false
+    alias(libs.plugins.kotlin.android) apply false
+    alias(libs.plugins.kotlin.jvm) apply false
+    alias(libs.plugins.google.dagger.hilt.android) apply false
 }
