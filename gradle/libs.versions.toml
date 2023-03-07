@@ -71,7 +71,7 @@ landscapist-bom = { module = "com.github.skydoves:landscapist-bom", version.ref 
 landscapist-glide = { module = "com.github.skydoves:landscapist-glide" }
 landscapist-animation = { module = "com.github.skydoves:landscapist-animation" }
 shimmer = { module = "com.valentinilk.shimmer:compose-shimmer", version.ref = "shimmer" }
-datepicker = { module = "io.github.vanpra.compose-material-dialogs:datetimer", version.ref = "date-picker" }
+datepicker = { module = "io.github.vanpra.compose-material-dialogs:datetime", version.ref = "date-picker" }
 
 # Dagger-Hilt
 google-hilt-android-core = { module = "com.google.dagger:hilt-android", version.ref = "dagger-hilt" }
@@ -152,6 +152,7 @@ android-test = { id = "com.android.test", version.ref = "gradle" }
 androidx-navigation-safeargs = { id = "androidx.navigation.safeargs", version.ref = "navigation-safeargs" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin-general" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin-general" }
+kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin-general" }
 google-dagger-hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "dagger-hilt" }
 
 [bundles]

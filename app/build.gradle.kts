@@ -25,8 +25,8 @@ android {
         applicationId = "antuere.how_are_you"
         minSdk = 24
         targetSdk = 33
-        versionCode = 13 // versionName 13 - 0.5.4
-        versionName = "0.5.4"
+        versionCode = 14 // versionName 14 - 0.5.5
+        versionName = "0.5.5"
 
         testInstrumentationRunnerArguments["androidx.benchmark.suppressErrors"] = "EMULATOR"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -91,9 +91,11 @@ dependencies {
     runtimeOnly(libs.androidx.appcompat)
     runtimeOnly(libs.google.android.material)
 
+
+    // Lifecycle
     implementation(libs.bundles.lifecycle)
 
-// Compose
+    // Compose
     val composeBom = platform(libs.androidx.compose.bom)
     implementation(composeBom)
     implementation(libs.bundles.compose)
@@ -102,76 +104,76 @@ dependencies {
     androidTestImplementation(libs.androidx.compose.ui.test.junut4)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
 
-// Accompanist
+    // Accompanist
     implementation(libs.bundles.accompanist)
 
-// Leak canary
+    // Leak canary
     debugImplementation(libs.leakCanary)
 
-// Splash Screen API
+    // Splash Screen API
     implementation(libs.androidx.splashScreen)
 
-// Biometric
+    // Biometric
     implementation(libs.androidx.biometricKtx)
 
-// Navigation
+    // Navigation
     implementation(libs.bundles.navigation)
 
-// Preferences DataStore
+    // Preferences DataStore
     implementation(libs.androidx.dataStore)
 
-// Coroutines
+    // Coroutines
     implementation(libs.kotlin.coroutines.core)
     implementation(libs.kotlin.coroutines.android)
 
-// FireBase
+    // FireBase
     implementation(platform(libs.google.firebase.bom))
     implementation(libs.bundles.firebase)
     implementation(libs.play.services.auth)
 
-// Dagger - Hilt
+    // Dagger - Hilt
     implementation(libs.google.hilt.android.core)
     implementation(libs.androidx.hilt.navigation.compose)
     kapt(libs.google.hilt.android.compiler)
     kapt(libs.androidx.hilt.compiler)
 
-// Room
+    // Room
     implementation(libs.androidx.roomKtx)
     implementation(libs.androidx.room.runtime)
     annotationProcessor(libs.androidx.room.compiler)
     kapt(libs.androidx.room.compiler)
 
-// Orbit MVI
+    // Orbit MVI
     implementation(libs.orbit.viewmodel)
     implementation(libs.orbit.compose)
 
-// Test
+    // Test
     testImplementation(libs.test.junit)
     implementation(libs.androidx.test.junit.ext)
     implementation(libs.androidx.test.monitor)
 //    implementation("androidx.test.ext:junit-ktx:1.1.5")
     androidTestImplementation(libs.test.junit)
 
-// ProfileInstaller
+    // ProfileInstaller
     implementation(libs.androidx.profileInstaller)
 
-// Timber
+    // Timber
     implementation(libs.timber)
 
-// Landscapist glide
+    // Landscapist glide
     implementation(libs.bundles.landscapist)
 
-// Shimmer
+    // Shimmer
     implementation(libs.shimmer)
 
-// DatePicker
+    // DatePicker
     implementation(libs.datepicker)
     coreLibraryDesugaring(libs.android.tools.desugar.jdk.libs)
 
-// Domain(module)
+    // Domain(module)
     implementation(project(":domain"))
 
-// Data(module)
+    // Data(module)
     implementation(project(":data"))
 
 }

@@ -54,12 +54,13 @@ android {
 }
 
 dependencies {
-    implementation("androidx.test.ext:junit:1.1.5")
-    implementation("androidx.test.espresso:espresso-core:3.5.1")
-    implementation("androidx.test.uiautomator:uiautomator:2.2.0")
+    // Test
+    implementation(libs.androidx.test.junit.ext)
+    implementation(libs.androidx.test.espresso)
+    implementation(libs.androidx.test.uiautomator)
 
     // Macrobenchmark
-    implementation("androidx.benchmark:benchmark-macro-junit4:1.1.1")
+    implementation(libs.androidx.benchmark.macro)
 }
 
 androidComponents {

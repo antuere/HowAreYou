@@ -56,39 +56,39 @@ android {
 dependencies {
 
     // Leak canary
-    debugImplementation("com.squareup.leakcanary:leakcanary-android:2.9.1")
+    debugImplementation(libs.leakCanary)
 
     // Preferences DataStore
-    implementation("androidx.datastore:datastore-preferences:1.1.0-dev01")
+    implementation(libs.androidx.dataStore)
 
     // Coroutines
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.3")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
+    implementation(libs.kotlin.coroutines.core)
+    implementation(libs.kotlin.coroutines.android)
 
-    //FireBase
-    implementation("com.google.firebase:firebase-storage-ktx:20.1.0")
-    implementation("com.google.firebase:firebase-database-ktx:20.1.0")
-    implementation("com.google.firebase:firebase-auth-ktx:21.1.0")
-    implementation("com.google.android.gms:play-services-auth:20.4.1")
+    // FireBase
+    implementation(platform(libs.google.firebase.bom))
+    implementation(libs.google.firebase.storageKtx)
+    implementation(libs.google.firebase.databaseKtx)
+    implementation(libs.google.firebase.authKtx)
+    implementation(libs.play.services.auth)
 
-    //Test
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
+    // Test
+    testImplementation(libs.test.junit)
+    androidTestImplementation(libs.androidx.test.junit.ext)
 
     // Dagger - Hilt
-    implementation("com.google.dagger:hilt-android:2.44")
-    kapt("com.google.dagger:hilt-android-compiler:2.44")
+    implementation(libs.google.hilt.android.core)
+    kapt(libs.google.hilt.android.compiler)
 
     // Room
-    annotationProcessor("androidx.room:room-compiler:2.5.0")
-    implementation("androidx.room:room-ktx:2.5.0")
-    implementation("androidx.room:room-runtime:2.5.0")
-    kapt("androidx.room:room-compiler:2.5.0")
+    implementation(libs.androidx.roomKtx)
+    implementation(libs.androidx.room.runtime)
+    annotationProcessor(libs.androidx.room.compiler)
+    kapt(libs.androidx.room.compiler)
 
     // Timber
-    implementation("com.jakewharton.timber:timber:5.0.1")
+    implementation(libs.timber)
 
-    //Domain
+    // Domain
     implementation(project(":domain"))
-
 }
