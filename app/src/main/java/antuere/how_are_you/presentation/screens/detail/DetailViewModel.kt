@@ -64,9 +64,7 @@ class DetailViewModel @Inject constructor(
                         R.drawable.ic_baseline_favorite_border
                     }
                 updateState {
-                    state.copy(
-                        favoriteBtnRes = newFabBtnRes
-                    )
+                    state.copy(favoriteBtnRes = newFabBtnRes)
                 }
                 viewModelScope.launch(Dispatchers.IO) {
                     val newDay = Day(
@@ -86,7 +84,6 @@ class DetailViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             val day = dayRepository.getDayById(dayId).first()!!
 
-            Timber.i("date error : day id in device ${day.dayId}")
             val favBtnRes = if (day.isFavorite) {
                 R.drawable.ic_baseline_favorite
             } else {
@@ -108,7 +105,7 @@ class DetailViewModel @Inject constructor(
     private fun deleteDay() {
         viewModelScope.launch(Dispatchers.IO) {
             dayRepository.deleteDay(dayId)
-            sideEffect(DetailSideEffect.NavigateUp)
         }
+        sideEffect(DetailSideEffect.NavigateUp)
     }
 }

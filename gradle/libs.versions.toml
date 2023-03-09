@@ -154,6 +154,8 @@ kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin-ge
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin-general" }
 kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin-general" }
 google-dagger-hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "dagger-hilt" }
+google-gms-googleServices = { id = "com.google.gms.google-services", version.ref = "google-services" }
+google-firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebase_crashlytics" }
 
 [bundles]
 lifecycle = [

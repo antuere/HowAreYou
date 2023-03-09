@@ -41,27 +41,24 @@ class UIBiometricDialog(private val context: Context) {
 
 
     private fun checkIsEnrolledBiometric(): BiometricsAvailableState {
-        val result =
-            when (biometricManager.canAuthenticate(BIOMETRIC_WEAK or BIOMETRIC_STRONG)) {
-                BiometricManager.BIOMETRIC_SUCCESS -> {
-                    BiometricsAvailableState.Available
-                }
-                BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE -> {
-                    BiometricsAvailableState.NoHardware
-                }
-                BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED -> {
-                    BiometricsAvailableState.NoneEnrolled(UiText.StringResource(R.string.biometric_none_enroll))
-                }
-                else -> BiometricsAvailableState.SomeError(UiText.StringResource(R.string.biometric_unknown_error))
-
+        return when (biometricManager.canAuthenticate(BIOMETRIC_WEAK or BIOMETRIC_STRONG)) {
+            BiometricManager.BIOMETRIC_SUCCESS -> {
+                BiometricsAvailableState.Available
             }
-        return result
+            BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE -> {
+                BiometricsAvailableState.NoHardware
+            }
+            BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED -> {
+                BiometricsAvailableState.NoneEnrolled(UiText.StringResource(R.string.biometric_none_enroll))
+            }
+            else -> BiometricsAvailableState.SomeError(UiText.StringResource(R.string.biometric_unknown_error))
+        }
     }
 
 
     fun startBiometricAuth(
         biometricListener: IUIBiometricListener,
-        activity: FragmentActivity
+        activity: FragmentActivity,
     ) {
         val availableState = checkIsEnrolledBiometric()
         if (availableState is BiometricsAvailableState.NoneEnrolled) {
@@ -75,7 +72,7 @@ class UIBiometricDialog(private val context: Context) {
                 object : BiometricPrompt.AuthenticationCallback() {
                     override fun onAuthenticationError(
                         errorCode: Int,
-                        errString: CharSequence
+                        errString: CharSequence,
                     ) {
                         super.onAuthenticationError(errorCode, errString)
                         biometricListener.onBiometricAuthFailed()

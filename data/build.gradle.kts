@@ -1,13 +1,16 @@
 plugins {
-    id("com.android.library")
-    kotlin("android")
-    id("kotlin-kapt")
-    id("androidx.navigation.safeargs.kotlin")
-    id("com.google.dagger.hilt.android")
-    id("com.google.gms.google-services")
+    alias(libs.plugins.android.lib)
+    alias(libs.plugins.kotlin.kapt)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.google.dagger.hilt.android)
+    alias(libs.plugins.androidx.navigation.safeargs)
+    id(libs.plugins.google.gms.googleServices.get().pluginId)
 }
 
 android {
+    namespace = "antuere.data"
+    compileSdk = 33
+
     signingConfigs {
         create("release") {
             storeFile =
@@ -17,9 +20,6 @@ android {
             keyPassword = "anton1730"
         }
     }
-
-    namespace = "antuere.data"
-    compileSdk = 33
 
     defaultConfig {
         minSdk = 24

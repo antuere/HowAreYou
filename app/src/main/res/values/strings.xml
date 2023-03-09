@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">HowAreYou</string>
+    <string name="app_name" translatable="false">HowAreYou</string>
 
     <!-- Descriptions -->
     <string name="very_happy_smile_desc">Very happy smile</string>
@@ -11,13 +11,13 @@
     <string name="button_for_add_new_day">button for add new day</string>
 
     <!-- Transition -->
-    <string name="transition_name">transition_name_unique</string>
-    <string name="transition_name_for_fav">transition_name_favorite</string>
-    <string name="transition_name_for_cats">transition_name_cats</string>
-    <string name="transition_name_for_sign_in">transition_name_sign_in</string>
-    <string name="transition_name_for_sign_in_methods">transition_name_sign_in_methods</string>
-    <string name="transition_name_for_sum">transition_name_sum</string>
-    <string name="transition_name_item">transition_name_unique_%1$s</string>
+    <string name="transition_name" translatable="false">transition_name_unique</string>
+    <string name="transition_name_for_fav" translatable="false">transition_name_favorite</string>
+    <string name="transition_name_for_cats" translatable="false">transition_name_cats</string>
+    <string name="transition_name_for_sign_in" translatable="false">transition_name_sign_in</string>
+    <string name="transition_name_for_sign_in_methods" translatable="false">transition_name_sign_in_methods</string>
+    <string name="transition_name_for_sum" translatable="false">transition_name_sum</string>
+    <string name="transition_name_item" translatable="false">transition_name_unique_%1$s</string>
 
     <!-- Menus labels -->
     <string name="delete">Delete</string>
@@ -71,11 +71,9 @@
     <string name="dialog_warning_neutral">Don\'t show again</string>
     <string name="dialog_warning_negative">No</string>
     <string name="dialog_sign_out_title">Sign out</string>
-    <string name="dialog_sign_out_desc">All your data will be deleted on this device, to restore them, log in to your account again.</string>
     <string name="dialog_sign_out_positive">Sign out</string>
     <string name="dialog_sign_out_negative">Cancel</string>
     <string name="dialog_delete_local_data_title">Day entries</string>
-    <string name="dialog_delete_local_data_desc">When you sign out of your account, you can save existing recordings locally on your device. Save local day entries?</string>
     <string name="dialog_delete_local_data_positive">Yes</string>
     <string name="dialog_delete_local_data_negative">No</string>
     <string name="dialog_delete_local_data_neutral">Stay logged in</string>
@@ -102,7 +100,7 @@
     <string name="title_cats">What could be better than cats?</string>
     <string name="saved_complete_cats">Cat\'s image is saved!</string>
     <string name="saved_error_cats">This image can\'t be saved</string>
-    <string name="permission_denied_cats">To save the image, please grant the permission</string>
+    <string name="permission_denied_cats">To save the cat, please grant the permission</string>
     <string name="cats_no_internet">No internet…</string>
 
 
@@ -211,5 +209,7 @@
     <string name="click_less">Click less</string>
     <string name="click_more">Click more</string>
     <string name="too_many_chars_default">Cannot be more characters</string>
+    <string name="dialog_sign_out_desc">All your data will be deleted on this device, to restore them, log in to your account again.</string>
+    <string name="dialog_delete_local_data_desc">When you sign out of your account, you can save existing recordings locally on your device. Save local day entries?</string>
 
 </resources>

@@ -1,25 +1,26 @@
 plugins {
-    id("com.android.application")
-    id("kotlin-kapt")
-    id("com.google.dagger.hilt.android")
-    id("com.google.gms.google-services")
-    id("com.google.firebase.crashlytics")
-    id("androidx.navigation.safeargs")
-    kotlin("android")
+    alias(libs.plugins.android.app)
+    alias(libs.plugins.kotlin.kapt)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.google.dagger.hilt.android)
+    alias(libs.plugins.androidx.navigation.safeargs)
+    id(libs.plugins.google.gms.googleServices.get().pluginId)
+    id(libs.plugins.google.firebase.crashlytics.get().pluginId)
 }
 
 android {
+    namespace = "antuere.how_are_you"
+    compileSdk = 33
+
     signingConfigs {
         create("release") {
-            storeFile  = file("C:\\Users\\AntuE\\AndroidStudioProjects\\HowAreYou\\keyStore\\keyStoreApp.jks")
-//            storeFile =
-//                file("C:\\Users\\user\\AndroidStudioProjects\\HowAreYou\\keyStoreAppModule.jks")
+//            storeFile  = file("C:\\Users\\AntuE\\AndroidStudioProjects\\HowAreYou\\keyStore\\keyStoreApp.jks")
+            storeFile = file("C:\\Users\\user\\AndroidStudioProjects\\HowAreYou\\keyStoreAppModule.jks")
             storePassword = "anton1730"
             keyAlias = "key0"
             keyPassword = "anton1730"
         }
     }
-    compileSdk = 33
 
     defaultConfig {
         applicationId = "antuere.how_are_you"
@@ -85,12 +86,20 @@ android {
 
 dependencies {
 
+    // Immutable collections
     implementation(libs.kotlin.immutable.collections)
-    implementation(libs.androidx.coreKtx)
-    implementation(libs.androidx.legacy)
-    runtimeOnly(libs.androidx.appcompat)
-    runtimeOnly(libs.google.android.material)
 
+    // Core-ktx
+    implementation(libs.androidx.coreKtx)
+
+    // Legacy
+    implementation(libs.androidx.legacy)
+
+    // Appcompat
+    runtimeOnly(libs.androidx.appcompat)
+
+    // Material
+    runtimeOnly(libs.google.android.material)
 
     // Lifecycle
     implementation(libs.bundles.lifecycle)
@@ -175,7 +184,6 @@ dependencies {
 
     // Data(module)
     implementation(project(":data"))
-
 }
 
 kapt {

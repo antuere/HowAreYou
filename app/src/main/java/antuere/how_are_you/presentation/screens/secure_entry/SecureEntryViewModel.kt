@@ -70,15 +70,15 @@ class SecureEntryViewModel @Inject constructor(
         override fun onBiometricAuthFailed() {}
 
         override fun onBiometricAuthSuccess() {
-            updateState {
-                state.copy(pinCirclesState = PinCirclesState.CORRECT_PIN)
-            }
+            updateState { state.copy(pinCirclesState = PinCirclesState.CORRECT_PIN) }
             sideEffect(SecureEntrySideEffect.NavigateToHome)
-            updateState { state.copy(pinCirclesState = PinCirclesState.NONE) }
             currentPinCode = Constants.PIN_NOT_SET
             currentNumbers.clear()
+
             viewModelScope.launch(Dispatchers.IO) {
                 settingsRepository.saveBiomAuthSetting(isEnable = true)
+                delay(100)
+                updateState { state.copy(pinCirclesState = PinCirclesState.NONE) }
             }
         }
 

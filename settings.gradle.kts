@@ -18,5 +18,5 @@ dependencyResolutionManagement {
     }
 }
 
-include(":app", ":data", ":domain", ":macrobenchmark")
 rootProject.name = "HowAreYou"
+include(":app", ":data", ":domain", ":macrobenchmark")
