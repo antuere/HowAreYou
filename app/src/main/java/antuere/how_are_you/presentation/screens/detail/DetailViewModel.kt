@@ -108,7 +108,7 @@ class DetailViewModel @Inject constructor(
     private fun deleteDay() {
         viewModelScope.launch(Dispatchers.IO) {
             dayRepository.deleteDay(dayId)
+            sideEffect(DetailSideEffect.NavigateUp)
         }
-        sideEffect(DetailSideEffect.NavigateUp)
     }
 }

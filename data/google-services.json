@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "506067010164-a5t0q4r7f1q9cfq7m3amooj68a6th7oc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "antuere.data",
+            "certificate_hash": "78e776671ffa2f6cfbf26c69bbc1b77e97313c42"
+          }
+        },
+        {
           "client_id": "506067010164-flgtkolfftmpjcnnbm71sgdam469ghf9.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

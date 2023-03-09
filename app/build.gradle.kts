@@ -11,9 +11,9 @@ plugins {
 android {
     signingConfigs {
         create("release") {
-//            storeFile file("C:\\Users\\AntuE\\AndroidStudioProjects\\HowAreYou\\keyStore\\keyStoreApp.jks")
-            storeFile =
-                file("C:\\Users\\user\\AndroidStudioProjects\\HowAreYou\\keyStoreAppModule.jks")
+            storeFile  = file("C:\\Users\\AntuE\\AndroidStudioProjects\\HowAreYou\\keyStore\\keyStoreApp.jks")
+//            storeFile =
+//                file("C:\\Users\\user\\AndroidStudioProjects\\HowAreYou\\keyStoreAppModule.jks")
             storePassword = "anton1730"
             keyAlias = "key0"
             keyPassword = "anton1730"
@@ -25,8 +25,8 @@ android {
         applicationId = "antuere.how_are_you"
         minSdk = 24
         targetSdk = 33
-        versionCode = 14 // versionName 14 - 0.5.5
-        versionName = "0.5.5"
+        versionCode = 15 // versionName 15 - 0.5.6
+        versionName = "0.5.6"
 
         testInstrumentationRunnerArguments["androidx.benchmark.suppressErrors"] = "EMULATOR"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
