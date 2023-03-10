@@ -85,7 +85,8 @@ fun ToggleBtnGroup(
             ) {
                 Text(
                     text = entry.key.asString(),
-                    modifier = Modifier.padding(horizontal = 8.dp)
+                    modifier = Modifier.padding(horizontal = 8.dp),
+                    softWrap = false
                 )
             }
         }

@@ -9,6 +9,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import antuere.how_are_you.R
@@ -19,7 +21,7 @@ fun NumericKeypad(
     onClick: (String) -> Unit,
     onClickClear: () -> Unit,
     isShowBiometricBtn: Boolean = false,
-    onClickBiometric: () -> Unit = {}
+    onClickBiometric: () -> Unit = {},
 ) {
     Timber.i("MVI error test : composed in numeric pad")
 
@@ -41,7 +43,7 @@ fun NumericKeypad(
         )
 
         for (i in 0..8 step 3) {
-            Row() {
+            Row {
                 Button(
                     modifier = Modifier
                         .padding(horizontal = 20.dp)
@@ -53,9 +55,7 @@ fun NumericKeypad(
                     Text(
                         text = numbersList[i],
                         color = MaterialTheme.colorScheme.onPrimary,
-                        fontSize = dimensionResource(
-                            id = R.dimen.textSize_normal_0
-                        ).value.sp
+                        fontSize = dimensionResource(id = R.dimen.textSize_normal_0).value.sp
                     )
                 }
                 Button(
@@ -67,10 +67,9 @@ fun NumericKeypad(
                     contentPadding = PaddingValues(0.dp)
                 ) {
                     Text(
-                        text = numbersList[i + 1], color = MaterialTheme.colorScheme.onPrimary,
-                        fontSize = dimensionResource(
-                            id = R.dimen.textSize_normal_0
-                        ).value.sp
+                        text = numbersList[i + 1],
+                        color = MaterialTheme.colorScheme.onPrimary,
+                        fontSize = dimensionResource(id = R.dimen.textSize_normal_0).value.sp
                     )
                 }
                 Button(
@@ -82,10 +81,9 @@ fun NumericKeypad(
                     contentPadding = PaddingValues(0.dp)
                 ) {
                     Text(
-                        text = numbersList[i + 2], color = MaterialTheme.colorScheme.onPrimary,
-                        fontSize = dimensionResource(
-                            id = R.dimen.textSize_normal_0
-                        ).value.sp
+                        text = numbersList[i + 2],
+                        color = MaterialTheme.colorScheme.onPrimary,
+                        fontSize = dimensionResource(id = R.dimen.textSize_normal_0).value.sp
                     )
                 }
             }
@@ -93,9 +91,10 @@ fun NumericKeypad(
         }
         Row(modifier = Modifier.align(Alignment.End)) {
             if (isShowBiometricBtn) {
-                IconButton(modifier = Modifier
-                    .padding(horizontal = 20.dp)
-                    .size(55.dp),
+                IconButton(
+                    modifier = Modifier
+                        .padding(horizontal = 20.dp)
+                        .size(55.dp),
                     onClick = { onClickBiometric() }) {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_finger_print),
@@ -113,19 +112,29 @@ fun NumericKeypad(
                 contentPadding = PaddingValues(0.dp)
             ) {
                 Text(
-                    text = "0", color = MaterialTheme.colorScheme.onPrimary,
-                    fontSize = dimensionResource(
-                        id = R.dimen.textSize_normal_0
-                    ).value.sp
+                    text = "0",
+                    color = MaterialTheme.colorScheme.onPrimary,
+                    fontSize = dimensionResource(id = R.dimen.textSize_normal_0).value.sp
                 )
             }
-            TextButton(modifier = Modifier
-                .padding(horizontal = 17.5.dp)
-                .size(60.dp),
-                onClick = { onClickClear() }) {
+            TextButton(
+                modifier = Modifier
+                    .padding(horizontal = 17.5.dp)
+                    .size(60.dp),
+                onClick = { onClickClear() },
+                contentPadding = PaddingValues(
+                    start = 2.dp,
+                    top = ButtonDefaults.ContentPadding.calculateTopPadding(),
+                    end = 2.dp,
+                    bottom = ButtonDefaults.ContentPadding.calculateBottomPadding()
+                )
+            ) {
                 Text(
                     text = stringResource(id = R.string.clear_pin),
-                    color = MaterialTheme.colorScheme.onSecondary
+                    color = MaterialTheme.colorScheme.onSecondary,
+                    textAlign = TextAlign.Center,
+                    softWrap = false,
+                    overflow = TextOverflow.Visible
                 )
             }
         }

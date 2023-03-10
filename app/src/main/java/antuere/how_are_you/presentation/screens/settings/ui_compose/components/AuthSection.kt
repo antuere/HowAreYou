@@ -24,7 +24,7 @@ fun AuthSection(
         Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_8)))
         Text(
             modifier = Modifier.padding(
-                horizontal = dimensionResource(id = R.dimen.padding_normal_3)
+                horizontal = dimensionResource(id = R.dimen.padding_normal_2)
             ),
             fontSize = dimensionResource(id = R.dimen.textSize_normal_2).value.sp,
             text = if (userName != Constants.USER_NOT_AUTH) "${stringResource(id = R.string.hello_user)} $userName" else stringResource(
@@ -35,7 +35,7 @@ fun AuthSection(
 
         Text(
             modifier = Modifier.padding(
-                horizontal = dimensionResource(id = R.dimen.padding_normal_3)
+                horizontal = dimensionResource(id = R.dimen.padding_normal_2)
             ),
             fontSize = dimensionResource(id = R.dimen.textSize_normal_0).value.sp,
             text = stringResource(id = R.string.how_are_you_text)
@@ -54,7 +54,7 @@ fun AuthSection(
                             onClick = { onClickSignOut() },
                             modifier = Modifier
                                 .padding(
-                                    horizontal = dimensionResource(id = R.dimen.padding_normal_3)
+                                    horizontal = dimensionResource(id = R.dimen.padding_normal_2)
                                 )
                                 .align(Alignment.End)
                         ) {
@@ -70,7 +70,7 @@ fun AuthSection(
                         Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_1)))
                         Text(
                             modifier = Modifier.padding(
-                                horizontal = dimensionResource(id = R.dimen.padding_normal_3)
+                                horizontal = dimensionResource(id = R.dimen.padding_normal_2)
                             ),
                             fontSize = dimensionResource(id = R.dimen.textSize_normal_0).value.sp,
                             text = stringResource(id = R.string.sign_in_advice)
@@ -86,13 +86,13 @@ fun AuthSection(
                             ),
                             modifier = Modifier
                                 .padding(
-                                    horizontal = dimensionResource(id = R.dimen.padding_normal_3)
+                                    horizontal = dimensionResource(id = R.dimen.padding_normal_2)
                                 )
                                 .align(Alignment.CenterHorizontally)
                         ) {
                             Text(
                                 modifier = Modifier.padding(
-                                    horizontal = dimensionResource(id = R.dimen.padding_normal_3)
+                                    horizontal = dimensionResource(id = R.dimen.padding_normal_2)
                                 ),
                                 text = stringResource(id = R.string.sign_in),
                                 color = MaterialTheme.colorScheme.onPrimary
@@ -106,7 +106,7 @@ fun AuthSection(
         Divider(
             modifier = Modifier
                 .padding(
-                    horizontal = dimensionResource(id = R.dimen.padding_normal_3)
+                    horizontal = dimensionResource(id = R.dimen.padding_normal_2)
                 )
                 .fillMaxWidth(), color = MaterialTheme.colorScheme.onSecondary
         )

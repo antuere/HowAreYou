@@ -40,7 +40,7 @@ fun SettingItem(
         }
         Switch(
             modifier = Modifier
-                .padding(start = 8.dp),
+                .padding(start = 12.dp),
             checked = isChecked,
             onCheckedChange = onCheckedChange,
             colors = SwitchDefaults.colors(uncheckedTrackColor = MaterialTheme.colorScheme.onPrimary)

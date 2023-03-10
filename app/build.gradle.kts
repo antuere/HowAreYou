@@ -26,8 +26,8 @@ android {
         applicationId = "antuere.how_are_you"
         minSdk = 24
         targetSdk = 33
-        versionCode = 15 // versionName 15 - 0.5.6
-        versionName = "0.5.6"
+        versionCode = 16 // versionName 16 - 0.6.0
+        versionName = "0.6.0"
 
         testInstrumentationRunnerArguments["androidx.benchmark.suppressErrors"] = "EMULATOR"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -160,7 +160,6 @@ dependencies {
     testImplementation(libs.test.junit)
     implementation(libs.androidx.test.junit.ext)
     implementation(libs.androidx.test.monitor)
-//    implementation("androidx.test.ext:junit-ktx:1.1.5")
     androidTestImplementation(libs.test.junit)
 
     // ProfileInstaller

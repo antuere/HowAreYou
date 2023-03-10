@@ -28,7 +28,7 @@ fun PrivacySettings(
 
         Text(
             modifier = Modifier.padding(
-                horizontal = dimensionResource(id = R.dimen.padding_normal_3)
+                horizontal = dimensionResource(id = R.dimen.padding_normal_2)
             ),
             text = stringResource(id = R.string.settings_privacy_text),
             fontSize = dimensionResource(id = R.dimen.textSize_normal_2).value.sp
@@ -37,8 +37,8 @@ fun PrivacySettings(
 
         SettingItem(
             modifier = Modifier.padding(
-                start = dimensionResource(id = R.dimen.padding_normal_5),
-                end = dimensionResource(id = R.dimen.padding_normal_3)
+                start = dimensionResource(id = R.dimen.padding_normal_4),
+                end = dimensionResource(id = R.dimen.padding_normal_2)
             ),
             titleId = R.string.enable_pin_code,
             descriptionId = R.string.enable_pin_code_desc,
@@ -46,14 +46,12 @@ fun PrivacySettings(
             onCheckedChange = checkChangePinCode
         )
 
-        AnimatedVisibility(
-            visible = isShowBiometricSetting,
-        ) {
-            Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_1)))
+        AnimatedVisibility(visible = isShowBiometricSetting) {
             SettingItem(
                 modifier = Modifier.padding(
-                    start = dimensionResource(id = R.dimen.padding_normal_5),
-                    end = dimensionResource(id = R.dimen.padding_normal_3)
+                    top = dimensionResource(id = R.dimen.padding_small_2),
+                    start = dimensionResource(id = R.dimen.padding_normal_4),
+                    end = dimensionResource(id = R.dimen.padding_normal_2)
                 ),
                 titleId = R.string.enable_biometric_authentication,
                 descriptionId = R.string.enable_biometric_authentication_desc,
@@ -64,8 +62,9 @@ fun PrivacySettings(
         Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_4)))
         Divider(
             modifier = Modifier.padding(
-                horizontal = dimensionResource(id = R.dimen.padding_normal_3)
-            ), color = MaterialTheme.colorScheme.onSecondary
+                horizontal = dimensionResource(id = R.dimen.padding_normal_2)
+            ),
+            color = MaterialTheme.colorScheme.onSecondary
         )
 
     }

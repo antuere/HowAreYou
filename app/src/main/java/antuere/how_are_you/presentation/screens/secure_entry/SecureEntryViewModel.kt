@@ -39,15 +39,9 @@ class SecureEntryViewModel @Inject constructor(
     override val container: Container<SecureEntryState, SecureEntrySideEffect> =
         container(SecureEntryState())
 
-    private var num1: String? = null
-    private var num2: String? = null
-    private var num3: String? = null
-    private var num4: String? = null
-    private var currentNumbers = mutableListOf<String>()
-
+    private var numbers = mutableListOf<String>()
     private var savedPinCode = Constants.PIN_NOT_SET
     private var currentPinCode = Constants.PIN_NOT_SET
-
     private var wrongPinAnimationJob: Job? = null
 
     init {
@@ -73,7 +67,7 @@ class SecureEntryViewModel @Inject constructor(
             updateState { state.copy(pinCirclesState = PinCirclesState.CORRECT_PIN) }
             sideEffect(SecureEntrySideEffect.NavigateToHome)
             currentPinCode = Constants.PIN_NOT_SET
-            currentNumbers.clear()
+            numbers.clear()
 
             viewModelScope.launch(Dispatchers.IO) {
                 settingsRepository.saveBiomAuthSetting(isEnable = true)
@@ -97,13 +91,13 @@ class SecureEntryViewModel @Inject constructor(
                     throw IllegalArgumentException("Invalid number: ${intent.number}")
                 }
 
-                currentNumbers.add(intent.number)
-                checkPassword(currentNumbers)
+                numbers.add(intent.number)
+                checkPassword(numbers)
             }
             is SecureEntryIntent.PinStateReset -> {
                 updateState { state.copy(pinCirclesState = PinCirclesState.NONE) }
                 currentPinCode = Constants.PIN_NOT_SET
-                currentNumbers.clear()
+                numbers.clear()
             }
             is SecureEntryIntent.SignOutBtnClicked -> {
                 val dialog = UIDialog(
@@ -127,22 +121,17 @@ class SecureEntryViewModel @Inject constructor(
         wrongPinAnimationJob?.cancel()
         when (list.size) {
             1 -> {
-                num1 = list[0]
                 updateState { state.copy(pinCirclesState = PinCirclesState.FIRST) }
             }
             2 -> {
-                num2 = list[1]
                 updateState { state.copy(pinCirclesState = PinCirclesState.SECOND) }
             }
             3 -> {
-                num3 = list[2]
                 updateState { state.copy(pinCirclesState = PinCirclesState.THIRD) }
             }
             4 -> {
-                num4 = list[3]
                 updateState { state.copy(pinCirclesState = PinCirclesState.FOURTH) }
-                currentPinCode = num1 + num2 + num3 + num4
-
+                currentPinCode = numbers[0] + numbers[1] + numbers[2] + numbers[3]
                 validateEnteredPinCode(currentPinCode)
             }
             else -> throw IllegalArgumentException("Too much list size")
@@ -171,13 +160,13 @@ class SecureEntryViewModel @Inject constructor(
             sideEffect(SecureEntrySideEffect.NavigateToHome)
             updateState { state.copy(pinCirclesState = PinCirclesState.NONE) }
             currentPinCode = Constants.PIN_NOT_SET
-            currentNumbers.clear()
+            numbers.clear()
         } else {
             wrongPinAnimationJob = viewModelScope.launch {
                 sideEffect(SecureEntrySideEffect.Snackbar(UiText.StringResource(R.string.wrong_pin_code)))
                 updateState { state.copy(pinCirclesState = PinCirclesState.WRONG_PIN) }
                 currentPinCode = Constants.PIN_NOT_SET
-                currentNumbers.clear()
+                numbers.clear()
 
                 delay(500)
 

@@ -62,7 +62,7 @@ fun DaysFilterBottomSheet(
         Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_3)))
 
         Row(
-            modifier = Modifier.fillMaxWidth(0.8F),
+            modifier = Modifier.fillMaxWidth(0.9F),
             verticalAlignment = Alignment.CenterVertically
         ) {
             DateSelectionBtn(

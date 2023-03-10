@@ -20,7 +20,13 @@ fun DetailsForHelpline(
     onClickPhone: (String) -> Unit,
     onClickWebsite: (String) -> Unit,
 ) {
-    Column(modifier = Modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_normal_2))) {
+    Column(
+        modifier = Modifier.padding(
+            start = dimensionResource(id = R.dimen.padding_normal_2),
+            end = dimensionResource(id = R.dimen.padding_normal_2),
+            top = dimensionResource(id = R.dimen.padding_small_2),
+        ),
+    ) {
         Text(
             fontSize = dimensionResource(id = R.dimen.textSize_normal_1).value.sp,
             textAlign = TextAlign.Start,
@@ -44,7 +50,7 @@ fun DetailsForHelpline(
                 )
                 Spacer(Modifier.size(ButtonDefaults.IconSpacing))
                 Text(
-                    fontSize = dimensionResource(id = R.dimen.textSize_normal_1).value.sp,
+                    fontSize = dimensionResource(id = R.dimen.textSize_normal_0).value.sp,
                     textAlign = TextAlign.Center,
                     maxLines = 1,
                     text = stringResource(R.string.helpline_phone),
@@ -65,8 +71,7 @@ fun DetailsForHelpline(
                 )
                 Spacer(Modifier.size(ButtonDefaults.IconSpacing))
                 Text(
-                    fontSize = dimensionResource(id = R.dimen.textSize_normal_1).value.sp,
-                    textAlign = TextAlign.Center,
+                    fontSize = dimensionResource(id = R.dimen.textSize_normal_0).value.sp,
                     maxLines = 1,
                     text = stringResource(R.string.helpline_website),
                 )

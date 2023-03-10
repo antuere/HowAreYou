@@ -18,6 +18,7 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import antuere.how_are_you.R
 
@@ -30,7 +31,7 @@ fun CardWithFab(
     elevation: CardElevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
     textAlignment: Alignment = Alignment.Center,
     titleText: String,
-    content: @Composable ColumnScope.() -> Unit = {}
+    content: @Composable ColumnScope.() -> Unit = {},
 ) {
     ElevatedCard(
         modifier = cardModifier,
@@ -60,7 +61,6 @@ fun CardWithOnClick(
     elevation: CardElevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
     textAlignment: Alignment = Alignment.Center,
     titleText: String,
-    content: @Composable ColumnScope.() -> Unit = {}
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed by interactionSource.collectIsPressedAsState()
@@ -78,9 +78,13 @@ fun CardWithOnClick(
         interactionSource = interactionSource
     ) {
         Box(modifier = textModifier.fillMaxSize()) {
-            Text(text = titleText, Modifier.align(textAlignment))
+            Text(
+                text = titleText, modifier = Modifier
+                    .align(textAlignment)
+                    .padding(horizontal = dimensionResource(R.dimen.padding_small_2)),
+                textAlign = TextAlign.Center
+            )
         }
-        content.invoke(this)
     }
 }
 

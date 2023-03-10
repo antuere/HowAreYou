@@ -24,7 +24,7 @@ fun GeneralSettings(
 
         Text(
             modifier = Modifier.padding(
-                horizontal = dimensionResource(id = R.dimen.padding_normal_3)
+                horizontal = dimensionResource(id = R.dimen.padding_normal_2)
             ),
             text = stringResource(id = R.string.settings_general_text),
             fontSize = dimensionResource(id = R.dimen.textSize_normal_2).value.sp
@@ -33,8 +33,8 @@ fun GeneralSettings(
 
         SettingItem(
             modifier = Modifier.padding(
-                start = dimensionResource(id = R.dimen.padding_normal_5),
-                end = dimensionResource(id = R.dimen.padding_normal_3)
+                start = dimensionResource(id = R.dimen.padding_normal_4),
+                end = dimensionResource(id = R.dimen.padding_normal_2)
             ),
             titleId = R.string.show_worried_dialog_title,
             descriptionId = R.string.show_worried_dialog_desc,
@@ -46,7 +46,7 @@ fun GeneralSettings(
         Divider(
             modifier = Modifier
                 .padding(
-                    horizontal = dimensionResource(id = R.dimen.padding_normal_3)
+                    horizontal = dimensionResource(id = R.dimen.padding_normal_2)
                 )
                 .fillMaxWidth(),
             color = MaterialTheme.colorScheme.onSecondary

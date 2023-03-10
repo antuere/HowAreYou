@@ -205,9 +205,9 @@
     <string name="china">China</string>
 
     <!-- Other -->
-    <string name="leak_canary_test_class_name">assertk.Assert</string>
-    <string name="click_less">Click less</string>
-    <string name="click_more">Click more</string>
+    <string name="leak_canary_test_class_name" translatable="false">assertk.Assert</string>
+    <string name="click_less" translatable="false">Click less</string>
+    <string name="click_more" translatable="false">Click more</string>
     <string name="too_many_chars_default">Cannot be more characters</string>
     <string name="dialog_sign_out_desc">All your data will be deleted on this device, to restore them, log in to your account again.</string>
     <string name="dialog_delete_local_data_desc">When you sign out of your account, you can save existing recordings locally on your device. Save local day entries?</string>

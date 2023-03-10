@@ -22,50 +22,41 @@ class PinCreatingSheetViewModel @Inject constructor(
     override val container: Container<PinCirclesState, PinCreationSideEffect> =
         container(PinCirclesState.NONE)
 
-    private var num1: String? = null
-    private var num2: String? = null
-    private var num3: String? = null
-    private var num4: String? = null
-    private var currentNumbers = mutableListOf<String>()
-
+    private var numbers = mutableListOf<String>()
     private var currentPinCode = Constants.PIN_NOT_SET
 
-    override fun onIntent(intent: PinCreationIntent)  {
+    override fun onIntent(intent: PinCreationIntent) {
         when (intent) {
             is PinCreationIntent.NumberClicked -> {
                 if (intent.number.length != 1) {
                     throw IllegalArgumentException("Invalid number: ${intent.number}")
                 }
 
-                currentNumbers.add(intent.number)
-                checkPassword(currentNumbers)
+                numbers.add(intent.number)
+                checkPassword(numbers)
             }
             PinCreationIntent.PinStateReset -> {
                 updateState { PinCirclesState.NONE }
                 currentPinCode = Constants.PIN_NOT_SET
-                currentNumbers.clear()
+                numbers.clear()
             }
         }
     }
 
-    private fun checkPassword(list: List<String>)  {
+    private fun checkPassword(list: List<String>) {
         when (list.size) {
             1 -> {
-                num1 = list[0]
                 updateState { PinCirclesState.FIRST }
             }
             2 -> {
-                num2 = list[1]
                 updateState { PinCirclesState.SECOND }
             }
             3 -> {
-                num3 = list[2]
                 updateState { PinCirclesState.THIRD }
             }
             4 -> {
-                num4 = list[3]
                 updateState { PinCirclesState.FOURTH }
-                currentPinCode = num1 + num2 + num3 + num4
+                currentPinCode = numbers[0] + numbers[1] + numbers[2] + numbers[3]
                 pinCodeCreated()
             }
             else -> throw IllegalArgumentException("Too much list size")
@@ -73,7 +64,7 @@ class PinCreatingSheetViewModel @Inject constructor(
     }
 
 
-    private fun pinCodeCreated()  {
+    private fun pinCodeCreated() {
         viewModelScope.launch(Dispatchers.IO) {
             settingsRepository.savePinCode(currentPinCode)
             delay(100)

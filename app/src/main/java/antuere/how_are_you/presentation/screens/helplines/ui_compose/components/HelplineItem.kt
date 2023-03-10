@@ -27,7 +27,6 @@ fun HelplineItem(
     onClickPhone: (String) -> Unit,
     onClickWebsite: (String) -> Unit,
 ) {
-
     Timber.i("Recompose error : we in Helpline")
     var isExpanded by remember { mutableStateOf(false) }
     val rotationState by animateFloatAsState(
@@ -38,9 +37,7 @@ fun HelplineItem(
         modifier = Modifier
             .fillMaxWidth(0.9F)
             .padding(vertical = dimensionResource(id = R.dimen.padding_normal_0))
-            .animateContentSize(
-                animationSpec = tween(durationMillis = 200)
-            ),
+            .animateContentSize(animationSpec = tween(durationMillis = 200)),
         shape = MaterialTheme.shapes.large,
         onClick = {
             isExpanded = !isExpanded
