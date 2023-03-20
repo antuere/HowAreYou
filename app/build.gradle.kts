@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.androidx.navigation.safeargs)
     id(libs.plugins.google.gms.googleServices.get().pluginId)
     id(libs.plugins.google.firebase.crashlytics.get().pluginId)
+    id(libs.plugins.google.firebase.perf.get().pluginId)
 }
 
 android {
@@ -26,8 +27,8 @@ android {
         applicationId = "antuere.how_are_you"
         minSdk = 24
         targetSdk = 33
-        versionCode = 16 // versionName 16 - 0.6.0
-        versionName = "0.6.0"
+        versionCode = 17 // versionName 17 - 0.6.1
+        versionName = "0.6.1"
 
         testInstrumentationRunnerArguments["androidx.benchmark.suppressErrors"] = "EMULATOR"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"

@@ -20,7 +20,8 @@ desugar-jdk = "2.0.2"
 espresso-core = "3.5.0"
 fragment = "2.5.1"
 firebase-bom = "31.2.2"
-firebase_crashlytics = "2.9.4"
+firebase-crashlytics-plugin = "2.9.4"
+firebase-perf-plugin = "1.4.2"
 google-services = "4.3.15"
 gradle = "7.4.2"
 glide = "4.14.2"
@@ -86,6 +87,7 @@ google-firebase-databaseKtx = { module = "com.google.firebase:firebase-database-
 google-firebase-authKtx = { module = "com.google.firebase:firebase-auth-ktx" }
 google-firebase-crashlyticsKtx = { module = "com.google.firebase:firebase-crashlytics-ktx" }
 google-firebase-analyticsKtx = { module = "com.google.firebase:firebase-analytics-ktx" }
+google-firebase-perfKtx = { module = "com.google.firebase:firebase-perf-ktx" }
 
 # Compose
 androidx-compose-bom = { module = "androidx.compose:compose-bom", version.ref = "compose-bom" }
@@ -155,7 +157,8 @@ kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin-general" }
 kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin-general" }
 google-dagger-hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "dagger-hilt" }
 google-gms-googleServices = { id = "com.google.gms.google-services", version.ref = "google-services" }
-google-firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebase_crashlytics" }
+google-firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebase-crashlytics-plugin" }
+google-firebase-perf = { id = "com.google.firebase.firebase-perf", version.ref = "firebase-perf-plugin" }
 
 [bundles]
 lifecycle = [
@@ -194,6 +197,7 @@ firebase = [
     "google.firebase.authKtx",
     "google.firebase.crashlyticsKtx",
     "google.firebase.analyticsKtx",
+    "google.firebase.perfKtx",
 ]
 landscapist = [
     "landscapist.bom",

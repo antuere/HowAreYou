@@ -146,7 +146,7 @@
     <string name="saved_error_cats">Эта картинка не может быть сохранена</string>
     <string name="permission_denied_cats">Чтобы сохранить котика, пожалуйста, предоставьте разрешение</string>
     <string name="cats_no_internet">Нет интернета…</string>
-    <string name="settings_privacy_text">Безопастность</string>
+    <string name="settings_privacy_text">Безопасность</string>
     <string name="settings_general_text">Основное</string>
     <string name="sign_in_advice">Для лучшего опыта зарегистрируйтесь.</string>
     <string name="how_are_you_text">Как вы? Мы надеемся у вас все хорошо.</string>

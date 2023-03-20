@@ -9,7 +9,8 @@ buildscript {
 
     dependencies {
         classpath("com.google.gms:google-services:${libs.versions.google.services.get()}")
-        classpath("com.google.firebase:firebase-crashlytics-gradle:${libs.versions.firebase.crashlytics.get()}")
+        classpath("com.google.firebase:firebase-crashlytics-gradle:${libs.versions.firebase.crashlytics.plugin.get()}")
+        classpath("com.google.firebase:perf-plugin:${libs.versions.firebase.perf.plugin.get()}")
     }
 }
 

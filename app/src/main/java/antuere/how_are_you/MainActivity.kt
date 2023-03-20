@@ -59,6 +59,7 @@ import antuere.how_are_you.util.ComposableLifecycle
 import antuere.how_are_you.util.extensions.toStable
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
+import com.google.android.material.transition.MaterialFadeThrough
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
@@ -166,7 +167,6 @@ class MainActivity : FragmentActivity() {
                                 }
                             }
                             if (event == Lifecycle.Event.ON_DESTROY) {
-                                Timber.i("day change test : on Destroy")
                                 unregisterReceiver(dateChangeReceiver)
                             }
                         }
