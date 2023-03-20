@@ -25,5 +25,5 @@ object Constants {
     const val SETTINGS_PIN_CODE_KEY = "pin_code_auth_key"
     const val SETTINGS_WORRIED_DIALOG_KEY = "worried_dialog_key"
 
-    const val ANIM_DEFAULT_DURATION = 225
+    const val ANIM_DEFAULT_DURATION = 250
 }

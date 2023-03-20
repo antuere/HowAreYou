@@ -1,10 +1,18 @@
 package antuere.how_are_you.presentation.base.ui_animations
 
 import androidx.compose.animation.*
+import androidx.compose.animation.core.FastOutLinearInEasing
 import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.tween
 import antuere.domain.util.Constants
 
+
+private val Int.outgoingDuration: Int
+    get() = (this * 0.35f).toInt()
+
+private val Int.incomingDuration: Int
+    get() = this - this.outgoingDuration
 
 @ExperimentalAnimationApi
 fun materialFadeIn(duration: Int = 150): EnterTransition {
@@ -22,42 +30,50 @@ fun materialFadeOut(duration: Int = 50): ExitTransition {
 
 @ExperimentalAnimationApi
 fun materialFadeThroughIn(duration: Int = Constants.ANIM_DEFAULT_DURATION): EnterTransition {
-    return scaleIn(
+    return fadeIn(
+        animationSpec = tween(
+            durationMillis = duration.incomingDuration,
+            delayMillis = duration.outgoingDuration,
+            easing = LinearOutSlowInEasing
+        )
+    ) + scaleIn(
         initialScale = 0.93F,
-        animationSpec = tween(duration)
-    ) + fadeIn(animationSpec = tween(duration / 2))
+        animationSpec = tween(
+            durationMillis = duration.incomingDuration,
+            delayMillis = duration.outgoingDuration,
+            easing = LinearOutSlowInEasing
+        )
+    )
 }
 
 @ExperimentalAnimationApi
 fun materialFadeThroughOut(duration: Int = Constants.ANIM_DEFAULT_DURATION): ExitTransition {
-    return scaleOut(
-        targetScale = 0.93F,
-        animationSpec = tween(duration)
-    ) + fadeOut(animationSpec = tween(duration / 2))
+    return fadeOut(
+        animationSpec = tween(
+            durationMillis = duration.outgoingDuration,
+            delayMillis = 0,
+            easing = FastOutLinearInEasing
+        )
+    )
 }
 
 @ExperimentalAnimationApi
-fun materialSlideIn(forward: Boolean, duration: Int = Constants.ANIM_DEFAULT_DURATION): EnterTransition {
-    return if (forward) {
-        slideInHorizontally(animationSpec = tween(duration)) { fullWidth: Int ->
-            fullWidth / 3
-        } + materialFadeThroughIn()
-    } else {
-        slideInHorizontally(animationSpec = tween(duration)) { fullWidth: Int ->
-            -fullWidth / 3
-        } + materialFadeThroughIn()
-    }
+fun materialSlideIn(
+    forward: Boolean,
+    duration: Int = Constants.ANIM_DEFAULT_DURATION,
+): EnterTransition {
+    return slideInHorizontally(animationSpec = tween(duration)) { fullWidth: Int ->
+        if (forward) fullWidth / 3 else -fullWidth / 3
+    } + materialFadeThroughIn()
 }
 
+
 @ExperimentalAnimationApi
-fun materialSlideOut(forward: Boolean, duration: Int = Constants.ANIM_DEFAULT_DURATION): ExitTransition {
-    return if (forward) {
-        slideOutHorizontally(animationSpec = tween(duration)) { fullWidth: Int ->
-            fullWidth / 3
-        } + materialFadeThroughOut()
-    } else {
-        slideOutHorizontally(animationSpec = tween(duration)) { fullWidth: Int ->
-            -fullWidth / 3
-        } + materialFadeThroughOut()
-    }
+fun materialSlideOut(
+    forward: Boolean,
+    duration: Int = Constants.ANIM_DEFAULT_DURATION,
+): ExitTransition {
+    return slideOutHorizontally(animationSpec = tween(duration)) { fullWidth: Int ->
+        if (forward) fullWidth / 3 else -fullWidth / 3
+    } + materialFadeThroughOut()
 }
