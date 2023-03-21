@@ -30,10 +30,7 @@ import antuere.how_are_you.presentation.base.app_state.AppState
 import antuere.how_are_you.presentation.base.app_state.AppStateImpl
 import antuere.how_are_you.presentation.base.app_state.rememberAppState
 import antuere.how_are_you.presentation.base.navigation.*
-import antuere.how_are_you.presentation.base.ui_animations.materialFadeThroughIn
-import antuere.how_are_you.presentation.base.ui_animations.materialFadeThroughOut
-import antuere.how_are_you.presentation.base.ui_animations.materialSlideIn
-import antuere.how_are_you.presentation.base.ui_animations.materialSlideOut
+import antuere.how_are_you.presentation.base.ui_animations.*
 import antuere.how_are_you.presentation.base.ui_compose_components.bottom_nav_bar.DefaultBottomNavBar
 import antuere.how_are_you.presentation.base.ui_compose_components.snackbar.DefaultSnackbar
 import antuere.how_are_you.presentation.base.ui_compose_components.top_bar.DefaultTopBar
@@ -59,7 +56,6 @@ import antuere.how_are_you.util.ComposableLifecycle
 import antuere.how_are_you.util.extensions.toStable
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
-import com.google.android.material.transition.MaterialFadeThrough
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
@@ -184,8 +180,18 @@ fun NavGraphBuilder.setupMainNavGraph(
 ) {
     composable(
         route = Screen.Home.route,
-        enterTransition = { materialFadeThroughIn() },
-        exitTransition = { materialFadeThroughOut() },
+        enterTransition = {
+            when (initialState.destination.route) {
+                Screen.Settings.route, Screen.History.route -> materialFadeThroughIn()
+                else -> materialSharedAxisZIn(forward = false)
+            }
+        },
+        exitTransition = {
+            when (targetState.destination.route) {
+                Screen.Settings.route, Screen.History.route -> materialFadeThroughOut()
+                else -> materialSharedAxisZOut(forward = true)
+            }
+        },
     ) {
         HomeScreen(
             onNavigateToMentalTips = navController.navigateToMentalTipsCategories(),
@@ -200,50 +206,44 @@ fun NavGraphBuilder.setupMainNavGraph(
 
     composable(
         route = Screen.Favorites.route,
-        enterTransition = { materialFadeThroughIn() },
-        exitTransition = { materialFadeThroughOut() }
+        enterTransition = { materialSharedAxisZIn(forward = true) },
+        exitTransition = { materialSharedAxisZOut(forward = false) }
     ) {
-        FavoritesScreen(
-            onNavigateToDetail = navController.navigateToDayDetail(),
-        )
+        FavoritesScreen(onNavigateToDetail = navController.navigateToDayDetail())
     }
 
     composable(
         route = Screen.Cats.route,
-        enterTransition = { materialFadeThroughIn() },
-        exitTransition = { materialFadeThroughOut() }
+        enterTransition = { materialSharedAxisZIn(forward = true) },
+        exitTransition = { materialSharedAxisZOut(forward = false) }
     ) {
         CatsScreen()
     }
 
     composable(
         route = Screen.HelpForYou.route,
-        enterTransition = { materialFadeThroughIn() },
-        exitTransition = { materialFadeThroughOut() },
-        popEnterTransition = { materialSlideIn(false) }
+        enterTransition = { materialSharedAxisZIn(forward = true) },
+        exitTransition = { materialSharedAxisZOut(forward = false) },
+        popEnterTransition = { materialSharedAxisXIn(forward = false) }
     ) {
-        HelpForYouScreen(
-            onNavigateToHelplines = navController.navigateToHelplines()
-        )
+        HelpForYouScreen(onNavigateToHelplines = navController.navigateToHelplines())
     }
 
     composable(
         route = Screen.Helplines.route,
-        enterTransition = { materialSlideIn(true) },
-        exitTransition = { materialSlideOut(true) },
+        enterTransition = { materialSharedAxisXIn(forward = true) },
+        exitTransition = { materialSharedAxisXOut(forward = false) },
     ) {
         HelplinesScreen()
     }
 
     composable(
         route = Screen.MentalTipsCategories.route,
-        enterTransition = { materialFadeThroughIn() },
-        exitTransition = { materialFadeThroughOut() },
-        popEnterTransition = { materialSlideIn(false) }
+        enterTransition = { materialSharedAxisZIn(forward = true) },
+        exitTransition = { materialSharedAxisZOut(forward = false) },
+        popEnterTransition = { materialSharedAxisXIn(forward = false) }
     ) {
-        MentalTipsCategoriesScreen(
-            onNavigateToMentalTips = navController.navigateToMentalTips()
-        )
+        MentalTipsCategoriesScreen(onNavigateToMentalTips = navController.navigateToMentalTips())
     }
 
     composable(
@@ -251,28 +251,36 @@ fun NavGraphBuilder.setupMainNavGraph(
         arguments = listOf(navArgument(Constants.CATEGORY_KEY) {
             type = NavType.StringType
         }),
-        enterTransition = { materialSlideIn(true) },
-        exitTransition = { materialSlideOut(true) },
+        enterTransition = { materialSharedAxisXIn(forward = true) },
+        exitTransition = { materialSharedAxisXOut(forward = false) },
     ) {
         MentalTipsScreen()
     }
 
     composable(
         route = Screen.AddDay.route,
-        enterTransition = { materialFadeThroughIn() },
-        exitTransition = { materialFadeThroughOut() }
+        enterTransition = { materialSharedAxisZIn(forward = true) },
+        exitTransition = { materialSharedAxisZOut(forward = false) }
     ) {
         AddDayScreen()
     }
 
     composable(
         route = Screen.History.route,
-        enterTransition = { materialFadeThroughIn() },
-        exitTransition = { materialFadeThroughOut() },
+        enterTransition = {
+            when (initialState.destination.route) {
+                Screen.Settings.route, Screen.Home.route -> materialFadeThroughIn()
+                else -> materialSharedAxisZIn(forward = false)
+            }
+        },
+        exitTransition = {
+            when (targetState.destination.route) {
+                Screen.Settings.route, Screen.Home.route -> materialFadeThroughOut()
+                else -> materialSharedAxisZOut(forward = true)
+            }
+        },
     ) {
-        HistoryScreen(
-            onNavigateToDetail = navController.navigateToDayDetail()
-        )
+        HistoryScreen(onNavigateToDetail = navController.navigateToDayDetail())
     }
 
     composable(
@@ -280,37 +288,48 @@ fun NavGraphBuilder.setupMainNavGraph(
         arguments = listOf(navArgument(Constants.DAY_ID_KEY) {
             type = NavType.LongType
         }),
-        enterTransition = { materialFadeThroughIn() },
-        exitTransition = { materialFadeThroughOut() }
+        enterTransition = { materialSharedAxisZIn(forward = true) },
+        exitTransition = { materialSharedAxisZOut(forward = false) }
     ) {
         DetailScreen()
     }
 
     composable(
         route = Screen.Settings.route,
-        enterTransition = { materialFadeThroughIn() },
-        exitTransition = { materialFadeThroughOut() }
+        enterTransition = {
+            when (initialState.destination.route) {
+                Screen.History.route, Screen.Home.route -> materialFadeThroughIn()
+                else -> materialSharedAxisZIn(forward = false)
+            }
+        },
+        exitTransition = {
+            when (targetState.destination.route) {
+                Screen.History.route, Screen.Home.route -> materialFadeThroughOut()
+                else -> materialSharedAxisZOut(forward = true)
+            }
+        }
     ) {
-        SettingsScreen(
-            onNavigateSignIn = navController.navigateToSignIn()
-        )
+        SettingsScreen(onNavigateSignIn = navController.navigateToSignIn())
     }
 
     composable(
         route = Screen.SignInMethods.route,
-        enterTransition = { materialFadeThroughIn() },
-        exitTransition = { materialFadeThroughOut() }
+        enterTransition = { materialSharedAxisZIn(forward = true) },
+        exitTransition = { materialSharedAxisZOut(forward = false) }
     ) {
-        SignInMethodsScreen(
-            onNavigateSignInEmail = navController.navigateToSignInEmail()
-        )
+        SignInMethodsScreen(onNavigateSignInEmail = navController.navigateToSignInEmail())
     }
 
     composable(
         route = Screen.SignInWithEmail.route,
-        enterTransition = { materialSlideIn(true) },
-        exitTransition = { materialSlideOut(true) },
-        popEnterTransition = { materialSlideIn(false) }
+        enterTransition = { materialSharedAxisXIn(forward = true) },
+        exitTransition = {
+            when (targetState.destination.route) {
+                Screen.Settings.route -> materialSharedAxisZOut(forward = false)
+                else -> materialSharedAxisXOut(forward = false)
+            }
+        },
+        popEnterTransition = { materialSharedAxisXIn(forward = false) }
     ) {
         SignInEmailScreen(
             onNavigateSettings = navController.popBackStackToSettings(),
@@ -321,30 +340,31 @@ fun NavGraphBuilder.setupMainNavGraph(
 
     composable(
         route = Screen.SignUpWithEmail.route,
-        enterTransition = { materialSlideIn(true) },
-        exitTransition = { materialSlideOut(true) }
+        enterTransition = { materialSharedAxisXIn(forward = true) },
+        exitTransition = {
+            when (targetState.destination.route) {
+                Screen.Settings.route -> materialSharedAxisZOut(forward = false)
+                else -> materialSharedAxisXOut(forward = false)
+            }
+        },
     ) {
-        SignUpEmailScreen(
-            onNavigateSettings = navController.popBackStackToSettings()
-        )
+        SignUpEmailScreen(onNavigateSettings = navController.popBackStackToSettings())
     }
 
     composable(
         route = Screen.ResetPassEmail.route,
-        enterTransition = { materialSlideIn(true) },
-        exitTransition = { materialSlideOut(true) }
+        enterTransition = { materialSharedAxisXIn(forward = true) },
+        exitTransition = { materialSharedAxisXOut(forward = false) }
     ) {
         ResetPasswordScreen()
     }
 
     composable(
         route = Screen.SecureEntry.route,
-        enterTransition = { materialFadeThroughIn() },
-        exitTransition = { materialFadeThroughOut() },
+        enterTransition = { materialSharedAxisZIn(forward = true) },
+        exitTransition = { materialSharedAxisZOut(forward = false) }
     ) {
-        SecureEntryScreen(
-            onNavigateHomeScreen = navController.navigateToHome()
-        )
+        SecureEntryScreen(onNavigateHomeScreen = navController.navigateToHome())
     }
 }
 

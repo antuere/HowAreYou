@@ -1,10 +1,7 @@
 package antuere.how_are_you.presentation.base.ui_animations
 
 import androidx.compose.animation.*
-import androidx.compose.animation.core.FastOutLinearInEasing
-import androidx.compose.animation.core.LinearEasing
-import androidx.compose.animation.core.LinearOutSlowInEasing
-import androidx.compose.animation.core.tween
+import androidx.compose.animation.core.*
 import antuere.domain.util.Constants
 
 
@@ -58,22 +55,70 @@ fun materialFadeThroughOut(duration: Int = Constants.ANIM_DEFAULT_DURATION): Exi
 }
 
 @ExperimentalAnimationApi
-fun materialSlideIn(
+fun materialSharedAxisXIn(
     forward: Boolean,
     duration: Int = Constants.ANIM_DEFAULT_DURATION,
 ): EnterTransition {
     return slideInHorizontally(animationSpec = tween(duration)) { fullWidth: Int ->
         if (forward) fullWidth / 3 else -fullWidth / 3
-    } + materialFadeThroughIn()
+    } + fadeIn(
+        animationSpec = tween(
+            durationMillis = duration.incomingDuration,
+            delayMillis = duration.outgoingDuration,
+            easing = LinearOutSlowInEasing
+        )
+    )
 }
 
 
 @ExperimentalAnimationApi
-fun materialSlideOut(
+fun materialSharedAxisXOut(
     forward: Boolean,
     duration: Int = Constants.ANIM_DEFAULT_DURATION,
 ): ExitTransition {
     return slideOutHorizontally(animationSpec = tween(duration)) { fullWidth: Int ->
-        if (forward) fullWidth / 3 else -fullWidth / 3
-    } + materialFadeThroughOut()
+        if (forward) -fullWidth / 3 else fullWidth / 3
+    } + fadeOut(
+        animationSpec = tween(
+            durationMillis = duration.outgoingDuration,
+            delayMillis = 0,
+            easing = FastOutLinearInEasing
+        )
+    )
 }
+
+@ExperimentalAnimationApi
+fun materialSharedAxisZIn(
+    forward: Boolean,
+    durationMillis: Int = Constants.ANIM_DEFAULT_DURATION,
+): EnterTransition = fadeIn(
+    animationSpec = tween(
+        durationMillis = durationMillis.incomingDuration,
+        delayMillis = durationMillis.outgoingDuration,
+        easing = LinearOutSlowInEasing
+    )
+) + scaleIn(
+    animationSpec = tween(
+        durationMillis = durationMillis,
+        easing = FastOutSlowInEasing
+    ),
+    initialScale = if (forward) 0.85f else 1.1f
+)
+
+@ExperimentalAnimationApi
+fun materialSharedAxisZOut(
+    forward: Boolean,
+    durationMillis: Int = Constants.ANIM_DEFAULT_DURATION,
+): ExitTransition = fadeOut(
+    animationSpec = tween(
+        durationMillis = durationMillis.outgoingDuration,
+        delayMillis = 0,
+        easing = FastOutLinearInEasing
+    )
+) + scaleOut(
+    animationSpec = tween(
+        durationMillis = durationMillis,
+        easing = FastOutSlowInEasing
+    ),
+    targetScale = if (forward) 1.1f else 0.85f
+)
