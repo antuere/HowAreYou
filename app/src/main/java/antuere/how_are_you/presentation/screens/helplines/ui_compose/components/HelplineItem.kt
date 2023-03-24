@@ -77,7 +77,7 @@ fun HelplineItem(
                 Icon(
                     imageVector = Icons.Default.ArrowDropDown,
                     contentDescription = "DropDown Arrow",
-                    tint = MaterialTheme.colorScheme.onSecondary
+                    tint = MaterialTheme.colorScheme.primary
                 )
             }
         }

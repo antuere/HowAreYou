@@ -11,5 +11,6 @@ sealed interface HistoryIntent {
     data class DaysInFilterSelected(val startDate: LocalDate, val endDate: LocalDate) :
         HistoryIntent
     object FilterBtnClicked : HistoryIntent
+    object FilterCloseBtnClicked : HistoryIntent
     object FilterSheetClosed : HistoryIntent
 }

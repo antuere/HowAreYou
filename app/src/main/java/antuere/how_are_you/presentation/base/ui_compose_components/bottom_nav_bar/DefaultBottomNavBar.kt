@@ -15,9 +15,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hierarchy
@@ -25,9 +26,6 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 import antuere.how_are_you.R
 import antuere.how_are_you.presentation.base.navigation.Screen
-import antuere.how_are_you.presentation.base.ui_theme.Gray800
-import antuere.how_are_you.presentation.base.ui_theme.TealMain
-import antuere.how_are_you.presentation.base.ui_theme.Typography
 import timber.log.Timber
 
 @Composable
@@ -49,8 +47,8 @@ fun DefaultBottomNavBar(navController: NavController, isVisible: Boolean) {
         val iconsFilled = listOf(Icons.Filled.Home, Icons.Filled.History, Icons.Filled.Settings)
 
         NavigationBar(
-            containerColor = TealMain,
-            contentColor = Color.White
+            containerColor = MaterialTheme.colorScheme.surface,
+            tonalElevation = 0.dp
         ) {
             iconsTitle.forEachIndexed { index, dest ->
                 val isSelected =
@@ -75,9 +73,14 @@ fun DefaultBottomNavBar(navController: NavController, isVisible: Boolean) {
                     label = {
                         Text(
                             text = dest,
-                            style = if (isSelected) Typography.displayMedium.copy(
-                                fontSize = 15.sp
-                            ) else Typography.displaySmall.copy(fontSize = 14.sp)
+                            style = if (isSelected) MaterialTheme.typography.displayMedium.copy(
+                                color = MaterialTheme.colorScheme.onPrimary,
+                                fontSize = 15.sp,
+                                fontWeight = FontWeight.Bold
+                            ) else MaterialTheme.typography.displaySmall.copy(
+                                color = MaterialTheme.colorScheme.tertiary,
+                                fontSize = 14.sp
+                            )
                         )
                     },
                     selected = isSelected,
@@ -93,11 +96,9 @@ fun DefaultBottomNavBar(navController: NavController, isVisible: Boolean) {
                         }
                     },
                     colors = NavigationBarItemDefaults.colors(
-                        selectedIconColor = Color.Black,
-                        selectedTextColor = Color.Black,
-                        indicatorColor = Color.White,
-                        unselectedIconColor = Gray800,
-                        unselectedTextColor = Gray800
+                        selectedIconColor = MaterialTheme.colorScheme.onPrimary,
+                        indicatorColor = MaterialTheme.colorScheme.onSecondary,
+                        unselectedIconColor = MaterialTheme.colorScheme.tertiary,
                     ),
                 )
             }

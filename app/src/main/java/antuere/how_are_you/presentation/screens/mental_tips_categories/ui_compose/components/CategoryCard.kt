@@ -42,7 +42,7 @@ fun CategoryCard(
         },
         onClick = { onClick(category.categoryName.name) },
         shape = MaterialTheme.shapes.large,
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
         interactionSource = interactionSource
     ) {
@@ -60,13 +60,16 @@ fun CategoryCard(
             )
             Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.spacer_height_5)))
 
-            Text(text = stringResource(id = category.textRes))
+            Text(
+                text = stringResource(id = category.textRes),
+                color = MaterialTheme.colorScheme.onPrimaryContainer
+            )
             Spacer(modifier = Modifier.weight(1F))
 
             Icon(
                 imageVector = Icons.Rounded.ChevronRight,
                 contentDescription = null,
-                tint = MaterialTheme.colorScheme.onSecondary
+                tint = MaterialTheme.colorScheme.onPrimaryContainer
             )
             Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.spacer_height_2)))
         }

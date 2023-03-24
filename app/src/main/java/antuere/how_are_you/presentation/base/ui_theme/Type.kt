@@ -3,7 +3,6 @@ package antuere.how_are_you.presentation.base.ui_theme
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Shapes
 import androidx.compose.material3.Typography
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -14,6 +13,7 @@ import antuere.how_are_you.R
 
 //My fonts
 val Roboto = FontFamily(
+    Font(R.font.roboto_bold, FontWeight.Bold),
     Font(R.font.roboto_medium, FontWeight.Medium),
     Font(R.font.roboto)
 )
@@ -24,7 +24,7 @@ val PlayfairDisplay = FontFamily(
 // Set of Material typography styles to start with
 val Typography = Typography(
     bodyLarge = TextStyle(
-        color = Color.Black,
+        color = theme_onSurfaceVariant,
         fontFamily = FontFamily.Default,
         fontWeight = FontWeight.Medium,
         fontSize = 18.sp,
@@ -40,7 +40,7 @@ val Typography = Typography(
     ),
 
     displayMedium = TextStyle(
-        color = Color.Black,
+        color = theme_onSurfaceVariant,
         fontFamily = Roboto,
         fontWeight = FontWeight.Medium,
         fontSize = 16.sp,
@@ -48,8 +48,17 @@ val Typography = Typography(
         letterSpacing = 0.5.sp
     ),
 
+    titleMedium = TextStyle(
+        color = theme_onSurfaceVariant,
+        fontFamily = Roboto,
+        fontWeight = FontWeight.SemiBold,
+        fontSize = 16.sp,
+        lineHeight = 24.sp,
+        letterSpacing = 0.5.sp
+    ),
+
     titleLarge = TextStyle(
-        color = Color.Black,
+        color = theme_onSurfaceVariant,
         fontFamily = Roboto,
         fontWeight = FontWeight.Medium,
         fontSize = 22.sp,
@@ -58,7 +67,7 @@ val Typography = Typography(
     ),
 
     labelSmall = TextStyle(
-        color = Color.Black,
+        color = theme_onSurfaceVariant,
         fontFamily = Roboto,
         fontWeight = FontWeight.Medium,
         fontSize = 14.sp,

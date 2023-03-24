@@ -2,15 +2,55 @@ package antuere.how_are_you.presentation.base.ui_theme
 
 import androidx.compose.ui.graphics.Color
 
+//val theme_light_primary = Color(0xFF00668A)
+//val theme_light_onPrimary = Color(0xFFFFFFFF)
+//val theme_light_primaryContainer = Color(0xFFC4E7FF)
+//val theme_light_onPrimaryContainer = Color(0xFF001E2C)
+//val theme_light_secondary = Color(0xFF00687B)
+//val theme_light_onSecondary = Color(0xFFFFFFFF)
+//val theme_light_secondaryContainer = Color(0xFFF2F0E9)
+//val theme_light_onSecondaryContainer = Color(0xFF001F26)
+//val theme_light_tertiary = Color(0xFF006683)
+//val theme_light_onTertiary = Color(0xFFFFFFFF)
+//val theme_light_tertiaryContainer = Color(0xFFBDE9FF)
+//val theme_light_onTertiaryContainer = Color(0xFF001F2A)
+//val theme_light_error = Color(0xFFBA1A1A)
+//val theme_light_errorContainer = Color(0xFFFFDAD6)
+//val theme_light_onError = Color(0xFFFFFFFF)
+//val theme_light_onErrorContainer = Color(0xFF410002)
+//val theme_light_background = Color(0xFFF2F0E9)
+//val theme_light_onBackground = Color(0xFF141F00)
+//val theme_light_surface = Color(0xFFF2F0E9)
+//val theme_light_onSurface = Color(0xFF141F00)
+//val theme_light_surfaceVariant = Color(0xFFDDE3EA)
+//val theme_light_onSurfaceVariant = Color(0xFF007097)
+//val theme_light_outline = Color(0xFF71787E)
+//val theme_light_inverseOnSurface = Color(0xFFD9FE92)
+//val theme_light_inverseSurface = Color(0xFF243600)
+//val theme_light_inversePrimary = Color(0xFF7CD0FF)
+//val theme_light_surfaceTint = Color(0xFF00668A)
+//val theme_light_outlineVariant = Color(0xFFC0C7CD)
+//val theme_light_scrim = Color(0xFF000000)
+
+val theme_primary = Color(0xFF00668A)
+val theme_primaryContainer = Color(0xFF5C8AA5)
+val theme_onPrimaryContainer = Color(0xFFF2F0E9)
+val theme_onPrimary = Color(0xFFF2F0E9)
+val theme_tertiary = Color(0xFFDFDED9)
+val theme_secondary = Color(0xFF4C738A)
+val theme_onSecondary = Color(0xFF6895A7)
+val theme_surface = Color(0xFF76A7B9)
+val theme_surfaceVariant = Color(0xFFD6DEE2)
+val theme_onSurface = Color(0xFF78A5B6)
+val theme_onSurfaceVariant = Color(0xFF002B3A)
+
+
 val TealMain = Color(0xFF008394)
 val Teal200 = Color(0xFF03DAC5)
 val Teal700 = Color(0xFF018786)
-val Shrine_blue = Color(0xFFB3E2FF)
-val LightBlue = Color(0xFF77C0C8)
 
 val DarkGreen = Color(0xFF06751F)
-
 val White = Color.White
-val Black = Color.Black
+
 val Gray800 = Color(0x80000000)
 val Gray400 = Color(0xFF4E4D4D)

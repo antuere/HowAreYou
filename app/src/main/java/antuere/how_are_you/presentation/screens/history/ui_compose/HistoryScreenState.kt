@@ -7,6 +7,7 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetLayout
 import androidx.compose.material.ModalBottomSheetState
 import androidx.compose.material.ModalBottomSheetValue
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -14,7 +15,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.unit.dp
-import antuere.domain.dto.ToggleBtnState
 import antuere.how_are_you.LocalAppState
 import antuere.how_are_you.R
 import antuere.how_are_you.presentation.base.ui_compose_components.buttons.OutlinedButtonWithIcon
@@ -70,6 +70,7 @@ fun HistoryScreenState(
     ModalBottomSheetLayout(
         sheetState = bottomSheetState,
         sheetShape = RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp),
+        sheetBackgroundColor = MaterialTheme.colorScheme.onPrimary,
         sheetContent = {
             Box(
                 modifier = Modifier
@@ -100,7 +101,7 @@ fun HistoryScreenState(
                     OutlinedButtonWithIcon(
                         modifier = Modifier.padding(top = dimensionResource(id = R.dimen.padding_small_2)),
                         onClick = {
-                            onIntent(HistoryIntent.ToggleBtnChanged(ToggleBtnState.CURRENT_MONTH))
+                            onIntent(HistoryIntent.FilterCloseBtnClicked)
                         },
                         isIconInStart = false,
                         labelId = R.string.close_filter,
@@ -161,7 +162,7 @@ fun HistoryScreenState(
                     OutlinedButtonWithIcon(
                         modifier = Modifier.padding(top = dimensionResource(id = R.dimen.padding_small_2)),
                         onClick = {
-                            onIntent(HistoryIntent.ToggleBtnChanged(ToggleBtnState.CURRENT_MONTH))
+                            onIntent(HistoryIntent.FilterCloseBtnClicked)
                         },
                         isIconInStart = false,
                         labelId = R.string.close_filter,

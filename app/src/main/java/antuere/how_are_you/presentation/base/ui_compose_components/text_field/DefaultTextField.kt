@@ -67,7 +67,7 @@ fun DefaultTextField(
             }
         },
         textStyle = MaterialTheme.typography.displaySmall.copy(
-            color = MaterialTheme.colorScheme.onSecondary
+            color = MaterialTheme.colorScheme.onSurfaceVariant
         ),
         label = {
             Text(

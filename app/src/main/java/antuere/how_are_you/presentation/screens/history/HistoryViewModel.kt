@@ -38,6 +38,7 @@ class HistoryViewModel @Inject constructor(
         MutableStateFlow(FilterState.Disabled(ToggleBtnState.ALL_DAYS))
 
     private var isHasSavedDays = false
+    private var savedToggleBtnState: ToggleBtnState? = null
 
     init {
         getToggleButtonState()
@@ -91,6 +92,12 @@ class HistoryViewModel @Inject constructor(
             HistoryIntent.FilterSheetClosed -> {
                 sideEffect(HistorySideEffect.HideBottomSheet)
             }
+            HistoryIntent.FilterCloseBtnClicked -> {
+                filterState.update {
+                    FilterState.Disabled(savedToggleBtnState ?: ToggleBtnState.CURRENT_MONTH)
+                }
+                sideEffect(HistorySideEffect.AnimationHistoryHeader)
+            }
         }
     }
 
@@ -100,6 +107,7 @@ class HistoryViewModel @Inject constructor(
                 filterState.update {
                     FilterState.Disabled(toggleBtnState)
                 }
+                savedToggleBtnState = toggleBtnState
             }
         }
         subscribeOnDaysFlow()

@@ -37,7 +37,7 @@ fun DefaultTopBar(
             },
             actions = actions,
             colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                containerColor = MaterialTheme.colorScheme.primary,
+                containerColor = MaterialTheme.colorScheme.surface,
                 actionIconContentColor = MaterialTheme.colorScheme.onPrimary
             )
         )

@@ -44,7 +44,7 @@ fun DetailsForHelpline(
             ) {
                 Icon(
                     modifier = Modifier.size(ButtonDefaults.IconSize),
-                    tint = MaterialTheme.colorScheme.onSecondary,
+                    tint = MaterialTheme.colorScheme.primary,
                     painter = painterResource(id = R.drawable.ic_phone),
                     contentDescription = null
                 )
@@ -65,7 +65,7 @@ fun DetailsForHelpline(
             ) {
                 Icon(
                     modifier = Modifier.size(ButtonDefaults.IconSize),
-                    tint = MaterialTheme.colorScheme.onSecondary,
+                    tint = MaterialTheme.colorScheme.primary,
                     painter = painterResource(id = R.drawable.ic_web),
                     contentDescription = null
                 )

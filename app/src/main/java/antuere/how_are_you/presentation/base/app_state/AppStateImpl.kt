@@ -14,7 +14,6 @@ import antuere.how_are_you.presentation.base.ui_compose_components.top_bar.AppBa
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import kotlinx.coroutines.*
-import timber.log.Timber
 
 
 class AppStateImpl(
@@ -71,16 +70,15 @@ class AppStateImpl(
     override fun SetupAppColors() {
         val systemUiController = rememberSystemUiController()
         val isUseDarkIcons = !appBarState.value.isVisibleBottomBar
-        Timber.i("color error : isUseDarkIcons $isUseDarkIcons")
         val colorNavBarColor =
-            if (appBarState.value.isVisibleBottomBar) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onPrimary
+            if (appBarState.value.isVisibleBottomBar) MaterialTheme.colorScheme.surface else MaterialTheme.colorScheme.background
         val colorStatusBar =
-            if (appBarState.value.isVisibleTopBar) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onPrimary
+            if (appBarState.value.isVisibleTopBar) MaterialTheme.colorScheme.surface else MaterialTheme.colorScheme.background
 
         LaunchedEffect(isUseDarkIcons, colorNavBarColor) {
             systemUiController.setNavigationBarColor(
                 color = colorNavBarColor,
-                darkIcons = isUseDarkIcons
+                darkIcons = isUseDarkIcons,
             )
         }
 

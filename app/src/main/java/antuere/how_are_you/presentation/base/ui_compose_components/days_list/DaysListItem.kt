@@ -25,7 +25,7 @@ fun DaysListItem(
     onClick: (Day) -> Unit,
     onLongClick: (Day) -> Unit,
 ) {
-    Card(
+    ElevatedCard(
         modifier = modifier
             .padding(dimensionResource(id = R.dimen.padding_small_0))
             .clip(MaterialTheme.shapes.large)
@@ -34,7 +34,7 @@ fun DaysListItem(
                 onLongClick = { onLongClick(day) }
             ),
         shape = MaterialTheme.shapes.large,
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
     ) {
         Image(

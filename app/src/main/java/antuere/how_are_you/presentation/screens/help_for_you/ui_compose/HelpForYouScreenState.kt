@@ -37,7 +37,7 @@ fun HelpForYouScreenState(
                 .weight(0.4F)
                 .align(Alignment.CenterHorizontally),
             shape = MaterialTheme.shapes.large,
-            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
+            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
             elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
         ) {
             Column(
@@ -50,6 +50,7 @@ fun HelpForYouScreenState(
                 Text(
                     text = viewState().titleText.asString(),
                     textAlign = TextAlign.Center,
+                    color = MaterialTheme.colorScheme.onPrimaryContainer,
                     fontSize = dimensionResource(id = R.dimen.textSize_normal_1).value.sp
                 )
             }

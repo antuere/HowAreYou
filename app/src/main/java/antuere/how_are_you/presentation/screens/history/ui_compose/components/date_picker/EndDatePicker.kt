@@ -3,6 +3,7 @@ package antuere.how_are_you.presentation.screens.history.ui_compose.components.d
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ShapeDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import antuere.domain.util.TimeUtility
@@ -18,7 +19,7 @@ fun EndDatePicker(
     dialogState: MaterialDialogState,
     startDate: LocalDate,
     onDatePicked: (LocalDate) -> Unit,
-    onChangeFieldText: (String) -> Unit
+    onChangeFieldText: (String) -> Unit,
 ) {
     MaterialDialog(
         elevation = 0.dp,
@@ -36,8 +37,8 @@ fun EndDatePicker(
             },
             colors = DatePickerDefaults.colors(
                 headerBackgroundColor = MaterialTheme.colorScheme.primary,
-                dateActiveBackgroundColor = MaterialTheme.colorScheme.tertiary,
-                dateActiveTextColor = MaterialTheme.colorScheme.onPrimary
+                dateActiveBackgroundColor = MaterialTheme.colorScheme.primary,
+                dateActiveTextColor = Color.White
             )
         ) { selectedDate ->
             onDatePicked(selectedDate)

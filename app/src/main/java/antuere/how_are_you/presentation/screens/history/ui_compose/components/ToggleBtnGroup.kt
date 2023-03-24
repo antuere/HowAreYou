@@ -67,19 +67,17 @@ fun ToggleBtnGroup(
                     // middle button
                     else -> RoundedCornerShape(0.dp)
                 },
-                border = BorderStroke(
-                    1.dp, Color.Gray
-                ),
+                border = BorderStroke(width = 1.dp, color = Color.Gray),
                 colors = if (currentToggleBtnState == entry.value) {
                     ButtonDefaults.outlinedButtonColors(
-                        containerColor = MaterialTheme.colorScheme.onSurface.copy(
-                            alpha = 0.7f
-                        ), contentColor = Color.Black
+                        containerColor = MaterialTheme.colorScheme.surface.copy(
+                            alpha = 0.5f
+                        ), contentColor = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 } else {
                     ButtonDefaults.outlinedButtonColors(
-                        containerColor = MaterialTheme.colorScheme.surface,
-                        contentColor = Color.Black
+                        containerColor = MaterialTheme.colorScheme.onPrimary,
+                        contentColor = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 },
             ) {
