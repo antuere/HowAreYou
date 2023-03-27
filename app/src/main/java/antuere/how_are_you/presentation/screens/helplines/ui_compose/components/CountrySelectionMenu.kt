@@ -60,7 +60,7 @@ fun CountrySelectionMenu(
         )
 
         ExposedDropdownMenu(
-            modifier = Modifier.background(MaterialTheme.colorScheme.surfaceVariant),
+            modifier = Modifier.background(MaterialTheme.colorScheme.secondaryContainer),
             expanded = isExpanded,
             onDismissRequest = { onExpandedChange() },
         ) {

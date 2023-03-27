@@ -164,6 +164,7 @@ class SecureEntryViewModel @Inject constructor(
         } else {
             wrongPinAnimationJob = viewModelScope.launch {
                 sideEffect(SecureEntrySideEffect.Snackbar(UiText.StringResource(R.string.wrong_pin_code)))
+                sideEffect(SecureEntrySideEffect.Vibration)
                 updateState { state.copy(pinCirclesState = PinCirclesState.WRONG_PIN) }
                 currentPinCode = Constants.PIN_NOT_SET
                 numbers.clear()

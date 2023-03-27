@@ -16,8 +16,8 @@ fun DefaultSnackbar(text: String) {
         shape = ShapeDefaults.Large,
         elevation = CardDefaults.cardElevation(4.dp),
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.onPrimaryContainer,
-            contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+            containerColor = MaterialTheme.colorScheme.secondaryContainer,
+            contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
         )
     ) {
         Box(

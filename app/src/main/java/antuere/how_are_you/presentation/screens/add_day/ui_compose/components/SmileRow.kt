@@ -27,7 +27,7 @@ fun SmileRow(
                 Icon(
                     painter = painterResource(id = imageRes),
                     contentDescription = null,
-                    tint = MaterialTheme.colorScheme.onSecondary
+                    tint = MaterialTheme.colorScheme.primary
                 )
             }
         }

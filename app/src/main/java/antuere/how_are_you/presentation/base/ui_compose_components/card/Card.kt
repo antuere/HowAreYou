@@ -32,7 +32,7 @@ fun CardWithFab(
     modifier: Modifier = Modifier,
     textModifier: Modifier = Modifier,
     shape: Shape = MaterialTheme.shapes.large,
-    colors: CardColors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
+    colors: CardColors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
     elevation: CardElevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
     textAlignment: Alignment = Alignment.Center,
     titleText: String,
@@ -48,7 +48,7 @@ fun CardWithFab(
             Text(
                 text = titleText,
                 modifier = Modifier.align(textAlignment),
-                color = MaterialTheme.colorScheme.primaryContainer,
+                color = MaterialTheme.colorScheme.onPrimaryContainer,
                 style = MaterialTheme.typography.titleMedium
             )
         }
@@ -91,7 +91,7 @@ fun CardWithImage(
                 .weight(0.68F)
                 .fillMaxSize()
                 .clip(shape = MaterialTheme.shapes.large)
-                .background(color = MaterialTheme.colorScheme.surfaceVariant),
+                .background(color = MaterialTheme.colorScheme.secondaryContainer),
             contentAlignment = Alignment.Center
         ) {
             Image(

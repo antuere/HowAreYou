@@ -34,7 +34,7 @@ fun SettingItem(
                     .padding(top = 4.dp),
                 text = stringResource(id = descriptionId),
                 fontSize = dimensionResource(id = R.dimen.textSize_small_0).value.sp,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.8F),
                 lineHeight = dimensionResource(id = R.dimen.textLine_height_default).value.sp,
             )
         }

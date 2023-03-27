@@ -83,7 +83,10 @@ class AppStateImpl(
         }
 
         LaunchedEffect(appBarState.value.isVisibleTopBar) {
-            systemUiController.setStatusBarColor(color = colorStatusBar)
+            systemUiController.setStatusBarColor(
+                color = colorStatusBar,
+                darkIcons = true
+            )
         }
     }
 }

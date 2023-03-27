@@ -19,7 +19,7 @@ fun DateSelectionBtn(
         shape = ShapeDefaults.Small,
         colors = ButtonDefaults.outlinedButtonColors(
             containerColor = MaterialTheme.colorScheme.onPrimary,
-            contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+            contentColor = MaterialTheme.colorScheme.onBackground,
             disabledContainerColor = MaterialTheme.colorScheme.onPrimary,
             disabledContentColor = MaterialTheme.colorScheme.onSecondary,
         ),

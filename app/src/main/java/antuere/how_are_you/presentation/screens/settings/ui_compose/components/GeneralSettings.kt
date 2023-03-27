@@ -49,7 +49,7 @@ fun GeneralSettings(
                     horizontal = dimensionResource(id = R.dimen.padding_normal_2)
                 )
                 .fillMaxWidth(),
-            color = MaterialTheme.colorScheme.onSecondary
+            color = MaterialTheme.colorScheme.onSurfaceVariant
         )
 
     }

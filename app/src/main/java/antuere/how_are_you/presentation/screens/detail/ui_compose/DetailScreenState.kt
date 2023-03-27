@@ -3,10 +3,12 @@ package antuere.how_are_you.presentation.screens.detail.ui_compose
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.sp
@@ -38,6 +40,7 @@ fun DetailScreenState(
                     .fillMaxSize(0.5F)
                     .weight(0.2F),
                 painter = painterResource(id = daySmileImage),
+                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onBackground),
                 contentDescription = null
             )
             Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_1)))

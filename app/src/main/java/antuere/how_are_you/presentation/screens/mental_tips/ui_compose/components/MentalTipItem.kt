@@ -29,7 +29,7 @@ fun MentalTipItem(
     Card(
         modifier = modifier,
         shape = MaterialTheme.shapes.large,
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
         Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_3)))

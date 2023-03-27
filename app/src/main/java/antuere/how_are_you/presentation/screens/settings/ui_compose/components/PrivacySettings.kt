@@ -64,7 +64,7 @@ fun PrivacySettings(
             modifier = Modifier.padding(
                 horizontal = dimensionResource(id = R.dimen.padding_normal_2)
             ),
-            color = MaterialTheme.colorScheme.onSecondary
+            color = MaterialTheme.colorScheme.onSurfaceVariant
         )
 
     }

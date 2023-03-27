@@ -24,7 +24,7 @@ val PlayfairDisplay = FontFamily(
 // Set of Material typography styles to start with
 val Typography = Typography(
     bodyLarge = TextStyle(
-        color = theme_onSurfaceVariant,
+        color = theme_onBackground,
         fontFamily = FontFamily.Default,
         fontWeight = FontWeight.Medium,
         fontSize = 18.sp,
@@ -40,7 +40,7 @@ val Typography = Typography(
     ),
 
     displayMedium = TextStyle(
-        color = theme_onSurfaceVariant,
+        color = theme_onBackground,
         fontFamily = Roboto,
         fontWeight = FontWeight.Medium,
         fontSize = 16.sp,
@@ -49,7 +49,7 @@ val Typography = Typography(
     ),
 
     titleMedium = TextStyle(
-        color = theme_onSurfaceVariant,
+        color = theme_onBackground,
         fontFamily = Roboto,
         fontWeight = FontWeight.SemiBold,
         fontSize = 16.sp,
@@ -58,7 +58,7 @@ val Typography = Typography(
     ),
 
     titleLarge = TextStyle(
-        color = theme_onSurfaceVariant,
+        color = theme_onBackground,
         fontFamily = Roboto,
         fontWeight = FontWeight.Medium,
         fontSize = 22.sp,
@@ -67,7 +67,7 @@ val Typography = Typography(
     ),
 
     labelSmall = TextStyle(
-        color = theme_onSurfaceVariant,
+        color = theme_onBackground,
         fontFamily = Roboto,
         fontWeight = FontWeight.Medium,
         fontSize = 14.sp,

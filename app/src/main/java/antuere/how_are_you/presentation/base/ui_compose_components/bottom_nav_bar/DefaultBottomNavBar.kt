@@ -74,11 +74,11 @@ fun DefaultBottomNavBar(navController: NavController, isVisible: Boolean) {
                         Text(
                             text = dest,
                             style = if (isSelected) MaterialTheme.typography.displayMedium.copy(
-                                color = MaterialTheme.colorScheme.onPrimary,
+                                color = MaterialTheme.colorScheme.onSurface,
                                 fontSize = 15.sp,
                                 fontWeight = FontWeight.Bold
                             ) else MaterialTheme.typography.displaySmall.copy(
-                                color = MaterialTheme.colorScheme.tertiary,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 fontSize = 14.sp
                             )
                         )
@@ -96,9 +96,9 @@ fun DefaultBottomNavBar(navController: NavController, isVisible: Boolean) {
                         }
                     },
                     colors = NavigationBarItemDefaults.colors(
-                        selectedIconColor = MaterialTheme.colorScheme.onPrimary,
-                        indicatorColor = MaterialTheme.colorScheme.onSecondary,
-                        unselectedIconColor = MaterialTheme.colorScheme.tertiary,
+                        selectedIconColor = MaterialTheme.colorScheme.onSecondaryContainer,
+                        indicatorColor = MaterialTheme.colorScheme.secondaryContainer,
+                        unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
                     ),
                 )
             }

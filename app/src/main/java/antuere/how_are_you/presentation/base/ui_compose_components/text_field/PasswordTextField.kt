@@ -8,6 +8,7 @@ import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
@@ -44,7 +45,11 @@ fun PasswordTextField(
             val description = if (passwordVisible) "Hide password" else "Show password"
 
             IconButton(onClick = { passwordVisible = passwordVisible.not() }) {
-                Icon(imageVector = image, contentDescription = description)
+                Icon(
+                    imageVector = image,
+                    contentDescription = description,
+                    tint = MaterialTheme.colorScheme.secondary
+                )
             }
         }
     )

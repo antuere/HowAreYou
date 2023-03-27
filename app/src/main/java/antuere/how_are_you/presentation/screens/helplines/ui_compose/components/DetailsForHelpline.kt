@@ -40,11 +40,14 @@ fun DetailsForHelpline(
             OutlinedButton(
                 modifier = Modifier.weight(5F),
                 onClick = { onClickPhone(phone) },
-                contentPadding = ButtonDefaults.ButtonWithIconContentPadding
+                contentPadding = ButtonDefaults.ButtonWithIconContentPadding,
+                colors = ButtonDefaults.outlinedButtonColors(
+                    containerColor = MaterialTheme.colorScheme.surface
+                )
             ) {
                 Icon(
                     modifier = Modifier.size(ButtonDefaults.IconSize),
-                    tint = MaterialTheme.colorScheme.primary,
+                    tint = MaterialTheme.colorScheme.onSurface,
                     painter = painterResource(id = R.drawable.ic_phone),
                     contentDescription = null
                 )
@@ -53,6 +56,7 @@ fun DetailsForHelpline(
                     fontSize = dimensionResource(id = R.dimen.textSize_normal_0).value.sp,
                     textAlign = TextAlign.Center,
                     maxLines = 1,
+                    color = MaterialTheme.colorScheme.onSurface,
                     text = stringResource(R.string.helpline_phone),
                 )
             }
@@ -61,11 +65,14 @@ fun DetailsForHelpline(
             OutlinedButton(
                 modifier = Modifier.weight(5F),
                 onClick = { onClickWebsite(website) },
-                contentPadding = ButtonDefaults.ButtonWithIconContentPadding
+                contentPadding = ButtonDefaults.ButtonWithIconContentPadding,
+                colors = ButtonDefaults.outlinedButtonColors(
+                    containerColor = MaterialTheme.colorScheme.surface
+                )
             ) {
                 Icon(
                     modifier = Modifier.size(ButtonDefaults.IconSize),
-                    tint = MaterialTheme.colorScheme.primary,
+                    tint = MaterialTheme.colorScheme.onSurface,
                     painter = painterResource(id = R.drawable.ic_web),
                     contentDescription = null
                 )
@@ -73,6 +80,7 @@ fun DetailsForHelpline(
                 Text(
                     fontSize = dimensionResource(id = R.dimen.textSize_normal_0).value.sp,
                     maxLines = 1,
+                    color = MaterialTheme.colorScheme.onSurface,
                     text = stringResource(R.string.helpline_website),
                 )
             }

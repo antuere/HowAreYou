@@ -4,10 +4,7 @@ import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
@@ -66,15 +63,15 @@ fun DefaultTextField(
                 Text(text = it)
             }
         },
-        textStyle = MaterialTheme.typography.displaySmall.copy(
-            color = MaterialTheme.colorScheme.onSurfaceVariant
-        ),
         label = {
             Text(
                 text = label,
                 style = MaterialTheme.typography.displaySmall,
             )
         },
+        colors = TextFieldDefaults.outlinedTextFieldColors(
+           textColor = MaterialTheme.colorScheme.onBackground
+        ),
         shape = MaterialTheme.shapes.large,
         keyboardOptions = keyboardOptions,
         keyboardActions = keyboardActions,

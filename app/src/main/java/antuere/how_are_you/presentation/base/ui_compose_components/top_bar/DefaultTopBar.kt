@@ -24,7 +24,7 @@ fun DefaultTopBar(
                         Icon(
                             imageVector = this,
                             contentDescription = null,
-                            tint = MaterialTheme.colorScheme.onPrimary
+                            tint = MaterialTheme.colorScheme.onSurface
                         )
                     }
                 }
@@ -32,13 +32,13 @@ fun DefaultTopBar(
             title = {
                 Text(
                     text = stringResource(id = titleId),
-                    color = MaterialTheme.colorScheme.onPrimary,
+                    color = MaterialTheme.colorScheme.onSurface,
                 )
             },
             actions = actions,
             colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
                 containerColor = MaterialTheme.colorScheme.surface,
-                actionIconContentColor = MaterialTheme.colorScheme.onPrimary
+                actionIconContentColor = MaterialTheme.colorScheme.onSurfaceVariant
             )
         )
     }

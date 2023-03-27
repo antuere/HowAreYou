@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -34,7 +35,8 @@ fun DaysListItem(
                 onLongClick = { onLongClick(day) }
             ),
         shape = MaterialTheme.shapes.large,
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.primaryContainer),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
     ) {
         Image(
@@ -43,12 +45,14 @@ fun DaysListItem(
                 .align(Alignment.CenterHorizontally),
             painter = painterResource(id = day.imageResId),
             contentDescription = null,
+            colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onPrimaryContainer)
         )
         Text(
             modifier = Modifier
                 .padding(vertical = dimensionResource(id = R.dimen.padding_small_1))
                 .align(Alignment.CenterHorizontally),
             text = day.dateString,
+            color = MaterialTheme.colorScheme.onPrimaryContainer,
             fontSize = 14.sp
         )
 

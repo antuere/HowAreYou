@@ -1,6 +1,7 @@
 package antuere.how_are_you.presentation.screens.mental_tips.ui_compose
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -69,7 +70,8 @@ fun MentalTipsScreenState(
                     modifier = Modifier
                         .align(Alignment.CenterHorizontally)
                         .padding(bottom = dimensionResource(id = R.dimen.padding_normal_0)),
-                    pagerState = pagerState
+                    pagerState = pagerState,
+                    activeColor = MaterialTheme.colorScheme.primaryContainer
                 )
             }
         }

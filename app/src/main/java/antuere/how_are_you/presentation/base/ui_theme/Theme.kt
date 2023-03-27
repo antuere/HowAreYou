@@ -21,12 +21,16 @@ private val DarkColorScheme = darkColorScheme(
     onPrimaryContainer = theme_onPrimaryContainer,
     secondary = theme_secondary,
     onSecondary = theme_onSecondary,
+    secondaryContainer = theme_secondaryContainer,
+    onSecondaryContainer = theme_onSecondaryContainer,
+    tertiary = theme_tertiary,
     surface = theme_surface,
     surfaceVariant = theme_surfaceVariant,
     onSurface = theme_onSurface,
     onSurfaceVariant = theme_onSurfaceVariant,
-    background = theme_onPrimary,
-    tertiary = theme_tertiary,
+    background = theme_background,
+    onBackground = theme_onBackground,
+    outline = theme_outline
 )
 
 private val LightColorScheme = lightColorScheme(
@@ -36,12 +40,16 @@ private val LightColorScheme = lightColorScheme(
     onPrimaryContainer = theme_onPrimaryContainer,
     secondary = theme_secondary,
     onSecondary = theme_onSecondary,
+    secondaryContainer = theme_secondaryContainer,
+    onSecondaryContainer = theme_onSecondaryContainer,
+    tertiary = theme_tertiary,
     surface = theme_surface,
     surfaceVariant = theme_surfaceVariant,
     onSurface = theme_onSurface,
     onSurfaceVariant = theme_onSurfaceVariant,
-    background = theme_onPrimary,
-    tertiary = theme_tertiary
+    background = theme_background,
+    onBackground = theme_onBackground,
+    outline = theme_outline
 )
 
 @Composable
@@ -49,7 +57,7 @@ fun HowAreYouTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     // Dynamic color is available on Android 12+
     dynamicColor: Boolean = false,
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
     val colorScheme = when {
         dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
@@ -63,7 +71,8 @@ fun HowAreYouTheme(
     if (!view.isInEditMode) {
         SideEffect {
             val window = (view.context as Activity).window
-            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = false
+//            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkTheme
+            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = true
         }
     }
 

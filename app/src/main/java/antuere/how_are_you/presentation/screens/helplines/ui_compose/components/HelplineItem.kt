@@ -45,7 +45,7 @@ fun HelplineItem(
                 onClickToItem()
             }
         },
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.secondaryContainer),
     ) {
         Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_1)))
         Row(
@@ -61,6 +61,7 @@ fun HelplineItem(
                 maxLines = if (isExpanded) Int.MAX_VALUE else 1,
                 overflow = if (isExpanded) TextOverflow.Visible else TextOverflow.Ellipsis,
                 text = stringResource(id = helpline.nameResId),
+                color = MaterialTheme.colorScheme.onSecondaryContainer
             )
 
             IconButton(
@@ -77,7 +78,7 @@ fun HelplineItem(
                 Icon(
                     imageVector = Icons.Default.ArrowDropDown,
                     contentDescription = "DropDown Arrow",
-                    tint = MaterialTheme.colorScheme.primary
+                    tint = MaterialTheme.colorScheme.onSecondaryContainer
                 )
             }
         }

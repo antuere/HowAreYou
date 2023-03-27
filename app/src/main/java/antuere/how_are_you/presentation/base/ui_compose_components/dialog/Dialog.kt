@@ -11,7 +11,7 @@ import androidx.compose.ui.text.style.TextAlign
 @Composable
 fun Dialog(
     dialog: UIDialog,
-    iconColor: Color = Color.Black,
+    iconColor: Color = MaterialTheme.colorScheme.onBackground,
     closeDialog: () -> Unit,
 ) {
     AlertDialog(
@@ -60,7 +60,7 @@ fun Dialog(
                 )
             }
         },
-        containerColor = MaterialTheme.colorScheme.onPrimary,
+        containerColor = MaterialTheme.colorScheme.background,
         iconContentColor = iconColor
     )
 }

@@ -126,7 +126,7 @@
     <string name="dialog_sign_out_positive">Выйти</string>
     <string name="dialog_sign_out_negative">Отмена</string>
     <string name="dialog_delete_local_data_title">Ваши дни</string>
-    <string name="dialog_delete_local_data_desc">Когда вы выходите из своей учетной записи, вы можете сохранять ваши дни локально на своем устройстве. Сохранить ваши дни?</string>
+    <string name="dialog_delete_local_data_desc">При выходе из своей учетной записи, вы можете сохранить ваши дни локально на своем устройстве. Сохранить ваши дни?</string>
     <string name="dialog_delete_local_data_positive">Да</string>
     <string name="dialog_delete_local_data_negative">Нет</string>
     <string name="dialog_delete_local_data_neutral">Остаться в аккаунте</string>

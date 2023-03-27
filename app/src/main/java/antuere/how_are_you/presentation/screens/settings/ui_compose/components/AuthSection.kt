@@ -31,7 +31,7 @@ fun AuthSection(
                 id = R.string.hello_user_plug
             )
         )
-        Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_1)))
+        Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_0)))
 
         Text(
             modifier = Modifier.padding(
@@ -67,7 +67,7 @@ fun AuthSection(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalAlignment = Alignment.Start,
                     ) {
-                        Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_1)))
+                        Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_0)))
                         Text(
                             modifier = Modifier.padding(
                                 horizontal = dimensionResource(id = R.dimen.padding_normal_2)
@@ -108,7 +108,8 @@ fun AuthSection(
                 .padding(
                     horizontal = dimensionResource(id = R.dimen.padding_normal_2)
                 )
-                .fillMaxWidth(), color = MaterialTheme.colorScheme.onSecondary
+                .fillMaxWidth(),
+            color = MaterialTheme.colorScheme.onSurfaceVariant
         )
     }
 }

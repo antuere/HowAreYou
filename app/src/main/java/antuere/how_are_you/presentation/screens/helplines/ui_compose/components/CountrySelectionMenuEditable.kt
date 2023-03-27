@@ -1,6 +1,7 @@
 package antuere.how_are_you.presentation.screens.helplines.ui_compose.components
 
 import androidx.annotation.DrawableRes
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardActions
@@ -87,6 +88,7 @@ fun CountrySelectionMenuEditable(
         )
 
         ExposedDropdownMenu(
+            modifier = Modifier.background(MaterialTheme.colorScheme.secondaryContainer),
             expanded = isExpanded,
             onDismissRequest = {
                 focusManager.clearFocus()

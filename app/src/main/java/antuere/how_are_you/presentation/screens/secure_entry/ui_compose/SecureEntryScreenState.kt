@@ -1,12 +1,12 @@
 package antuere.how_are_you.presentation.screens.secure_entry.ui_compose
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import antuere.how_are_you.R
 import antuere.how_are_you.presentation.base.ui_compose_components.IconApp
@@ -49,7 +49,10 @@ fun SecureEntryScreenState(
         Spacer(modifier = Modifier.weight(0.4F))
 
         TextButton(onClick = { onIntent(SecureEntryIntent.SignOutBtnClicked) }) {
-            Text(text = stringResource(id = R.string.sign_out))
+            Text(
+                text = stringResource(id = R.string.sign_out),
+                color = MaterialTheme.colorScheme.secondary
+            )
         }
         Spacer(modifier = Modifier.weight(0.1F))
     }

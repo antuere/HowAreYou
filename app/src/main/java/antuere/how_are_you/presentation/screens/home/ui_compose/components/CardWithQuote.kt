@@ -32,7 +32,7 @@ fun CardWithQuote(
                 .weight(0.3F)
                 .fillMaxSize()
                 .clip(shape = MaterialTheme.shapes.large)
-                .background(color = MaterialTheme.colorScheme.surfaceVariant),
+                .background(color = MaterialTheme.colorScheme.secondaryContainer),
             contentAlignment = Alignment.CenterStart
         ) {
             Text(
@@ -40,7 +40,7 @@ fun CardWithQuote(
                 text = titleText,
                 fontSize = dimensionResource(id = R.dimen.textSize_normal_1).value.sp,
                 fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.primaryContainer
+                color = MaterialTheme.colorScheme.onSecondaryContainer
             )
         }
 

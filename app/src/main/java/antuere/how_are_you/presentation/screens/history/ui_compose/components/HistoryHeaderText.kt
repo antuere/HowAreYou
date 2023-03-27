@@ -18,7 +18,6 @@ fun HistoryHeaderText(
     rotation: () -> Float = { 0f },
     headerText: String
 ) {
-
     Timber.i("MVI error test : composed in header text rotate is $rotation")
 
     Text(
@@ -30,6 +29,6 @@ fun HistoryHeaderText(
                 rotationX = rotation()
             },
         textAlign = TextAlign.Center,
-        color = MaterialTheme.colorScheme.onSurfaceVariant
+        color = MaterialTheme.colorScheme.onBackground
     )
 }

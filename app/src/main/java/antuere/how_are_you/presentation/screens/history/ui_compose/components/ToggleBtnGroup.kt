@@ -3,10 +3,12 @@ package antuere.how_are_you.presentation.screens.history.ui_compose.components
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.*
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
@@ -67,24 +69,26 @@ fun ToggleBtnGroup(
                     // middle button
                     else -> RoundedCornerShape(0.dp)
                 },
-                border = BorderStroke(width = 1.dp, color = Color.Gray),
+                border = BorderStroke(width = 1.dp, color = MaterialTheme.colorScheme.outline),
                 colors = if (currentToggleBtnState == entry.value) {
                     ButtonDefaults.outlinedButtonColors(
-                        containerColor = MaterialTheme.colorScheme.surface.copy(
-                            alpha = 0.5f
-                        ), contentColor = MaterialTheme.colorScheme.onSurfaceVariant
+                        containerColor = MaterialTheme.colorScheme.secondaryContainer,
                     )
                 } else {
                     ButtonDefaults.outlinedButtonColors(
-                        containerColor = MaterialTheme.colorScheme.onPrimary,
-                        contentColor = MaterialTheme.colorScheme.onSurfaceVariant
+                        containerColor = MaterialTheme.colorScheme.background,
                     )
                 },
             ) {
                 Text(
                     text = entry.key.asString(),
                     modifier = Modifier.padding(horizontal = 8.dp),
-                    softWrap = false
+                    softWrap = false,
+                    color = if (currentToggleBtnState == entry.value) {
+                        MaterialTheme.colorScheme.onSecondaryContainer
+                    } else {
+                        MaterialTheme.colorScheme.onSurfaceVariant
+                    }
                 )
             }
         }
