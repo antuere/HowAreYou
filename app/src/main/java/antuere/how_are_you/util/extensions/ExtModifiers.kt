@@ -58,7 +58,6 @@ fun Modifier.shake() = composed(
         )
 
         Modifier.graphicsLayer {
-            this.translationX
             scaleX = scale
             scaleY = scale
         }
@@ -126,25 +125,21 @@ fun Modifier.animateScaleOnce() = composed(
 
 fun Modifier.animateScaleDownOnce() = composed(
     factory = {
-        var isAnimated by remember { mutableStateOf(true) }
-        val scale by animateFloatAsState(
-            targetValue = if (isAnimated) 0.8f else 1f,
-            animationSpec = repeatable(
-                iterations = 1,
-                animation = tween(durationMillis = 150),
-                repeatMode = RepeatMode.Restart
-            ),
-        )
+        val scale = remember { Animatable(1f) }
 
-        LaunchedEffect(key1 = isAnimated) {
-            delay(150)
-            isAnimated = false
+        LaunchedEffect(Unit) {
+            scale.animateTo(
+                targetValue = 1f,
+                animationSpec = keyframes {
+                    durationMillis = 300
+                    0.9f at 100
+                    0.8f at 200
+                    1f at 300
+                }
+            )
         }
 
-        Modifier.graphicsLayer {
-            scaleX = if (isAnimated) scale else 1f
-            scaleY = if (isAnimated) scale else 1f
-        }
+        Modifier.scale(scale.value)
     },
     inspectorInfo = debugInspectorInfo {
         name = "animateScaleDownOnce"

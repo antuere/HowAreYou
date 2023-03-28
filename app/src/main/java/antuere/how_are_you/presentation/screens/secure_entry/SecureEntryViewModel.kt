@@ -19,11 +19,8 @@ import antuere.how_are_you.presentation.screens.secure_entry.state.SecureEntrySi
 import antuere.how_are_you.presentation.screens.secure_entry.state.SecureEntryState
 import antuere.how_are_you.presentation.base.ViewModelMvi
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.Container
 import org.orbitmvi.orbit.viewmodel.container
 import javax.inject.Inject
@@ -64,15 +61,18 @@ class SecureEntryViewModel @Inject constructor(
         override fun onBiometricAuthFailed() {}
 
         override fun onBiometricAuthSuccess() {
-            updateState { state.copy(pinCirclesState = PinCirclesState.CORRECT_PIN) }
-            sideEffect(SecureEntrySideEffect.NavigateToHome)
-            currentPinCode = Constants.PIN_NOT_SET
-            numbers.clear()
+            viewModelScope.launch {
+                updateState { state.copy(pinCirclesState = PinCirclesState.CORRECT_PIN) }
+                delay(280)
+                sideEffect(SecureEntrySideEffect.NavigateToHome)
+                currentPinCode = Constants.PIN_NOT_SET
+                numbers.clear()
 
-            viewModelScope.launch(Dispatchers.IO) {
-                settingsRepository.saveBiomAuthSetting(isEnable = true)
-                delay(100)
-                updateState { state.copy(pinCirclesState = PinCirclesState.NONE) }
+                withContext(Dispatchers.IO){
+                    settingsRepository.saveBiomAuthSetting(isEnable = true)
+                    delay(100)
+                    updateState { state.copy(pinCirclesState = PinCirclesState.NONE) }
+                }
             }
         }
 
@@ -156,11 +156,14 @@ class SecureEntryViewModel @Inject constructor(
 
     private fun validateEnteredPinCode(pinCode: String) {
         if (pinCode == savedPinCode) {
-            updateState { state.copy(pinCirclesState = PinCirclesState.CORRECT_PIN) }
-            sideEffect(SecureEntrySideEffect.NavigateToHome)
-            updateState { state.copy(pinCirclesState = PinCirclesState.NONE) }
-            currentPinCode = Constants.PIN_NOT_SET
-            numbers.clear()
+            viewModelScope.launch {
+                updateState { state.copy(pinCirclesState = PinCirclesState.CORRECT_PIN) }
+                delay(280)
+                sideEffect(SecureEntrySideEffect.NavigateToHome)
+                updateState { state.copy(pinCirclesState = PinCirclesState.NONE) }
+                currentPinCode = Constants.PIN_NOT_SET
+                numbers.clear()
+            }
         } else {
             wrongPinAnimationJob = viewModelScope.launch {
                 sideEffect(SecureEntrySideEffect.Snackbar(UiText.StringResource(R.string.wrong_pin_code)))
