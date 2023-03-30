@@ -56,8 +56,8 @@ fun SignInEmailScreenState(
             verticalArrangement = Arrangement.Center
         ) {
             Timber.i("MVI error test : enter in column")
-            IconApp(modifier = Modifier.padding(top = dimensionResource(id = R.dimen.padding_small_1)))
-            Spacer(modifier = Modifier.weight(1F))
+            IconApp(modifier = Modifier.padding(top = dimensionResource(id = R.dimen.padding_normal_5)))
+            Spacer(modifier = Modifier.weight(2F))
 
             EmailTextField(
                 modifier = Modifier

@@ -16,11 +16,10 @@ import androidx.compose.ui.graphics.graphicsLayer
 import antuere.how_are_you.LocalAppState
 import antuere.how_are_you.R
 import antuere.how_are_you.presentation.base.ui_compose_components.top_bar.AppBarState
-import antuere.how_are_you.presentation.screens.history.state.HistoryIntent
 
 @Composable
-fun HistoryScreenTopBar(
-    onIntent: (HistoryIntent) -> Unit
+fun HistoryScreenTopBarWithAction(
+    filterBtnClicked: () -> Unit
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed by interactionSource.collectIsPressedAsState()
@@ -37,7 +36,7 @@ fun HistoryScreenTopBar(
                             scaleY = scaleFilterBtn
                             scaleX = scaleFilterBtn
                         },
-                        onClick = { onIntent(HistoryIntent.FilterBtnClicked) },
+                        onClick = filterBtnClicked,
                         interactionSource = interactionSource
                     ) {
                         Icon(
@@ -49,6 +48,5 @@ fun HistoryScreenTopBar(
                 isVisibleBottomBar = true
             ),
         )
-        appState.dismissSnackbar()
     }
 }

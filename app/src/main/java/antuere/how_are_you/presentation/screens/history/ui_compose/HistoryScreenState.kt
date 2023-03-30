@@ -15,16 +15,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.unit.dp
-import antuere.how_are_you.LocalAppState
 import antuere.how_are_you.R
 import antuere.how_are_you.presentation.base.ui_compose_components.buttons.OutlinedButtonWithIcon
 import antuere.how_are_you.presentation.base.ui_compose_components.days_list.DaysGrid
 import antuere.how_are_you.presentation.base.ui_compose_components.days_list.DaysGridShimmer
-import antuere.how_are_you.presentation.base.ui_compose_components.top_bar.AppBarState
 import antuere.how_are_you.presentation.screens.history.state.HistoryIntent
 import antuere.how_are_you.presentation.screens.history.state.HistoryState
 import antuere.how_are_you.presentation.screens.history.ui_compose.components.DaysFilterBottomSheet
 import antuere.how_are_you.presentation.screens.history.ui_compose.components.HistoryHeaderText
+import antuere.how_are_you.presentation.screens.history.ui_compose.components.HistoryScreenTopBar
 import antuere.how_are_you.presentation.screens.history.ui_compose.components.ToggleBtnGroup
 import antuere.how_are_you.util.extensions.findFragmentActivity
 import antuere.how_are_you.util.extensions.paddingBotAndTopBar
@@ -41,15 +40,13 @@ fun HistoryScreenState(
 ) {
     Timber.i("MVI error test : historyScreenState")
     val activity = LocalContext.current.findFragmentActivity()
-    val appState = LocalAppState.current
     val isEnabledHandler = remember(bottomSheetState.currentValue) {
         bottomSheetState.currentValue == ModalBottomSheetValue.Expanded
     }
 
     val isSheetStartsHiding by remember {
         derivedStateOf {
-            bottomSheetState.targetValue == ModalBottomSheetValue.Hidden
-                    && bottomSheetState.isAnimationRunning
+            bottomSheetState.targetValue == ModalBottomSheetValue.Hidden && bottomSheetState.isAnimationRunning
         }
     }
 
@@ -67,26 +64,20 @@ fun HistoryScreenState(
         activity.finish()
     }
 
-    ModalBottomSheetLayout(
-        sheetState = bottomSheetState,
+    ModalBottomSheetLayout(sheetState = bottomSheetState,
         sheetShape = RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp),
         sheetBackgroundColor = MaterialTheme.colorScheme.onPrimary,
         sheetContent = {
             Box(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                contentAlignment = Alignment.Center
+                modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center
             ) {
-                DaysFilterBottomSheet(
-                    onDaysSelected = { startDate: LocalDate, endDate: LocalDate ->
-                        onIntent(
-                            HistoryIntent.DaysInFilterSelected(
-                                startDate = startDate,
-                                endDate = endDate
-                            )
+                DaysFilterBottomSheet(onDaysSelected = { startDate: LocalDate, endDate: LocalDate ->
+                    onIntent(
+                        HistoryIntent.DaysInFilterSelected(
+                            startDate = startDate, endDate = endDate
                         )
-                    }
-                )
+                    )
+                })
             }
         }) {
         Column(
@@ -98,6 +89,10 @@ fun HistoryScreenState(
         ) {
             when (val state = viewState()) {
                 is HistoryState.Empty.FromFilter -> {
+                    HistoryScreenTopBarWithAction(filterBtnClicked = {
+                        onIntent(HistoryIntent.FilterBtnClicked)
+                    })
+
                     OutlinedButtonWithIcon(
                         modifier = Modifier.padding(top = dimensionResource(id = R.dimen.padding_small_2)),
                         onClick = {
@@ -113,6 +108,10 @@ fun HistoryScreenState(
                     Spacer(modifier = Modifier.weight(1F))
                 }
                 is HistoryState.Empty.FromToggleGroup -> {
+                    HistoryScreenTopBarWithAction(filterBtnClicked = {
+                        onIntent(HistoryIntent.FilterBtnClicked)
+                    })
+
                     ToggleBtnGroup(
                         modifier = Modifier.padding(top = dimensionResource(id = R.dimen.padding_small_2)),
                         currentToggleBtnState = state.toggleBtnState,
@@ -126,18 +125,14 @@ fun HistoryScreenState(
                     Spacer(modifier = Modifier.weight(1F))
                 }
                 is HistoryState.Empty.NoEntriesYet -> {
-                    LaunchedEffect(true) {
-                        appState.updateAppBar(
-                            AppBarState(
-                                titleId = R.string.history,
-                                isVisibleBottomBar = true
-                            )
-                        )
-                    }
-
+                    HistoryScreenTopBar()
                     Text(state.message.asString())
                 }
                 is HistoryState.Loaded.Default -> {
+                    HistoryScreenTopBarWithAction(filterBtnClicked = {
+                        onIntent(HistoryIntent.FilterBtnClicked)
+                    })
+
                     ToggleBtnGroup(
                         modifier = Modifier.padding(top = dimensionResource(id = R.dimen.padding_small_2)),
                         currentToggleBtnState = state.toggleBtnState,
@@ -146,19 +141,20 @@ fun HistoryScreenState(
                     )
 
                     HistoryHeaderText(
-                        rotation = rotation,
-                        headerText = state.textHeadline.asString()
+                        rotation = rotation, headerText = state.textHeadline.asString()
                     )
 
-                    DaysGrid(
-                        cellsAmount = state.cellsAmountForGrid,
+                    DaysGrid(cellsAmount = state.cellsAmountForGrid,
                         days = state.dayList,
                         onClick = { onIntent(HistoryIntent.DayClicked(it)) },
-                        onLongClick = { onIntent(HistoryIntent.DayLongClicked(it)) }
-                    )
+                        onLongClick = { onIntent(HistoryIntent.DayLongClicked(it)) })
 
                 }
                 is HistoryState.Loaded.FilterSelected -> {
+                    HistoryScreenTopBarWithAction(filterBtnClicked = {
+                        onIntent(HistoryIntent.FilterBtnClicked)
+                    })
+
                     OutlinedButtonWithIcon(
                         modifier = Modifier.padding(top = dimensionResource(id = R.dimen.padding_small_2)),
                         onClick = {
@@ -170,16 +166,13 @@ fun HistoryScreenState(
                     )
 
                     HistoryHeaderText(
-                        rotation = rotation,
-                        headerText = state.textHeadline.asString()
+                        rotation = rotation, headerText = state.textHeadline.asString()
                     )
 
-                    DaysGrid(
-                        cellsAmount = state.cellsAmountForGrid,
+                    DaysGrid(cellsAmount = state.cellsAmountForGrid,
                         days = state.dayList,
                         onClick = { onIntent(HistoryIntent.DayClicked(it)) },
-                        onLongClick = { onIntent(HistoryIntent.DayLongClicked(it)) }
-                    )
+                        onLongClick = { onIntent(HistoryIntent.DayLongClicked(it)) })
                 }
 
                 is HistoryState.LoadingShimmer -> {
@@ -193,8 +186,7 @@ fun HistoryScreenState(
                     HistoryHeaderText(headerText = state.dateTextPlug.asString())
 
                     DaysGridShimmer(
-                        cellsAmount = state.cellsAmount,
-                        aspectRatio = state.aspectRatioForItem
+                        cellsAmount = state.cellsAmount, aspectRatio = state.aspectRatioForItem
                     )
                 }
             }

@@ -54,8 +54,8 @@ fun SignUpEmailScreenState(
                 .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            IconApp()
-            Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_3)))
+            IconApp(modifier = Modifier.padding(top = dimensionResource(id = R.dimen.padding_normal_5)))
+            Spacer(modifier = Modifier.weight(2F))
 
             DefaultTextField(
                 modifier = Modifier

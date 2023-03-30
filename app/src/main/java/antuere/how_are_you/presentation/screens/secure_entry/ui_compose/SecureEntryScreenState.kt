@@ -32,10 +32,10 @@ fun SecureEntryScreenState(
         Timber.i("MVI error test : enter in secure column")
 
         IconApp()
-        Spacer(modifier = Modifier.weight(0.1F))
+        Spacer(modifier = Modifier.weight(0.9F))
 
         Text(text = stringResource(id = R.string.enter_a_pin))
-        Spacer(modifier = Modifier.weight(0.1F))
+        Spacer(modifier = Modifier.weight(0.2F))
 
         PinCirclesIndicatesWrapper { viewState().pinCirclesState }
         Spacer(modifier = Modifier.weight(0.4F))
