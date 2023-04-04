@@ -78,7 +78,7 @@ class AppStateImpl(
         LaunchedEffect(isUseDarkIcons, colorNavBarColor) {
             systemUiController.setNavigationBarColor(
                 color = colorNavBarColor,
-                darkIcons = isUseDarkIcons,
+                darkIcons = true,
             )
         }
 
