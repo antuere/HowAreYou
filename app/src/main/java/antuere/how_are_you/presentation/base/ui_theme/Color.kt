@@ -5,7 +5,7 @@ import androidx.compose.ui.graphics.Color
 
 // Light blue theme
 
-val theme_primary = Color(0xFF00668A)
+val theme_primary = Color(0xFF026D92)
 val theme_primaryContainer = Color(0xFF7EC6E0)
 val theme_onPrimaryContainer = Color(0xFF002B3A)
 val theme_onPrimary = Color(0xFFF8F7F2)

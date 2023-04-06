@@ -2,22 +2,17 @@ package antuere.how_are_you.presentation.base.ui_compose_components.card
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
-import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
@@ -38,7 +33,7 @@ fun CardWithFab(
     titleText: String,
     content: @Composable ColumnScope.() -> Unit = {},
 ) {
-    ElevatedCard(
+    GradientCard(
         modifier = modifier,
         shape = shape,
         colors = colors,
@@ -56,8 +51,6 @@ fun CardWithFab(
     }
 }
 
-
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CardWithImage(
     @DrawableRes imageRes: Int,
@@ -69,29 +62,34 @@ fun CardWithImage(
     colors: CardColors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
     elevation: CardElevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
     textAlignment: Alignment = Alignment.Center,
-    imageAlignment: Alignment = Alignment.Center
+    imageAlignment: Alignment = Alignment.Center,
 ) {
-    val interactionSource = remember { MutableInteractionSource() }
-    val isPressed by interactionSource.collectIsPressedAsState()
-    val scaleCard by animateFloatAsState(if (isPressed) 0.98f else 1f)
-
-    ElevatedCard(
-        modifier = modifier.graphicsLayer {
-            scaleX = scaleCard
-            scaleY = scaleCard
-        },
+    GradientCardWithOnClick(
+        modifier = modifier,
         onClick = onClick,
         shape = shape,
         colors = colors,
         elevation = elevation,
-        interactionSource = interactionSource
+        gradient = Brush.linearGradient(
+            listOf(
+                MaterialTheme.colorScheme.primaryContainer,
+                MaterialTheme.colorScheme.onPrimary,
+            )
+        )
     ) {
         Box(
             modifier = Modifier
                 .weight(0.68F)
                 .fillMaxSize()
                 .clip(shape = MaterialTheme.shapes.large)
-                .background(color = MaterialTheme.colorScheme.secondaryContainer),
+                .background(
+                    Brush.linearGradient(
+                        listOf(
+                            MaterialTheme.colorScheme.onPrimary,
+                            MaterialTheme.colorScheme.secondaryContainer,
+                        )
+                    )
+                ),
             contentAlignment = Alignment.Center
         ) {
             Image(
@@ -121,7 +119,6 @@ fun CardWithImage(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CardWithIcons(
     modifier: Modifier = Modifier,
@@ -135,21 +132,12 @@ fun CardWithIcons(
     colors: CardColors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
     elevation: CardElevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
 ) {
-
-    val interactionSource = remember { MutableInteractionSource() }
-    val isPressed by interactionSource.collectIsPressedAsState()
-    val scaleCard by animateFloatAsState(if (isPressed) 0.99f else 1f)
-
-    ElevatedCard(
-        modifier = modifier.graphicsLayer {
-            scaleX = scaleCard
-            scaleY = scaleCard
-        },
+    GradientCardWithOnClick(
+        modifier = modifier,
         onClick = onClick,
         shape = shape,
         colors = colors,
         elevation = elevation,
-        interactionSource = interactionSource
     ) {
         Row(
             modifier = Modifier.fillMaxSize(),

@@ -7,14 +7,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import antuere.how_are_you.R
+import antuere.how_are_you.presentation.base.ui_compose_components.card.GradientCard
 
 @Composable
 fun CardWithQuote(
@@ -26,15 +30,41 @@ fun CardWithQuote(
     quoteText: String,
     quiteAuthor: String,
 ) {
-    Card(modifier = modifier, colors = colors, shape = shape, elevation = elevation) {
-        Box(
+    GradientCard(
+        modifier = modifier,
+        colors = colors,
+        shape = shape,
+        elevation = elevation,
+        gradient = Brush.linearGradient(
+            listOf(
+                MaterialTheme.colorScheme.primaryContainer,
+                MaterialTheme.colorScheme.onPrimary,
+            )
+        )
+    ) {
+        Row(
             modifier = Modifier
                 .weight(0.3F)
                 .fillMaxSize()
                 .clip(shape = MaterialTheme.shapes.large)
-                .background(color = MaterialTheme.colorScheme.secondaryContainer),
-            contentAlignment = Alignment.CenterStart
+                .background(
+                    Brush.linearGradient(
+                        listOf(
+                            MaterialTheme.colorScheme.onPrimary,
+                            MaterialTheme.colorScheme.secondaryContainer,
+                        )
+                    )
+                ),
+            verticalAlignment = Alignment.CenterVertically
         ) {
+            Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.spacer_height_2)))
+            Icon(
+                modifier = Modifier.size(35.dp),
+                painter = painterResource(id = R.drawable.ic_quote),
+                contentDescription = "Quote icon",
+                tint = Color.Unspecified
+            )
+
             Text(
                 modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_normal_0)),
                 text = titleText,
@@ -47,13 +77,13 @@ fun CardWithQuote(
         Column(
             modifier = Modifier
                 .weight(0.7F)
+                .fillMaxSize()
                 .padding(
                     start = dimensionResource(id = R.dimen.padding_normal_1),
                     end = dimensionResource(id = R.dimen.padding_normal_1),
                     bottom = dimensionResource(id = R.dimen.padding_normal_0),
                     top = dimensionResource(id = R.dimen.padding_small_1)
                 )
-                .fillMaxSize()
         ) {
             Text(
                 text = "\"$quoteText\"",
