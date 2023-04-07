@@ -4,6 +4,7 @@ import antuere.domain.util.Constants
 
 data class SettingsState(
     val isLoading: Boolean = true,
+    val isShowBottomSheet: Boolean = false,
     val isCheckedWorriedDialog: Boolean = true,
     val isCheckedPin: Boolean = false,
     val isEnableBiomAuthOnDevice : Boolean = false,

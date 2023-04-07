@@ -83,6 +83,7 @@ class SettingsViewModel @Inject constructor(
             is SettingsIntent.PinSettingChanged -> {
                 updateState { state.copy(isCheckedPin = intent.isChecked) }
                 if (intent.isChecked) {
+                    updateState { state.copy(isShowBottomSheet = true) }
                     sideEffect(SettingsSideEffect.ShowBottomSheet)
                 } else {
                     viewModelScope.launch(Dispatchers.IO) {
@@ -123,7 +124,7 @@ class SettingsViewModel @Inject constructor(
             }
             is SettingsIntent.PinCreationSheetClosed -> {
                 updateState {
-                    state.copy(isCheckedPin = intent.isPinCreated)
+                    state.copy(isCheckedPin = intent.isPinCreated, isShowBottomSheet = false)
                 }
                 sideEffect(SettingsSideEffect.HideBottomSheet)
                 if (intent.isPinCreated) {

@@ -52,12 +52,6 @@ fun DaysFilterBottomSheet(
     ) {
         Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_2)))
 
-        Image(
-            painter = painterResource(id = R.drawable.ic_horizontal_line),
-            contentDescription = null
-        )
-        Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_3)))
-
         Text(text = stringResource(id = R.string.select_days))
         Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_3)))
 

@@ -15,7 +15,6 @@ import androidx.compose.ui.text.input.VisualTransformation
 import antuere.how_are_you.R
 import antuere.how_are_you.util.isKeyboardVisible
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DefaultTextField(
     modifier: Modifier = Modifier,
@@ -69,8 +68,10 @@ fun DefaultTextField(
                 style = MaterialTheme.typography.displaySmall,
             )
         },
-        colors = TextFieldDefaults.outlinedTextFieldColors(
-           textColor = MaterialTheme.colorScheme.onBackground
+        colors = TextFieldDefaults.colors(
+            focusedTextColor = MaterialTheme.colorScheme.onBackground,
+            focusedContainerColor = MaterialTheme.colorScheme.background,
+            unfocusedContainerColor = MaterialTheme.colorScheme.background
         ),
         shape = MaterialTheme.shapes.large,
         keyboardOptions = keyboardOptions,

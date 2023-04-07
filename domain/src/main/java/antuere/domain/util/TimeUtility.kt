@@ -17,7 +17,7 @@ object TimeUtility {
         return formatDate(currentDate, format)
     }
 
-    private fun formatDate(
+     fun formatDate(
         date: Date,
         format: TimeFormat = TimeFormat.Default,
         timeZone: TimeZone = TimeZone.getDefault(),

@@ -70,6 +70,10 @@ class PinCreatingSheetViewModel @Inject constructor(
             delay(100)
 
             sideEffect(PinCreationSideEffect.PinCreated)
+
+            updateState { PinCirclesState.NONE }
+            currentPinCode = Constants.PIN_NOT_SET
+            numbers.clear()
         }
     }
 }

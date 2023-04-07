@@ -1,23 +1,21 @@
 package antuere.how_are_you.presentation.screens.history
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.ModalBottomSheetValue
-import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import antuere.how_are_you.LocalAppState
 import antuere.how_are_you.presentation.screens.history.state.HistorySideEffect
 import antuere.how_are_you.presentation.screens.history.ui_compose.*
-import kotlinx.coroutines.launch
+import antuere.how_are_you.util.extensions.findFragmentActivity
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 import timber.log.Timber
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun HistoryScreen(
     onNavigateToDetail: (Long) -> Unit,
@@ -26,10 +24,7 @@ fun HistoryScreen(
     Timber.i("MVI error test : enter in history screen, view model is ${viewModel.toString()}")
     val appState = LocalAppState.current
 
-    val bottomSheetState = rememberModalBottomSheetState(
-        initialValue = ModalBottomSheetValue.Hidden
-    )
-    val scope = rememberCoroutineScope()
+    val activity = LocalContext.current.findFragmentActivity()
     val rotation = remember { Animatable(initialValue = 360f) }
     val viewState by viewModel.collectAsState()
 
@@ -43,18 +38,6 @@ fun HistoryScreen(
             }
             is HistorySideEffect.Dialog -> appState.showDialog(sideEffect.uiDialog)
             is HistorySideEffect.NavigationToDayDetail -> onNavigateToDetail(sideEffect.dayId)
-            HistorySideEffect.ShowBottomSheet -> {
-                appState.changeVisibilityBottomBar(false)
-                scope.launch {
-                    bottomSheetState.animateTo(ModalBottomSheetValue.Expanded)
-                }
-            }
-            HistorySideEffect.HideBottomSheet -> {
-                scope.launch {
-                    bottomSheetState.animateTo(ModalBottomSheetValue.Hidden)
-                }
-                appState.changeVisibilityBottomBar(true)
-            }
         }
     }
 
@@ -62,10 +45,13 @@ fun HistoryScreen(
         appState.dismissSnackbar()
     }
 
+    BackHandler {
+        activity.finish()
+    }
+
     HistoryScreenState(
         viewState = { viewState },
         onIntent = { viewModel.onIntent(it) },
-        bottomSheetState = bottomSheetState,
         rotation = { rotation.value }
     )
 }
