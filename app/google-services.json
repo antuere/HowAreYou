@@ -39,6 +39,14 @@
           }
         },
         {
+          "client_id": "506067010164-oqujka90439cmm2bosdff9rkc9fmpaop.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "antuere.how_are_you",
+            "certificate_hash": "0208b618bf49af76f188c06fdb2b41506f3e52a1"
+          }
+        },
+        {
           "client_id": "506067010164-f76kue9b8s6nolvlcj1050rpk9k4eaes.apps.googleusercontent.com",
           "client_type": 3
         }

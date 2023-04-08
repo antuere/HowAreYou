@@ -67,7 +67,6 @@ import javax.inject.Inject
 val LocalAppState = compositionLocalOf<AppState> { error("App state not set yet!") }
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-@OptIn(ExperimentalMaterial3Api::class)
 @AndroidEntryPoint
 class MainActivity : FragmentActivity() {
 
@@ -161,6 +160,7 @@ class MainActivity : FragmentActivity() {
                                 if (isEnabledPin && TimeUtility.isNeedLockApp(timeWhenAppClosed)) {
                                     navController.navigateToSecure()
                                 }
+                                timeWhenAppClosed = 0
                             }
                             if (event == Lifecycle.Event.ON_DESTROY) {
                                 unregisterReceiver(dateChangeReceiver)

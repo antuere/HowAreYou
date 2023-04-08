@@ -15,8 +15,8 @@ android {
 
     signingConfigs {
         create("release") {
-//            storeFile  = file("C:\\Users\\AntuE\\AndroidStudioProjects\\HowAreYou\\keyStore\\keyStoreApp.jks")
-            storeFile = file("C:\\Users\\user\\AndroidStudioProjects\\HowAreYou\\keyStoreAppModule.jks")
+            storeFile  = file("C:\\Users\\AntuE\\AndroidStudioProjects\\HowAreYou\\keyStore\\keyStoreApp.jks")
+//            storeFile = file("C:\\Users\\user\\AndroidStudioProjects\\HowAreYou\\keyStoreAppModule.jks")
             storePassword = "anton1730"
             keyAlias = "key0"
             keyPassword = "anton1730"
