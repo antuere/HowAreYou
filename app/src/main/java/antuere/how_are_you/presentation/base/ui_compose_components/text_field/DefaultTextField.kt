@@ -4,7 +4,10 @@ import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.*
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
@@ -24,7 +27,7 @@ fun DefaultTextField(
     placeHolder: String? = null,
     singleLine: Boolean = false,
     maxLength: Int = Int.MAX_VALUE,
-    maxLines: Int = 40,
+    maxLines: Int = 25,
     @StringRes toastTextId: Int? = null,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default,

@@ -107,8 +107,8 @@
     <!-- Settings screen -->
     <string name="settings_privacy_text">Privacy</string>
     <string name="settings_general_text">General</string>
-    <string name="sign_in_advice">For a better experience sign in.</string>
-    <string name="how_are_you_text">How are you? We hope you all right.</string>
+    <string name="sign_in_advice">For a better experience sign in</string>
+    <string name="how_are_you_text">How are you? We hope you all right</string>
     <string name="hello_user">Hello, dear</string>
     <string name="hello_user_plug">Hello, dear user</string>
     <string name="sign_in">Sign in</string>
@@ -160,7 +160,6 @@
     <string name="all_days_desc">Show all days</string>
     <string name="month_days_desc">Show days of this current month</string>
     <string name="week_days_desc">Show days of this current week</string>
-    <string name="date_picker_title">Select days</string>
     <string name="start_date_field">Start date</string>
     <string name="end_date_field">End date</string>
     <string name="show_selected_days">Show selected days</string>
@@ -210,7 +209,7 @@
     <string name="click_less" translatable="false">Click less</string>
     <string name="click_more" translatable="false">Click more</string>
     <string name="too_many_chars_default">Cannot be more characters</string>
-    <string name="dialog_sign_out_desc">All your data will be deleted on this device, to restore them, log in to your account again.</string>
+    <string name="dialog_sign_out_desc">All your data will be deleted on this device, to restore them, log in to your account again</string>
     <string name="dialog_delete_local_data_desc">When you sign out of your account, you can save existing recordings locally on your device. Save local day entries?</string>
 
 </resources>
