@@ -14,12 +14,14 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import antuere.domain.dto.helplines.Helpline
 import antuere.how_are_you.R
+import antuere.how_are_you.presentation.base.ui_compose_components.card.GradientCardWithOnClick
+import antuere.how_are_you.presentation.base.ui_theme.GradientDefaults
 import timber.log.Timber
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HelplineItem(
     helpline: Helpline,
@@ -33,7 +35,7 @@ fun HelplineItem(
         targetValue = if (isExpanded) 180f else 0f
     )
 
-    Card(
+    GradientCardWithOnClick(
         modifier = Modifier
             .fillMaxWidth(0.9F)
             .padding(vertical = dimensionResource(id = R.dimen.padding_normal_0))
@@ -46,6 +48,8 @@ fun HelplineItem(
             }
         },
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.secondaryContainer),
+        elevation = CardDefaults.cardElevation(0.dp),
+        gradient = GradientDefaults.surface()
     ) {
         Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_1)))
         Row(

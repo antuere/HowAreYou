@@ -16,6 +16,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
+import antuere.how_are_you.presentation.base.ui_theme.GradientDefaults
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -26,12 +27,7 @@ fun GradientCardWithOnClick(
     colors: CardColors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
     elevation: CardElevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
     onClick: () -> Unit = {},
-    gradient: Brush = Brush.horizontalGradient(
-        listOf(
-            MaterialTheme.colorScheme.primaryContainer,
-            MaterialTheme.colorScheme.onPrimary,
-        )
-    ),
+    gradient: Brush = GradientDefaults.primary(),
     content: @Composable ColumnScope.() -> Unit,
 ) {
     val interactionSource = remember { MutableInteractionSource() }
@@ -63,15 +59,11 @@ fun GradientCardWithOnClick(
 @Composable
 fun GradientCard(
     modifier: Modifier = Modifier,
+    contentModifier: Modifier = Modifier,
     shape: Shape = MaterialTheme.shapes.large,
     colors: CardColors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
     elevation: CardElevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-    gradient: Brush = Brush.linearGradient(
-        listOf(
-            MaterialTheme.colorScheme.primaryContainer,
-            MaterialTheme.colorScheme.onPrimary,
-        )
-    ),
+    gradient: Brush = GradientDefaults.primary(),
     content: @Composable ColumnScope.() -> Unit,
 ) {
     ElevatedCard(
@@ -81,8 +73,7 @@ fun GradientCard(
         elevation = elevation,
     ) {
         Column(
-            modifier = Modifier
-                .fillMaxSize()
+            modifier = contentModifier
                 .background(gradient)
         ) {
             content.invoke(this)

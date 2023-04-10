@@ -30,12 +30,20 @@ fun SettingsScreen(
     val context = LocalContext.current
     val viewState by viewModel.collectAsState()
 
-    val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    val bottomSheetState = rememberModalBottomSheetState(
+        skipPartiallyExpanded = true,
+        confirmValueChange = {
+            if (it == SheetValue.Hidden) {
+                appState.changeVisibilityBottomBar(true)
+            }
+            true
+        }
+    )
 
     val launcher =
         rememberLauncherForActivityResult(contract = ActivityResultContracts.StartActivityForResult()) {}
 
-    BackHandler() {
+    BackHandler {
         fragmentActivity.finish()
     }
 
@@ -65,10 +73,10 @@ fun SettingsScreen(
             is SettingsSideEffect.BiometricNoneEnroll -> {
                 launcher.launch(sideEffect.enrollIntent)
             }
-            SettingsSideEffect.ShowBottomSheet -> {
+            SettingsSideEffect.HideNavBar -> {
                 appState.changeVisibilityBottomBar(false)
             }
-            SettingsSideEffect.HideBottomSheet -> {
+            SettingsSideEffect.ShowNavBar -> {
                 appState.changeVisibilityBottomBar(true)
             }
         }

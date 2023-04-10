@@ -12,7 +12,6 @@ core = "1.9.0"
 coroutine-core = "1.6.3"
 coroutine-android = "1.6.4"
 data-store = "1.1.0-dev01"
-date-picker = "0.9.0"
 dagger-hilt = "2.44"
 dagger-hilt-navigation = "1.0.0"
 dagger-hilt-compiler = "1.0.0"
@@ -72,7 +71,6 @@ landscapist-bom = { module = "com.github.skydoves:landscapist-bom", version.ref 
 landscapist-glide = { module = "com.github.skydoves:landscapist-glide" }
 landscapist-animation = { module = "com.github.skydoves:landscapist-animation" }
 shimmer = { module = "com.valentinilk.shimmer:compose-shimmer", version.ref = "shimmer" }
-datepicker = { module = "io.github.vanpra.compose-material-dialogs:datetime", version.ref = "date-picker" }
 
 # Dagger-Hilt
 google-hilt-android-core = { module = "com.google.dagger:hilt-android", version.ref = "dagger-hilt" }
@@ -112,7 +110,6 @@ androidx-navigation-compose = { module = "androidx.navigation:navigation-compose
 
 # Accompanist
 google-accompanist-navigation-anim = { module = "com.google.accompanist:accompanist-navigation-animation", version.ref = "accompanist" }
-google-accompanist-pager = { module = "com.google.accompanist:accompanist-pager", version.ref = "accompanist" }
 google-accompanist-pager-indicators = { module = "com.google.accompanist:accompanist-pager-indicators", version.ref = "accompanist" }
 google-accompanist-system-ui-controller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanist" }
 
@@ -182,7 +179,6 @@ compose = [
 ]
 accompanist = [
     "google.accompanist.navigation.anim",
-    "google.accompanist.pager",
     "google.accompanist.pager.indicators",
     "google.accompanist.system.ui.controller"
 ]

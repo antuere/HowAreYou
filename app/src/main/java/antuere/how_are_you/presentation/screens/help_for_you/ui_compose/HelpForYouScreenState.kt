@@ -1,7 +1,6 @@
 package antuere.how_are_you.presentation.screens.help_for_you.ui_compose
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -14,6 +13,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import antuere.how_are_you.R
 import antuere.how_are_you.presentation.base.ui_compose_components.card.CardWithIcons
+import antuere.how_are_you.presentation.base.ui_compose_components.card.GradientCard
+import antuere.how_are_you.presentation.base.ui_theme.GradientDefaults
 import antuere.how_are_you.presentation.screens.help_for_you.state.HelpForYouIntent
 import antuere.how_are_you.presentation.screens.help_for_you.state.HelpForYouState
 import antuere.how_are_you.util.extensions.paddingTopBar
@@ -31,7 +32,7 @@ fun HelpForYouScreenState(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Card(
+        GradientCard(
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(0.4F)
@@ -39,6 +40,7 @@ fun HelpForYouScreenState(
             shape = MaterialTheme.shapes.large,
             colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
             elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+            gradient = GradientDefaults.primaryTriple()
         ) {
             Column(
                 modifier = Modifier

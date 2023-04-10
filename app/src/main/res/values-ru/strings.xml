@@ -156,4 +156,6 @@
     <string name="sign_out">Выйти</string>
     <string name="create_a_pin_code">Создайте PIN-код</string>
     <string name="show_worried_dialog_title">Показывать беспокоющийся диалог</string>
+
+    <string name="datePicker_confirm">Показать дни</string>
 </resources>

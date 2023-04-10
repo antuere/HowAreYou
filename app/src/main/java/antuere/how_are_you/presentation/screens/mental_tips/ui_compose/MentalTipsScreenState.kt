@@ -1,6 +1,9 @@
 package antuere.how_are_you.presentation.screens.mental_tips.ui_compose
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -13,10 +16,10 @@ import antuere.how_are_you.presentation.base.ui_compose_components.placeholder.F
 import antuere.how_are_you.presentation.screens.mental_tips.state.MentalTipsState
 import antuere.how_are_you.presentation.screens.mental_tips.ui_compose.components.MentalTipItem
 import antuere.how_are_you.util.extensions.paddingTopBar
-import com.google.accompanist.pager.*
+import com.google.accompanist.pager.HorizontalPagerIndicator
 import kotlin.math.absoluteValue
 
-@OptIn(ExperimentalPagerApi::class)
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun MentalTipsScreenState(
     viewState: () -> MentalTipsState,
@@ -37,14 +40,17 @@ fun MentalTipsScreenState(
                     modifier = Modifier
                         .fillMaxWidth()
                         .wrapContentHeight(),
-                    count = state.listMentalTips.size,
+                    pageCount = state.listMentalTips.size,
                     state = pagerState,
                 ) { page ->
                     val mentalTip = state.listMentalTips[page]
                     MentalTipItem(
                         modifier = Modifier
                             .graphicsLayer {
-                                val pageOffset = calculateCurrentOffsetForPage(page).absoluteValue
+                                val pageOffset = (
+                                        (pagerState.currentPage - page) + pagerState
+                                            .currentPageOffsetFraction
+                                        ).absoluteValue
                                 lerp(
                                     start = 0.85f,
                                     stop = 1f,
@@ -71,6 +77,7 @@ fun MentalTipsScreenState(
                         .align(Alignment.CenterHorizontally)
                         .padding(bottom = dimensionResource(id = R.dimen.padding_normal_0)),
                     pagerState = pagerState,
+                    pageCount = state.listMentalTips.size,
                     activeColor = MaterialTheme.colorScheme.primaryContainer
                 )
             }

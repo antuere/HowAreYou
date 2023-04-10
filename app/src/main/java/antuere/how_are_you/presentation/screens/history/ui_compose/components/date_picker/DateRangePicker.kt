@@ -64,7 +64,10 @@ fun DefaultDateRangePicker(
                         },
                         enabled = state.selectedEndDateMillis != null
                     ) {
-                        Text(text = "Confirm")
+                        Text(
+                            text = stringResource(R.string.datePicker_confirm),
+                            color = if (state.selectedEndDateMillis != null) MaterialTheme.colorScheme.onBackground else MaterialTheme.colorScheme.surfaceVariant
+                        )
                     }
                 }
 
@@ -72,6 +75,7 @@ fun DefaultDateRangePicker(
                     state = state,
                     modifier = Modifier.weight(1f),
                     showModeToggle = false,
+                    dateValidator = { it <= System.currentTimeMillis() },
                     headline = { CustomDateRangePickerHeadline(state = state) }
                 )
             }
@@ -123,13 +127,19 @@ private fun CustomDatePickerHeadline(
     val formatterStartDate: String? = if (state.selectedStartDateMillis == null) {
         null
     } else {
-        TimeUtility.formatDate(date = Date(state.selectedStartDateMillis!!), format = TimeFormat.MonthNamed)
+        TimeUtility.formatDate(
+            date = Date(state.selectedStartDateMillis!!),
+            format = TimeFormat.MonthNamed
+        )
     }
 
     val formatterEndDate: String? = if (state.selectedEndDateMillis == null) {
         null
     } else {
-        TimeUtility.formatDate(date = Date(state.selectedEndDateMillis!!), format = TimeFormat.MonthNamed)
+        TimeUtility.formatDate(
+            date = Date(state.selectedEndDateMillis!!),
+            format = TimeFormat.MonthNamed
+        )
     }
 
     Row(

@@ -173,6 +173,7 @@
     <string name="no_days_week">There are no entries yet for the current week, let\'s fix it!</string>
     <string name="no_days_month">There are no entries yet for the current month, let\'s fix it!</string>
     <string name="no_days_filter">There are no entries for the selected dates</string>
+    <string name="datePicker_confirm">Confirm</string>
 
     <!-- Wishes for users -->
     <string name="wish_for_users_test">We hope you had another great day, so enjoy! We are waiting for you tomorrow</string>

@@ -14,6 +14,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import antuere.domain.dto.helplines.SupportedCountry
 import antuere.how_are_you.R
+import antuere.how_are_you.presentation.base.ui_theme.GradientDefaults
 import antuere.how_are_you.util.extensions.getName
 import antuere.how_are_you.util.extensions.upperCaseFirstCharacter
 
@@ -60,7 +61,7 @@ fun CountrySelectionMenu(
         )
 
         ExposedDropdownMenu(
-            modifier = Modifier.background(MaterialTheme.colorScheme.secondaryContainer),
+            modifier = Modifier.background(GradientDefaults.secondary()),
             expanded = isExpanded,
             onDismissRequest = { onExpandedChange() },
         ) {

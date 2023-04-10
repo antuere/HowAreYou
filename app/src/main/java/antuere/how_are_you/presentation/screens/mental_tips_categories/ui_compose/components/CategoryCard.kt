@@ -1,19 +1,16 @@
 package antuere.how_are_you.presentation.screens.mental_tips_categories.ui_compose.components
 
-import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ChevronRight
-import androidx.compose.material3.*
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
@@ -21,9 +18,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import antuere.domain.dto.mental_tips.MentalTipsCategory
 import antuere.how_are_you.R
+import antuere.how_are_you.presentation.base.ui_compose_components.card.GradientCardWithOnClick
 import timber.log.Timber
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CategoryCard(
     modifier: Modifier = Modifier,
@@ -31,20 +28,13 @@ fun CategoryCard(
     onClick: (String) -> Unit,
 ) {
     Timber.i("MVI error test : enter in category card")
-    val interactionSource = remember { MutableInteractionSource() }
-    val isPressed by interactionSource.collectIsPressedAsState()
-    val scaleCard by animateFloatAsState(if (isPressed) 0.99f else 1f)
 
-    ElevatedCard(
-        modifier = modifier.graphicsLayer {
-            scaleX = scaleCard
-            scaleY = scaleCard
-        },
+    GradientCardWithOnClick(
+        modifier = modifier,
         onClick = { onClick(category.categoryName.name) },
         shape = MaterialTheme.shapes.large,
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-        interactionSource = interactionSource
     ) {
         Row(
             modifier = Modifier.fillMaxSize(),

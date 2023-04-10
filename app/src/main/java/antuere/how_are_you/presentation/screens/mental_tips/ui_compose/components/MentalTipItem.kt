@@ -2,7 +2,6 @@ package antuere.how_are_you.presentation.screens.mental_tips.ui_compose.componen
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -19,6 +18,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import antuere.domain.dto.mental_tips.MentalTip
 import antuere.how_are_you.R
+import antuere.how_are_you.presentation.base.ui_compose_components.card.GradientCard
+import antuere.how_are_you.presentation.base.ui_theme.GradientDefaults
 import antuere.how_are_you.presentation.base.ui_theme.PlayfairDisplay
 
 @Composable
@@ -26,11 +27,12 @@ fun MentalTipItem(
     modifier: Modifier = Modifier,
     mentalTip: MentalTip,
 ) {
-    Card(
+    GradientCard(
         modifier = modifier,
         shape = MaterialTheme.shapes.large,
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
+        gradient = GradientDefaults.primaryTriple()
     ) {
         Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_3)))
         Image(

@@ -7,7 +7,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.dimensionResource
@@ -19,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import antuere.how_are_you.R
 import antuere.how_are_you.presentation.base.ui_compose_components.card.GradientCard
+import antuere.how_are_you.presentation.base.ui_theme.GradientDefaults
 
 @Composable
 fun CardWithQuote(
@@ -35,26 +35,14 @@ fun CardWithQuote(
         colors = colors,
         shape = shape,
         elevation = elevation,
-        gradient = Brush.linearGradient(
-            listOf(
-                MaterialTheme.colorScheme.primaryContainer,
-                MaterialTheme.colorScheme.onPrimary,
-            )
-        )
+        gradient = GradientDefaults.primary()
     ) {
         Row(
             modifier = Modifier
                 .weight(0.3F)
                 .fillMaxSize()
                 .clip(shape = MaterialTheme.shapes.large)
-                .background(
-                    Brush.linearGradient(
-                        listOf(
-                            MaterialTheme.colorScheme.onPrimary,
-                            MaterialTheme.colorScheme.secondaryContainer,
-                        )
-                    )
-                ),
+                .background(GradientDefaults.secondary()),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.spacer_height_2)))

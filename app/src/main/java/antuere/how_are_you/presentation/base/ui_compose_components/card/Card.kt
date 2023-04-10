@@ -10,7 +10,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.layout.ContentScale
@@ -21,6 +20,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import antuere.how_are_you.R
+import antuere.how_are_you.presentation.base.ui_theme.GradientDefaults
 
 @Composable
 fun CardWithFab(
@@ -70,26 +70,14 @@ fun CardWithImage(
         shape = shape,
         colors = colors,
         elevation = elevation,
-        gradient = Brush.linearGradient(
-            listOf(
-                MaterialTheme.colorScheme.primaryContainer,
-                MaterialTheme.colorScheme.onPrimary,
-            )
-        )
+        gradient = GradientDefaults.primary()
     ) {
         Box(
             modifier = Modifier
                 .weight(0.68F)
                 .fillMaxSize()
                 .clip(shape = MaterialTheme.shapes.large)
-                .background(
-                    Brush.linearGradient(
-                        listOf(
-                            MaterialTheme.colorScheme.onPrimary,
-                            MaterialTheme.colorScheme.secondaryContainer,
-                        )
-                    )
-                ),
+                .background(GradientDefaults.secondary()),
             contentAlignment = Alignment.Center
         ) {
             Image(
@@ -110,7 +98,6 @@ fun CardWithImage(
                 text = titleText,
                 modifier = Modifier
                     .align(textAlignment),
-//                    .padding(horizontal = dimensionResource(R.dimen.padding_small_2))
                 textAlign = TextAlign.Center,
                 fontSize = dimensionResource(id = R.dimen.textSize_normal_0).value.sp,
                 color = MaterialTheme.colorScheme.onPrimaryContainer
@@ -147,7 +134,7 @@ fun CardWithIcons(
             Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.spacer_height_2)))
             leadingIconRes?.let { iconRes ->
                 Icon(
-                    modifier = Modifier.size(38.dp),
+                    modifier = Modifier.size(35.dp),
                     painter = painterResource(id = iconRes),
                     contentDescription = leadingIconDescReS?.let { stringResource(id = it) },
                     tint = Color.Unspecified

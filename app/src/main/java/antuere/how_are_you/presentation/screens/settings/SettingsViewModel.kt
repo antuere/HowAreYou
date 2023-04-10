@@ -84,7 +84,7 @@ class SettingsViewModel @Inject constructor(
                 updateState { state.copy(isCheckedPin = intent.isChecked) }
                 if (intent.isChecked) {
                     updateState { state.copy(isShowBottomSheet = true) }
-                    sideEffect(SettingsSideEffect.ShowBottomSheet)
+                    sideEffect(SettingsSideEffect.HideNavBar)
                 } else {
                     viewModelScope.launch(Dispatchers.IO) {
                         settingsRepository.resetPinCode()
@@ -126,7 +126,7 @@ class SettingsViewModel @Inject constructor(
                 updateState {
                     state.copy(isCheckedPin = intent.isPinCreated, isShowBottomSheet = false)
                 }
-                sideEffect(SettingsSideEffect.HideBottomSheet)
+                sideEffect(SettingsSideEffect.ShowNavBar)
                 if (intent.isPinCreated) {
                     viewModelScope.launch(Dispatchers.IO) {
                         settingsRepository.savePinSetting(true)
