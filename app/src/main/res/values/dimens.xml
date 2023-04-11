@@ -47,7 +47,8 @@
     <dimen name="textSize_normal_1">18sp</dimen>
     <dimen name="textSize_normal_2">20sp</dimen>
     <dimen name="textSize_big_0">24sp</dimen>
-    <dimen name="textSize_big_1">32sp</dimen>
+    <dimen name="textSize_big_1">26sp</dimen>
+    <dimen name="textSize_big_2">32sp</dimen>
 
     <dimen name="textLine_height_default">16sp</dimen>
 

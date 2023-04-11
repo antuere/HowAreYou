@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.VisualTransformation
 import antuere.how_are_you.R
 import antuere.how_are_you.util.isKeyboardVisible
@@ -22,6 +23,7 @@ import antuere.how_are_you.util.isKeyboardVisible
 fun DefaultTextField(
     modifier: Modifier = Modifier,
     value: String,
+    enabled: Boolean = true,
     onValueChange: (String) -> Unit,
     label: String,
     placeHolder: String? = null,
@@ -77,12 +79,13 @@ fun DefaultTextField(
             unfocusedContainerColor = MaterialTheme.colorScheme.background
         ),
         shape = MaterialTheme.shapes.large,
-        keyboardOptions = keyboardOptions,
+        keyboardOptions = keyboardOptions.copy(capitalization = KeyboardCapitalization.Sentences),
         keyboardActions = keyboardActions,
         singleLine = singleLine,
         visualTransformation = visualTransformation,
         trailingIcon = trailingIcon,
         leadingIcon = leadingIcon,
-        maxLines = maxLines
+        maxLines = maxLines,
+        enabled = enabled
     )
 }

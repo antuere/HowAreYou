@@ -1,6 +1,7 @@
 package antuere.how_are_you.presentation.screens.history.ui_compose
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -14,17 +15,22 @@ import antuere.how_are_you.presentation.screens.history.state.HistoryIntent
 import antuere.how_are_you.presentation.screens.history.state.HistoryState
 import antuere.how_are_you.presentation.screens.history.ui_compose.components.HistoryHeaderText
 import antuere.how_are_you.presentation.screens.history.ui_compose.components.HistoryScreenTopBar
+import antuere.how_are_you.presentation.screens.history.ui_compose.components.HistoryScreenTopBarWithAction
 import antuere.how_are_you.presentation.screens.history.ui_compose.components.ToggleBtnGroup
 import antuere.how_are_you.presentation.screens.history.ui_compose.components.date_picker.DefaultDateRangePicker
 import antuere.how_are_you.util.extensions.paddingBotAndTopBar
+import timber.log.Timber
 
 
 @Composable
 fun HistoryScreenState(
     viewState: () -> HistoryState,
+    lazyGridState: () -> LazyGridState,
     onIntent: (HistoryIntent) -> Unit,
     rotation: () -> Float,
+    isShowShadow: () -> Boolean,
 ) {
+    Timber.i("BACKTRACKING ERROR WTF : enter in history screen state}")
     var isShowDatePicker by remember { mutableStateOf(false) }
 
     if (isShowDatePicker) {
@@ -41,6 +47,7 @@ fun HistoryScreenState(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        Timber.i("BACKTRACKING ERROR WTF : enter in history screen column}")
         when (val state = viewState()) {
             is HistoryState.Empty.FromFilter -> {
                 HistoryScreenTopBarWithAction(filterBtnClicked = {
@@ -95,14 +102,18 @@ fun HistoryScreenState(
                 )
 
                 HistoryHeaderText(
-                    rotation = rotation, headerText = state.textHeadline.asString()
+                    rotation = rotation,
+                    headerText = state.textHeadline.asString(),
+                    isShowShadow = isShowShadow
                 )
 
-                DaysGrid(cellsAmount = state.cellsAmountForGrid,
+                DaysGrid(
+                    cellsAmount = state.cellsAmountForGrid,
                     days = state.dayList,
+                    lazyGridState = lazyGridState(),
                     onClick = { onIntent(HistoryIntent.DayClicked(it)) },
-                    onLongClick = { onIntent(HistoryIntent.DayLongClicked(it)) })
-
+                    onLongClick = { onIntent(HistoryIntent.DayLongClicked(it)) }
+                )
             }
             is HistoryState.Loaded.FilterSelected -> {
                 HistoryScreenTopBarWithAction(filterBtnClicked = {
@@ -120,13 +131,18 @@ fun HistoryScreenState(
                 )
 
                 HistoryHeaderText(
-                    rotation = rotation, headerText = state.textHeadline.asString()
+                    rotation = rotation,
+                    headerText = state.textHeadline.asString(),
+                    isShowShadow = isShowShadow
                 )
 
-                DaysGrid(cellsAmount = state.cellsAmountForGrid,
+                DaysGrid(
+                    cellsAmount = state.cellsAmountForGrid,
                     days = state.dayList,
+                    lazyGridState = lazyGridState(),
                     onClick = { onIntent(HistoryIntent.DayClicked(it)) },
-                    onLongClick = { onIntent(HistoryIntent.DayLongClicked(it)) })
+                    onLongClick = { onIntent(HistoryIntent.DayLongClicked(it)) }
+                )
             }
 
             is HistoryState.LoadingShimmer -> {

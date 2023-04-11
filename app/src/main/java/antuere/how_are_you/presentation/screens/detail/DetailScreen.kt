@@ -23,6 +23,8 @@ fun DetailScreen(
     val rotation = remember { Animatable(initialValue = 0F) }
     val viewState by viewModel.collectAsState()
 
+    appState.DisableBackBtnWhileTransitionAnimate()
+
     viewModel.collectSideEffect { sideEffect ->
         when (sideEffect) {
             DetailSideEffect.AnimateFavoriteBtn -> {

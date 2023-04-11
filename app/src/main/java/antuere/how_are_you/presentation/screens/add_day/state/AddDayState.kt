@@ -9,4 +9,5 @@ data class AddDayState(
         antuere.data.R.drawable.smile_happy,
         antuere.data.R.drawable.smile_very_happy
     ),
+    var isEnabledTextField : Boolean = true
 )

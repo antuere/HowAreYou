@@ -5,10 +5,7 @@ import android.net.Uri
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -18,6 +15,7 @@ import antuere.how_are_you.presentation.base.ui_compose_components.top_bar.AppBa
 import antuere.how_are_you.presentation.screens.helplines.state.HelplinesSideEffect
 import antuere.how_are_you.presentation.screens.helplines.ui_compose.HelplinesScreenState
 import antuere.how_are_you.util.extensions.animateScrollAndCentralize
+import antuere.how_are_you.util.extensions.isScrollInInitialState
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.compose.collectAsState
@@ -36,6 +34,14 @@ fun HelplinesScreen(
     val scope = rememberCoroutineScope()
 
     val viewState by viewModel.collectAsState()
+
+    val isShowShadowAboveList by remember {
+        derivedStateOf {
+            !lazyListState.isScrollInInitialState()
+        }
+    }
+
+    appState.DisableBackBtnWhileTransitionAnimate()
 
     viewModel.collectSideEffect { sideEffect ->
         when (sideEffect) {
@@ -79,6 +85,7 @@ fun HelplinesScreen(
     HelplinesScreenState(
         lazyListState = { lazyListState },
         viewState = { viewState },
-        onIntent = { viewModel.onIntent(it) }
+        onIntent = { viewModel.onIntent(it) },
+        isShowShadow = { isShowShadowAboveList }
     )
 }

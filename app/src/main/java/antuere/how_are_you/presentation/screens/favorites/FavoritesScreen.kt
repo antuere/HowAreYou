@@ -24,6 +24,7 @@ fun FavoritesScreen(
     val appState = LocalAppState.current
     val viewState by viewModel.collectAsState()
 
+    appState.DisableBackBtnWhileTransitionAnimate()
     LaunchedEffect(true) {
         appState.updateAppBar(
             AppBarState(

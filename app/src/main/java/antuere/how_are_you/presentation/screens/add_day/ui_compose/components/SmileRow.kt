@@ -14,12 +14,11 @@ import kotlinx.collections.immutable.ImmutableList
 
 @Composable
 fun SmileRow(
-    modifier: Modifier = Modifier,
     smileImages: ImmutableList<Int>,
     onClick: (Int) -> Unit,
 ) {
     Row(
-        modifier = modifier
+        modifier = Modifier
             .padding(horizontal = dimensionResource(id = R.dimen.padding_normal_3))
     ) {
         smileImages.forEach { imageRes ->

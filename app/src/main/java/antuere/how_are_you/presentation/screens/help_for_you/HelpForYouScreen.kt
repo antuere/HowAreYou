@@ -32,6 +32,7 @@ fun HelpForYouScreen(
     val uriHandler = LocalUriHandler.current
     val viewState by viewModel.collectAsState()
 
+    appState.DisableBackBtnWhileTransitionAnimate()
     LaunchedEffect(true) {
         appState.updateAppBar(
             AppBarState(

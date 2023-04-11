@@ -6,6 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.hilt.navigation.compose.hiltViewModel
 import antuere.how_are_you.LocalAppState
 import antuere.how_are_you.R
@@ -24,14 +25,19 @@ fun SignUpEmailScreen(
     Timber.i("MVI error test : enter in sign Up screen")
     val context = LocalContext.current
     val appState = LocalAppState.current
+    val focusManager = LocalFocusManager.current
     val viewState by viewModel.collectAsState()
 
+    appState.DisableBackBtnWhileTransitionAnimate()
     LaunchedEffect(true) {
         appState.updateAppBar(
             AppBarState(
                 titleId = R.string.sign_up,
                 navigationIcon = Icons.Filled.ArrowBack,
-                onClickNavigationBtn = appState::navigateUp,
+                onClickNavigationBtn = {
+                    focusManager.clearFocus()
+                    appState.navigateUp()
+                },
                 isVisibleBottomBar = false
             ),
         )

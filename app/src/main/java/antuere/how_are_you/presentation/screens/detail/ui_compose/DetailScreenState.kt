@@ -2,6 +2,8 @@ package antuere.how_are_you.presentation.screens.detail.ui_compose
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -11,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import antuere.how_are_you.R
 import antuere.how_are_you.util.extensions.paddingTopBar
@@ -26,19 +29,18 @@ fun DetailScreenState(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .paddingTopBar(),
-        verticalArrangement = Arrangement.Center,
+            .paddingTopBar()
+            .verticalScroll(rememberScrollState()),
+        verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Timber.i("MVI error test : enter in detail day scope ")
         if (isLoading) {
             CircularProgressIndicator()
         } else {
-            Spacer(modifier = Modifier.weight(0.05F))
+            Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_1)))
             Image(
-                modifier = Modifier
-                    .fillMaxSize(0.5F)
-                    .weight(0.2F),
+                modifier = Modifier.size(100.dp),
                 painter = painterResource(id = daySmileImage),
                 colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onBackground),
                 contentDescription = null
@@ -49,11 +51,10 @@ fun DetailScreenState(
                 text = dateString,
                 fontSize = dimensionResource(id = R.dimen.textSize_big_1).value.sp
             )
-            Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_1)))
+            Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_2)))
 
             Text(
                 modifier = Modifier
-                    .weight(0.7F)
                     .padding(horizontal = dimensionResource(id = R.dimen.padding_normal_2)),
                 text = dayText,
                 fontSize = dimensionResource(id = R.dimen.textSize_big_0).value.sp

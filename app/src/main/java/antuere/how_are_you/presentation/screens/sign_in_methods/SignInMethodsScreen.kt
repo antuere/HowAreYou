@@ -40,6 +40,7 @@ fun SignInMethodsScreen(
             }
         }
 
+    appState.DisableBackBtnWhileTransitionAnimate()
     LaunchedEffect(true) {
         appState.updateAppBar(
             AppBarState(

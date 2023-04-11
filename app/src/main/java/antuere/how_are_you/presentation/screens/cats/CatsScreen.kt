@@ -43,6 +43,8 @@ fun CatsScreen(
         }
     )
 
+    appState.DisableBackBtnWhileTransitionAnimate()
+
     LaunchedEffect(true) {
         appState.updateAppBar(
             AppBarState(

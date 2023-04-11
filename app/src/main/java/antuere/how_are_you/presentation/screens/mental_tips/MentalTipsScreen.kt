@@ -20,6 +20,7 @@ fun MentalTipsScreen(
     val appState = LocalAppState.current
     val viewState by viewModel.collectAsState()
 
+    appState.DisableBackBtnWhileTransitionAnimate()
     LaunchedEffect(viewState.appBarTitleId) {
         appState.updateAppBar(
             AppBarState(

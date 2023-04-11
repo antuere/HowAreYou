@@ -1,5 +1,6 @@
 package antuere.how_are_you.presentation.base.app_state
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarDuration
@@ -8,6 +9,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.hapticfeedback.HapticFeedback
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.navigation.NavHostController
+import antuere.domain.util.Constants
 import antuere.how_are_you.presentation.base.ui_compose_components.dialog.UIDialog
 import antuere.how_are_you.presentation.base.ui_compose_components.dialog.UIDialogListener
 import antuere.how_are_you.presentation.base.ui_compose_components.top_bar.AppBarState
@@ -19,9 +21,10 @@ import kotlinx.coroutines.*
 class AppStateImpl(
     val navController: NavHostController,
     val snackbarHostState: SnackbarHostState,
-    private val snackbarScope: CoroutineScope,
+    private val scope: CoroutineScope,
     val dialogListener: UIDialogListener,
-    var appBarState: MutableState<AppBarState>,
+    val appBarState: MutableState<AppBarState>,
+    private val isDisableBackHandler: MutableState<Boolean>,
 ) : AppState {
 
     override fun showDialog(dialog: UIDialog) {
@@ -31,7 +34,7 @@ class AppStateImpl(
     override fun showSnackbar(message: String, duration: Long) {
         val outerScope = CoroutineScope(Dispatchers.Default)
         outerScope.launch {
-            val job = snackbarScope.launch {
+            val job = scope.launch {
                 snackbarHostState.showSnackbar(
                     message = message,
                     duration = SnackbarDuration.Indefinite
@@ -63,7 +66,9 @@ class AppStateImpl(
     }
 
     override fun navigateUp() {
-        navController.navigateUp()
+        if (!isDisableBackHandler.value) {
+            navController.navigateUp()
+        }
     }
 
     @Composable
@@ -89,6 +94,19 @@ class AppStateImpl(
             )
         }
     }
+
+    @Composable
+    override fun DisableBackBtnWhileTransitionAnimate() {
+        LaunchedEffect(Unit) {
+            isDisableBackHandler.value = true
+            delay(Constants.ANIM_DEFAULT_DURATION.toLong())
+            isDisableBackHandler.value = false
+        }
+
+        BackHandler(enabled = isDisableBackHandler.value) {
+            // Disable back handler while transition animation not finish
+        }
+    }
 }
 
 @OptIn(ExperimentalAnimationApi::class)
@@ -96,19 +114,21 @@ class AppStateImpl(
 fun rememberAppState(
     navController: NavHostController = rememberAnimatedNavController(),
     snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
-    snackbarScope: CoroutineScope = rememberCoroutineScope(),
+    scope: CoroutineScope = rememberCoroutineScope(),
     dialogListener: UIDialogListener = remember {
         UIDialogListener()
     },
     appBarState: MutableState<AppBarState> = remember {
         mutableStateOf(AppBarState())
     },
+    isDisableBackHandler: MutableState<Boolean> = remember { mutableStateOf(true) },
 ) = remember {
     AppStateImpl(
         navController = navController,
         snackbarHostState = snackbarHostState,
-        snackbarScope = snackbarScope,
+        scope = scope,
         appBarState = appBarState,
-        dialogListener = dialogListener
+        dialogListener = dialogListener,
+        isDisableBackHandler = isDisableBackHandler
     )
 }

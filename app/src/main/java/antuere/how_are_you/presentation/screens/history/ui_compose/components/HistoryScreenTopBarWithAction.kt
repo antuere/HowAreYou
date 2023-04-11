@@ -1,4 +1,4 @@
-package antuere.how_are_you.presentation.screens.history.ui_compose
+package antuere.how_are_you.presentation.screens.history.ui_compose.components
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.interaction.MutableInteractionSource

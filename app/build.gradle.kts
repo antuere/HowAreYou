@@ -27,8 +27,8 @@ android {
         applicationId = "antuere.how_are_you"
         minSdk = 24
         targetSdk = 33
-        versionCode = 20 // versionName 20 - 0.7.0
-        versionName = "0.7.0"
+        versionCode = 21 // versionName 21 - 0.7.1
+        versionName = "0.7.1"
 
         testInstrumentationRunnerArguments["androidx.benchmark.suppressErrors"] = "EMULATOR"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"

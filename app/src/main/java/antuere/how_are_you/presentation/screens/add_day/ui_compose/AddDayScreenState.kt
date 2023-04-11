@@ -3,7 +3,6 @@ package antuere.how_are_you.presentation.screens.add_day.ui_compose
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.relocation.BringIntoViewRequester
-import androidx.compose.foundation.relocation.bringIntoViewRequester
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
@@ -45,16 +44,16 @@ fun AddDayScreenState(
         Spacer(modifier = Modifier.weight(0.1F))
         Text(
             text = stringResource(id = R.string.how_are_you_today),
-            fontSize = dimensionResource(id = R.dimen.textSize_big_1).value.sp,
+            fontSize = dimensionResource(id = R.dimen.textSize_big_0).value.sp,
             fontFamily = PlayfairDisplay
         )
-        Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_8)))
+        Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_7)))
 
         DefaultTextField(
             modifier = Modifier
                 .padding(horizontal = dimensionResource(id = R.dimen.padding_normal_2))
                 .fillMaxWidth()
-                .weight(0.7F)
+                .weight(0.85F)
                 .bringIntoViewForFocused(
                     bringIntoViewRequester = bringIntoViewRequester,
                     scope = scope
@@ -63,17 +62,14 @@ fun AddDayScreenState(
             value = viewState().dayDesc,
             onValueChange = { onIntent(AddDayIntent.DayDescChanged(it)) },
             maxLength = 1000,
+            enabled = viewState().isEnabledTextField
         )
-        Spacer(
-            modifier = Modifier
-                .weight(0.2F)
-        )
+        Spacer(modifier = Modifier.weight(0.15F))
 
         SmileRow(
-            modifier = Modifier.bringIntoViewRequester(bringIntoViewRequester),
             smileImages = viewState().smileImages.toImmutableList(),
             onClick = { onIntent(AddDayIntent.SmileClicked(it)) })
 
-        Spacer(modifier = Modifier.weight(0.25F))
+        Spacer(modifier = Modifier.weight(0.15F))
     }
 }
