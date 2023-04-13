@@ -24,7 +24,6 @@ import antuere.how_are_you.presentation.screens.reset_password.state.ResetPasswo
 import antuere.how_are_you.presentation.screens.reset_password.state.ResetPasswordState
 import antuere.how_are_you.util.extensions.bringIntoViewForFocused
 import antuere.how_are_you.util.extensions.paddingTopBar
-import timber.log.Timber
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -32,7 +31,7 @@ fun ResetPasswordScreenState(
     viewState: () -> ResetPasswordState,
     onIntent: (ResetPasswordIntent) -> Unit,
 ) {
-    Timber.i("MVI error test : enter in reset password screen state")
+    
     val bringIntoViewRequester = BringIntoViewRequester()
     val scope = rememberCoroutineScope()
     val focusManager = LocalFocusManager.current

@@ -56,4 +56,3 @@ fun LazyGridState.isScrollInInitialState(): Boolean =
 fun LazyListState.isScrollInInitialState(): Boolean =
     firstVisibleItemIndex == 0 && firstVisibleItemScrollOffset == 0
 
-

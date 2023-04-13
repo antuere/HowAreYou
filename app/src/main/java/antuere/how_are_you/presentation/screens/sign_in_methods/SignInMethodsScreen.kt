@@ -19,15 +19,12 @@ import antuere.how_are_you.presentation.screens.sign_in_methods.ui_compose.SignI
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
-import timber.log.Timber
 
 @Composable
 fun SignInMethodsScreen(
     onNavigateSignInEmail: () -> Unit,
     viewModel: SignInMethodsViewModel = hiltViewModel(),
 ) {
-    Timber.i("MVI error test : composed in sign in methods screen")
-
     val appState = LocalAppState.current
     val context = LocalContext.current
     val viewState by viewModel.collectAsState()

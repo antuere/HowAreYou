@@ -15,7 +15,6 @@ import antuere.how_are_you.presentation.screens.secure_entry.ui_compose.SecureEn
 import antuere.how_are_you.util.extensions.findFragmentActivity
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
-import timber.log.Timber
 
 
 @Composable
@@ -23,8 +22,6 @@ fun SecureEntryScreen(
     onNavigateHomeScreen: () -> Unit,
     viewModel: SecureEntryViewModel = hiltViewModel(),
 ) {
-    Timber.i("MVI error test : enter in secure entry screen")
-
     val hapticFeedback = LocalHapticFeedback.current
     val appState = LocalAppState.current
     val fragmentActivity = LocalContext.current.findFragmentActivity()

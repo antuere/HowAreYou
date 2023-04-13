@@ -16,7 +16,6 @@ import antuere.how_are_you.presentation.screens.settings.ui_compose.SettingsScre
 import antuere.how_are_you.util.extensions.findFragmentActivity
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
-import timber.log.Timber
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -24,7 +23,6 @@ fun SettingsScreen(
     onNavigateSignIn: () -> Unit,
     viewModel: SettingsViewModel = hiltViewModel(),
 ) {
-    Timber.i("MVI error test : composed in settings screen")
     val appState = LocalAppState.current
     val fragmentActivity = LocalContext.current.findFragmentActivity()
     val context = LocalContext.current

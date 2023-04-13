@@ -26,12 +26,10 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 import antuere.how_are_you.R
 import antuere.how_are_you.presentation.base.navigation.Screen
-import timber.log.Timber
 
 @Composable
 fun DefaultBottomNavBar(navController: NavController, isVisible: Boolean) {
     if (isVisible) {
-        Timber.i("MVI error test : we in bottom bar compose when visible")
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentDestination = navBackStackEntry?.destination
 

@@ -14,7 +14,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import antuere.how_are_you.R
-import timber.log.Timber
 
 @Composable
 fun NumericKeypad(
@@ -23,13 +22,10 @@ fun NumericKeypad(
     isShowBiometricBtn: Boolean = false,
     onClickBiometric: () -> Unit = {},
 ) {
-    Timber.i("MVI error test : composed in numeric pad")
-
     Column(
         modifier = Modifier
             .padding(horizontal = dimensionResource(id = R.dimen.padding_normal_1))
     ) {
-        Timber.i("MVI error test : draw numeric keypad")
         val numbersList = listOf(
             "1",
             "2",

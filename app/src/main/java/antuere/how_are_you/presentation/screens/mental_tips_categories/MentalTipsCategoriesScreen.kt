@@ -13,14 +13,12 @@ import antuere.how_are_you.presentation.screens.mental_tips_categories.state.Men
 import antuere.how_are_you.presentation.screens.mental_tips_categories.ui_compose.MentalTipsCategoriesScreenState
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
-import timber.log.Timber
 
 @Composable
 fun MentalTipsCategoriesScreen(
     onNavigateToMentalTips: (String) -> Unit,
     viewModel: MentalTipsCategoriesViewModel = hiltViewModel(),
 ) {
-    Timber.i("MVI error test : enter in mental tips categories screen")
     val appState = LocalAppState.current
     val viewState by viewModel.collectAsState()
 

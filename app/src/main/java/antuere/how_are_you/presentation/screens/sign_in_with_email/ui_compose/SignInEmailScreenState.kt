@@ -28,7 +28,6 @@ import antuere.how_are_you.presentation.screens.sign_in_with_email.state.SignInE
 import antuere.how_are_you.presentation.screens.sign_in_with_email.state.SignInEmailState
 import antuere.how_are_you.util.extensions.bringIntoViewForFocused
 import antuere.how_are_you.util.extensions.paddingTopBar
-import timber.log.Timber
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -36,7 +35,7 @@ fun SignInEmailScreenState(
     viewState: () -> SignInEmailState,
     onIntent: (SignInEmailIntent) -> Unit,
 ) {
-    Timber.i("MVI error test : enter in signInEmailScreen")
+    
     val scope = rememberCoroutineScope()
     val bringIntoViewRequester = remember {
         BringIntoViewRequester()
@@ -55,7 +54,7 @@ fun SignInEmailScreenState(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            Timber.i("MVI error test : enter in column")
+            
             IconApp(modifier = Modifier.padding(top = dimensionResource(id = R.dimen.padding_normal_5)))
             Spacer(modifier = Modifier.weight(2F))
 

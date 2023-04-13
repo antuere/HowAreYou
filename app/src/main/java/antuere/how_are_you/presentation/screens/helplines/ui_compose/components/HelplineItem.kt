@@ -1,7 +1,8 @@
 package antuere.how_are_you.presentation.screens.helplines.ui_compose.components
 
 import androidx.compose.animation.animateContentSize
-import androidx.compose.animation.core.*
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
@@ -20,7 +21,6 @@ import antuere.domain.dto.helplines.Helpline
 import antuere.how_are_you.R
 import antuere.how_are_you.presentation.base.ui_compose_components.card.GradientCardWithOnClick
 import antuere.how_are_you.presentation.base.ui_theme.GradientDefaults
-import timber.log.Timber
 
 @Composable
 fun HelplineItem(
@@ -29,7 +29,6 @@ fun HelplineItem(
     onClickPhone: (String) -> Unit,
     onClickWebsite: (String) -> Unit,
 ) {
-    Timber.i("Recompose error : we in Helpline")
     var isExpanded by remember { mutableStateOf(false) }
     val rotationState by animateFloatAsState(
         targetValue = if (isExpanded) 180f else 0f

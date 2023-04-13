@@ -23,13 +23,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
-import timber.log.Timber
 
 @Composable
 fun CatsScreen(
     viewModel: CatsViewModel = hiltViewModel(),
 ) {
-    Timber.i("MVI error test : enter in catsScreen screen")
     val appState = LocalAppState.current
     val context = LocalContext.current
     val hapticFeedback = LocalHapticFeedback.current

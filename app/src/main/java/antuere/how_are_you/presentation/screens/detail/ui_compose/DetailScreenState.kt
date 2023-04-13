@@ -17,7 +17,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import antuere.how_are_you.R
 import antuere.how_are_you.util.extensions.paddingTopBar
-import timber.log.Timber
 
 @Composable
 fun DetailScreenState(
@@ -34,7 +33,6 @@ fun DetailScreenState(
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Timber.i("MVI error test : enter in detail day scope ")
         if (isLoading) {
             CircularProgressIndicator()
         } else {

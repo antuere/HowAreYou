@@ -19,7 +19,6 @@ import antuere.how_are_you.presentation.screens.history.ui_compose.components.Hi
 import antuere.how_are_you.presentation.screens.history.ui_compose.components.ToggleBtnGroup
 import antuere.how_are_you.presentation.screens.history.ui_compose.components.date_picker.DefaultDateRangePicker
 import antuere.how_are_you.util.extensions.paddingBotAndTopBar
-import timber.log.Timber
 
 
 @Composable
@@ -30,7 +29,6 @@ fun HistoryScreenState(
     rotation: () -> Float,
     isShowShadow: () -> Boolean,
 ) {
-    Timber.i("BACKTRACKING ERROR WTF : enter in history screen state}")
     var isShowDatePicker by remember { mutableStateOf(false) }
 
     if (isShowDatePicker) {
@@ -47,7 +45,6 @@ fun HistoryScreenState(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Timber.i("BACKTRACKING ERROR WTF : enter in history screen column}")
         when (val state = viewState()) {
             is HistoryState.Empty.FromFilter -> {
                 HistoryScreenTopBarWithAction(filterBtnClicked = {

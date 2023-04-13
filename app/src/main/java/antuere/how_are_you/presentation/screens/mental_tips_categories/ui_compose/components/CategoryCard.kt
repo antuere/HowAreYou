@@ -19,7 +19,6 @@ import androidx.compose.ui.unit.dp
 import antuere.domain.dto.mental_tips.MentalTipsCategory
 import antuere.how_are_you.R
 import antuere.how_are_you.presentation.base.ui_compose_components.card.GradientCardWithOnClick
-import timber.log.Timber
 
 @Composable
 fun CategoryCard(
@@ -27,8 +26,6 @@ fun CategoryCard(
     category: MentalTipsCategory,
     onClick: (String) -> Unit,
 ) {
-    Timber.i("MVI error test : enter in category card")
-
     GradientCardWithOnClick(
         modifier = modifier,
         onClick = { onClick(category.categoryName.name) },

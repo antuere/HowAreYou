@@ -15,14 +15,13 @@ import antuere.how_are_you.presentation.screens.sign_up_with_email.state.SignUpE
 import antuere.how_are_you.presentation.screens.sign_up_with_email.ui_compose.SignUpEmailScreenState
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
-import timber.log.Timber
 
 @Composable
 fun SignUpEmailScreen(
     onNavigateSettings: () -> Unit,
     viewModel: SignUpEmailViewModel = hiltViewModel(),
 ) {
-    Timber.i("MVI error test : enter in sign Up screen")
+    
     val context = LocalContext.current
     val appState = LocalAppState.current
     val focusManager = LocalFocusManager.current

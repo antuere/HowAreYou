@@ -15,7 +15,6 @@ import antuere.how_are_you.presentation.screens.sign_in_with_email.state.SignInE
 import antuere.how_are_you.presentation.screens.sign_in_with_email.ui_compose.SignInEmailScreenState
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
-import timber.log.Timber
 
 @Composable
 fun SignInEmailScreen(
@@ -24,8 +23,6 @@ fun SignInEmailScreen(
     onNavigateResetPassword: () -> Unit,
     viewModel: SignInEmailViewModel = hiltViewModel(),
 ) {
-    Timber.i("MVI error test : enter in signIn screen")
-
     val context = LocalContext.current
     val appState = LocalAppState.current
     val focusManager = LocalFocusManager.current

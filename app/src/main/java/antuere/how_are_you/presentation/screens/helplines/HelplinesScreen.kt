@@ -20,13 +20,11 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
-import timber.log.Timber
 
 @Composable
 fun HelplinesScreen(
     viewModel: HelplinesViewModel = hiltViewModel(),
 ) {
-    Timber.i("MVI error test : enter in helplines screen, view model id ${viewModel.toString()}")
     val appState = LocalAppState.current
     val context = LocalContext.current
     val uriHandler = LocalUriHandler.current

@@ -18,7 +18,6 @@ import antuere.how_are_you.presentation.screens.helplines.ui_compose.components.
 import antuere.how_are_you.presentation.screens.helplines.ui_compose.components.HelplinesColumn
 import antuere.how_are_you.util.extensions.paddingTopBar
 import antuere.how_are_you.util.extensions.toStable
-import timber.log.Timber
 
 @Composable
 fun HelplinesScreenState(
@@ -27,8 +26,6 @@ fun HelplinesScreenState(
     onIntent: (HelplinesIntent) -> Unit,
     isShowShadow: () -> Boolean,
 ) {
-    Timber.i("MVI error test : we in parent helplines screen")
-
     when (val state = viewState()) {
         is HelplinesState.Loading -> {
             FullScreenProgressIndicator()

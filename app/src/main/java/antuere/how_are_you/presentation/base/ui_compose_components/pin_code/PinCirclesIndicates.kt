@@ -10,12 +10,9 @@ import antuere.how_are_you.presentation.base.ui_theme.color_red
 import antuere.how_are_you.presentation.screens.pin_code_creation.PinCirclesState
 import antuere.how_are_you.util.extensions.animateScaleDownOnce
 import antuere.how_are_you.util.extensions.shake
-import timber.log.Timber
 
 @Composable
 fun PinCirclesIndicates(pinCodeCirclesState: PinCirclesState) {
-    Timber.i("MVI error test : composed pin indicates")
-
     Row {
         when (pinCodeCirclesState) {
             PinCirclesState.NONE -> {

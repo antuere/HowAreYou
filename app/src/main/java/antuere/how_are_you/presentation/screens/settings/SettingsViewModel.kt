@@ -8,21 +8,22 @@ import antuere.domain.repository.DayRepository
 import antuere.domain.repository.SettingsRepository
 import antuere.domain.repository.ToggleBtnRepository
 import antuere.how_are_you.R
-import antuere.how_are_you.presentation.base.ui_text.UiText
+import antuere.how_are_you.presentation.base.ViewModelMvi
 import antuere.how_are_you.presentation.base.ui_biometric_dialog.IUIBiometricListener
 import antuere.how_are_you.presentation.base.ui_biometric_dialog.UIBiometricDialog
 import antuere.how_are_you.presentation.base.ui_compose_components.dialog.UIDialog
+import antuere.how_are_you.presentation.base.ui_text.UiText
 import antuere.how_are_you.presentation.screens.settings.state.SettingsIntent
 import antuere.how_are_you.presentation.screens.settings.state.SettingsSideEffect
 import antuere.how_are_you.presentation.screens.settings.state.SettingsState
-import antuere.how_are_you.presentation.base.ViewModelMvi
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.Container
 import org.orbitmvi.orbit.viewmodel.container
-import timber.log.Timber
 import javax.inject.Inject
 
 
@@ -171,7 +172,7 @@ class SettingsViewModel @Inject constructor(
                 settingsRepository.getPinCode()
             ) { settings, username, pinCode ->
 
-                Timber.i("MVI error test : collect from combine")
+                
                 updateState {
                     state.copy(
                         isLoading = false,

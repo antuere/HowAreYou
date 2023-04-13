@@ -14,14 +14,12 @@ import antuere.how_are_you.util.extensions.findFragmentActivity
 import antuere.how_are_you.util.extensions.isScrollInInitialState
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
-import timber.log.Timber
 
 @Composable
 fun HistoryScreen(
     onNavigateToDetail: (Long) -> Unit,
     viewModel: HistoryViewModel = hiltViewModel(),
 ) {
-    Timber.i("MVI error test : enter in history screen, view model is ${viewModel.toString()}")
     val appState = LocalAppState.current
     val activity = LocalContext.current.findFragmentActivity()
 

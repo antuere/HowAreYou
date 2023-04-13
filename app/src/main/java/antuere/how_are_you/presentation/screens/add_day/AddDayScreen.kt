@@ -14,13 +14,11 @@ import antuere.how_are_you.presentation.screens.add_day.state.AddDaySideEffect
 import antuere.how_are_you.presentation.screens.add_day.ui_compose.AddDayScreenState
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
-import timber.log.Timber
 
 @Composable
 fun AddDayScreen(
     viewModel: AddDayViewModel = hiltViewModel(),
 ) {
-    Timber.i("MVI error test : enter in add day screen")
     val appState = LocalAppState.current
     val viewState by viewModel.collectAsState()
     val focusManager = LocalFocusManager.current

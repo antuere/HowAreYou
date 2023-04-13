@@ -18,7 +18,6 @@ import antuere.how_are_you.LocalAppState
 import antuere.how_are_you.R
 import antuere.how_are_you.presentation.base.ui_compose_components.top_bar.AppBarState
 import antuere.how_are_you.presentation.screens.detail.state.DetailIntent
-import timber.log.Timber
 
 @Composable
 fun DetailScreenTopBar(
@@ -26,8 +25,6 @@ fun DetailScreenTopBar(
     rotation: () -> Float,
     onIntent: (DetailIntent) -> Unit,
 ) {
-    Timber.i("MVI error test : enter in topbar ")
-
     val appState = LocalAppState.current
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed by interactionSource.collectIsPressedAsState()

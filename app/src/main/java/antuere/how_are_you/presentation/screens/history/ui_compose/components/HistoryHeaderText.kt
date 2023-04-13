@@ -13,7 +13,6 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.style.TextAlign
 import antuere.how_are_you.R
 import antuere.how_are_you.presentation.base.ui_compose_components.placeholder.ShadowLine
-import timber.log.Timber
 
 @Composable
 fun HistoryHeaderText(
@@ -22,7 +21,6 @@ fun HistoryHeaderText(
     headerText: String,
     isShowShadow: () -> Boolean = { false },
 ) {
-    Timber.i("MVI error test : composed in header text rotate is $rotation")
     Column {
         Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_2)))
         Text(

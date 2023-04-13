@@ -12,13 +12,11 @@ import antuere.how_are_you.presentation.screens.detail.ui_compose.DetailScreenSt
 import antuere.how_are_you.presentation.screens.detail.ui_compose.DetailScreenTopBar
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
-import timber.log.Timber
 
 @Composable
 fun DetailScreen(
     viewModel: DetailViewModel = hiltViewModel(),
 ) {
-    Timber.i("MVI error test : enter in detail screen")
     val appState = LocalAppState.current
     val rotation = remember { Animatable(initialValue = 0F) }
     val viewState by viewModel.collectAsState()

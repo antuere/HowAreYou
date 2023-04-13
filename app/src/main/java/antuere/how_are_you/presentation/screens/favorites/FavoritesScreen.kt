@@ -13,14 +13,12 @@ import antuere.how_are_you.presentation.screens.favorites.state.FavoritesSideEff
 import antuere.how_are_you.presentation.screens.favorites.ui_compose.FavoritesScreenState
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
-import timber.log.Timber
 
 @Composable
 fun FavoritesScreen(
     onNavigateToDetail: (Long) -> Unit,
     viewModel: FavoritesViewModel = hiltViewModel(),
 ) {
-    Timber.i("MVI error test : enter in fav screen")
     val appState = LocalAppState.current
     val viewState by viewModel.collectAsState()
 

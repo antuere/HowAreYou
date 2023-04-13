@@ -1,6 +1,9 @@
 package antuere.how_are_you.presentation.screens.secure_entry.ui_compose
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -15,7 +18,6 @@ import antuere.how_are_you.presentation.base.ui_compose_components.pin_code.PinC
 import antuere.how_are_you.presentation.screens.secure_entry.state.SecureEntryIntent
 import antuere.how_are_you.presentation.screens.secure_entry.state.SecureEntryState
 import antuere.how_are_you.util.extensions.paddingTopBar
-import timber.log.Timber
 
 @Composable
 fun SecureEntryScreenState(
@@ -29,7 +31,7 @@ fun SecureEntryScreenState(
             .fillMaxSize()
             .paddingTopBar()
     ) {
-        Timber.i("MVI error test : enter in secure column")
+        
 
         IconApp()
         Spacer(modifier = Modifier.weight(0.9F))

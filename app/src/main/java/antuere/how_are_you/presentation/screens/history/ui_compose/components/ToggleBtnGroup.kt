@@ -15,7 +15,6 @@ import androidx.compose.ui.zIndex
 import antuere.domain.dto.ToggleBtnState
 import antuere.how_are_you.R
 import antuere.how_are_you.presentation.base.ui_text.UiText
-import timber.log.Timber
 
 @Composable
 fun ToggleBtnGroup(
@@ -25,8 +24,6 @@ fun ToggleBtnGroup(
     onClick: (ToggleBtnState) -> Unit,
 ) {
     val shapePercent = 50
-
-    Timber.i("MVI error test : composed in toggleBtnGroup ${currentToggleBtnState.name}")
 
     Row(
         modifier = modifier.fillMaxWidth(),

@@ -103,7 +103,6 @@ class MainActivity : FragmentActivity() {
 
         setContent {
             HowAreYouTheme {
-                Timber.i("MVI error test : composed in activity")
                 val appState: AppStateImpl = rememberAppState()
                 val appBarState by appState.appBarState
                 val navController = appState.navController

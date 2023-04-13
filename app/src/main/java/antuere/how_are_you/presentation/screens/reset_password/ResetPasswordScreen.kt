@@ -15,13 +15,11 @@ import antuere.how_are_you.presentation.screens.reset_password.state.ResetPasswo
 import antuere.how_are_you.presentation.screens.reset_password.ui_compose.ResetPasswordScreenState
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
-import timber.log.Timber
 
 @Composable
 fun ResetPasswordScreen(
     viewModel: ResetPasswordViewModel = hiltViewModel(),
 ) {
-    Timber.i("MVI error test : enter in reset password screen")
     val context = LocalContext.current
     val appState = LocalAppState.current
     val focusManager = LocalFocusManager.current
