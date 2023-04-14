@@ -51,8 +51,14 @@ fun SignInEmailScreen(
             is SignInEmailSideEffect.Snackbar -> {
                 appState.showSnackbar(sideEffect.message.asString(context))
             }
+
+            SignInEmailSideEffect.ClearFocus -> focusManager.clearFocus()
         }
     }
 
-    SignInEmailScreenState(viewState = { viewState }, onIntent = { viewModel.onIntent(it) })
+    SignInEmailScreenState(
+        viewState = { viewState },
+        onIntent = { viewModel.onIntent(it) },
+        focusManager = focusManager
+    )
 }

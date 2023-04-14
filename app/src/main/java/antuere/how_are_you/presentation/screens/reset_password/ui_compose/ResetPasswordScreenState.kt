@@ -12,7 +12,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
@@ -31,10 +30,8 @@ fun ResetPasswordScreenState(
     viewState: () -> ResetPasswordState,
     onIntent: (ResetPasswordIntent) -> Unit,
 ) {
-    
     val bringIntoViewRequester = BringIntoViewRequester()
     val scope = rememberCoroutineScope()
-    val focusManager = LocalFocusManager.current
 
     Column(
         modifier = Modifier
@@ -62,7 +59,6 @@ fun ResetPasswordScreenState(
                     ),
                 value = viewState().email,
                 keyboardActions = KeyboardActions(onDone = {
-                    focusManager.clearFocus()
                     onIntent(ResetPasswordIntent.ResetBtnClicked)
                 }),
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
@@ -72,11 +68,13 @@ fun ResetPasswordScreenState(
 
             DefaultButton(
                 modifier = Modifier
-                    .padding(bottom = dimensionResource(id = R.dimen.padding_large_1))
                     .bringIntoViewRequester(bringIntoViewRequester),
                 labelId = R.string.reset_password,
-                onClick = { onIntent(ResetPasswordIntent.ResetBtnClicked) }
+                onClick = {
+                    onIntent(ResetPasswordIntent.ResetBtnClicked)
+                }
             )
+            Spacer(modifier = Modifier.weight(1F))
         }
     }
 }

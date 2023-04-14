@@ -14,7 +14,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
-import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.input.ImeAction
 import antuere.how_are_you.R
@@ -34,13 +34,12 @@ import antuere.how_are_you.util.extensions.paddingTopBar
 fun SignInEmailScreenState(
     viewState: () -> SignInEmailState,
     onIntent: (SignInEmailIntent) -> Unit,
+    focusManager : FocusManager
 ) {
-    
     val scope = rememberCoroutineScope()
     val bringIntoViewRequester = remember {
         BringIntoViewRequester()
     }
-    val focusManager = LocalFocusManager.current
 
     if (viewState().isShowProgressIndicator) {
         FullScreenProgressIndicator()
@@ -54,9 +53,8 @@ fun SignInEmailScreenState(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            
-            IconApp(modifier = Modifier.padding(top = dimensionResource(id = R.dimen.padding_normal_5)))
-            Spacer(modifier = Modifier.weight(2F))
+            IconApp(modifier = Modifier.padding(vertical = dimensionResource(id = R.dimen.padding_normal_5)))
+            Spacer(modifier = Modifier.weight(1F))
 
             EmailTextField(
                 modifier = Modifier
@@ -82,7 +80,6 @@ fun SignInEmailScreenState(
                 labelId = R.string.password,
                 value = viewState().password,
                 keyboardActions = KeyboardActions(onDone = {
-                    focusManager.clearFocus()
                     onIntent(SignInEmailIntent.SignInBtnClicked)
                 }),
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
@@ -108,7 +105,9 @@ fun SignInEmailScreenState(
                     .fillMaxWidth()
                     .bringIntoViewRequester(bringIntoViewRequester),
                 labelId = R.string.sign_in,
-                onClick = { onIntent(SignInEmailIntent.SignInBtnClicked) }
+                onClick = {
+                    onIntent(SignInEmailIntent.SignInBtnClicked)
+                }
             )
             Spacer(modifier = Modifier.weight(1F))
 

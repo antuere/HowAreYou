@@ -21,7 +21,6 @@ fun SignUpEmailScreen(
     onNavigateSettings: () -> Unit,
     viewModel: SignUpEmailViewModel = hiltViewModel(),
 ) {
-    
     val context = LocalContext.current
     val appState = LocalAppState.current
     val focusManager = LocalFocusManager.current
@@ -48,8 +47,14 @@ fun SignUpEmailScreen(
             is SignUpEmailSideEffect.Snackbar -> {
                 appState.showSnackbar(sideEffect.message.asString(context))
             }
+
+            SignUpEmailSideEffect.ClearFocus -> focusManager.clearFocus()
         }
     }
 
-    SignUpEmailScreenState(viewState = { viewState }, onIntent = { viewModel.onIntent(it) })
+    SignUpEmailScreenState(
+        viewState = { viewState },
+        onIntent = { viewModel.onIntent(it) },
+        focusManager = focusManager
+    )
 }

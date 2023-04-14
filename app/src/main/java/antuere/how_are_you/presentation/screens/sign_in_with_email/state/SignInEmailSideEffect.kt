@@ -6,5 +6,6 @@ sealed interface SignInEmailSideEffect {
     object NavigateToSettings : SignInEmailSideEffect
     object NavigateToResetPassword : SignInEmailSideEffect
     object NavigateToSignUp : SignInEmailSideEffect
+    object ClearFocus : SignInEmailSideEffect
     data class Snackbar(val message: UiText) : SignInEmailSideEffect
 }

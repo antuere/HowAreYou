@@ -14,7 +14,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
-import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
@@ -36,12 +36,12 @@ import antuere.how_are_you.util.extensions.paddingTopBar
 fun SignUpEmailScreenState(
     viewState: () -> SignUpEmailState,
     onIntent: (SignUpEmailIntent) -> Unit,
+    focusManager: FocusManager
 ) {
     val scope = rememberCoroutineScope()
     val bringIntoViewRequester = remember {
         BringIntoViewRequester()
     }
-    val focusManager = LocalFocusManager.current
 
     if (viewState().isShowProgressIndicator) {
         FullScreenProgressIndicator()
@@ -54,8 +54,8 @@ fun SignUpEmailScreenState(
                 .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            IconApp(modifier = Modifier.padding(top = dimensionResource(id = R.dimen.padding_normal_5)))
-            Spacer(modifier = Modifier.weight(2F))
+            IconApp(modifier = Modifier.padding(vertical = dimensionResource(id = R.dimen.padding_normal_5)))
+            Spacer(modifier = Modifier.weight(1F))
 
             DefaultTextField(
                 modifier = Modifier
@@ -111,7 +111,6 @@ fun SignUpEmailScreenState(
                         scope = scope
                     ),
                 keyboardActions = KeyboardActions(onDone = {
-                    focusManager.clearFocus()
                     onIntent(SignUpEmailIntent.SignInBtnClicked)
                 }),
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
@@ -124,16 +123,17 @@ fun SignUpEmailScreenState(
             DefaultButton(
                 modifier = Modifier
                     .padding(
-                        bottom = dimensionResource(id = R.dimen.padding_large_1),
-                        top = dimensionResource(id = R.dimen.padding_large_1),
-                        start = dimensionResource(id = R.dimen.padding_large_2),
-                        end = dimensionResource(id = R.dimen.padding_large_2)
+                        horizontal = dimensionResource(id = R.dimen.padding_large_2),
+                        vertical = dimensionResource(id = R.dimen.padding_normal_1),
                     )
-                    .bringIntoViewRequester(bringIntoViewRequester)
-                    .fillMaxWidth(),
+                    .fillMaxWidth()
+                    .bringIntoViewRequester(bringIntoViewRequester),
                 labelId = R.string.sign_up,
-                onClick = { onIntent(SignUpEmailIntent.SignInBtnClicked) },
+                onClick = {
+                    onIntent(SignUpEmailIntent.SignInBtnClicked)
+                },
             )
+            Spacer(modifier = Modifier.weight(1F))
         }
     }
 }

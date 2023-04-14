@@ -34,16 +34,21 @@ class SignUpEmailViewModel @Inject constructor(
             is SignUpEmailIntent.ConfirmPasswordChanged -> updateStateBlocking {
                 state.copy(confirmPassword = intent.value)
             }
+
             is SignUpEmailIntent.EmailChanged -> updateStateBlocking {
                 state.copy(email = intent.value)
             }
+
             is SignUpEmailIntent.NicknameChanged -> updateStateBlocking {
                 state.copy(nickName = intent.value)
             }
+
             is SignUpEmailIntent.PasswordChanged -> updateStateBlocking {
                 state.copy(password = intent.value)
             }
+
             is SignUpEmailIntent.SignInBtnClicked -> {
+                sideEffect(SignUpEmailSideEffect.ClearFocus)
                 if (isValidateFields(
                         state.email,
                         state.password,

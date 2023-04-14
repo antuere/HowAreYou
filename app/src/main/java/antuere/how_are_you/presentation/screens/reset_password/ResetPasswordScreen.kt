@@ -47,6 +47,7 @@ fun ResetPasswordScreen(
             is ResetPasswordSideEffect.Snackbar -> appState.showSnackbar(
                 sideEffect.message.asString(context)
             )
+            ResetPasswordSideEffect.ClearFocus -> focusManager.clearFocus()
         }
     }
 

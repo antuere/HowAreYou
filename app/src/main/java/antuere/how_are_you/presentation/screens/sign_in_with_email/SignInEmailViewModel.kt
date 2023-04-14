@@ -42,6 +42,7 @@ class SignInEmailViewModel @Inject constructor(
                 sideEffect(SignInEmailSideEffect.NavigateToResetPassword)
             }
             is SignInEmailIntent.SignInBtnClicked -> {
+                sideEffect(SignInEmailSideEffect.ClearFocus)
                 val email = state.email
                 val password = state.password
 

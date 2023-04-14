@@ -21,7 +21,6 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
-import androidx.viewbinding.BuildConfig
 import antuere.domain.repository.SettingsRepository
 import antuere.domain.util.Constants
 import antuere.domain.util.TimeUtility
