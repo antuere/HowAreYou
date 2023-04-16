@@ -17,7 +17,6 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.Container
 import org.orbitmvi.orbit.viewmodel.container
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -53,6 +52,7 @@ class DetailViewModel @Inject constructor(
                 )
                 sideEffect(DetailSideEffect.Dialog(dialog))
             }
+
             DetailIntent.FavoriteBtnClicked -> {
                 sideEffect(DetailSideEffect.AnimateFavoriteBtn)
                 var isFavorite = true
@@ -71,6 +71,37 @@ class DetailViewModel @Inject constructor(
                         dayId = dayId,
                         imageResId = state.daySmileRes,
                         dayText = state.dayText,
+                        dateString = state.dateString,
+                        isFavorite = isFavorite
+                    )
+                    dayRepository.update(newDay)
+                }
+            }
+
+            DetailIntent.EditModeOn -> {
+                updateState { state.copy(isEditMode = true, dayTextEditable = state.dayText) }
+            }
+
+            DetailIntent.EditModeOff -> {
+                sideEffect(DetailSideEffect.ClearFocus)
+                updateState { state.copy(isEditMode = false) }
+            }
+
+            is DetailIntent.DayDescChanged -> updateStateBlocking {
+                state.copy(dayTextEditable = intent.value)
+            }
+
+            DetailIntent.SaveBtnClicked -> {
+                sideEffect(DetailSideEffect.ClearFocus)
+                val isFavorite = state.favoriteBtnRes == R.drawable.ic_baseline_favorite_border
+                updateState {
+                    state.copy(dayText = state.dayTextEditable, isEditMode = false)
+                }
+                viewModelScope.launch(Dispatchers.IO) {
+                    val newDay = Day(
+                        dayId = dayId,
+                        imageResId = state.daySmileRes,
+                        dayText = state.dayTextEditable,
                         dateString = state.dateString,
                         isFavorite = isFavorite
                     )

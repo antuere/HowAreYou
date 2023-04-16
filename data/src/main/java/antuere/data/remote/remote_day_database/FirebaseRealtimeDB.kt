@@ -54,17 +54,6 @@ class FirebaseRealtimeDB @Inject constructor(
         val daysNode = daysNode ?: return
         daysNode.child(id.convertToUTC().toString())
             .setValue(null).await()
-
-//        if (!authManager.isHasUser()) return
-//        val daysNode = daysNode ?: return
-//        daysNode
-//            .orderByChild("dayId")
-//            .equalTo(id.convertToUTC().toDouble())
-//            .get()
-//            .await()
-//            .children.forEach {
-//                it.ref.removeValue()
-//            }
     }
 
     override suspend fun deleteAllDays() {
@@ -103,5 +92,4 @@ class FirebaseRealtimeDB @Inject constructor(
         daysNode.child(dayRemote.dayId.toString())
             .setValue(dayRemote).await()
     }
-
 }

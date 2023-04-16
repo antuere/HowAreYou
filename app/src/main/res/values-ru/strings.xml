@@ -157,4 +157,5 @@
     <string name="show_worried_dialog_title">Показывать беспокоющийся диалог</string>
 
     <string name="datePicker_confirm">Показать дни</string>
+    <string name="day_edit">Редактирование</string>
 </resources>

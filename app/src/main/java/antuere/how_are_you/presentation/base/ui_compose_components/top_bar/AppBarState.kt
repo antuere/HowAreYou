@@ -8,9 +8,17 @@ import antuere.how_are_you.R
 
 data class AppBarState(
     @StringRes val titleId: Int = R.string.home,
+    val topBarType: TopBarType = TopBarType.CENTER_ALIGNED,
     val navigationIcon: ImageVector? = null,
     val onClickNavigationBtn: () -> Unit = {},
     val actions: (@Composable RowScope.() -> Unit) = {},
     val isVisibleTopBar : Boolean = true,
     val isVisibleBottomBar : Boolean = true
 )
+
+enum class TopBarType {
+    CENTER_ALIGNED,
+    SMALL,
+    MEDIUM,
+    LARGE
+}

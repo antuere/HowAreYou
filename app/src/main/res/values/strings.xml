@@ -126,7 +126,6 @@
     <string name="biometric_unknown_error">Unknown error</string>
     <string name="biometric_none_enroll">First, set the biometrics in the device settings</string>
 
-
     <!-- Home screen -->
     <string name="snack_bar_warning_negative">Pay attention to the cards above, we hope this will help you at least a little.</string>
 
@@ -140,6 +139,7 @@
 
     <!-- Detail screen -->
     <string name="about_day">About past day</string>
+    <string name="day_edit">Edit</string>
 
     <!-- HelpForYou screen -->
     <string name="help_for_you_title_card">Sometimes life\'s problems unsettle us and cause complete confusion, so we recommend turning to the help of others. A consultation with a specialist will help you overcome a difficult period.</string>

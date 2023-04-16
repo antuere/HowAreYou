@@ -1,7 +1,7 @@
 package antuere.how_are_you.presentation.screens.add_day.state
 
 data class AddDayState(
-    var dayDesc: String = "",
+    val dayDesc: String = "",
     val smileImages: List<Int> = listOf(
         antuere.data.R.drawable.smile_sad,
         antuere.data.R.drawable.smile_none,
@@ -9,5 +9,5 @@ data class AddDayState(
         antuere.data.R.drawable.smile_happy,
         antuere.data.R.drawable.smile_very_happy
     ),
-    var isEnabledTextField : Boolean = true
+    val isEnabledTextField : Boolean = true
 )

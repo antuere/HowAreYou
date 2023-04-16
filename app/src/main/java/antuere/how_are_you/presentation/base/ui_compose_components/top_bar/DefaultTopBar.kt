@@ -11,35 +11,118 @@ import androidx.compose.ui.res.stringResource
 @Composable
 fun DefaultTopBar(
     @StringRes titleId: Int,
+    topBarType: TopBarType,
     isVisible: Boolean,
     navigationIcon: ImageVector? = null,
     navigationOnClick: () -> Unit = {},
     actions: @Composable RowScope.() -> Unit = {},
 ) {
     if (isVisible) {
-        CenterAlignedTopAppBar(
-            navigationIcon = {
-                navigationIcon?.apply {
-                    IconButton(onClick = { navigationOnClick() }) {
-                        Icon(
-                            imageVector = this,
-                            contentDescription = null,
-                            tint = MaterialTheme.colorScheme.onSurface
+        when (topBarType) {
+            TopBarType.CENTER_ALIGNED -> {
+                CenterAlignedTopAppBar(
+                    navigationIcon = {
+                        navigationIcon?.apply {
+                            IconButton(onClick = { navigationOnClick() }) {
+                                Icon(
+                                    imageVector = this,
+                                    contentDescription = null,
+                                    tint = MaterialTheme.colorScheme.onSurface
+                                )
+                            }
+                        }
+                    },
+                    title = {
+                        Text(
+                            text = stringResource(id = titleId),
+                            color = MaterialTheme.colorScheme.onSurface,
                         )
-                    }
-                }
-            },
-            title = {
-                Text(
-                    text = stringResource(id = titleId),
-                    color = MaterialTheme.colorScheme.onSurface,
+                    },
+                    actions = actions,
+                    colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                        containerColor = MaterialTheme.colorScheme.surface,
+                        actionIconContentColor = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
                 )
-            },
-            actions = actions,
-            colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                containerColor = MaterialTheme.colorScheme.surface,
-                actionIconContentColor = MaterialTheme.colorScheme.onSurfaceVariant
-            )
-        )
+            }
+            TopBarType.SMALL -> {
+                TopAppBar(
+                    navigationIcon = {
+                        navigationIcon?.apply {
+                            IconButton(onClick = { navigationOnClick() }) {
+                                Icon(
+                                    imageVector = this,
+                                    contentDescription = null,
+                                    tint = MaterialTheme.colorScheme.onSurface
+                                )
+                            }
+                        }
+                    },
+                    title = {
+                        Text(
+                            text = stringResource(id = titleId),
+                            color = MaterialTheme.colorScheme.onSurface,
+                        )
+                    },
+                    actions = actions,
+                    colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                        containerColor = MaterialTheme.colorScheme.surface,
+                        actionIconContentColor = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                )
+            }
+            TopBarType.MEDIUM -> {
+                MediumTopAppBar(
+                    navigationIcon = {
+                        navigationIcon?.apply {
+                            IconButton(onClick = { navigationOnClick() }) {
+                                Icon(
+                                    imageVector = this,
+                                    contentDescription = null,
+                                    tint = MaterialTheme.colorScheme.onSurface
+                                )
+                            }
+                        }
+                    },
+                    title = {
+                        Text(
+                            text = stringResource(id = titleId),
+                            color = MaterialTheme.colorScheme.onSurface,
+                        )
+                    },
+                    actions = actions,
+                    colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                        containerColor = MaterialTheme.colorScheme.surface,
+                        actionIconContentColor = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                )
+            }
+            TopBarType.LARGE -> {
+                LargeTopAppBar(
+                    navigationIcon = {
+                        navigationIcon?.apply {
+                            IconButton(onClick = { navigationOnClick() }) {
+                                Icon(
+                                    imageVector = this,
+                                    contentDescription = null,
+                                    tint = MaterialTheme.colorScheme.onSurface
+                                )
+                            }
+                        }
+                    },
+                    title = {
+                        Text(
+                            text = stringResource(id = titleId),
+                            color = MaterialTheme.colorScheme.onSurface,
+                        )
+                    },
+                    actions = actions,
+                    colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                        containerColor = MaterialTheme.colorScheme.surface,
+                        actionIconContentColor = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                )
+            }
+        }
     }
 }
