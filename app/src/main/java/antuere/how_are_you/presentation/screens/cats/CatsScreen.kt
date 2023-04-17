@@ -16,6 +16,7 @@ import antuere.data.util.GalleryProvider
 import antuere.how_are_you.LocalAppState
 import antuere.how_are_you.R
 import antuere.how_are_you.presentation.base.ui_compose_components.top_bar.AppBarState
+import antuere.how_are_you.presentation.base.ui_text.UiText
 import antuere.how_are_you.presentation.screens.cats.state.CatsIntent
 import antuere.how_are_you.presentation.screens.cats.state.CatsSideEffect
 import antuere.how_are_you.presentation.screens.cats.ui_compose.CatsScreenState
@@ -46,7 +47,7 @@ fun CatsScreen(
     LaunchedEffect(true) {
         appState.updateAppBar(
             AppBarState(
-                titleId = R.string.cats,
+                topBarTitle = UiText.StringResource(R.string.cats),
                 navigationIcon = Icons.Filled.ArrowBack,
                 onClickNavigationBtn = appState::navigateUp,
                 isVisibleBottomBar = false

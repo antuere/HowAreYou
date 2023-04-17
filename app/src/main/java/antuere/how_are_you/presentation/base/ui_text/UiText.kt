@@ -14,7 +14,7 @@ sealed class UiText {
         val firstArgs: Array<Any>,
         @StringRes val resIdSecond: Int,
         val secondArgs: Array<Any>,
-        val divider: String = ""
+        val divider: String = "",
     ) : UiText()
 
     @Composable

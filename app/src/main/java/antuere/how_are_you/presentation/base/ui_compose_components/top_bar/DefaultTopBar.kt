@@ -1,16 +1,15 @@
 package antuere.how_are_you.presentation.base.ui_compose_components.top_bar
 
-import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.stringResource
+import antuere.how_are_you.presentation.base.ui_text.UiText
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DefaultTopBar(
-    @StringRes titleId: Int,
+    title: UiText,
     topBarType: TopBarType,
     isVisible: Boolean,
     navigationIcon: ImageVector? = null,
@@ -34,7 +33,7 @@ fun DefaultTopBar(
                     },
                     title = {
                         Text(
-                            text = stringResource(id = titleId),
+                            text = title.asString(),
                             color = MaterialTheme.colorScheme.onSurface,
                         )
                     },
@@ -45,6 +44,7 @@ fun DefaultTopBar(
                     )
                 )
             }
+
             TopBarType.SMALL -> {
                 TopAppBar(
                     navigationIcon = {
@@ -60,7 +60,7 @@ fun DefaultTopBar(
                     },
                     title = {
                         Text(
-                            text = stringResource(id = titleId),
+                            text = title.asString(),
                             color = MaterialTheme.colorScheme.onSurface,
                         )
                     },
@@ -71,6 +71,7 @@ fun DefaultTopBar(
                     )
                 )
             }
+
             TopBarType.MEDIUM -> {
                 MediumTopAppBar(
                     navigationIcon = {
@@ -86,7 +87,7 @@ fun DefaultTopBar(
                     },
                     title = {
                         Text(
-                            text = stringResource(id = titleId),
+                            text = title.asString(),
                             color = MaterialTheme.colorScheme.onSurface,
                         )
                     },
@@ -97,6 +98,7 @@ fun DefaultTopBar(
                     )
                 )
             }
+
             TopBarType.LARGE -> {
                 LargeTopAppBar(
                     navigationIcon = {
@@ -112,7 +114,7 @@ fun DefaultTopBar(
                     },
                     title = {
                         Text(
-                            text = stringResource(id = titleId),
+                            text = title.asString(),
                             color = MaterialTheme.colorScheme.onSurface,
                         )
                     },

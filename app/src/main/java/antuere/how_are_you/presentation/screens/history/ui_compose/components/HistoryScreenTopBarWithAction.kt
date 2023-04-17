@@ -16,6 +16,7 @@ import androidx.compose.ui.graphics.graphicsLayer
 import antuere.how_are_you.LocalAppState
 import antuere.how_are_you.R
 import antuere.how_are_you.presentation.base.ui_compose_components.top_bar.AppBarState
+import antuere.how_are_you.presentation.base.ui_text.UiText
 
 @Composable
 fun HistoryScreenTopBarWithAction(
@@ -29,7 +30,7 @@ fun HistoryScreenTopBarWithAction(
     LaunchedEffect(true) {
         appState.updateAppBar(
             AppBarState(
-                titleId = R.string.history,
+                topBarTitle = UiText.StringResource(R.string.history),
                 actions = {
                     IconButton(
                         modifier = Modifier.graphicsLayer {

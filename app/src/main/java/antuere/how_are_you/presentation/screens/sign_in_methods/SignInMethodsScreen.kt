@@ -13,6 +13,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import antuere.how_are_you.LocalAppState
 import antuere.how_are_you.R
 import antuere.how_are_you.presentation.base.ui_compose_components.top_bar.AppBarState
+import antuere.how_are_you.presentation.base.ui_text.UiText
 import antuere.how_are_you.presentation.screens.sign_in_methods.state.SignInMethodsIntent
 import antuere.how_are_you.presentation.screens.sign_in_methods.state.SignInMethodsSideEffect
 import antuere.how_are_you.presentation.screens.sign_in_methods.ui_compose.SignInMethodsScreenState
@@ -41,7 +42,7 @@ fun SignInMethodsScreen(
     LaunchedEffect(true) {
         appState.updateAppBar(
             AppBarState(
-                titleId = R.string.login_methods,
+                topBarTitle = UiText.StringResource(R.string.login_methods),
                 navigationIcon = Icons.Filled.ArrowBack,
                 onClickNavigationBtn = appState::navigateUp,
                 isVisibleBottomBar = false

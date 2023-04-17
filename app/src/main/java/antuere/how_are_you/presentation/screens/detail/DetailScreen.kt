@@ -13,6 +13,8 @@ import antuere.how_are_you.presentation.screens.detail.state.DetailIntent
 import antuere.how_are_you.presentation.screens.detail.state.DetailSideEffect
 import antuere.how_are_you.presentation.screens.detail.ui_compose.DetailScreenState
 import antuere.how_are_you.presentation.screens.detail.ui_compose.DetailScreenTopBar
+import antuere.how_are_you.util.extensions.toStable
+import kotlinx.collections.immutable.toImmutableList
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
@@ -48,19 +50,20 @@ fun DetailScreen(
     }
 
     DetailScreenTopBar(
-        favoriteBtnRes = { viewState.favoriteBtnRes },
+        favoriteBtnRes = viewState.favoriteBtnRes,
         rotation = { rotation.value },
-        isEditMode = { viewState.isEditMode },
-        onIntent = { viewModel.onIntent(it) }
+        isEditMode = viewState.isEditMode,
+        onIntent = { viewModel.onIntent(it) },
+        dateString = viewState.dateString
     )
 
     DetailScreenState(
-        onIntent = { viewModel.onIntent(it) },
+        onIntent = { intent: DetailIntent -> viewModel.onIntent(intent) }.toStable(),
         isLoading = viewState.isLoading,
         isEditMode = viewState.isEditMode,
         daySmileImage = viewState.daySmileRes,
-        dateString = viewState.dateString,
         dayText = viewState.dayText,
-        dayTextEditable = viewState.dayTextEditable
+        dayTextEditable = viewState.dayTextEditable,
+        smileImages = viewState.smileImages.toImmutableList()
     )
 }

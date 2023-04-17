@@ -12,7 +12,7 @@ object GradientDefaults {
         return Brush.horizontalGradient(
             listOf(
                 MaterialTheme.colorScheme.primaryContainer,
-                MaterialTheme.colorScheme.onPrimary,
+                MaterialTheme.colorScheme.surface,
             )
         )
     }
@@ -21,7 +21,7 @@ object GradientDefaults {
     fun secondary(): Brush {
         return Brush.linearGradient(
             listOf(
-                MaterialTheme.colorScheme.onPrimary,
+                MaterialTheme.colorScheme.surface,
                 MaterialTheme.colorScheme.secondaryContainer,
             )
         )

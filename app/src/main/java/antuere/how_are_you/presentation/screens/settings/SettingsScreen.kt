@@ -11,6 +11,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import antuere.how_are_you.LocalAppState
 import antuere.how_are_you.R
 import antuere.how_are_you.presentation.base.ui_compose_components.top_bar.AppBarState
+import antuere.how_are_you.presentation.base.ui_text.UiText
 import antuere.how_are_you.presentation.screens.settings.state.SettingsSideEffect
 import antuere.how_are_you.presentation.screens.settings.ui_compose.SettingsScreenState
 import antuere.how_are_you.util.extensions.findFragmentActivity
@@ -48,7 +49,7 @@ fun SettingsScreen(
     LaunchedEffect(true) {
         appState.updateAppBar(
             AppBarState(
-                titleId = R.string.settings,
+                topBarTitle = UiText.StringResource(R.string.settings),
                 isVisibleBottomBar = true
             )
         )

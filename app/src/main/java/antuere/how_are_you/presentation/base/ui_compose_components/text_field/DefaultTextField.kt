@@ -7,6 +7,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldColors
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -31,6 +32,11 @@ fun DefaultTextField(
     maxLength: Int = Int.MAX_VALUE,
     maxLines: Int = 25,
     @StringRes toastTextId: Int? = null,
+    colors: TextFieldColors = TextFieldDefaults.colors(
+        focusedTextColor = MaterialTheme.colorScheme.onBackground,
+        focusedContainerColor = MaterialTheme.colorScheme.background,
+        unfocusedContainerColor = MaterialTheme.colorScheme.background
+    ),
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
     visualTransformation: VisualTransformation = VisualTransformation.None,
@@ -73,11 +79,7 @@ fun DefaultTextField(
                 style = MaterialTheme.typography.displaySmall,
             )
         },
-        colors = TextFieldDefaults.colors(
-            focusedTextColor = MaterialTheme.colorScheme.onBackground,
-            focusedContainerColor = MaterialTheme.colorScheme.background,
-            unfocusedContainerColor = MaterialTheme.colorScheme.background
-        ),
+        colors = colors,
         shape = MaterialTheme.shapes.large,
         keyboardOptions = keyboardOptions.copy(capitalization = KeyboardCapitalization.Sentences),
         keyboardActions = keyboardActions,

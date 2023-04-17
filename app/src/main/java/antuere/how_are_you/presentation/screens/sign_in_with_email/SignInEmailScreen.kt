@@ -11,6 +11,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import antuere.how_are_you.LocalAppState
 import antuere.how_are_you.R
 import antuere.how_are_you.presentation.base.ui_compose_components.top_bar.AppBarState
+import antuere.how_are_you.presentation.base.ui_text.UiText
 import antuere.how_are_you.presentation.screens.sign_in_with_email.state.SignInEmailSideEffect
 import antuere.how_are_you.presentation.screens.sign_in_with_email.ui_compose.SignInEmailScreenState
 import org.orbitmvi.orbit.compose.collectAsState
@@ -32,7 +33,7 @@ fun SignInEmailScreen(
     LaunchedEffect(true) {
         appState.updateAppBar(
             AppBarState(
-                titleId = R.string.sign_in,
+                topBarTitle = UiText.StringResource(R.string.sign_in),
                 navigationIcon = Icons.Filled.ArrowBack,
                 onClickNavigationBtn = {
                     focusManager.clearFocus()

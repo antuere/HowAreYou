@@ -158,4 +158,5 @@
 
     <string name="datePicker_confirm">Показать дни</string>
     <string name="day_edit">Редактирование</string>
+    <string name="day_edit_text">Что нового?</string>
 </resources>

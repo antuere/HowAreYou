@@ -9,6 +9,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import antuere.how_are_you.LocalAppState
 import antuere.how_are_you.R
 import antuere.how_are_you.presentation.base.ui_compose_components.top_bar.AppBarState
+import antuere.how_are_you.presentation.base.ui_text.UiText
 import antuere.how_are_you.presentation.screens.favorites.state.FavoritesSideEffect
 import antuere.how_are_you.presentation.screens.favorites.ui_compose.FavoritesScreenState
 import org.orbitmvi.orbit.compose.collectAsState
@@ -26,7 +27,7 @@ fun FavoritesScreen(
     LaunchedEffect(true) {
         appState.updateAppBar(
             AppBarState(
-                titleId = R.string.favorites,
+                topBarTitle = UiText.StringResource(R.string.favorites),
                 navigationIcon = Icons.Filled.ArrowBack,
                 onClickNavigationBtn = appState::navigateUp,
                 isVisibleBottomBar = false

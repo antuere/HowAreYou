@@ -7,4 +7,5 @@ sealed interface DetailIntent {
     object EditModeOn : DetailIntent
     object EditModeOff : DetailIntent
     class DayDescChanged(val value: String) : DetailIntent
+    class SmileResChanged(val value: Int) : DetailIntent
 }

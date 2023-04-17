@@ -129,7 +129,7 @@ class MainActivity : FragmentActivity() {
                     },
                     topBar = {
                         DefaultTopBar(
-                            titleId = appBarState.titleId,
+                            title = appBarState.topBarTitle,
                             topBarType = appBarState.topBarType,
                             isVisible = appBarState.isVisibleTopBar,
                             navigationIcon = appBarState.navigationIcon,

@@ -15,23 +15,25 @@ import antuere.how_are_you.R
 import antuere.how_are_you.presentation.base.ui_compose_components.buttons.IconButtonScaleable
 import antuere.how_are_you.presentation.base.ui_compose_components.top_bar.AppBarState
 import antuere.how_are_you.presentation.base.ui_compose_components.top_bar.TopBarType
+import antuere.how_are_you.presentation.base.ui_text.UiText
 import antuere.how_are_you.presentation.screens.detail.state.DetailIntent
 
 @Composable
 fun DetailScreenTopBar(
-    favoriteBtnRes: () -> Int,
+    favoriteBtnRes: Int,
     rotation: () -> Float,
     onIntent: (DetailIntent) -> Unit,
-    isEditMode: () -> Boolean,
+    isEditMode: Boolean,
+    dateString: String,
 ) {
     val appState = LocalAppState.current
 
-    LaunchedEffect(favoriteBtnRes(), isEditMode()) {
-        when (isEditMode()) {
+    LaunchedEffect(favoriteBtnRes, isEditMode, dateString) {
+        when (isEditMode) {
             true -> {
                 appState.updateAppBar(
                     AppBarState(
-                        titleId = R.string.day_edit,
+                        topBarTitle = UiText.StringResource(R.string.day_edit),
                         topBarType = TopBarType.CENTER_ALIGNED,
                         navigationIcon = Icons.Rounded.Close,
                         onClickNavigationBtn = { onIntent(DetailIntent.EditModeOff) },
@@ -49,7 +51,7 @@ fun DetailScreenTopBar(
             false -> {
                 appState.updateAppBar(
                     AppBarState(
-                        titleId = R.string.about_day,
+                        topBarTitle = UiText.DefaultString(dateString),
                         topBarType = TopBarType.SMALL,
                         navigationIcon = Icons.Filled.ArrowBack,
                         onClickNavigationBtn = appState::navigateUp,
@@ -62,7 +64,7 @@ fun DetailScreenTopBar(
                             IconButton(onClick = { onIntent(DetailIntent.FavoriteBtnClicked) }) {
                                 Icon(
                                     modifier = Modifier.graphicsLayer { rotationY = rotation() },
-                                    painter = painterResource(id = favoriteBtnRes()),
+                                    painter = painterResource(id = favoriteBtnRes),
                                     contentDescription = null
                                 )
                             }

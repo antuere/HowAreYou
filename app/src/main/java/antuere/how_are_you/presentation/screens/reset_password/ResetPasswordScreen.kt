@@ -11,6 +11,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import antuere.how_are_you.LocalAppState
 import antuere.how_are_you.R
 import antuere.how_are_you.presentation.base.ui_compose_components.top_bar.AppBarState
+import antuere.how_are_you.presentation.base.ui_text.UiText
 import antuere.how_are_you.presentation.screens.reset_password.state.ResetPasswordSideEffect
 import antuere.how_are_you.presentation.screens.reset_password.ui_compose.ResetPasswordScreenState
 import org.orbitmvi.orbit.compose.collectAsState
@@ -30,7 +31,7 @@ fun ResetPasswordScreen(
     LaunchedEffect(true) {
         appState.updateAppBar(
             AppBarState(
-                titleId = R.string.reset_password,
+                topBarTitle = UiText.StringResource(R.string.reset_password),
                 navigationIcon = Icons.Filled.ArrowBack,
                 onClickNavigationBtn = {
                     focusManager.clearFocus()

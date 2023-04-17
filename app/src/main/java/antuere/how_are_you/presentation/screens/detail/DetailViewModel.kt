@@ -6,8 +6,8 @@ import antuere.domain.dto.Day
 import antuere.domain.repository.DayRepository
 import antuere.domain.util.Constants
 import antuere.how_are_you.R
-import antuere.how_are_you.presentation.base.ui_compose_components.dialog.UIDialog
 import antuere.how_are_you.presentation.base.ViewModelMvi
+import antuere.how_are_you.presentation.base.ui_compose_components.dialog.UIDialog
 import antuere.how_are_you.presentation.screens.detail.state.DetailIntent
 import antuere.how_are_you.presentation.screens.detail.state.DetailSideEffect
 import antuere.how_are_you.presentation.screens.detail.state.DetailState
@@ -79,7 +79,13 @@ class DetailViewModel @Inject constructor(
             }
 
             DetailIntent.EditModeOn -> {
-                updateState { state.copy(isEditMode = true, dayTextEditable = state.dayText) }
+                updateState {
+                    state.copy(
+                        isEditMode = true,
+                        dayTextEditable = state.dayText,
+                        daySmileResEditable = state.daySmileRes
+                    )
+                }
             }
 
             DetailIntent.EditModeOff -> {
@@ -93,19 +99,29 @@ class DetailViewModel @Inject constructor(
 
             DetailIntent.SaveBtnClicked -> {
                 sideEffect(DetailSideEffect.ClearFocus)
-                val isFavorite = state.favoriteBtnRes == R.drawable.ic_baseline_favorite_border
+                val isFavorite = state.favoriteBtnRes == R.drawable.ic_baseline_favorite
                 updateState {
-                    state.copy(dayText = state.dayTextEditable, isEditMode = false)
+                    state.copy(
+                        dayText = state.dayTextEditable,
+                        daySmileRes = state.daySmileResEditable,
+                        isEditMode = false
+                    )
                 }
                 viewModelScope.launch(Dispatchers.IO) {
                     val newDay = Day(
                         dayId = dayId,
-                        imageResId = state.daySmileRes,
+                        imageResId = state.daySmileResEditable,
                         dayText = state.dayTextEditable,
                         dateString = state.dateString,
                         isFavorite = isFavorite
                     )
                     dayRepository.update(newDay)
+                }
+            }
+
+            is DetailIntent.SmileResChanged -> {
+                updateState {
+                    state.copy(daySmileResEditable = intent.value)
                 }
             }
         }

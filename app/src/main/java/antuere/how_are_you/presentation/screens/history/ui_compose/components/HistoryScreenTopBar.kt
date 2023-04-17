@@ -5,6 +5,7 @@ import androidx.compose.runtime.LaunchedEffect
 import antuere.how_are_you.LocalAppState
 import antuere.how_are_you.R
 import antuere.how_are_you.presentation.base.ui_compose_components.top_bar.AppBarState
+import antuere.how_are_you.presentation.base.ui_text.UiText
 
 @Composable
 fun HistoryScreenTopBar() {
@@ -13,7 +14,7 @@ fun HistoryScreenTopBar() {
     LaunchedEffect(true) {
         appState.updateAppBar(
             AppBarState(
-                titleId = R.string.history,
+                topBarTitle = UiText.StringResource(R.string.history),
                 isVisibleBottomBar = true
             )
         )
