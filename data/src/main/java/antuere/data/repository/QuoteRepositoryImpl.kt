@@ -2,13 +2,14 @@ package antuere.data.repository
 
 import antuere.data.preferences_data_store.quote_data_store.QuoteDataStore
 import antuere.data.remote.NetworkInfo
+import antuere.data.remote.remote_day_database.FirebaseRealtimeDB
 import antuere.data.remote.remote_day_database.entities.QuoteEntity
 import antuere.data.remote.remote_day_database.mapping.QuoteEntityMapper
-import antuere.data.remote.remote_day_database.FirebaseRealtimeDB
 import antuere.domain.dto.Quote
 import antuere.domain.repository.QuoteRepository
 import antuere.domain.util.TimeUtility
 import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withTimeoutOrNull
 import javax.inject.Inject
 
 class QuoteRepositoryImpl @Inject constructor(
@@ -19,21 +20,24 @@ class QuoteRepositoryImpl @Inject constructor(
 ) : QuoteRepository {
 
     override suspend fun updateQuoteRemote(): Boolean {
+        var isUpdatedSuccess = false
         if (networkInfo.isNetworkAvailable()) {
-            val currentDayOfMonth = TimeUtility.getDayOfMonth()
-            val quotesNode = firebaseApi.getQuotesNode()
+            withTimeoutOrNull(2500L) {
+                val currentDayOfMonth = TimeUtility.getDayOfMonth()
+                val quotesNode = firebaseApi.getQuotesNode()
 
-            val remoteQuote = quotesNode
-                .child(currentDayOfMonth)
-                .get().await().getValue(QuoteEntity::class.java)
+                val remoteQuote = quotesNode
+                    .child(currentDayOfMonth)
+                    .get().await().getValue(QuoteEntity::class.java)
 
-            val defaultQuote = QuoteEntity("default quote", "default author")
+                val defaultQuote = QuoteEntity("default quote", "default author")
 
-            val latestQuote = quoteMapper.mapToDomainModel(remoteQuote ?: defaultQuote)
-            saveDayQuoteLocal(latestQuote)
-            return true
+                val latestQuote = quoteMapper.mapToDomainModel(remoteQuote ?: defaultQuote)
+                saveDayQuoteLocal(latestQuote)
+                isUpdatedSuccess = true
+            }
         }
-        return false
+        return isUpdatedSuccess
     }
 
     override suspend fun getDayQuoteLocal(): Quote {
