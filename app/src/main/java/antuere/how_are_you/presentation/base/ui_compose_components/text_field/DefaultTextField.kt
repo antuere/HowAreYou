@@ -11,10 +11,12 @@ import androidx.compose.material3.TextFieldColors
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.VisualTransformation
 import antuere.how_are_you.R
@@ -46,7 +48,7 @@ fun DefaultTextField(
     val context = LocalContext.current
     val toastText = stringResource(toastTextId ?: R.string.too_many_chars_default)
     val focusManager = LocalFocusManager.current
-    val isVisibleKeyboard = isKeyboardVisible()
+    val isVisibleKeyboard by isKeyboardVisible()
 
     LaunchedEffect(isVisibleKeyboard) {
         if (!isVisibleKeyboard) {
@@ -76,7 +78,8 @@ fun DefaultTextField(
         label = {
             Text(
                 text = label,
-                style = MaterialTheme.typography.displaySmall,
+                style = MaterialTheme.typography.bodyMedium,
+                fontWeight = FontWeight.Medium
             )
         },
         colors = colors,

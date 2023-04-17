@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.sp
 import antuere.how_are_you.R
 import antuere.how_are_you.presentation.base.ui_compose_components.placeholder.ShadowLine
 
@@ -31,7 +32,8 @@ fun HistoryHeaderText(
                     rotationX = rotation()
                 },
             textAlign = TextAlign.Center,
-            color = MaterialTheme.colorScheme.onBackground
+            color = MaterialTheme.colorScheme.onBackground,
+            fontSize = dimensionResource(id = R.dimen.textSize_normal_0).value.sp
         )
 
         ShadowLine(

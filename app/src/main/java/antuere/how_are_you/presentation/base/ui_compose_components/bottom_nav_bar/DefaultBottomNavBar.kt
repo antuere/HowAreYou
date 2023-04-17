@@ -10,14 +10,18 @@ import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.outlined.History
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Settings
-import androidx.compose.material3.*
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemDefaults
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -71,11 +75,10 @@ fun DefaultBottomNavBar(navController: NavController, isVisible: Boolean) {
                     label = {
                         Text(
                             text = dest,
-                            style = if (isSelected) MaterialTheme.typography.displayMedium.copy(
+                            style = if (isSelected) MaterialTheme.typography.labelMedium.copy(
                                 color = MaterialTheme.colorScheme.onSurface,
                                 fontSize = 15.sp,
-                                fontWeight = FontWeight.Bold
-                            ) else MaterialTheme.typography.displaySmall.copy(
+                            ) else MaterialTheme.typography.labelMedium.copy(
                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 fontSize = 14.sp
                             )
