@@ -139,7 +139,7 @@
 
     <!-- Detail screen -->
     <string name="about_day">About past day</string>
-    <string name="day_edit_text">What\'s new</string>
+    <string name="day_edit_text">What\'s new?</string>
     <string name="day_edit">Edit</string>
 
     <!-- HelpForYou screen -->

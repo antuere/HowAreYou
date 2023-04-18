@@ -14,12 +14,9 @@ import antuere.how_are_you.R
 val Roboto = FontFamily(
     Font(R.font.roboto_bold, FontWeight.Bold),
     Font(R.font.roboto_medium, FontWeight.Medium),
-    Font(R.font.roboto)
+    Font(R.font.roboto, FontWeight.Normal),
 )
 
-val OpenSans = FontFamily(
-    Font(R.font.open_sans_semibold, FontWeight.Medium),
-)
 val PlayfairDisplay = FontFamily(
     Font(R.font.playfair_display),
 )

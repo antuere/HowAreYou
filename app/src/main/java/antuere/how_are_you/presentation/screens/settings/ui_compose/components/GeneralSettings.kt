@@ -1,6 +1,10 @@
 package antuere.how_are_you.presentation.screens.settings.ui_compose.components
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -9,6 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import antuere.how_are_you.R
 
@@ -27,6 +32,7 @@ fun GeneralSettings(
                 horizontal = dimensionResource(id = R.dimen.padding_normal_2)
             ),
             text = stringResource(id = R.string.settings_general_text),
+            fontWeight = FontWeight.Bold,
             fontSize = dimensionResource(id = R.dimen.textSize_normal_2).value.sp
         )
         Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_2)))

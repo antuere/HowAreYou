@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.text.font.FontWeight
 import antuere.how_are_you.presentation.base.ui_text.UiText
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -34,6 +35,7 @@ fun DefaultTopBar(
                     title = {
                         Text(
                             text = title.asString(),
+                            fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.onSurface,
                         )
                     },
@@ -61,6 +63,7 @@ fun DefaultTopBar(
                     title = {
                         Text(
                             text = title.asString(),
+                            fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.onSurface,
                         )
                     },
@@ -88,6 +91,7 @@ fun DefaultTopBar(
                     title = {
                         Text(
                             text = title.asString(),
+                            fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.onSurface,
                         )
                     },
@@ -115,6 +119,7 @@ fun DefaultTopBar(
                     title = {
                         Text(
                             text = title.asString(),
+                            fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.onSurface,
                         )
                     },

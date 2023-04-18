@@ -19,6 +19,7 @@
             android:supportsRtl="true"
             android:hasFragileUserData="true"
             android:theme="@style/Theme.App.Starting"
+            android:localeConfig="@xml/locales_config"
             tools:targetApi="33">
         <profileable
                 android:shell="true"

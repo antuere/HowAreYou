@@ -56,11 +56,6 @@ fun DetailScreenTopBar(
                         navigationIcon = Icons.Filled.ArrowBack,
                         onClickNavigationBtn = appState::navigateUp,
                         actions = {
-                            IconButtonScaleable(
-                                onClick = { onIntent(DetailIntent.EditModeOn) },
-                                iconRes = R.drawable.ic_edit
-                            )
-
                             IconButton(onClick = { onIntent(DetailIntent.FavoriteBtnClicked) }) {
                                 Icon(
                                     modifier = Modifier.graphicsLayer { rotationY = rotation() },
@@ -68,6 +63,10 @@ fun DetailScreenTopBar(
                                     contentDescription = null
                                 )
                             }
+                            IconButtonScaleable(
+                                onClick = { onIntent(DetailIntent.EditModeOn) },
+                                iconRes = R.drawable.ic_edit
+                            )
                             IconButtonScaleable(
                                 onClick = { onIntent(DetailIntent.DeleteBtnClicked) },
                                 iconRes = R.drawable.ic_delete
