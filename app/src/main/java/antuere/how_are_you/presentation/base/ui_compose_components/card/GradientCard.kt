@@ -73,8 +73,7 @@ fun GradientCard(
         elevation = elevation,
     ) {
         Column(
-            modifier = contentModifier
-                .background(gradient)
+            modifier = contentModifier.background(gradient)
         ) {
             content.invoke(this)
         }

@@ -63,7 +63,7 @@ fun HelplinesScreen(
             }
             is HelplinesSideEffect.ScrollToCenterItem -> {
                 scope.launch {
-                    delay(200)
+                    delay(325)
                     lazyListState.animateScrollAndCentralize(sideEffect.itemIndex, this)
                 }
             }

@@ -9,8 +9,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import antuere.how_are_you.R
 import antuere.how_are_you.presentation.base.ui_compose_components.buttons.OutlinedButtonWithIcon
-import antuere.how_are_you.presentation.base.ui_compose_components.days_list.DaysGrid
-import antuere.how_are_you.presentation.base.ui_compose_components.days_list.DaysGridShimmer
+import antuere.how_are_you.presentation.base.ui_compose_components.days_grid.DaysGrid
+import antuere.how_are_you.presentation.base.ui_compose_components.days_grid.DaysGridShimmer
 import antuere.how_are_you.presentation.screens.history.state.HistoryIntent
 import antuere.how_are_you.presentation.screens.history.state.HistoryState
 import antuere.how_are_you.presentation.screens.history.ui_compose.components.HistoryHeaderText

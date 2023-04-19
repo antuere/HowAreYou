@@ -8,19 +8,69 @@ import androidx.compose.foundation.layout.ime
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.State
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
+import antuere.how_are_you.presentation.base.ui_theme.GradientDefaults
 
+@Composable
+fun rememberDaysGradientCache(gradients : List<Brush> = GradientDefaults.gradientsForSmiles()): HashMap<Int, Brush> {
+    return remember {
+        hashMapOf(
+            antuere.data.R.drawable.smile_sad to gradients[0],
+            antuere.data.R.drawable.smile_none to gradients[1],
+            antuere.data.R.drawable.smile_low to gradients[2],
+            antuere.data.R.drawable.smile_happy to gradients[3],
+            antuere.data.R.drawable.smile_very_happy to gradients[4],
+        )
+    }
+}
+
+//@Composable
+//fun addGradientInCacheAndGet(imageResId: Int, cache: MutableMap<Int, Brush>): Brush {
+//    return when (imageResId) {
+//        antuere.data.R.drawable.smile_sad -> {
+//            cache[imageResId] = GradientDefaults.primary()
+//            GradientDefaults.primary()
+//        }
+//
+//        antuere.data.R.drawable.smile_low -> {
+//            cache[imageResId] = GradientDefaults.secondary()
+//            GradientDefaults.primary()
+//        }
+//
+//        antuere.data.R.drawable.smile_none -> {
+//            cache[imageResId] = GradientDefaults.primaryTriple()
+//            GradientDefaults.primary()
+//        }
+//
+//        antuere.data.R.drawable.smile_happy -> {
+//            cache[imageResId] = GradientDefaults.surface()
+//            GradientDefaults.primary()
+//        }
+//
+//        antuere.data.R.drawable.smile_very_happy -> {
+//            cache[imageResId] = GradientDefaults.surface()
+//            GradientDefaults.primary()
+//        }
+//
+//        else -> {
+//            cache[imageResId] = GradientDefaults.surface()
+//            GradientDefaults.primary()
+//        }
+//    }
+//}
 
 @Composable
 fun ComposableLifecycle(
     lifeCycleOwner: LifecycleOwner = LocalLifecycleOwner.current,
-    onEvent: (LifecycleOwner, Lifecycle.Event) -> Unit
+    onEvent: (LifecycleOwner, Lifecycle.Event) -> Unit,
 ) {
     DisposableEffect(lifeCycleOwner) {
         val observer = LifecycleEventObserver { source, event ->

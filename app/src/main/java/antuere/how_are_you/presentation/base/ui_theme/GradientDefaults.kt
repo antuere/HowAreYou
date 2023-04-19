@@ -4,6 +4,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 
 object GradientDefaults {
 
@@ -47,6 +49,33 @@ object GradientDefaults {
             )
         )
     }
+    @Composable
+    fun background(): Brush {
+        return Brush.linearGradient(
+            listOf(
+                MaterialTheme.colorScheme.background,
+                MaterialTheme.colorScheme.background,
+            )
+        )
+    }
+
+    @Composable
+    fun gradientsForSmiles(): ImmutableList<Brush> {
+        return listOf(
+            smileGradient(MaterialTheme.colorScheme.primaryContainer, color_bad_day),
+            smileGradient(MaterialTheme.colorScheme.primaryContainer, color_bad_day.copy(alpha = 0.8F)),
+            smileGradient(MaterialTheme.colorScheme.primaryContainer, color_bad_day.copy(alpha = 0.4F)),
+            smileGradient(MaterialTheme.colorScheme.primaryContainer, MaterialTheme.colorScheme.secondaryContainer),
+            surface()
+        ).toImmutableList()
+    }
+
+    @Composable
+    private fun smileGradient(topColor: Color, botColor: Color): Brush {
+        return Brush.linearGradient(
+            listOf(topColor, botColor)
+        )
+    }
 
     fun shadow(): Brush {
         return Brush.verticalGradient(
@@ -57,4 +86,6 @@ object GradientDefaults {
         )
     }
 }
+
+
 

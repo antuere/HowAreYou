@@ -22,6 +22,8 @@ val theme_background = Color(0xFFF8F7F2)
 val theme_onBackground = Color(0xFF002B3A)
 val theme_outline = Color(0xFF71787D)
 
+val color_bad_day = Color(0xFFFF2E3F)
+
 
 // Blue theme
 

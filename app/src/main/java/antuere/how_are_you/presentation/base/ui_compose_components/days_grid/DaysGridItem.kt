@@ -1,4 +1,4 @@
-package antuere.how_are_you.presentation.base.ui_compose_components.days_list
+package antuere.how_are_you.presentation.base.ui_compose_components.days_grid
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
@@ -18,14 +19,14 @@ import androidx.compose.ui.unit.sp
 import antuere.domain.dto.Day
 import antuere.how_are_you.R
 import antuere.how_are_you.presentation.base.ui_compose_components.card.GradientCard
-import antuere.how_are_you.presentation.base.ui_theme.GradientDefaults
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun DaysListItem(
+fun DaysGridItem(
     modifier: Modifier = Modifier,
     day: Day,
     onClick: (Day) -> Unit,
+    gradient : Brush,
     onLongClick: (Day) -> Unit,
 ) {
     GradientCard(
@@ -37,7 +38,7 @@ fun DaysListItem(
                 onLongClick = { onLongClick(day) }
             ),
         contentModifier = Modifier.fillMaxSize(),
-        gradient = GradientDefaults.surface()
+        gradient = gradient
     ) {
         Image(
             modifier = Modifier
@@ -70,6 +71,5 @@ private fun TestDaysListItem() {
         isFavorite = false
     )
 
-    DaysListItem(day = testDay, onClick = {}, onLongClick = {})
-
+//    DaysListItem(day = testDay, onClick = {}, onLongClick = {})
 }
