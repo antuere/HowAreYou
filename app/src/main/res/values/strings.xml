@@ -109,8 +109,8 @@
     <string name="settings_general_text">General</string>
     <string name="sign_in_advice">For a better experience sign in</string>
     <string name="how_are_you_text">How are you? We hope you all right</string>
-    <string name="hello_user">Hello, dear</string>
-    <string name="hello_user_plug">Hello, dear user</string>
+    <string name="hello_user">Hello,</string>
+    <string name="hello_user_plug">Hello, user</string>
     <string name="sign_in">Sign in</string>
     <string name="sign_out">Sign out</string>
     <string name="create_a_pin_code">Create PIN code</string>

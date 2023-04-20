@@ -45,7 +45,7 @@ fun DaySmilePicker(
                 shape = MaterialTheme.shapes.large
             ),
         pageCount = smileImages.size,
-        contentPadding = PaddingValues(horizontal = 28.dp),
+        contentPadding = PaddingValues(horizontal = 32.dp),
         state = pagerState
     ) { page ->
         Image(

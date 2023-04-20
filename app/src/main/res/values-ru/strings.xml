@@ -149,8 +149,8 @@
     <string name="settings_general_text">Основное</string>
     <string name="sign_in_advice">Для лучшего опыта зарегистрируйтесь</string>
     <string name="how_are_you_text">Как вы? Мы надеемся у вас все хорошо</string>
-    <string name="hello_user">Привет, уважаемый</string>
-    <string name="hello_user_plug">Привет, уважаемый пользователь</string>
+    <string name="hello_user">Привет,</string>
+    <string name="hello_user_plug">Привет, пользователь</string>
     <string name="sign_in">Войти</string>
     <string name="sign_out">Выйти</string>
     <string name="create_a_pin_code">Создайте PIN-код</string>

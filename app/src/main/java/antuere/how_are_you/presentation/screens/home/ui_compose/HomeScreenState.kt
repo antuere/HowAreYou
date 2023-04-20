@@ -1,6 +1,12 @@
 package antuere.how_are_you.presentation.screens.home.ui_compose
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -134,7 +140,7 @@ fun HomeScreenState(
                     ) {
                         Icon(
                             painter = painterResource(id = state.fabButtonState.image),
-                            modifier = Modifier.size(24.dp),
+                            modifier = Modifier.size(28.dp),
                             tint = MaterialTheme.colorScheme.onPrimary,
                             contentDescription = null
                         )

@@ -30,7 +30,7 @@ fun AuthSection(
     Column(
         horizontalAlignment = Alignment.Start
     ) {
-        Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_8)))
+        Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_4)))
         Text(
             modifier = Modifier.padding(
                 horizontal = dimensionResource(id = R.dimen.padding_normal_2)

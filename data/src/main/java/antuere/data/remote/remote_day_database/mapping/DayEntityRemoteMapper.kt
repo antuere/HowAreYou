@@ -6,8 +6,8 @@ import antuere.data.util.decodeByBase64
 import antuere.data.util.encodeByBase64
 import antuere.domain.dto.Day
 import antuere.domain.mapping.DomainMapper
-import antuere.domain.util.TimeUtility.convertToUTC
 import antuere.domain.util.TimeUtility.convertFromUTC
+import antuere.domain.util.TimeUtility.convertToUTC
 
 
 class DayEntityRemoteMapper : DomainMapper<DayEntityRemote, Day> {
@@ -28,7 +28,7 @@ class DayEntityRemoteMapper : DomainMapper<DayEntityRemote, Day> {
         return DayEntityRemote(
             dayId = domainModel.dayId.convertToUTC(),
             imageName = imageName.name,
-            dayText = domainModel.dayText.encodeByBase64(),
+            dayText = if (domainModel.dayId > 1678406400000) domainModel.dayText.encodeByBase64() else domainModel.dayText,
             dateString = domainModel.dateString,
             isFavorite = domainModel.isFavorite
         )

@@ -30,6 +30,16 @@ object GradientDefaults {
     }
 
     @Composable
+    fun secondaryInverse(): Brush {
+        return Brush.linearGradient(
+            listOf(
+                MaterialTheme.colorScheme.secondaryContainer,
+                MaterialTheme.colorScheme.surface,
+            )
+        )
+    }
+
+    @Composable
     fun primaryTriple(): Brush {
         return Brush.linearGradient(
             listOf(
@@ -49,6 +59,7 @@ object GradientDefaults {
             )
         )
     }
+
     @Composable
     fun background(): Brush {
         return Brush.linearGradient(
@@ -63,10 +74,19 @@ object GradientDefaults {
     fun gradientsForSmiles(): ImmutableList<Brush> {
         return listOf(
             smileGradient(MaterialTheme.colorScheme.primaryContainer, color_bad_day),
-            smileGradient(MaterialTheme.colorScheme.primaryContainer, color_bad_day.copy(alpha = 0.8F)),
-            smileGradient(MaterialTheme.colorScheme.primaryContainer, color_bad_day.copy(alpha = 0.4F)),
-            smileGradient(MaterialTheme.colorScheme.primaryContainer, MaterialTheme.colorScheme.secondaryContainer),
-            surface()
+            smileGradient(
+                MaterialTheme.colorScheme.primaryContainer,
+                color_bad_day.copy(alpha = 0.7F)
+            ),
+            smileGradient(
+                MaterialTheme.colorScheme.primaryContainer,
+                color_bad_day.copy(alpha = 0.2F)
+            ),
+            surface(),
+            smileGradient(
+                MaterialTheme.colorScheme.secondaryContainer,
+                MaterialTheme.colorScheme.surface
+            ),
         ).toImmutableList()
     }
 
