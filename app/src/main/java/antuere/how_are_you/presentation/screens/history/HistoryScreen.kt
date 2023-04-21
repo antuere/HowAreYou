@@ -4,8 +4,13 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.hilt.navigation.compose.hiltViewModel
 import antuere.how_are_you.LocalAppState
 import antuere.how_are_you.presentation.screens.history.state.HistorySideEffect
@@ -22,6 +27,8 @@ fun HistoryScreen(
 ) {
     val appState = LocalAppState.current
     val activity = LocalContext.current.findFragmentActivity()
+    val hapticFeedback = LocalHapticFeedback.current
+
 
     val rotation = remember { Animatable(initialValue = 360f) }
     val viewState by viewModel.collectAsState()
@@ -41,8 +48,10 @@ fun HistoryScreen(
                     animationSpec = tween(durationMillis = 450)
                 )
             }
+
             is HistorySideEffect.Dialog -> appState.showDialog(sideEffect.uiDialog)
             is HistorySideEffect.NavigationToDayDetail -> onNavigateToDetail(sideEffect.dayId)
+            HistorySideEffect.Vibration -> appState.vibratePhone(hapticFeedback)
         }
     }
 

@@ -1,10 +1,10 @@
 package antuere.how_are_you.presentation.screens.favorites
 
-import androidx.lifecycle.*
+import androidx.lifecycle.viewModelScope
 import antuere.domain.repository.DayRepository
 import antuere.how_are_you.R
-import antuere.how_are_you.presentation.base.ui_compose_components.dialog.UIDialog
 import antuere.how_are_you.presentation.base.ViewModelMvi
+import antuere.how_are_you.presentation.base.ui_compose_components.dialog.UIDialog
 import antuere.how_are_you.presentation.screens.favorites.state.FavoritesIntent
 import antuere.how_are_you.presentation.screens.favorites.state.FavoritesSideEffect
 import antuere.how_are_you.presentation.screens.favorites.state.FavoritesState
@@ -49,6 +49,7 @@ class FavoritesViewModel @Inject constructor(
                         }),
                     negativeButton = UIDialog.UiButton(text = R.string.no)
                 )
+                sideEffect(FavoritesSideEffect.Vibration)
                 sideEffect(FavoritesSideEffect.Dialog(uiDialog))
             }
         }

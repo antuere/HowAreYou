@@ -5,6 +5,7 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.hilt.navigation.compose.hiltViewModel
 import antuere.how_are_you.LocalAppState
 import antuere.how_are_you.R
@@ -21,6 +22,7 @@ fun FavoritesScreen(
     viewModel: FavoritesViewModel = hiltViewModel(),
 ) {
     val appState = LocalAppState.current
+    val hapticFeedback = LocalHapticFeedback.current
     val viewState by viewModel.collectAsState()
 
     appState.DisableBackBtnWhileTransitionAnimate()
@@ -39,6 +41,7 @@ fun FavoritesScreen(
         when (sideEffect) {
             is FavoritesSideEffect.Dialog -> appState.showDialog(sideEffect.uiDialog)
             is FavoritesSideEffect.NavigationToDayDetail -> onNavigateToDetail(sideEffect.dayId)
+            FavoritesSideEffect.Vibration -> appState.vibratePhone(hapticFeedback)
         }
     }
 

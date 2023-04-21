@@ -71,6 +71,7 @@ class HistoryViewModel @Inject constructor(
                         }),
                     negativeButton = UIDialog.UiButton(text = R.string.no)
                 )
+                sideEffect(HistorySideEffect.Vibration)
                 sideEffect(HistorySideEffect.Dialog(uiDialog))
             }
             is HistoryIntent.DaysInFilterSelected -> {
