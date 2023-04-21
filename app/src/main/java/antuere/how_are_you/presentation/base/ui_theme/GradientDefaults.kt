@@ -61,6 +61,16 @@ object GradientDefaults {
     }
 
     @Composable
+    fun lightWhite(): Brush {
+        return Brush.linearGradient(
+            listOf(
+                Color.White,
+                MaterialTheme.colorScheme.surface,
+            )
+        )
+    }
+
+    @Composable
     fun background(): Brush {
         return Brush.linearGradient(
             listOf(

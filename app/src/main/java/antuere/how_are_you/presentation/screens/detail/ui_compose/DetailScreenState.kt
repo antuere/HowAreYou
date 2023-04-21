@@ -4,6 +4,7 @@ import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -93,14 +94,14 @@ fun DetailScreenState(
 //                            gradient = GradientDefaults.surface(),
 //                            elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
 //                        ) {
-                            Text(
-                                modifier = Modifier.fillMaxSize(0.8F),
-                                text = dayText,
-                                fontSize = dimensionResource(id = R.dimen.textSize_big_0).value.sp
-                            )
-                        }
-//                        Spacer(modifier = Modifier.weight(0.1F))
-//                    }
+                        Text(
+                            modifier = Modifier
+                                .fillMaxHeight(0.8F)
+                                .fillMaxWidth(0.9F),
+                            text = dayText,
+                            fontSize = dimensionResource(id = R.dimen.textSize_normal_2).value.sp,
+                        )
+                    }
                 }
             }
         }
