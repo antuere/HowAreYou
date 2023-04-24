@@ -59,6 +59,7 @@ class HistoryViewModel @Inject constructor(
                     )
                 )
             }
+
             is HistoryIntent.DayLongClicked -> {
                 val uiDialog = UIDialog(
                     title = R.string.dialog_delete_title,
@@ -74,12 +75,14 @@ class HistoryViewModel @Inject constructor(
                 sideEffect(HistorySideEffect.Vibration)
                 sideEffect(HistorySideEffect.Dialog(uiDialog))
             }
+
             is HistoryIntent.DaysInFilterSelected -> {
                 sideEffect(HistorySideEffect.AnimationHistoryHeader)
                 filterState.update {
                     FilterState.Activated(selectedDates = intent.selectedDates)
                 }
             }
+
             is HistoryIntent.ToggleBtnChanged -> {
                 saveToggleButtonState(intent.toggleBtnState)
                 sideEffect(HistorySideEffect.AnimationHistoryHeader)
@@ -114,6 +117,7 @@ class HistoryViewModel @Inject constructor(
                     val secondTime = filterState.selectedDates.endInMillis.convertFromUTC()
                     dayRepository.getSelectedDays(firstTime, secondTime)
                 }
+
                 is FilterState.Disabled -> {
                     when (filterState.toggleBtnState) {
                         ToggleBtnState.ALL_DAYS -> {
@@ -126,9 +130,11 @@ class HistoryViewModel @Inject constructor(
                             }
                             dayRepository.getAllDays()
                         }
+
                         ToggleBtnState.LAST_WEEK -> {
                             dayRepository.getCertainDays(TimeUtility.getCurrentWeekTime())
                         }
+
                         ToggleBtnState.CURRENT_MONTH -> {
                             dayRepository.getCertainDays(TimeUtility.getCurrentMonthTime())
                         }
@@ -143,6 +149,7 @@ class HistoryViewModel @Inject constructor(
                     is FilterState.Activated -> {
                         getDaysByFilter(days)
                     }
+
                     is FilterState.Disabled -> {
                         getDaysByToggleState(days, filterState.toggleBtnState)
                     }
@@ -184,6 +191,7 @@ class HistoryViewModel @Inject constructor(
                     }
                 }
             }
+
             ToggleBtnState.LAST_WEEK -> {
                 updateState {
                     if (days.isEmpty() && !isHasSavedDays) {
@@ -194,6 +202,7 @@ class HistoryViewModel @Inject constructor(
                     if (days.isEmpty()) {
                         return@updateState HistoryState.Empty.FromToggleGroup(
                             message = UiText.StringResource(R.string.no_days_week),
+                            calendarImageRes = R.drawable.calendar_week,
                             toggleBtnState = toggleState
                         )
                     }
@@ -205,6 +214,7 @@ class HistoryViewModel @Inject constructor(
                     )
                 }
             }
+
             ToggleBtnState.CURRENT_MONTH -> {
                 updateState {
                     if (days.isEmpty() && !isHasSavedDays) {
@@ -215,6 +225,7 @@ class HistoryViewModel @Inject constructor(
                     if (days.isEmpty()) {
                         return@updateState HistoryState.Empty.FromToggleGroup(
                             message = UiText.StringResource(R.string.no_days_month),
+                            calendarImageRes = R.drawable.calendar_month,
                             toggleBtnState = toggleState
                         )
                     }

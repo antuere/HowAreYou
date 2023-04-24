@@ -1,9 +1,17 @@
 package antuere.how_are_you.presentation.screens.history.ui_compose
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.material3.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
@@ -13,6 +21,7 @@ import antuere.how_are_you.presentation.base.ui_compose_components.days_grid.Day
 import antuere.how_are_you.presentation.base.ui_compose_components.days_grid.DaysGridShimmer
 import antuere.how_are_you.presentation.screens.history.state.HistoryIntent
 import antuere.how_are_you.presentation.screens.history.state.HistoryState
+import antuere.how_are_you.presentation.screens.history.ui_compose.components.CalendarImage
 import antuere.how_are_you.presentation.screens.history.ui_compose.components.HistoryHeaderText
 import antuere.how_are_you.presentation.screens.history.ui_compose.components.HistoryScreenTopBar
 import antuere.how_are_you.presentation.screens.history.ui_compose.components.HistoryScreenTopBarWithAction
@@ -65,6 +74,7 @@ fun HistoryScreenState(
                 Text(state.message.asString())
                 Spacer(modifier = Modifier.weight(1F))
             }
+
             is HistoryState.Empty.FromToggleGroup -> {
                 HistoryScreenTopBarWithAction(filterBtnClicked = {
                     isShowDatePicker = true
@@ -79,13 +89,20 @@ fun HistoryScreenState(
 
                 Spacer(modifier = Modifier.weight(1F))
 
-                Text(state.message.asString())
+                CalendarImage(
+                    calendarImageRes = state.calendarImageRes,
+                    toggleBtnState = state.toggleBtnState,
+                    description = state.message
+                )
+
                 Spacer(modifier = Modifier.weight(1F))
             }
+
             is HistoryState.Empty.NoEntriesYet -> {
                 HistoryScreenTopBar()
                 Text(state.message.asString())
             }
+
             is HistoryState.Loaded.Default -> {
                 HistoryScreenTopBarWithAction(filterBtnClicked = {
                     isShowDatePicker = true
@@ -112,6 +129,7 @@ fun HistoryScreenState(
                     onLongClick = { onIntent(HistoryIntent.DayLongClicked(it)) }
                 )
             }
+
             is HistoryState.Loaded.FilterSelected -> {
                 HistoryScreenTopBarWithAction(filterBtnClicked = {
                     isShowDatePicker = true

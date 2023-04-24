@@ -34,8 +34,7 @@ fun DefaultDateRangePicker(
         properties = DialogProperties(usePlatformDefaultWidth = false)
     ) {
         Surface(
-            modifier = Modifier
-                .fillMaxSize(0.9F),
+            modifier = Modifier.fillMaxSize(0.9F),
             shape = MaterialTheme.shapes.large
         ) {
             Column(

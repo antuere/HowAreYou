@@ -3,7 +3,10 @@ package antuere.domain.util
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
-import java.util.*
+import java.util.Calendar
+import java.util.Date
+import java.util.Locale
+import java.util.TimeZone
 
 object TimeUtility {
 
@@ -17,7 +20,7 @@ object TimeUtility {
         return formatDate(currentDate, format)
     }
 
-     fun formatDate(
+    fun formatDate(
         date: Date,
         format: TimeFormat = TimeFormat.Default,
         timeZone: TimeZone = TimeZone.getDefault(),
@@ -32,13 +35,6 @@ object TimeUtility {
     }
 
     fun getTimeInMilliseconds(localDate: LocalDate): Long {
-//        val offset = TimeZone.getDefault().rawOffset
-
-//        return if (offset > 0) {
-//            localDate.toEpochDay() * 86400000 - offset
-//        } else {
-//            localDate.toEpochDay() * 86400000 + offset
-//        }
         val utcTime = localDate.toEpochDay() * 86400000
         return utcTime.convertFromUTC()
     }
@@ -56,6 +52,14 @@ object TimeUtility {
 
     fun getDayOfMonth(): String {
         return calendar.get(Calendar.DAY_OF_MONTH).toString()
+    }
+
+    fun getMonthNumber(): Int {
+        return calendar.get(Calendar.MONTH)
+    }
+
+    fun getWeekNumber(): Int {
+        return calendar.get(Calendar.WEEK_OF_YEAR)
     }
 
     fun getCurrentMonthTime(): Long {

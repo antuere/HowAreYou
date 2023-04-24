@@ -22,9 +22,6 @@ val theme_background = Color(0xFFF8F7F2)
 val theme_onBackground = Color(0xFF002B3A)
 val theme_outline = Color(0xFF71787D)
 
-val color_bad_day = Color(0xFFFF2E3F)
-
-
 // Blue theme
 
 //val theme_primary = Color(0xFF0a61a4)
@@ -46,6 +43,9 @@ val color_bad_day = Color(0xFFFF2E3F)
 
 val color_dark_green = Color(0xFF06751F)
 val color_red = Color(0xFFDF1919)
+
+val color_bad_day = Color(0xFFFF2E3F)
+val color_calendar_header = Color(0xFFFD5462)
 
 val TealMain = Color(0xFF008394)
 val Teal200 = Color(0xFF03DAC5)

@@ -4,12 +4,30 @@ import antuere.domain.dto.Day
 import antuere.domain.util.TimeUtility
 import antuere.how_are_you.R
 import antuere.how_are_you.presentation.base.ui_text.UiText
-import java.util.*
+import java.util.Calendar
 
 object HelperForHistory {
 
     private fun getMonthTitle(num: Int): Int {
         return when (num) {
+            0 -> R.string.january_args
+            1 -> R.string.february_args
+            2 -> R.string.march_args
+            3 -> R.string.april_args
+            4 -> R.string.may_args
+            5 -> R.string.june_args
+            6 -> R.string.july_args
+            7 -> R.string.august_args
+            8 -> R.string.september_args
+            9 -> R.string.october_args
+            10 -> R.string.november_args
+            11 -> R.string.december_args
+            else -> throw IllegalArgumentException("Invalid number of month")
+        }
+    }
+
+    fun getHeaderForCalendar(numOfMonth : Int) : Int {
+        return when (numOfMonth) {
             0 -> R.string.january
             1 -> R.string.february
             2 -> R.string.march
