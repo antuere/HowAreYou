@@ -166,9 +166,12 @@ dependencies {
     // ProfileInstaller
     implementation(libs.androidx.profileInstaller)
 
+    // TextFlow
+    implementation(libs.textFlow)
+
     // Timber
     implementation(libs.timber)
-
+    
     // Landscapist glide
     implementation(libs.bundles.landscapist)
 

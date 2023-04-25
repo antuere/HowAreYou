@@ -155,7 +155,7 @@ fun CardWithIcons(
             Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.spacer_height_5)))
             Text(
                 text = stringResource(id = labelRes),
-                color = MaterialTheme.colorScheme.onPrimaryContainer
+                color = MaterialTheme.colorScheme.onPrimaryContainer,
             )
             Spacer(modifier = Modifier.weight(1F))
 
