@@ -93,8 +93,8 @@
     <string name="loading">Загрузка</string>
     <string name="close_filter">Закрыть фильтр</string>
     <string name="no_days_all">Добавьте свой первый день и возвращайтесь!</string>
-    <string name="no_days_week">На этой недели нет записей, давайте это исправим!</string>
-    <string name="no_days_month">За текущий месяц нет записей, давайте это исправим!</string>
+    <string name="no_days_week">На этой неделе записей нет, давайте это исправим!</string>
+    <string name="no_days_month">За текущий месяц записей нет, давайте это исправим!</string>
     <string name="no_days_filter">Записей в выбранные даты нет</string>
     <string name="wish_for_users_test">Мы надеемся, что у вас был еще один отличный день, так что наслаждайтесь! Мы ждем вас завтра</string>
     <string name="wish_for_users_plug">Мы надеемся, что у вас сегодня отличный день, так что давайте сохраним впечатления от него!</string>

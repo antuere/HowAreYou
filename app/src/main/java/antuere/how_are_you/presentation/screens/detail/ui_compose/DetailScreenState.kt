@@ -60,7 +60,7 @@ fun DetailScreenState(
 
                         DayEditTextField(
                             modifier = Modifier
-                                .fillMaxWidth(0.8F)
+                                .fillMaxWidth(0.9F)
                                 .weight(0.85F),
                             value = { dayTextEditable },
                             onValueChange = { value: String ->

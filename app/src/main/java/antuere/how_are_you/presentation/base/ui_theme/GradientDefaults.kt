@@ -37,6 +37,17 @@ object GradientDefaults {
                 MaterialTheme.colorScheme.surface,
             )
         )
+
+    }
+
+    @Composable
+    fun tertiary(): Brush {
+        return Brush.linearGradient(
+            listOf(
+                Color.White.copy(alpha = 0.78F),
+                MaterialTheme.colorScheme.surface
+            )
+        )
     }
 
     @Composable

@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.LazyGridState
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -22,9 +21,11 @@ import antuere.how_are_you.presentation.base.ui_compose_components.days_grid.Day
 import antuere.how_are_you.presentation.screens.history.state.HistoryIntent
 import antuere.how_are_you.presentation.screens.history.state.HistoryState
 import antuere.how_are_you.presentation.screens.history.ui_compose.components.CalendarImage
+import antuere.how_are_you.presentation.screens.history.ui_compose.components.DaysNotFoundPlug
 import antuere.how_are_you.presentation.screens.history.ui_compose.components.HistoryHeaderText
 import antuere.how_are_you.presentation.screens.history.ui_compose.components.HistoryScreenTopBar
 import antuere.how_are_you.presentation.screens.history.ui_compose.components.HistoryScreenTopBarWithAction
+import antuere.how_are_you.presentation.screens.history.ui_compose.components.SmileBoxPlug
 import antuere.how_are_you.presentation.screens.history.ui_compose.components.ToggleBtnGroup
 import antuere.how_are_you.presentation.screens.history.ui_compose.components.date_picker.DefaultDateRangePicker
 import antuere.how_are_you.util.extensions.paddingBotAndTopBar
@@ -71,7 +72,7 @@ fun HistoryScreenState(
                 )
                 Spacer(modifier = Modifier.weight(1F))
 
-                Text(state.message.asString())
+                DaysNotFoundPlug(message = state.message)
                 Spacer(modifier = Modifier.weight(1F))
             }
 
@@ -100,7 +101,7 @@ fun HistoryScreenState(
 
             is HistoryState.Empty.NoEntriesYet -> {
                 HistoryScreenTopBar()
-                Text(state.message.asString())
+                SmileBoxPlug(message = state.message)
             }
 
             is HistoryState.Loaded.Default -> {
