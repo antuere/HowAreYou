@@ -15,14 +15,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import antuere.how_are_you.R
 import antuere.how_are_you.presentation.base.ui_compose_components.card.CardWithIcons
 import antuere.how_are_you.presentation.base.ui_compose_components.card.GradientCard
 import antuere.how_are_you.presentation.base.ui_theme.GradientDefaults
-import antuere.how_are_you.presentation.base.ui_theme.TypeTokens
 import antuere.how_are_you.presentation.screens.help_for_you.state.HelpForYouIntent
 import antuere.how_are_you.presentation.screens.help_for_you.state.HelpForYouState
 import antuere.how_are_you.util.extensions.paddingTopBar
@@ -62,11 +60,12 @@ fun HelpForYouScreenState(
                     text = viewState().titleText.asString(),
                     color = MaterialTheme.colorScheme.onPrimaryContainer,
                     fontSize = dimensionResource(id = R.dimen.textSize_normal_1).value.sp,
-                    fontFamily = TypeTokens.DefaultFont,
-                    fontWeight = FontWeight.Medium
+                    style = MaterialTheme.typography.titleMedium
                 ) {
                     Image(
-                        modifier = Modifier.fillMaxWidth(0.25F).padding(end = 8.dp),
+                        modifier = Modifier
+                            .fillMaxWidth(0.25F)
+                            .padding(end = 8.dp),
                         painter = painterResource(id = R.drawable.help_hand),
                         contentDescription = "Text flow",
                         contentScale = ContentScale.Crop

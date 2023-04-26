@@ -52,7 +52,7 @@ fun Modifier.shake() = composed(
             initialValue = 0.9f,
             targetValue = 1.2F,
             animationSpec = infiniteRepeatable(
-                animation = tween(250),
+                animation = tween(240),
                 repeatMode = RepeatMode.Reverse
             )
         )
@@ -131,10 +131,10 @@ fun Modifier.animateScaleDownOnce() = composed(
             scale.animateTo(
                 targetValue = 1f,
                 animationSpec = keyframes {
-                    durationMillis = 300
-                    0.9f at 100
-                    0.8f at 200
-                    1f at 300
+                    durationMillis = 240
+                    0.9f at 80
+                    0.8f at 160
+                    1f at 240
                 }
             )
         }

@@ -1,7 +1,7 @@
 <resources>
     <!-- Categories names -->
     <string name="current_times">Current times tips</string>
-    <string name="you_self">Get you self tips</string>
+    <string name="you_self">Personal growth</string>
     <string name="family">Family tips</string>
     <string name="relationship">Relationship tips</string>
     <string name="friends">Friends tips</string>
@@ -42,8 +42,8 @@
     <string name="mental_tip_current_time_1">"Some people are inclined to some point of view, just to calm down. For example, they are waiting for everything to end sooner in any way — not because they wish evil to someone, but so that they can return to the previous regime. Some people may have frightening thoughts outside of their conscious desire.  "</string>
     <string name="mental_tip_current_time_2">"At this time, it is important to recognize that now everything is not the way we are used to, which means that we cannot expect the same behavior from ourselves and others. If we accept the fact that changes are taking place, we may be able to decide what to do next. "</string>
     <string name="mental_tip_current_time_3">Here we must admit that not everything is under our control: there are things that we cannot control.It is better to focus on what we can control, while it is important not to be too strict with ourselves. That is, to understand your condition and sometimes allow yourself to forget or lose something, even let some things go on without our participation.</string>
-    <string name="mental_tip_current_time_4">"Anxiety depletes the resources needed for the effective operation of memory, and leads to the fact that a person overly concentrates on mistakes.When we allow ourselves to make mistakes and observe our feelings, we can study our reaction and draw conclusions. Including understanding that mistakes don't automatically make us bad.   "</string>
-    <string name="mental_tip_current_time_5">"In difficult times, panic attacks, severe fear, even panic attacks appear or increase.You need to allow yourself to live the panic without doing anything with it, just watching.You can't die from a panic attack, it doesn't cause physical harm. However, you can start to be afraid of the panic itself, which will only worsen the situation "</string>
+    <string name="mental_tip_current_time_4">"Anxiety depletes the resources needed for the effective operation of memory, and leads to the fact that a person overly concentrates on mistakes. When we allow ourselves to make mistakes and observe our feelings, we can study our reaction and draw conclusions. Including understanding that mistakes don't automatically make us bad.   "</string>
+    <string name="mental_tip_current_time_5">"In difficult times severe fear, even panic attacks appear or increase. You need to allow yourself to live the panic without doing anything with it, just watching. You can't die from a panic attack, it doesn't cause physical harm. However, you can start to be afraid of the panic itself, which will only worsen the situation "</string>
 
     <string name="mental_tip_youself_0">"Sleep is the most important factor affecting a person's vital activity. Without it, no one can not only feel good, but also think soberly. Therefore, try to get enough sleep and start solving difficult tasks only when you are rested.   "</string>
     <string name="mental_tip_youself_1">"Do not accumulate resentments and negative emotions in yourself. It is not necessary to deliberately tighten your black stripe, revel in your suffering. Try to put it all in the past as soon as possible.  "</string>

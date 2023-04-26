@@ -145,7 +145,7 @@ fun CardWithIcons(
             Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.spacer_height_2)))
             leadingIconRes?.let { iconRes ->
                 Icon(
-                    modifier = Modifier.size(35.dp),
+                    modifier = Modifier.size(30.dp),
                     painter = painterResource(id = iconRes),
                     contentDescription = leadingIconDescReS?.let { stringResource(id = it) },
                     tint = Color.Unspecified

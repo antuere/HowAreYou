@@ -33,7 +33,6 @@
     <string name="mental_tips">Mental tips</string>
     <string name="login_methods">Sign in methods</string>
     <string name="current_time_tips">Current time</string>
-    <string name="youself_tips">Yourself</string>
     <string name="family_tips">Family</string>
     <string name="relationship_tips">Relationship</string>
     <string name="friends_tips">Friends</string>
@@ -226,5 +225,6 @@
     <string name="too_many_chars_default">Cannot be more characters</string>
     <string name="dialog_sign_out_desc">All your data will be deleted on this device, to restore them, log in to your account again</string>
     <string name="dialog_delete_local_data_desc">When you sign out of your account, you can save existing recordings locally on your device. Save local day entries?</string>
+    <string name="youself_tips">Personal growth</string>
 
 </resources>

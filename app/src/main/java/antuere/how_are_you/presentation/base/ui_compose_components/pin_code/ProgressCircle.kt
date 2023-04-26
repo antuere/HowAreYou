@@ -45,10 +45,10 @@ fun ProgressCircleAnimated(
         scale.animateTo(
             targetValue = 1f,
             animationSpec = keyframes {
-                durationMillis = 300
-                1.1f at 100
-                1.2f at 200
-                1f at 300
+                durationMillis = 240
+                1.1f at 80
+                1.2f at 160
+                1f at 240
             }
         )
 

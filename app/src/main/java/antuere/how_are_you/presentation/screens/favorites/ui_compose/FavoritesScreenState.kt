@@ -3,7 +3,6 @@ package antuere.how_are_you.presentation.screens.favorites.ui_compose
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -27,7 +26,7 @@ fun FavoritesScreenState(
     ) {
         when (val state = viewState()) {
             is FavoritesState.Empty -> {
-                Text(text = state.message.asString())
+                SmileFavPlug(message = state.message)
             }
             is FavoritesState.Loaded -> {
                 DaysGrid(
