@@ -138,6 +138,7 @@
     <string name="login_google">Войти через Google</string>
     <string name="how_are_you_today">Как вы сегодня?</string>
     <string name="desc_you_day">Опишите свой день</string>
+    <string name="how_you_mention">Как настроение?</string>
     <string name="too_many_chars_100">Не может быть более 100 символов</string>
     <string name="getCats">Обновить милых котиков!</string>
     <string name="title_cats">Что может быть лучше котиков?</string>

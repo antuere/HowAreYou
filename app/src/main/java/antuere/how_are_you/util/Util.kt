@@ -1,6 +1,7 @@
 package antuere.how_are_you.util
 
 import android.content.Context
+import android.util.TypedValue
 import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.WindowInsets
@@ -84,6 +85,15 @@ fun isKeyboardVisible(): State<Boolean> {
 //        }
 //    }
 //    return keyboardState
+}
+
+fun dpToPixel(dp: Int, context: Context): Float {
+    val metrics = context.resources.displayMetrics
+    return TypedValue.applyDimension(
+        TypedValue.COMPLEX_UNIT_DIP,
+        dp.toFloat(),
+        metrics
+    )
 }
 
 

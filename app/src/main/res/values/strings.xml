@@ -92,6 +92,7 @@
     <!-- Add day screen -->
     <string name="how_are_you_today">How are you today?</string>
     <string name="desc_you_day">Describe your day in a nutshell</string>
+    <string name="how_you_mention">How are you feeling?</string>
     <string name="too_many_chars_100">Cannot be more than 100 characters</string>
 
     <!-- Cats screen -->

@@ -13,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
@@ -33,6 +34,7 @@ fun DefaultTextField(
     singleLine: Boolean = false,
     maxLength: Int = Int.MAX_VALUE,
     maxLines: Int = 25,
+    shape : Shape = MaterialTheme.shapes.large,
     @StringRes toastTextId: Int? = null,
     colors: TextFieldColors = TextFieldDefaults.colors(
         focusedTextColor = MaterialTheme.colorScheme.onBackground,
@@ -83,7 +85,7 @@ fun DefaultTextField(
             )
         },
         colors = colors,
-        shape = MaterialTheme.shapes.large,
+        shape = shape,
         keyboardOptions = keyboardOptions.copy(capitalization = KeyboardCapitalization.Sentences),
         keyboardActions = keyboardActions,
         singleLine = singleLine,
