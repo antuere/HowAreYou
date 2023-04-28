@@ -7,13 +7,24 @@ import androidx.compose.foundation.relocation.BringIntoViewRequester
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
+import androidx.compose.ui.draw.drawWithCache
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.focus.onFocusEvent
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.graphics.PathEffect
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.debugInspectorInfo
+import androidx.compose.ui.text.ExperimentalTextApi
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.drawText
+import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.dp
+import antuere.how_are_you.util.dpToPixel
 import com.valentinilk.shimmer.ShimmerBounds
 import com.valentinilk.shimmer.defaultShimmerTheme
 import com.valentinilk.shimmer.rememberShimmer
@@ -45,6 +56,57 @@ fun Modifier.bringIntoViewForFocused(
     }
 }
 
+@OptIn(ExperimentalTextApi::class)
+fun Modifier.borderWithText(
+    text: String,
+    textStyle: TextStyle,
+    color: Color,
+) = composed(
+    factory = {
+        val textMeasurer = rememberTextMeasurer()
+        val context = LocalContext.current
+
+        this.drawWithCache {
+                val textSize = textMeasurer.measure(text, textStyle).size
+                val endTextPoint = dpToPixel(20, context) + textSize.width
+                val path = Path().apply {
+                    moveTo(dpToPixel(12, context), 0f)
+                    lineTo(0f, 0f)
+                    lineTo(0f, size.height)
+                    lineTo(size.width, size.height)
+                    lineTo(size.width, 0f)
+                    lineTo(endTextPoint, 0f)
+                }
+                val stoke = Stroke(
+                    width = dpToPixel(1, context),
+                    pathEffect = PathEffect.cornerPathEffect(dpToPixel(8, context))
+                )
+                val textOffset = Offset(x = dpToPixel(16, context), y = -textSize.height / 1.7f)
+
+                onDrawWithContent {
+                    drawContent()
+
+                    drawPath(
+                        path = path,
+                        color = color,
+                        style = stoke
+                    )
+
+                    drawText(
+                        textMeasurer = textMeasurer,
+                        text = text,
+                        style = textStyle,
+                        topLeft = textOffset
+                    )
+                }
+            }
+            .padding(16.dp)
+    },
+    inspectorInfo = debugInspectorInfo {
+        name = "borderWithText"
+    }
+)
+
 fun Modifier.shake() = composed(
     factory = {
         val infiniteTransition = rememberInfiniteTransition()
@@ -57,7 +119,7 @@ fun Modifier.shake() = composed(
             )
         )
 
-        Modifier.graphicsLayer {
+        this.graphicsLayer {
             scaleX = scale
             scaleY = scale
         }

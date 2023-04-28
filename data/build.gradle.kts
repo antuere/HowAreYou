@@ -55,9 +55,6 @@ android {
 
 dependencies {
 
-    // Leak canary
-    debugImplementation(libs.leakCanary)
-
     // Preferences DataStore
     implementation(libs.androidx.dataStore)
 
