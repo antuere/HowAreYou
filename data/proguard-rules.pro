@@ -23,3 +23,4 @@
 -keep class antuere.data.network.remote_day_database.entities.DayEntityRemote.** { *; }
 -keep class antuere.data.network.remote_day_database.entities.QuoteEntity.** { *; }
 -keep class com.google.android.gms.internal.** { *; }
+-dontwarn java.lang.invoke.StringConcatFactory
