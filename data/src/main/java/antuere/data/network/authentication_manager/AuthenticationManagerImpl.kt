@@ -1,6 +1,6 @@
-package antuere.data.remote.authentication_manager
+package antuere.data.network.authentication_manager
 
-import antuere.data.remote.NetworkInfo
+import antuere.data.network.NetworkInfo
 import antuere.domain.authentication_manager.AuthenticationManager
 import antuere.domain.authentication_manager.LoginResultListener
 import antuere.domain.authentication_manager.RegisterResultListener

@@ -1,4 +1,4 @@
-package antuere.data.remote
+package antuere.data.network
 
 import android.content.Context
 import android.net.ConnectivityManager

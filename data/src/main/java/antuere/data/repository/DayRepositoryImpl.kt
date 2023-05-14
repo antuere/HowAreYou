@@ -2,7 +2,7 @@ package antuere.data.repository
 
 import antuere.data.local_day_database.DayDatabase
 import antuere.data.local_day_database.mapping.DayEntityMapper
-import antuere.data.remote.remote_day_database.FirebaseRealtimeDB
+import antuere.data.network.remote_day_database.FirebaseRealtimeDB
 import antuere.domain.dto.Day
 import antuere.domain.repository.DayRepository
 import kotlinx.coroutines.CoroutineScope

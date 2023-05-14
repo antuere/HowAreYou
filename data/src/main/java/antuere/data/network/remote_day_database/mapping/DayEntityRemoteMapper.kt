@@ -1,6 +1,6 @@
-package antuere.data.remote.remote_day_database.mapping
+package antuere.data.network.remote_day_database.mapping
 
-import antuere.data.remote.remote_day_database.entities.DayEntityRemote
+import antuere.data.network.remote_day_database.entities.DayEntityRemote
 import antuere.data.util.SmileProvider
 import antuere.data.util.decodeByBase64
 import antuere.data.util.encodeByBase64

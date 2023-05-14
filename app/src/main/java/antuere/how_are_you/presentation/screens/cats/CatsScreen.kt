@@ -11,10 +11,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.hilt.navigation.compose.hiltViewModel
 import antuere.data.util.GalleryProvider
 import antuere.how_are_you.LocalAppState
 import antuere.how_are_you.R
+import antuere.how_are_you.presentation.base.ui_compose_components.buttons.IconButtonScaleable
 import antuere.how_are_you.presentation.base.ui_compose_components.top_bar.AppBarState
 import antuere.how_are_you.presentation.base.ui_text.UiText
 import antuere.how_are_you.presentation.screens.cats.state.CatsIntent
@@ -31,6 +33,7 @@ fun CatsScreen(
 ) {
     val appState = LocalAppState.current
     val context = LocalContext.current
+    val uriHandler = LocalUriHandler.current
     val hapticFeedback = LocalHapticFeedback.current
     val scope = rememberCoroutineScope()
     val viewState by viewModel.collectAsState()
@@ -50,6 +53,12 @@ fun CatsScreen(
                 topBarTitle = UiText.StringResource(R.string.cats),
                 navigationIcon = Icons.Filled.ArrowBack,
                 onClickNavigationBtn = appState::navigateUp,
+                actions = {
+                    IconButtonScaleable(
+                        onClick = { viewModel.onIntent(CatsIntent.ChooseSourceClicked) },
+                        iconRes = R.drawable.image_source_ic
+                    )
+                },
                 isVisibleBottomBar = false
             )
         )
@@ -66,17 +75,24 @@ fun CatsScreen(
                     )
                 }
             }
+
             is CatsSideEffect.Snackbar -> {
                 appState.showSnackbar(
                     message = sideEffect.message.asString(context),
                     duration = 1000
                 )
             }
+
             CatsSideEffect.RequestPermission -> {
                 writeExternalPermissionLauncher.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
             }
+
             CatsSideEffect.Vibration -> {
                 appState.vibratePhone(hapticFeedback)
+            }
+
+            is CatsSideEffect.NavigateToSourceWebsite -> {
+                uriHandler.openUri(sideEffect.website)
             }
         }
     }

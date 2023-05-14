@@ -25,7 +25,9 @@ google-services = "4.3.15"
 gradle = "8.0.0"
 junit = "4.13.2"
 junit-ext = "1.1.5"
-kotlin-general = "1.7.20"
+kotlin-general = "1.8.21"
+kotlin-serialization = "1.5.0"
+kotlin-serialization-converter = "1.0.0"
 kotlin-compiler-ext = "1.3.2"
 kotlin-immutable-collections = "0.3.5"
 landscapist-bom = "2.1.2"
@@ -39,6 +41,7 @@ navigation-safeargs = "2.5.2"
 orbitMvi = "4.5.0"
 play-services-auth = "20.4.1"
 profile-installer = "1.3.0"
+retrofit = "2.9.0"
 room = "2.5.0"
 splash-screen = "1.0.0"
 shimmer = "1.0.3"
@@ -55,6 +58,7 @@ kotlin-gradle = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.
 kotlin-immutable-collections = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version.ref = "kotlin-immutable-collections" }
 kotlin-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutine-core" }
 kotlin-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutine-android" }
+kotlin-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlin-serialization" }
 
 androidx-coreKtx = { module = "androidx.core:core-ktx", version.ref = "core" }
 androidx-legacy = { module = "androidx.legacy:legacy-support-v4", version.ref = "legacy-support" }
@@ -113,6 +117,10 @@ google-accompanist-navigation-anim = { module = "com.google.accompanist:accompan
 google-accompanist-pager-indicators = { module = "com.google.accompanist:accompanist-pager-indicators", version.ref = "accompanist" }
 google-accompanist-system-ui-controller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanist" }
 
+# Retrofit
+retrofit2-retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
+retrofit2-kotlinSerialization-converter = { module = "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter", version.ref = "kotlin-serialization-converter" }
+
 # Room
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
 androidx-roomKtx = { module = "androidx.room:room-ktx", version.ref = "room" }
@@ -152,6 +160,7 @@ androidx-navigation-safeargs = { id = "androidx.navigation.safeargs", version.re
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin-general" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin-general" }
 kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin-general" }
+kotlin-plugin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin-general" }
 google-dagger-hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "dagger-hilt" }
 google-gms-googleServices = { id = "com.google.gms.google-services", version.ref = "google-services" }
 google-firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebase-crashlytics-plugin" }

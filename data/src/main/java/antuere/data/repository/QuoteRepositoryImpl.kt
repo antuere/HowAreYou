@@ -1,10 +1,10 @@
 package antuere.data.repository
 
 import antuere.data.preferences_data_store.quote_data_store.QuoteDataStore
-import antuere.data.remote.NetworkInfo
-import antuere.data.remote.remote_day_database.FirebaseRealtimeDB
-import antuere.data.remote.remote_day_database.entities.QuoteEntity
-import antuere.data.remote.remote_day_database.mapping.QuoteEntityMapper
+import antuere.data.network.NetworkInfo
+import antuere.data.network.remote_day_database.FirebaseRealtimeDB
+import antuere.data.network.remote_day_database.entities.QuoteEntity
+import antuere.data.network.remote_day_database.mapping.QuoteEntityMapper
 import antuere.domain.dto.Quote
 import antuere.domain.repository.QuoteRepository
 import antuere.domain.util.TimeUtility

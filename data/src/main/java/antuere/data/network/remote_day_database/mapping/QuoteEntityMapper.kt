@@ -1,6 +1,6 @@
-package antuere.data.remote.remote_day_database.mapping
+package antuere.data.network.remote_day_database.mapping
 
-import antuere.data.remote.remote_day_database.entities.QuoteEntity
+import antuere.data.network.remote_day_database.entities.QuoteEntity
 import antuere.domain.dto.Quote
 import antuere.domain.mapping.DomainMapper
 

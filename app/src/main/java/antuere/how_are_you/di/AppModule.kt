@@ -1,11 +1,6 @@
 package antuere.how_are_you.di
 
 import android.content.Context
-import android.content.SharedPreferences
-import antuere.data.preferences_data_store.quote_data_store.QuoteDataStore
-import antuere.data.preferences_data_store.settings_data_store.SettingsDataStore
-import antuere.data.preferences_data_store.toggle_btn_data_store.ToggleBtnDataStore
-import antuere.data.remote.NetworkInfo
 import antuere.how_are_you.R
 import antuere.how_are_you.presentation.base.ui_biometric_dialog.UIBiometricDialog
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -56,36 +51,6 @@ object AppModule {
             .requestEmail()
             .build()
         return GoogleSignIn.getClient(context, gso)
-    }
-
-    @Provides
-    @Singleton
-    fun provideNetworkInfo(@ApplicationContext context: Context) : NetworkInfo {
-        return NetworkInfo(context)
-    }
-
-    @Provides
-    @Singleton
-    fun provideSharedPreferences(@ApplicationContext context: Context): SharedPreferences {
-        return context.getSharedPreferences("myPref", Context.MODE_PRIVATE)
-    }
-
-    @Provides
-    @Singleton
-    fun provideQuoteDataStore(@ApplicationContext context: Context): QuoteDataStore {
-        return QuoteDataStore(context, "quote_data_store")
-    }
-
-    @Provides
-    @Singleton
-    fun provideToggleButtonDataStore(@ApplicationContext context: Context): ToggleBtnDataStore {
-        return ToggleBtnDataStore(context, "toggle_button_data_store")
-    }
-
-    @Provides
-    @Singleton
-    fun provideSettingsDataStore(@ApplicationContext context: Context): SettingsDataStore {
-        return SettingsDataStore(context, "settings_data_store")
     }
 
     @Provides

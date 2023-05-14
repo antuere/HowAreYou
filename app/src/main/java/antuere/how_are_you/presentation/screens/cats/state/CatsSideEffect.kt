@@ -8,6 +8,7 @@ sealed interface CatsSideEffect {
         CatsSideEffect
 
     data class Snackbar(val message: UiText) : CatsSideEffect
+    data class NavigateToSourceWebsite(val website: String) : CatsSideEffect
     object RequestPermission : CatsSideEffect
     object Vibration : CatsSideEffect
 }

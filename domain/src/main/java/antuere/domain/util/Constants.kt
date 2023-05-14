@@ -16,6 +16,7 @@ object Constants {
     const val QUOTE_TEXT_KEY = "text_quote_key"
 
     const val CHECKED_BUTTON_HISTORY_KEY = "history_checked_button_key"
+    const val CHECKED_IMAGE_SOURCE_KEY = "animals_checked_source_key"
 
     const val USER_NICKNAME_KEY = "user_nickname_key"
     const val PIN_CODE_SAVED_KEY = "password_pin_code_key"

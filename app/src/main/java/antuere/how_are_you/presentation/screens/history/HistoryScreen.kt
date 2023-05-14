@@ -29,7 +29,6 @@ fun HistoryScreen(
     val activity = LocalContext.current.findFragmentActivity()
     val hapticFeedback = LocalHapticFeedback.current
 
-
     val rotation = remember { Animatable(initialValue = 360f) }
     val viewState by viewModel.collectAsState()
     val lazyGridState = rememberLazyGridState()

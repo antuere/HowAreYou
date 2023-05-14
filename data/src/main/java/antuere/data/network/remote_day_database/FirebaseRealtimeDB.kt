@@ -1,8 +1,8 @@
-package antuere.data.remote.remote_day_database
+package antuere.data.network.remote_day_database
 
-import antuere.data.remote.NetworkInfo
-import antuere.data.remote.remote_day_database.entities.DayEntityRemote
-import antuere.data.remote.remote_day_database.mapping.DayEntityRemoteMapper
+import antuere.data.network.NetworkInfo
+import antuere.data.network.remote_day_database.entities.DayEntityRemote
+import antuere.data.network.remote_day_database.mapping.DayEntityRemoteMapper
 import antuere.domain.authentication_manager.AuthenticationManager
 import antuere.domain.dto.Day
 import antuere.domain.remote_db.RemoteDbApi

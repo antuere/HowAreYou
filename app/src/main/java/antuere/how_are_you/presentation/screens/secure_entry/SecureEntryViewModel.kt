@@ -6,6 +6,7 @@ import androidx.biometric.BiometricManager
 import androidx.lifecycle.viewModelScope
 import antuere.domain.authentication_manager.AuthenticationManager
 import antuere.domain.repository.DayRepository
+import antuere.domain.repository.ImageSourceRepository
 import antuere.domain.repository.SettingsRepository
 import antuere.domain.util.Constants
 import antuere.how_are_you.R
@@ -31,6 +32,7 @@ class SecureEntryViewModel @Inject constructor(
     private val dayRepository: DayRepository,
     private val authenticationManager: AuthenticationManager,
     private val uiBiometricDialog: UIBiometricDialog,
+    private val imageSourceRepository: ImageSourceRepository
 ) : ViewModelMvi<SecureEntryState, SecureEntrySideEffect, SecureEntryIntent>() {
 
     override val container: Container<SecureEntryState, SecureEntrySideEffect> =
@@ -184,6 +186,7 @@ class SecureEntryViewModel @Inject constructor(
             authenticationManager.signOut()
             dayRepository.deleteAllDaysLocal()
             settingsRepository.resetAllSettings()
+            imageSourceRepository.resetImageSource()
 
             delay(100)
             sideEffect(SecureEntrySideEffect.NavigateToHome)
