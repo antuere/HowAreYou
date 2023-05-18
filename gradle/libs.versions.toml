@@ -5,7 +5,7 @@ android-test-monitor = "1.6.1"
 benchmark-macro = "1.1.1"
 biometric = "1.2.0-alpha05"
 compose-activity = "1.6.1"
-compose-bom = "2023.04.00"
+compose-bom = "2023.05.01"
 compose-material3 = "1.1.0-beta02"
 constraint-layout = "2.1.4"
 core = "1.9.0"
@@ -22,7 +22,7 @@ firebase-bom = "31.2.2"
 firebase-crashlytics-plugin = "2.9.4"
 firebase-perf-plugin = "1.4.2"
 google-services = "4.3.15"
-gradle = "8.0.0"
+gradle = "8.0.1"
 junit = "4.13.2"
 junit-ext = "1.1.5"
 kotlin-general = "1.8.21"
@@ -91,8 +91,8 @@ google-firebase-perfKtx = { module = "com.google.firebase:firebase-perf-ktx" }
 # Compose
 androidx-compose-bom = { module = "androidx.compose:compose-bom", version.ref = "compose-bom" }
 androidx-compose-ui-graphics = { module = "androidx.compose.ui:ui-graphics" }
-androidx-compose-material3 = { module = "androidx.compose.material3:material3", version.ref = "compose-material3" }
-androidx-compose-material3-window = { module = "androidx.compose.material3:material3-window-size-class", version.ref = "compose-material3" }
+androidx-compose-material3 = { module = "androidx.compose.material3:material3"}
+androidx-compose-material3-window = { module = "androidx.compose.material3:material3-window-size-class" }
 androidx-compose-material = { module = "androidx.compose.material:material" }
 androidx-compose-material-icons-core = { module = "androidx.compose.material:material-icons-core" }
 androidx-compose-material-icons-extended = { module = "androidx.compose.material:material-icons-extended" }

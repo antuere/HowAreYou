@@ -19,6 +19,7 @@ import antuere.how_are_you.presentation.screens.settings.state.SettingsIntent
 import antuere.how_are_you.presentation.screens.settings.state.SettingsState
 import antuere.how_are_you.presentation.screens.settings.ui_compose.components.AuthSection
 import antuere.how_are_you.presentation.screens.settings.ui_compose.components.GeneralSettings
+import antuere.how_are_you.presentation.screens.settings.ui_compose.components.InfoAboutApp
 import antuere.how_are_you.presentation.screens.settings.ui_compose.components.PrivacySettings
 import antuere.how_are_you.util.extensions.paddingBotAndTopBar
 
@@ -73,6 +74,11 @@ fun SettingsScreenState(
                 isCheckedBiometric = viewState().isCheckedBiomAuth,
                 checkChangeBiometric = { onIntent(SettingsIntent.BiometricAuthSettingChanged(it)) },
             )
+
+            InfoAboutApp(
+                modifier = Modifier.align(Alignment.CenterHorizontally)
+            )
+
         }
     }
 }

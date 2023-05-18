@@ -27,11 +27,17 @@ class ExampleStartupBenchmark {
     val benchmarkRule = MacrobenchmarkRule()
 
     @Test
-    fun startup() = benchmarkRule.measureRepeated(
+    fun startupBaselineOFF() = startup(CompilationMode.None())
+
+    @Test
+    fun startupBaselineON() = startup(CompilationMode.Partial())
+
+    private fun startup(mode: CompilationMode) = benchmarkRule.measureRepeated(
         packageName = "antuere.how_are_you",
         metrics = listOf(StartupTimingMetric()),
         iterations = 5,
-        startupMode = StartupMode.COLD
+        startupMode = StartupMode.COLD,
+        compilationMode = mode
     ) {
         pressHome()
         startActivityAndWait()

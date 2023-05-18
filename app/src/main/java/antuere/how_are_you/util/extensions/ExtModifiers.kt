@@ -61,6 +61,7 @@ fun Modifier.borderWithText(
     text: String,
     textStyle: TextStyle,
     color: Color,
+    strokeWidth : Int = 1
 ) = composed(
     factory = {
         val textMeasurer = rememberTextMeasurer()
@@ -78,7 +79,7 @@ fun Modifier.borderWithText(
                     lineTo(endTextPoint, 0f)
                 }
                 val stoke = Stroke(
-                    width = dpToPixel(1, context),
+                    width = dpToPixel(strokeWidth, context),
                     pathEffect = PathEffect.cornerPathEffect(dpToPixel(8, context))
                 )
                 val textOffset = Offset(x = dpToPixel(16, context), y = -textSize.height / 1.7f)

@@ -101,7 +101,7 @@
     <string name="saved_complete_cats">Cat\'s image is saved!</string>
     <string name="saved_error_cats">This image can\'t be saved</string>
     <string name="permission_denied_cats">To save the cat, please grant the permission</string>
-    <string name="cats_no_internet">No internet…</string>
+    <string name="cats_no_internet">I got lost…</string>
 
 
     <!-- Settings screen -->
