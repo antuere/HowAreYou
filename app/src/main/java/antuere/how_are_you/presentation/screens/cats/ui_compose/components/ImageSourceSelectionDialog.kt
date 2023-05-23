@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import antuere.domain.dto.ImageSource
 import antuere.how_are_you.R
+import antuere.how_are_you.util.extensions.fixedSize
 import kotlinx.collections.immutable.ImmutableList
 import kotlin.math.max
 
@@ -67,9 +68,9 @@ fun ImageSourceSelectionDialog(
                 Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_2)))
 
                 Text(
-                    stringResource(R.string.animal_choose_source),
+                    text = stringResource(R.string.animal_choose_source),
                     fontWeight = FontWeight.Bold,
-                    style = MaterialTheme.typography.headlineSmall
+                    style = MaterialTheme.typography.headlineSmall.copy(fontSize = 24f.fixedSize)
                 )
                 Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_2)))
 

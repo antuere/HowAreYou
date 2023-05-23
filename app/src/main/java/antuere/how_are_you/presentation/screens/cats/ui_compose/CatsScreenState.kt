@@ -1,6 +1,13 @@
 package antuere.how_are_you.presentation.screens.cats.ui_compose
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
@@ -11,7 +18,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import antuere.how_are_you.R
 import antuere.how_are_you.presentation.base.ui_theme.PlayfairDisplay
 import antuere.how_are_you.presentation.screens.cats.state.CatsIntent
@@ -19,6 +25,7 @@ import antuere.how_are_you.presentation.screens.cats.state.CatsState
 import antuere.how_are_you.presentation.screens.cats.ui_compose.components.CatImage
 import antuere.how_are_you.presentation.screens.cats.ui_compose.components.ImageSourceSelectionDialog
 import antuere.how_are_you.presentation.screens.cats.ui_compose.components.SourceImagesText
+import antuere.how_are_you.util.extensions.fixedSize
 import antuere.how_are_you.util.extensions.paddingTopBar
 import kotlinx.collections.immutable.toImmutableList
 
@@ -49,7 +56,7 @@ fun CatsScreenState(
 
             Text(
                 text = stringResource(id = R.string.title_cats),
-                fontSize = dimensionResource(id = R.dimen.textSize_big_0).value.sp,
+                fontSize = dimensionResource(id = R.dimen.textSize_big_0).value.fixedSize,
                 fontFamily = PlayfairDisplay
             )
             Spacer(modifier = Modifier.weight(1.5F))

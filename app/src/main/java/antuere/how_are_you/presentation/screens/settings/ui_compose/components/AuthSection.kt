@@ -20,6 +20,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.sp
 import antuere.domain.util.Constants
 import antuere.how_are_you.R
+import antuere.how_are_you.util.extensions.fixedSize
 
 @Composable
 fun AuthSection(
@@ -46,7 +47,7 @@ fun AuthSection(
             modifier = Modifier.padding(
                 horizontal = dimensionResource(id = R.dimen.padding_normal_2)
             ),
-            fontSize = dimensionResource(id = R.dimen.textSize_normal_0).value.sp,
+            fontSize = dimensionResource(id = R.dimen.textSize_normal_0).value.fixedSize,
             text = stringResource(id = R.string.how_are_you_text)
         )
 
@@ -82,7 +83,7 @@ fun AuthSection(
                             modifier = Modifier.padding(
                                 horizontal = dimensionResource(id = R.dimen.padding_normal_2)
                             ),
-                            fontSize = dimensionResource(id = R.dimen.textSize_normal_0).value.sp,
+                            fontSize = dimensionResource(id = R.dimen.textSize_normal_0).value.fixedSize,
                             text = stringResource(id = R.string.sign_in_advice)
                         )
                         Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_4)))

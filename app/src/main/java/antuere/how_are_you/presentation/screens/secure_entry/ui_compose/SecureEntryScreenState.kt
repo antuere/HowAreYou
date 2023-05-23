@@ -17,6 +17,7 @@ import antuere.how_are_you.presentation.base.ui_compose_components.pin_code.Nume
 import antuere.how_are_you.presentation.base.ui_compose_components.pin_code.PinCirclesIndicatesWrapper
 import antuere.how_are_you.presentation.screens.secure_entry.state.SecureEntryIntent
 import antuere.how_are_you.presentation.screens.secure_entry.state.SecureEntryState
+import antuere.how_are_you.util.extensions.fixedSize
 import antuere.how_are_you.util.extensions.paddingTopBar
 
 @Composable
@@ -53,6 +54,7 @@ fun SecureEntryScreenState(
         TextButton(onClick = { onIntent(SecureEntryIntent.SignOutBtnClicked) }) {
             Text(
                 text = stringResource(id = R.string.sign_out),
+                fontSize = 14f.fixedSize,
                 color = MaterialTheme.colorScheme.secondary
             )
         }

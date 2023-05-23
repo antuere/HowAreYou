@@ -23,6 +23,7 @@ import antuere.domain.dto.mental_tips.MentalTip
 import antuere.how_are_you.R
 import antuere.how_are_you.presentation.base.ui_compose_components.card.GradientCard
 import antuere.how_are_you.presentation.base.ui_theme.GradientDefaults
+import antuere.how_are_you.util.extensions.fixedSize
 
 @Composable
 fun MentalTipItem(
@@ -39,7 +40,7 @@ fun MentalTipItem(
         Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_3)))
         Image(
             modifier = Modifier
-                .fillMaxWidth(0.4F)
+                .fillMaxWidth(0.35F)
                 .align(Alignment.CenterHorizontally),
             painter = painterResource(id = mentalTip.imageRes),
             contentScale = ContentScale.Crop,
@@ -50,7 +51,7 @@ fun MentalTipItem(
             modifier = Modifier
                 .padding(horizontal = dimensionResource(id = R.dimen.padding_normal_1))
                 .align(Alignment.CenterHorizontally),
-            fontSize = dimensionResource(id = R.dimen.textSize_big_0).value.sp,
+            fontSize = dimensionResource(id = R.dimen.textSize_big_0).value.fixedSize,
             fontWeight = FontWeight.Medium,
             textAlign = TextAlign.Center,
             text = stringResource(id = mentalTip.titleRes),
@@ -59,7 +60,7 @@ fun MentalTipItem(
         Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_3)))
         Text(
             modifier = Modifier
-                .padding(horizontal = dimensionResource(id = R.dimen.padding_normal_1))
+                .padding(horizontal = dimensionResource(id = R.dimen.padding_normal_0))
                 .align(Alignment.CenterHorizontally),
             fontSize = dimensionResource(id = R.dimen.textSize_normal_0).value.sp,
             fontWeight = FontWeight.Normal,

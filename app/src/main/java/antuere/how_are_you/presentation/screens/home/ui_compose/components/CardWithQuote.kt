@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CardElevation
@@ -30,6 +32,7 @@ import androidx.compose.ui.unit.sp
 import antuere.how_are_you.R
 import antuere.how_are_you.presentation.base.ui_compose_components.card.GradientCard
 import antuere.how_are_you.presentation.base.ui_theme.GradientDefaults
+import antuere.how_are_you.util.extensions.fixedSize
 
 @Composable
 fun CardWithQuote(
@@ -67,7 +70,7 @@ fun CardWithQuote(
             Text(
                 modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_normal_0)),
                 text = titleText,
-                fontSize = dimensionResource(id = R.dimen.textSize_normal_1).value.sp,
+                fontSize = dimensionResource(id = R.dimen.textSize_normal_1).value.fixedSize,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.onSecondaryContainer
             )
@@ -75,6 +78,7 @@ fun CardWithQuote(
 
         Column(
             modifier = Modifier
+                .verticalScroll(rememberScrollState())
                 .weight(0.7F)
                 .fillMaxSize()
                 .padding(
@@ -89,7 +93,7 @@ fun CardWithQuote(
                 modifier = Modifier
                     .align(Alignment.Start)
                     .padding(start = dimensionResource(id = R.dimen.padding_small_0)),
-                fontSize = dimensionResource(id = R.dimen.textSize_normal_0).value.sp,
+                fontSize = dimensionResource(id = R.dimen.textSize_normal_0).value.fixedSize,
                 color = MaterialTheme.colorScheme.onPrimaryContainer,
                 lineHeight = 22.sp
             )

@@ -33,6 +33,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import antuere.how_are_you.R
 import antuere.how_are_you.presentation.base.ui_theme.GradientDefaults
+import antuere.how_are_you.util.extensions.fixedSize
 
 @Composable
 fun CardWithFab(
@@ -55,6 +56,7 @@ fun CardWithFab(
             Text(
                 text = titleText,
                 modifier = Modifier.align(textAlignment),
+                fontSize = 16f.fixedSize,
                 color = MaterialTheme.colorScheme.onPrimaryContainer,
                 style = MaterialTheme.typography.titleMedium
             )
@@ -108,9 +110,9 @@ fun CardWithImage(
         ) {
             Text(
                 text = titleText,
-                modifier = Modifier
-                    .align(textAlignment),
+                modifier = Modifier.align(textAlignment),
                 textAlign = TextAlign.Center,
+                fontSize = dimensionResource(id = R.dimen.textSize_normal_0).value.fixedSize,
                 color = MaterialTheme.colorScheme.onPrimaryContainer
             )
         }

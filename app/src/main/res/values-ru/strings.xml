@@ -42,7 +42,7 @@
     <string name="login_progress_name">Отличный день сегодня…</string>
     <string name="reset_password_hint">Забыли пароль?</string>
     <string name="reset_password">Восстановление пароля</string>
-    <string name="reset_password_plug">Введите адрес электронной почты из своей учетной записи. Нажмите на кнопку ниже, и на ваш адрес электронной почты будет отправлено электронное письмо с инструкциями по сбросу вашего пароля.</string>
+    <string name="reset_password_plug">Введите адрес электронной почты из своей учетной записи. Нажмите на кнопку ниже, и на ваш адрес электронной почты будет отправлено письмо с инструкциями по сбросу пароля.</string>
     <string name="email_reset_successful">Письмо отправлено!</string>
     <string name="empty_fields">Пожалуйста, заполните пустые поля</string>
     <string name="passwords_error">Пароли не совпадают</string>

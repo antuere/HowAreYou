@@ -20,6 +20,7 @@ import androidx.compose.ui.zIndex
 import antuere.domain.dto.ToggleBtnState
 import antuere.how_are_you.R
 import antuere.how_are_you.presentation.base.ui_text.UiText
+import antuere.how_are_you.util.extensions.fixedSize
 
 @Composable
 fun ToggleBtnGroup(
@@ -84,6 +85,7 @@ fun ToggleBtnGroup(
             ) {
                 Text(
                     text = entry.key.asString(),
+                    fontSize = 14f.fixedSize,
                     modifier = Modifier.padding(horizontal = 8.dp),
                     softWrap = false,
                     color = if (currentToggleBtnState == entry.value) {

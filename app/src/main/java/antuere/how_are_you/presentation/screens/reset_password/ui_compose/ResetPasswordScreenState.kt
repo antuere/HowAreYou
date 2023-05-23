@@ -7,20 +7,18 @@ import androidx.compose.foundation.relocation.bringIntoViewRequester
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.unit.sp
 import antuere.how_are_you.R
 import antuere.how_are_you.presentation.base.ui_compose_components.buttons.DefaultButton
 import antuere.how_are_you.presentation.base.ui_compose_components.text_field.EmailTextField
 import antuere.how_are_you.presentation.screens.reset_password.state.ResetPasswordIntent
 import antuere.how_are_you.presentation.screens.reset_password.state.ResetPasswordState
+import antuere.how_are_you.presentation.screens.reset_password.ui_compose.components.ResetPasswordTitleText
 import antuere.how_are_you.util.extensions.bringIntoViewForFocused
 import antuere.how_are_you.util.extensions.paddingTopBar
 
@@ -46,9 +44,9 @@ fun ResetPasswordScreenState(
             CircularProgressIndicator()
         } else {
             Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_2)))
-            Text(text = stringResource(id = R.string.reset_password_plug), fontSize = 18.sp)
+            ResetPasswordTitleText()
 
-            Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_8)))
+            Spacer(modifier = Modifier.weight(1F))
             EmailTextField(
                 modifier = Modifier
                     .padding(horizontal = dimensionResource(id = R.dimen.padding_normal_3))

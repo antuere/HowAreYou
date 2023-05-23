@@ -15,10 +15,10 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.sp
 import antuere.domain.dto.Day
 import antuere.how_are_you.R
 import antuere.how_are_you.presentation.base.ui_compose_components.card.GradientCard
+import antuere.how_are_you.util.extensions.fixedSize
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -54,7 +54,7 @@ fun DaysGridItem(
                 .align(Alignment.CenterHorizontally),
             text = day.dateString,
             color = MaterialTheme.colorScheme.onPrimaryContainer,
-            fontSize = 14.sp
+            fontSize = 14f.fixedSize
         )
 
     }

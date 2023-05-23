@@ -19,8 +19,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.sp
 import antuere.how_are_you.R
+import antuere.how_are_you.util.extensions.fixedSize
 
 @Composable
 fun DetailsForHelpline(
@@ -63,7 +63,7 @@ fun DetailsForHelpline(
                 )
                 Spacer(Modifier.size(ButtonDefaults.IconSpacing))
                 Text(
-                    fontSize = dimensionResource(id = R.dimen.textSize_normal_0).value.sp,
+                    fontSize = dimensionResource(id = R.dimen.textSize_normal_0).value.fixedSize,
                     textAlign = TextAlign.Center,
                     maxLines = 1,
                     color = MaterialTheme.colorScheme.onSurface,
@@ -88,7 +88,7 @@ fun DetailsForHelpline(
                 )
                 Spacer(Modifier.size(ButtonDefaults.IconSpacing))
                 Text(
-                    fontSize = dimensionResource(id = R.dimen.textSize_normal_0).value.sp,
+                    fontSize = dimensionResource(id = R.dimen.textSize_normal_0).value.fixedSize,
                     maxLines = 1,
                     color = MaterialTheme.colorScheme.onSurface,
                     text = stringResource(R.string.helpline_website),
