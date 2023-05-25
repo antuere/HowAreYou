@@ -3,21 +3,21 @@ package antuere.how_are_you.presentation.base.navigation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.navigation.NavController
-import androidx.navigation.NavGraph.Companion.findStartDestination
 
 
 fun NavController.navigateToSecure() {
     this.navigate(Screen.SecureEntry.route) {
-        popUpTo(this@navigateToSecure.graph.findStartDestination().id) {
-            inclusive = true
-        }
+        popUpTo(this@navigateToSecure.graph.id)
         launchSingleTop = true
     }
 }
 
 @Composable
 fun NavController.navigateToHome(): () -> Unit = remember {
-    { this.navigate(Screen.Home.route) }
+    {
+        this.popBackStack()
+        this.navigate(Screen.Home.route)
+    }
 }
 
 @Composable

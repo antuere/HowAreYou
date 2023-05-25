@@ -22,6 +22,7 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.Container
 import org.orbitmvi.orbit.viewmodel.container
+import timber.log.Timber
 import javax.inject.Inject
 
 
@@ -31,6 +32,7 @@ class HistoryViewModel @Inject constructor(
     private val dayRepository: DayRepository,
     private val toggleBtnRepository: ToggleBtnRepository,
 ) : ViewModelMvi<HistoryState, HistorySideEffect, HistoryIntent>() {
+
 
     override val container: Container<HistoryState, HistorySideEffect> =
         container(HistoryState.LoadingShimmer())
@@ -42,6 +44,7 @@ class HistoryViewModel @Inject constructor(
     private var savedToggleBtnState: ToggleBtnState? = null
 
     init {
+        Timber.i("Init bug check: init vm history")
         getToggleButtonState()
         viewModelScope.launch(Dispatchers.IO) {
             dayRepository.getLastDay().collectLatest {

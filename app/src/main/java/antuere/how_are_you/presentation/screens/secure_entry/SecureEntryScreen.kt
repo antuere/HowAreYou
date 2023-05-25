@@ -16,7 +16,6 @@ import antuere.how_are_you.util.extensions.findFragmentActivity
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
-
 @Composable
 fun SecureEntryScreen(
     onNavigateHomeScreen: () -> Unit,

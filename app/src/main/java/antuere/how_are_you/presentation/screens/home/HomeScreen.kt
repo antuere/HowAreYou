@@ -1,6 +1,5 @@
 package antuere.how_are_you.presentation.screens.home
 
-import androidx.activity.compose.BackHandler
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -11,9 +10,9 @@ import antuere.how_are_you.presentation.base.ui_compose_components.top_bar.AppBa
 import antuere.how_are_you.presentation.base.ui_text.UiText
 import antuere.how_are_you.presentation.screens.home.state.HomeSideEffect
 import antuere.how_are_you.presentation.screens.home.ui_compose.HomeScreenState
-import antuere.how_are_you.util.extensions.findFragmentActivity
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
+import timber.log.Timber
 
 @Composable
 fun HomeScreen(
@@ -29,10 +28,7 @@ fun HomeScreen(
     val appState = LocalAppState.current
     val viewState by viewModel().collectAsState()
 
-    val fragmentActivity = LocalContext.current.findFragmentActivity()
-    BackHandler {
-        fragmentActivity.finish()
-    }
+    Timber.i("splash error: enter in homescreen")
 
     viewModel().collectSideEffect { sideEffect ->
         when (sideEffect) {

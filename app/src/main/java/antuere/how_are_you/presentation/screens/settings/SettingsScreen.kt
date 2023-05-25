@@ -1,6 +1,5 @@
 package antuere.how_are_you.presentation.screens.settings
 
-import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.*
@@ -41,10 +40,6 @@ fun SettingsScreen(
 
     val launcher =
         rememberLauncherForActivityResult(contract = ActivityResultContracts.StartActivityForResult()) {}
-
-    BackHandler {
-        fragmentActivity.finish()
-    }
 
     LaunchedEffect(true) {
         appState.updateAppBar(

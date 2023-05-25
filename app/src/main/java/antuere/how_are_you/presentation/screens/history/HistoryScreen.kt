@@ -1,6 +1,5 @@
 package antuere.how_are_you.presentation.screens.history
 
-import androidx.activity.compose.BackHandler
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
@@ -9,13 +8,11 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.hilt.navigation.compose.hiltViewModel
 import antuere.how_are_you.LocalAppState
 import antuere.how_are_you.presentation.screens.history.state.HistorySideEffect
 import antuere.how_are_you.presentation.screens.history.ui_compose.HistoryScreenState
-import antuere.how_are_you.util.extensions.findFragmentActivity
 import antuere.how_are_you.util.extensions.isScrollInInitialState
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
@@ -26,7 +23,6 @@ fun HistoryScreen(
     viewModel: HistoryViewModel = hiltViewModel(),
 ) {
     val appState = LocalAppState.current
-    val activity = LocalContext.current.findFragmentActivity()
     val hapticFeedback = LocalHapticFeedback.current
 
     val rotation = remember { Animatable(initialValue = 360f) }
@@ -56,10 +52,6 @@ fun HistoryScreen(
 
     LaunchedEffect(true) {
         appState.dismissSnackbar()
-    }
-
-    BackHandler {
-        activity.finish()
     }
 
     HistoryScreenState(

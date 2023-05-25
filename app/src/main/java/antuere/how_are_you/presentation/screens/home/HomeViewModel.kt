@@ -21,6 +21,7 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.Container
 import org.orbitmvi.orbit.viewmodel.container
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -35,15 +36,11 @@ class HomeViewModel @Inject constructor(
 
     private var isShowWorriedDialogSetting = true
 
-    private var _isShowSplash = MutableStateFlow(true)
-    val isShowSplash: StateFlow<Boolean>
-        get() = _isShowSplash
-
     private val currentDateTimeStamp = MutableStateFlow(TimeUtility.parseCurrentTime().time)
 
     init {
+        Timber.i("splash error: HOME VM INIT")
         viewModelScope.launch(Dispatchers.IO) {
-            _isShowSplash.value = !quoteRepository.updateQuoteRemote()
             getSavedData()
             checkLastFiveDays()
         }
@@ -57,6 +54,7 @@ class HomeViewModel @Inject constructor(
                     FabButtonState.Add -> {
                         sideEffect(HomeSideEffect.NavigateToAddDay)
                     }
+
                     is FabButtonState.Smile -> {
                         sideEffect(
                             HomeSideEffect.NavigateToDayDetail(
@@ -66,6 +64,7 @@ class HomeViewModel @Inject constructor(
                     }
                 }
             }
+
             HomeIntent.CatsClicked -> sideEffect(HomeSideEffect.NavigateToCats)
             HomeIntent.FavoritesClicked -> sideEffect(HomeSideEffect.NavigateToFavorites)
             HomeIntent.HelpForYouClicked -> sideEffect(HomeSideEffect.NavigateToHelpForYou)
@@ -78,87 +77,76 @@ class HomeViewModel @Inject constructor(
             quoteRepository.updateQuoteRemote()
             delay(200)
             currentDateTimeStamp.update {
+                Timber.i("splash error: in UPDATE TIME STAMP")
                 TimeUtility.parseCurrentTime().time
             }
         }
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    private fun getSavedData() {
-        viewModelScope.launch(Dispatchers.IO) {
-            val lastDataFlow = currentDateTimeStamp.flatMapLatest { currentDateTimeStamp ->
-                val savedQuote = quoteRepository.getDayQuoteLocal()
-                if (_isShowSplash.value) _isShowSplash.value = false
+    private suspend fun getSavedData() {
+        val lastDataFlow = currentDateTimeStamp.flatMapLatest { currentDateTimeStamp ->
+            val savedQuote = quoteRepository.getDayQuoteLocal()
 
-                combine(
-                    dayRepository.getDayById(currentDateTimeStamp),
-                    settingsRepository.getWorriedDialogSetting()
-                ) { day, isEnableWorriedSetting ->
-                    isShowWorriedDialogSetting = isEnableWorriedSetting
-                    if (day == null) {
-                        updateState {
-                            HomeState.Loaded(
-                                quoteText = savedQuote.text,
-                                quoteAuthor = savedQuote.author,
-                                wishText = HelperForHome.getWishStringForSummary(HelperForHome.DEFAULT_WISH),
-                                fabButtonState = FabButtonState.Add
+            combine(
+                dayRepository.getDayById(currentDateTimeStamp),
+                settingsRepository.getWorriedDialogSetting()
+            ) { day, isEnableWorriedSetting ->
+                isShowWorriedDialogSetting = isEnableWorriedSetting
+                if (day == null) {
+                    updateState {
+                        HomeState.Loaded(
+                            quoteText = savedQuote.text,
+                            quoteAuthor = savedQuote.author,
+                            wishText = HelperForHome.getWishStringForSummary(HelperForHome.DEFAULT_WISH),
+                            fabButtonState = FabButtonState.Add
+                        )
+                    }
+                } else {
+                    updateState {
+                        HomeState.Loaded(
+                            quoteText = savedQuote.text,
+                            quoteAuthor = savedQuote.author,
+                            wishText = HelperForHome.getWishStringForSummary(day.imageResId),
+                            fabButtonState = FabButtonState.Smile(
+                                imageId = day.imageResId,
+                                dayId = day.dayId
                             )
-                        }
-                    } else {
-                        updateState {
-                            HomeState.Loaded(
-                                quoteText = savedQuote.text,
-                                quoteAuthor = savedQuote.author,
-                                wishText = HelperForHome.getWishStringForSummary(day.imageResId),
-                                fabButtonState = FabButtonState.Smile(
-                                    imageId = day.imageResId,
-                                    dayId = day.dayId
-                                )
-                            )
-                        }
+                        )
                     }
                 }
             }
-            lastDataFlow.collect()
         }
+        lastDataFlow.collect()
     }
 
-    private fun checkLastFiveDays() {
-        viewModelScope.launch(Dispatchers.IO) {
-            val lastFiveDays = dayRepository.getDaysByLimit(5).first()
-            delay(500)
+    private suspend fun checkLastFiveDays() {
+        val lastFiveDays = dayRepository.getDaysByLimit(5).first()
+        delay(500)
 
-            val isNeedShowWorriedDialog =
-                HelperForHome.isShowWarningForSummary(lastFiveDays)
+        val isNeedShowWorriedDialog =
+            HelperForHome.isShowWarningForSummary(lastFiveDays)
 
-            if (isNeedShowWorriedDialog && isShowWorriedDialogSetting) {
-                val dialog = UIDialog(
-                    title = R.string.dialog_warning_title,
-                    desc = R.string.dialog_warning_desc,
-                    icon = R.drawable.ic_warning_dialog,
-                    positiveButton = UIDialog.UiButton(
-                        text = R.string.dialog_warning_positive,
-                        onClick = {}),
-                    negativeButton = UIDialog.UiButton(
-                        text = R.string.dialog_warning_negative,
-                        onClick = {
-                            sideEffect(
-                                HomeSideEffect.Snackbar(
-                                    message = UiText.StringResource(R.string.snack_bar_warning_negative)
-                                )
+        if (isNeedShowWorriedDialog && isShowWorriedDialogSetting) {
+            val dialog = UIDialog(
+                title = R.string.dialog_warning_title,
+                desc = R.string.dialog_warning_desc,
+                icon = R.drawable.ic_warning_dialog,
+                positiveButton = UIDialog.UiButton(
+                    text = R.string.dialog_warning_positive,
+                    onClick = {}),
+                negativeButton = UIDialog.UiButton(
+                    text = R.string.dialog_warning_negative,
+                    onClick = {
+                        sideEffect(
+                            HomeSideEffect.Snackbar(
+                                message = UiText.StringResource(R.string.snack_bar_warning_negative)
                             )
-                        }),
-//                    neutralButton = UIDialog.UiButton(
-//                        text = R.string.dialog_warning_neutral,
-//                        onClick = {
-//                            notShowWorriedDialog()
-//                            _uiDialog.value = null
-//                        }
-//                    )
-                )
+                        )
+                    }),
+            )
 
-                sideEffect(HomeSideEffect.Dialog(dialog))
-            }
+            sideEffect(HomeSideEffect.Dialog(dialog))
         }
     }
 }

@@ -32,8 +32,6 @@ fun SecureEntryScreenState(
             .fillMaxSize()
             .paddingTopBar()
     ) {
-        
-
         IconApp()
         Spacer(modifier = Modifier.weight(0.9F))
 

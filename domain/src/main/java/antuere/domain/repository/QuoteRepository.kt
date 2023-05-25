@@ -4,7 +4,7 @@ import antuere.domain.dto.Quote
 
 interface QuoteRepository {
 
-    suspend fun updateQuoteRemote(): Boolean
+    suspend fun updateQuoteRemote()
 
     suspend fun getDayQuoteLocal(): Quote
 

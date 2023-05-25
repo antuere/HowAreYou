@@ -1,10 +1,10 @@
 package antuere.data.repository
 
-import antuere.data.preferences_data_store.quote_data_store.QuoteDataStore
 import antuere.data.network.NetworkInfo
 import antuere.data.network.remote_day_database.FirebaseRealtimeDB
 import antuere.data.network.remote_day_database.entities.QuoteEntity
 import antuere.data.network.remote_day_database.mapping.QuoteEntityMapper
+import antuere.data.preferences_data_store.quote_data_store.QuoteDataStore
 import antuere.domain.dto.Quote
 import antuere.domain.repository.QuoteRepository
 import antuere.domain.util.TimeUtility
@@ -19,8 +19,7 @@ class QuoteRepositoryImpl @Inject constructor(
     private val quoteMapper: QuoteEntityMapper,
 ) : QuoteRepository {
 
-    override suspend fun updateQuoteRemote(): Boolean {
-        var isUpdatedSuccess = false
+    override suspend fun updateQuoteRemote() {
         if (networkInfo.isNetworkAvailable()) {
             withTimeoutOrNull(2500L) {
                 val currentDayOfMonth = TimeUtility.getDayOfMonth()
@@ -34,10 +33,8 @@ class QuoteRepositoryImpl @Inject constructor(
 
                 val latestQuote = quoteMapper.mapToDomainModel(remoteQuote ?: defaultQuote)
                 saveDayQuoteLocal(latestQuote)
-                isUpdatedSuccess = true
             }
         }
-        return isUpdatedSuccess
     }
 
     override suspend fun getDayQuoteLocal(): Quote {

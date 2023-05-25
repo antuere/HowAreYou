@@ -10,18 +10,22 @@ import antuere.domain.repository.ImageSourceRepository
 import antuere.domain.repository.SettingsRepository
 import antuere.domain.util.Constants
 import antuere.how_are_you.R
-import antuere.how_are_you.presentation.base.ui_text.UiText
+import antuere.how_are_you.presentation.base.ViewModelMvi
 import antuere.how_are_you.presentation.base.ui_biometric_dialog.IUIBiometricListener
-import antuere.how_are_you.presentation.screens.pin_code_creation.PinCirclesState
 import antuere.how_are_you.presentation.base.ui_biometric_dialog.UIBiometricDialog
 import antuere.how_are_you.presentation.base.ui_compose_components.dialog.UIDialog
+import antuere.how_are_you.presentation.base.ui_text.UiText
+import antuere.how_are_you.presentation.screens.pin_code_creation.PinCirclesState
 import antuere.how_are_you.presentation.screens.secure_entry.state.SecureEntryIntent
 import antuere.how_are_you.presentation.screens.secure_entry.state.SecureEntrySideEffect
 import antuere.how_are_you.presentation.screens.secure_entry.state.SecureEntryState
-import antuere.how_are_you.presentation.base.ViewModelMvi
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.orbitmvi.orbit.Container
 import org.orbitmvi.orbit.viewmodel.container
 import javax.inject.Inject
@@ -50,7 +54,6 @@ class SecureEntryViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             val isSetBiometricSetting = settingsRepository.getBiomAuthSetting().first()
             savedPinCode = settingsRepository.getPinCode().first()
-            delay(450)
 
             if (isSetBiometricSetting) {
                 sideEffect(SecureEntrySideEffect.BiometricDialog(uiBiometricDialog))
