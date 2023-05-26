@@ -119,7 +119,7 @@ fun rememberAppState(
         UIDialogListener()
     },
     appBarState: MutableState<AppBarState> = remember {
-        mutableStateOf(AppBarState())
+        mutableStateOf(AppBarState(isVisibleTopBar = false, isVisibleBottomBar = false))
     },
     isDisableBackHandler: MutableState<Boolean> = remember { mutableStateOf(true) },
 ) = remember {

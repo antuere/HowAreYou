@@ -23,6 +23,7 @@ import antuere.how_are_you.presentation.screens.home.HomeScreen
 import antuere.how_are_you.presentation.screens.home.HomeViewModel
 import antuere.how_are_you.presentation.screens.mental_tips.MentalTipsScreen
 import antuere.how_are_you.presentation.screens.mental_tips_categories.MentalTipsCategoriesScreen
+import antuere.how_are_you.presentation.screens.onboard.OnboardScreen
 import antuere.how_are_you.presentation.screens.reset_password.ResetPasswordScreen
 import antuere.how_are_you.presentation.screens.secure_entry.SecureEntryScreen
 import antuere.how_are_you.presentation.screens.settings.SettingsScreen
@@ -32,12 +33,19 @@ import antuere.how_are_you.presentation.screens.sign_up_with_email.SignUpEmailSc
 import com.google.accompanist.navigation.animation.composable
 
 
-
 @OptIn(ExperimentalAnimationApi::class)
 fun NavGraphBuilder.initRootNavGraph(
     navController: NavController,
     homeViewModelLambda: () -> HomeViewModel,
 ) {
+    composable(
+        route = Screen.Onboard.route,
+        enterTransition = { materialSharedAxisZIn(forward = true) },
+        exitTransition = { materialSharedAxisZOut(forward = false) }
+    ) {
+        OnboardScreen(onNavigateHomeScreen = navController.navigateToHome())
+    }
+
     composable(
         route = Screen.Home.route,
         enterTransition = {

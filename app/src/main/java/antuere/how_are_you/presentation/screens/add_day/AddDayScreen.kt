@@ -35,7 +35,7 @@ fun AddDayScreen(
                     focusManager.clearFocus()
                     appState.navigateUp()
                 },
-                isVisibleBottomBar = false
+                isVisibleBottomBar = false,
             )
         )
     }

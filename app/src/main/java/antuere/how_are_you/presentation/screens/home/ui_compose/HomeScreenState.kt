@@ -25,21 +25,17 @@ import antuere.how_are_you.presentation.screens.home.state.HomeIntent
 import antuere.how_are_you.presentation.screens.home.state.HomeState
 import antuere.how_are_you.presentation.screens.home.ui_compose.components.CardWithQuote
 import antuere.how_are_you.util.extensions.paddingBotAndTopBar
-import timber.log.Timber
 
 @Composable
 fun HomeScreenState(
     viewState: () -> HomeState,
     onIntent: (HomeIntent) -> Unit,
 ) {
-    Timber.i("splash error: homescreen state in")
     when (val state = viewState()) {
         is HomeState.Loading -> {
-            Timber.i("splash error: homescreen, loading")
             FullScreenProgressIndicator()
         }
         is HomeState.Loaded -> {
-            Timber.i("splash error: homescreen, loaded")
             Column(
                 modifier = Modifier
                     .fillMaxSize()

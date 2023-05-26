@@ -75,8 +75,6 @@ class MainActivity : FragmentActivity() {
                 appState.dialogListener.SetupDialogListener()
                 appState.SetupAppColors()
 
-                Timber.i("splash error: start screen is $startScreen")
-
                 if (!isShowSplash) {
                     RenderUI(
                         startScreen = { startScreen },
@@ -99,7 +97,6 @@ class MainActivity : FragmentActivity() {
         val navController = appState.navController
         var timeWhenAppClosed by rememberSaveable { mutableStateOf(0L) }
 
-        Timber.i("splash error: in render ui")
         Scaffold(
             snackbarHost = {
                 SnackbarHost(appState.snackbarHostState) { data ->
@@ -130,7 +127,6 @@ class MainActivity : FragmentActivity() {
                     navController = navController,
                     startDestination = startScreen().route
                 ) {
-                    Timber.i("splash error: anim nav host")
                     initRootNavGraph(
                         navController = navController,
                         homeViewModelLambda = { homeViewModel }

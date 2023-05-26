@@ -14,6 +14,14 @@ class SettingsRepositoryImpl @Inject constructor(
     private val settingsEntityMapper: SettingsEntityMapper,
 ) : SettingsRepository {
 
+    override suspend fun isFirstLaunch(): Boolean {
+        return settingsDataStore.isFirstLaunchConfiguration.load()
+    }
+
+    override suspend fun firstLaunchCompleted() {
+        settingsDataStore.isFirstLaunchConfiguration.set(false)
+    }
+
     override suspend fun getAllSettings(): Flow<Settings> {
         return settingsDataStore.allSettingsConfiguration.flow.map {
             settingsEntityMapper.mapToDomainModel(it)

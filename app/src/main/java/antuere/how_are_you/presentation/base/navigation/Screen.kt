@@ -1,6 +1,7 @@
 package antuere.how_are_you.presentation.base.navigation
 
 sealed class Screen(val route: String) {
+    object Onboard : Screen("onboard_screen")
     object Home : Screen("home_screen")
     object AddDay : Screen("add_day_screen")
     object Favorites : Screen("favorites_screen")

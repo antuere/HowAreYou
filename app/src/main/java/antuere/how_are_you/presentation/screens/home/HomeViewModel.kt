@@ -77,7 +77,6 @@ class HomeViewModel @Inject constructor(
             quoteRepository.updateQuoteRemote()
             delay(200)
             currentDateTimeStamp.update {
-                Timber.i("splash error: in UPDATE TIME STAMP")
                 TimeUtility.parseCurrentTime().time
             }
         }

@@ -6,6 +6,10 @@ import kotlinx.coroutines.flow.Flow
 
 interface SettingsRepository {
 
+    suspend fun isFirstLaunch(): Boolean
+
+    suspend fun firstLaunchCompleted()
+
     suspend fun getAllSettings(): Flow<Settings>
 
     suspend fun getWorriedDialogSetting(): Flow<Boolean>

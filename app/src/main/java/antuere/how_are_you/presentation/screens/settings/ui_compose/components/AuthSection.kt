@@ -6,9 +6,9 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Divider
-import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
@@ -88,17 +88,14 @@ fun AuthSection(
                         )
                         Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_4)))
 
-                        ElevatedButton(
+                        Button(
                             onClick = { onClickSignIn() },
-                            colors = ButtonDefaults.buttonColors(),
                             elevation = ButtonDefaults.buttonElevation(
                                 defaultElevation = dimensionResource(id = R.dimen.default_elevation),
                                 pressedElevation = dimensionResource(id = R.dimen.pressed_elevation)
                             ),
                             modifier = Modifier
-                                .padding(
-                                    horizontal = dimensionResource(id = R.dimen.padding_normal_2)
-                                )
+                                .padding(horizontal = dimensionResource(id = R.dimen.padding_normal_2))
                                 .align(Alignment.CenterHorizontally)
                         ) {
                             Text(

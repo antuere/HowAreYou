@@ -3,6 +3,7 @@ package antuere.how_are_you.util.extensions
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.relocation.BringIntoViewRequester
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -24,6 +25,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.drawText
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.util.lerp
 import antuere.how_are_you.util.dpToPixel
 import com.valentinilk.shimmer.ShimmerBounds
 import com.valentinilk.shimmer.defaultShimmerTheme
@@ -32,6 +34,7 @@ import com.valentinilk.shimmer.shimmer
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlin.math.absoluteValue
 
 
 fun Modifier.paddingBotAndTopBar(): Modifier {
@@ -40,6 +43,30 @@ fun Modifier.paddingBotAndTopBar(): Modifier {
 
 fun Modifier.paddingTopBar(): Modifier {
     return padding(top = 64.dp)
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+fun Modifier.animatedPagerItem(pagerState: PagerState, page: Int): Modifier {
+    return graphicsLayer {
+        val pageOffset = (
+                (pagerState.currentPage - page) + pagerState
+                    .currentPageOffsetFraction
+                ).absoluteValue
+        lerp(
+            start = 0.85f,
+            stop = 1f,
+            fraction = 1f - pageOffset.coerceIn(0f, 1f)
+        ).also { scale ->
+            scaleX = scale
+            scaleY = scale
+        }
+
+        alpha = lerp(
+            start = 0.5f,
+            stop = 1f,
+            fraction = 1f - pageOffset.coerceIn(0f, 1f)
+        )
+    }
 }
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -61,13 +88,14 @@ fun Modifier.borderWithText(
     text: String,
     textStyle: TextStyle,
     color: Color,
-    strokeWidth : Int = 1
+    strokeWidth: Int = 1,
 ) = composed(
     factory = {
         val textMeasurer = rememberTextMeasurer()
         val context = LocalContext.current
 
-        this.drawWithCache {
+        this
+            .drawWithCache {
                 val textSize = textMeasurer.measure(text, textStyle).size
                 val endTextPoint = dpToPixel(20, context) + textSize.width
                 val path = Path().apply {

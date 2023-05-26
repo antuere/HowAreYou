@@ -11,7 +11,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -33,7 +32,6 @@ class SplashViewModel @Inject constructor(
         get() = _startScreen
 
     init {
-        Timber.i("splash error: init splash vm")
         viewModelScope.launch {
             defineStartScreen()
         }
@@ -41,12 +39,20 @@ class SplashViewModel @Inject constructor(
 
     private suspend fun defineStartScreen() {
         viewModelScope.launch(Dispatchers.IO) {
+            val isFirstLaunch = settingsRepository.isFirstLaunch()
+
+            if (isFirstLaunch) {
+                _startScreen.value = Screen.Onboard
+                _isShowSplash.value = false
+                return@launch
+            }
+
             settingsRepository.getPinSetting().collectLatest { isEnablePin ->
                 _isEnablePin.value = isEnablePin
 
                 if (isEnablePin && _isShowSplash.value) {
-                    _isShowSplash.value = false
                     _startScreen.value = Screen.SecureEntry
+                    _isShowSplash.value = false
                 }
             }
         }
