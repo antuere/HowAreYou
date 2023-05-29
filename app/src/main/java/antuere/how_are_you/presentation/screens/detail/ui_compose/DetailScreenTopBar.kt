@@ -51,7 +51,7 @@ fun DetailScreenTopBar(
             false -> {
                 appState.updateAppBar(
                     AppBarState(
-                        topBarTitle = UiText.DefaultString(dateString),
+                        topBarTitle = UiText.String(dateString),
                         topBarType = TopBarType.SMALL,
                         navigationIcon = Icons.Filled.ArrowBack,
                         onClickNavigationBtn = appState::navigateUp,

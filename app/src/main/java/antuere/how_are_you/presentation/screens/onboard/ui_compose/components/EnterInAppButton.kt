@@ -11,7 +11,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import antuere.how_are_you.R
 import antuere.how_are_you.presentation.base.ui_animations.materialSharedAxisZIn
 import antuere.how_are_you.presentation.base.ui_animations.materialSharedAxisZOut
 
@@ -37,7 +39,7 @@ fun EnterInAppButton(
                     onClick = onClick
                 ) {
                     Text(
-                        text = "Finish",
+                        text = stringResource(id = R.string.onboard_enter_btn),
                         color = MaterialTheme.colorScheme.onPrimary
                     )
                 }

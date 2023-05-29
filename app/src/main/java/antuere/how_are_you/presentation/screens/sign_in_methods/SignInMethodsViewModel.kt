@@ -49,7 +49,7 @@ class SignInMethodsViewModel @Inject constructor(
                 } else {
                     sideEffect(
                         SignInMethodsSideEffect.Snackbar(
-                            message = UiText.DefaultString(
+                            message = UiText.String(
                                 intent.task.exception?.message ?: "Error with google authentication"
                             )
                         )
@@ -80,7 +80,7 @@ class SignInMethodsViewModel @Inject constructor(
         }
 
         override fun registerFailed(message: String) {
-            sideEffect(SignInMethodsSideEffect.Snackbar(message = UiText.DefaultString(message)))
+            sideEffect(SignInMethodsSideEffect.Snackbar(message = UiText.String(message)))
         }
     }
 

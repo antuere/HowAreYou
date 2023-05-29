@@ -28,6 +28,13 @@ class OnboardViewModel @Inject constructor(
                     settingsRepository.firstLaunchCompleted()
                 }
             }
+
+            OnboardIntent.ScipOnboardClicked -> {
+                sideEffect(OnboardSideEffect.NavigateToHome)
+                viewModelScope.launch(Dispatchers.IO) {
+                    settingsRepository.firstLaunchCompleted()
+                }
+            }
         }
     }
 

@@ -11,31 +11,31 @@ sealed class OnboardPage(
 ) {
     object Welcome : OnboardPage(
         imageRes = R.drawable.onboard_welcome,
-        title = UiText.DefaultString("First page"),
-        description = UiText.DefaultString("Thanks for taetasbhdkasnkj askdnakjd graeat app")
+        title = UiText.StringResource(R.string.onboard_welcome_title),
+        description = UiText.StringResource(R.string.onboard_welcome_desc),
     )
 
     object Days : OnboardPage(
         imageRes = R.drawable.onboard_days,
-        title = UiText.DefaultString("Second page"),
-        description = UiText.DefaultString("Wowo regar2 123 sds kjkjsdkas")
+        title = UiText.StringResource(R.string.onboard_days_title),
+        description = UiText.StringResource(R.string.onboard_days_desc)
     )
 
     object Cats : OnboardPage(
         imageRes = R.drawable.onboard_cat,
-        title = UiText.DefaultString("Third page"),
-        description = UiText.DefaultString("Yeah nice app can used adjashdajsd yyyyyyeeeeeeeeee")
+        title = UiText.StringResource(R.string.onboard_cats_title),
+        description = UiText.StringResource(R.string.onboard_cats_desc),
     )
 
     object MentalTips : OnboardPage(
         imageRes = R.drawable.onboard_tips,
-        title = UiText.DefaultString("Third page"),
-        description = UiText.DefaultString("Yeah nice app can used adjashdajsd yyyyyyeeeeeeeeee")
+        title = UiText.StringResource(R.string.onboard_tips_title),
+        description = UiText.StringResource(R.string.onboard_tips_desc)
     )
 
     object Helplines : OnboardPage(
         imageRes = R.drawable.onboard_helplines,
-        title = UiText.DefaultString("Third page"),
-        description = UiText.DefaultString("Yeah nice app can used adjashdajsd yyyyyyeeeeeeeeee")
+        title = UiText.StringResource(R.string.onboard_helplines_title),
+        description = UiText.StringResource(R.string.onboard_helplines_desc)
     )
 }

@@ -10,7 +10,7 @@ import antuere.how_are_you.presentation.base.ui_text.UiText
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DefaultTopBar(
-    title: UiText,
+    title: UiText? = null,
     topBarType: TopBarType,
     isVisible: Boolean,
     navigationIcon: ImageVector? = null,
@@ -33,11 +33,13 @@ fun DefaultTopBar(
                         }
                     },
                     title = {
-                        Text(
-                            text = title.asString(),
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.onSurface,
-                        )
+                        title?.apply {
+                            Text(
+                                text = this.asString(),
+                                fontWeight = FontWeight.Bold,
+                                color = MaterialTheme.colorScheme.onSurface,
+                            )
+                        }
                     },
                     actions = actions,
                     colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
@@ -61,11 +63,13 @@ fun DefaultTopBar(
                         }
                     },
                     title = {
-                        Text(
-                            text = title.asString(),
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.onSurface,
-                        )
+                        title?.apply {
+                            Text(
+                                text = this.asString(),
+                                fontWeight = FontWeight.Bold,
+                                color = MaterialTheme.colorScheme.onSurface,
+                            )
+                        }
                     },
                     actions = actions,
                     colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
@@ -89,11 +93,13 @@ fun DefaultTopBar(
                         }
                     },
                     title = {
-                        Text(
-                            text = title.asString(),
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.onSurface,
-                        )
+                        title?.apply {
+                            Text(
+                                text = this.asString(),
+                                fontWeight = FontWeight.Bold,
+                                color = MaterialTheme.colorScheme.onSurface,
+                            )
+                        }
                     },
                     actions = actions,
                     colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
@@ -117,11 +123,13 @@ fun DefaultTopBar(
                         }
                     },
                     title = {
-                        Text(
-                            text = title.asString(),
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.onSurface,
-                        )
+                        title?.apply {
+                            Text(
+                                text = this.asString(),
+                                fontWeight = FontWeight.Bold,
+                                color = MaterialTheme.colorScheme.onSurface,
+                            )
+                        }
                     },
                     actions = actions,
                     colors = TopAppBarDefaults.centerAlignedTopAppBarColors(

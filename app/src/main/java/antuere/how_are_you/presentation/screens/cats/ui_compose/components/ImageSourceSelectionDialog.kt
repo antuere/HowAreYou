@@ -61,7 +61,7 @@ fun ImageSourceSelectionDialog(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Icon(
-                    painter = painterResource(id = R.drawable.image_source_ic),
+                    painter = painterResource(id = R.drawable.ic_image_source),
                     contentDescription = "Image selector",
                     tint = MaterialTheme.colorScheme.onBackground
                 )

@@ -86,7 +86,7 @@ class SignUpEmailViewModel @Inject constructor(
 
         override fun registerFailed(message: String) {
             updateState { state.copy(isShowProgressIndicator = false) }
-            sideEffect(SignUpEmailSideEffect.Snackbar(message = UiText.DefaultString(message)))
+            sideEffect(SignUpEmailSideEffect.Snackbar(message = UiText.String(message)))
         }
     }
 

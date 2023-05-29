@@ -36,7 +36,7 @@ class ResetPasswordViewModel @Inject constructor(
         override fun resetError(message: String) {
             updateState { state.copy(isShowProgressIndicator = false) }
             sideEffect(
-                ResetPasswordSideEffect.Snackbar(message = UiText.DefaultString(message))
+                ResetPasswordSideEffect.Snackbar(message = UiText.String(message))
             )
         }
     }

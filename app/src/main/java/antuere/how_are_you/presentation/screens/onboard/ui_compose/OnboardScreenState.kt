@@ -14,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import antuere.how_are_you.R
+import antuere.how_are_you.presentation.base.ui_compose_components.buttons.IconButtonScaleable
 import antuere.how_are_you.presentation.screens.onboard.state.OnboardIntent
 import antuere.how_are_you.presentation.screens.onboard.state.OnboardState
 import antuere.how_are_you.presentation.screens.onboard.ui_compose.components.EnterInAppButton
@@ -34,6 +35,14 @@ fun OnboardScreenState(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.fillMaxSize()
     ) {
+        IconButtonScaleable(
+            modifier = Modifier
+                .padding(horizontal = dimensionResource(id = R.dimen.padding_normal_0))
+                .align(Alignment.End),
+            onClick = { onIntent(OnboardIntent.ScipOnboardClicked) },
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            iconRes = R.drawable.ic_close
+        )
         HorizontalPager(
             modifier = Modifier
                 .fillMaxWidth()

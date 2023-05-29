@@ -41,7 +41,7 @@ fun CalendarImage(
     val headerText = remember(toggleBtnState) {
         if (toggleBtnState == ToggleBtnState.CURRENT_MONTH)
             UiText.StringResource(HelperForHistory.getHeaderForCalendar(TimeUtility.getMonthNumber()))
-        else UiText.DefaultString("${context.getString(R.string.calendar_week)} ${TimeUtility.getWeekNumber()}")
+        else UiText.String("${context.getString(R.string.calendar_week)} ${TimeUtility.getWeekNumber()}")
     }
 
     GradientCard(

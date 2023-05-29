@@ -56,7 +56,7 @@ fun CatsScreen(
                 actions = {
                     IconButtonScaleable(
                         onClick = { viewModel.onIntent(CatsIntent.ChooseSourceClicked) },
-                        iconRes = R.drawable.image_source_ic
+                        iconRes = R.drawable.ic_image_source
                     )
                 },
                 isVisibleBottomBar = false

@@ -12,7 +12,6 @@ import antuere.how_are_you.presentation.screens.home.state.HomeSideEffect
 import antuere.how_are_you.presentation.screens.home.ui_compose.HomeScreenState
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
-import timber.log.Timber
 
 @Composable
 fun HomeScreen(
@@ -27,8 +26,6 @@ fun HomeScreen(
     val context = LocalContext.current
     val appState = LocalAppState.current
     val viewState by viewModel().collectAsState()
-
-    Timber.i("splash error: enter in homescreen")
 
     viewModel().collectSideEffect { sideEffect ->
         when (sideEffect) {
