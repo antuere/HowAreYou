@@ -12,6 +12,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.dimensionResource
 import antuere.how_are_you.R
 import antuere.how_are_you.presentation.base.ui_compose_components.buttons.IconButtonScaleable
@@ -46,7 +47,8 @@ fun OnboardScreenState(
         HorizontalPager(
             modifier = Modifier
                 .fillMaxWidth()
-                .weight(1f),
+                .weight(1f)
+                .testTag("onboard_pager"),
             pageCount = viewState().pages.size,
             state = pagerState,
         ) { page ->
@@ -68,7 +70,8 @@ fun OnboardScreenState(
         EnterInAppButton(
             modifier = Modifier
                 .fillMaxWidth(0.8f)
-                .padding(vertical = dimensionResource(id = R.dimen.padding_normal_1)),
+                .padding(vertical = dimensionResource(id = R.dimen.padding_normal_1))
+                .testTag("finish_btn"),
             isVisible = pagerState.currentPage == viewState().pages.lastIndex,
             onClick = { onIntent(OnboardIntent.EnterInAppClicked) })
     }

@@ -11,7 +11,10 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
 import androidx.fragment.app.FragmentActivity
@@ -87,7 +90,7 @@ class MainActivity : FragmentActivity() {
     }
 
     @Composable
-    @OptIn(ExperimentalAnimationApi::class)
+    @OptIn(ExperimentalAnimationApi::class, ExperimentalComposeUiApi::class)
     private fun RenderUI(
         startScreen: () -> Screen,
         isEnablePin: () -> Boolean,
@@ -98,6 +101,9 @@ class MainActivity : FragmentActivity() {
         var timeWhenAppClosed by rememberSaveable { mutableStateOf(0L) }
 
         Scaffold(
+            modifier = Modifier.semantics {
+                testTagsAsResourceId = true
+            },
             snackbarHost = {
                 SnackbarHost(appState.snackbarHostState) { data ->
                     DefaultSnackbar(text = data.visuals.message)

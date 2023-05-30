@@ -1,10 +1,14 @@
 package antuere.macrobenchmark
 
 import androidx.benchmark.macro.CompilationMode
+import androidx.benchmark.macro.FrameTimingMetric
+import androidx.benchmark.macro.MacrobenchmarkScope
 import androidx.benchmark.macro.StartupMode
 import androidx.benchmark.macro.StartupTimingMetric
 import androidx.benchmark.macro.junit4.MacrobenchmarkRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.uiautomator.By
+import androidx.test.uiautomator.Direction
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -32,6 +36,12 @@ class ExampleStartupBenchmark {
     @Test
     fun startupBaselineON() = startup(CompilationMode.Partial())
 
+    @Test
+    fun onboardFlowBaselineOFF() = onboardFlow(CompilationMode.None())
+
+    @Test
+    fun onboardFlowBaselineON() = onboardFlow(CompilationMode.Partial())
+
     private fun startup(mode: CompilationMode) = benchmarkRule.measureRepeated(
         packageName = "antuere.how_are_you",
         metrics = listOf(StartupTimingMetric()),
@@ -42,4 +52,31 @@ class ExampleStartupBenchmark {
         pressHome()
         startActivityAndWait()
     }
+
+    private fun onboardFlow(mode: CompilationMode) = benchmarkRule.measureRepeated(
+        packageName = "antuere.how_are_you",
+        metrics = listOf(FrameTimingMetric()),
+        iterations = 1,
+        startupMode = StartupMode.COLD,
+        compilationMode = mode
+    ) {
+        pressHome()
+        startActivityAndWait()
+
+        scrollOnboardAndEnterApp()
+    }
+
+}
+
+fun MacrobenchmarkScope.scrollOnboardAndEnterApp() {
+    val pager = device.findObject(By.res("onboard_pager"))
+    val finishButton = device.findObject(By.res("finish_btn"))
+    pager.setGestureMargin(80)
+
+    repeat(4) {
+        pager.scroll(Direction.RIGHT, 80f)
+    }
+    device.waitForIdle()
+
+    finishButton.click()
 }

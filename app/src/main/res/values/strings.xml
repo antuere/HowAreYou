@@ -224,13 +224,13 @@
     <string name="onboard_welcome_title">Hello!</string>
     <string name="onboard_welcome_desc">Welcome to How Are You!\nOur app will help you track your mood and make your life more conscious</string>
     <string name="onboard_days_title">Track your mood</string>
-    <string name="onboard_days_desc">Write down everything that happened to you and mark your mood, preferably every day! This will help you to become more aware of your life and concentrate on personal joys and experiences.\nAnd thanks to the ability to set a PIN and use biometrics, you can be sure that no one else will be able to access your records</string>
+    <string name="onboard_days_desc">Write down everything that happened to you and mark your mood every day! This will help you to become more aware of your life and concentrate on personal joys and experiences.\nThanks to the security system, you can be sure that no one else will be able to access your records</string>
     <string name="onboard_cats_title">Relax with cats</string>
-    <string name="onboard_cats_desc">"Watching cute cats increases the energy and level of positive emotions, as well as reduces negative feelings.\nGet an endless stream of cats thanks to the choice of sources from which the cats will be shown!\nTry holding your finger on a particularly likeable kitty and who knows, maybe the fluffy one will move to your gallery? "</string>
+    <string name="onboard_cats_desc">"Viewing kitties is soothing and gives you a charge of positive emotions!\nGet an endless stream of kitties by selecting the source from which the kitties will show up.\nTry holding your finger on a special favorite kitty and who knows, maybe the fluffy one will move to your gallery? "</string>
     <string name="onboard_tips_title">Become more aware</string>
     <string name="onboard_tips_desc">We offer you valuable mental tips from different areas of life to help you achieve harmony and happiness.  Gain wisdom to help you overcome challenges, develop your best qualities and enjoy a happier and more fulfilling life.\nThe library of tips will continue to grow with updates</string>
     <string name="onboard_helplines_title">Get help</string>
-    <string name="onboard_helplines_desc">Our app provides access to the phone numbers and websites of companies that provide psychological help at a distance. You will be able to choose your country and get the contact information of organizations that are ready to support you in difficult moments. The list of countries will be updated with updates. \nIn addition, we offer the possibility to write to us by e-mail or Telegram, so you can communicate directly with professionals and get the necessary support</string>
+    <string name="onboard_helplines_desc">You will be able to choose your country and get the contact information of organizations providing psychological help at a distance. The list of countries will be updated with updates. \nIn addition, we offer the opportunity to write to us by e-mail or Telegram, so you can communicate with the professionals directly and get the necessary support!</string>
 
 
     <!-- Other -->

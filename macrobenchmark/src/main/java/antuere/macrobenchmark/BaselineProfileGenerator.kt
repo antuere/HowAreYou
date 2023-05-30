@@ -15,6 +15,7 @@ class BaselineProfileGenerator {
     fun startup() = baselineProfileRule.collectBaselineProfile(
         packageName = "antuere.how_are_you",
         profileBlock = {
+            pressHome()
             startActivityAndWait()
         }
     )
