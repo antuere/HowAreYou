@@ -92,7 +92,8 @@ fun CatImage(
                                 }
                             )
                         }
-                        .clip(MaterialTheme.shapes.extraLarge),
+                        .clip(MaterialTheme.shapes.extraLarge)
+                        .fillMaxSize(),
 //                    .aspectRatio(0.85F),
                     imageModel = { url },
                     imageOptions = ImageOptions(

@@ -109,7 +109,7 @@ class SettingsViewModel @Inject constructor(
                     val dialog = UIDialog(
                         title = R.string.dialog_delete_local_data_title,
                         desc = R.string.dialog_delete_local_data_desc,
-                        icon = R.drawable.ic_delete_black,
+                        icon = R.drawable.ic_delete,
                         positiveButton = UIDialog.UiButton(
                             text = R.string.dialog_delete_local_data_positive,
                             onClick = {

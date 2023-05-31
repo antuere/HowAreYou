@@ -19,13 +19,11 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import antuere.how_are_you.R
-import antuere.how_are_you.presentation.base.ui_theme.PlayfairDisplay
 import antuere.how_are_you.presentation.screens.cats.state.CatsIntent
 import antuere.how_are_you.presentation.screens.cats.state.CatsState
 import antuere.how_are_you.presentation.screens.cats.ui_compose.components.CatImage
 import antuere.how_are_you.presentation.screens.cats.ui_compose.components.ImageSourceSelectionDialog
 import antuere.how_are_you.presentation.screens.cats.ui_compose.components.SourceImagesText
-import antuere.how_are_you.util.extensions.fixedSize
 import antuere.how_are_you.util.extensions.paddingTopBar
 import kotlinx.collections.immutable.toImmutableList
 
@@ -52,14 +50,7 @@ fun CatsScreenState(
         if (viewState().isLoading) {
             CircularProgressIndicator()
         } else {
-            Spacer(modifier = Modifier.weight(1.5F))
-
-            Text(
-                text = stringResource(id = R.string.title_cats),
-                fontSize = dimensionResource(id = R.dimen.textSize_big_0).value.fixedSize,
-                fontFamily = PlayfairDisplay
-            )
-            Spacer(modifier = Modifier.weight(1.5F))
+            Spacer(modifier = Modifier.weight(1F))
 
             Row(
                 modifier = Modifier.weight(10F),
@@ -84,6 +75,7 @@ fun CatsScreenState(
                 )
             }
             Spacer(modifier = Modifier.height(8.dp))
+
             Row(
                 modifier = Modifier.weight(10f),
                 verticalAlignment = Alignment.CenterVertically,

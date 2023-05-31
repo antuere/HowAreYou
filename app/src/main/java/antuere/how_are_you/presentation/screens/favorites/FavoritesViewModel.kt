@@ -41,7 +41,7 @@ class FavoritesViewModel @Inject constructor(
                 val uiDialog = UIDialog(
                     title = R.string.dialog_delete_title,
                     desc = R.string.dialog_delete_desc,
-                    icon = R.drawable.ic_delete_black,
+                    icon = R.drawable.ic_delete,
                     positiveButton = UIDialog.UiButton(
                         text = R.string.yes,
                         onClick = {

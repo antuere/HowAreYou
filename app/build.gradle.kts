@@ -16,7 +16,8 @@ android {
     signingConfigs {
         create("release") {
 //            storeFile  = file("C:\\Users\\AntuE\\AndroidStudioProjects\\HowAreYou\\keyStore\\keyStoreApp.jks")
-            storeFile = file("C:\\Users\\user\\AndroidStudioProjects\\HowAreYou\\keyStoreAppModule.jks")
+            storeFile =
+                file("C:\\Users\\user\\AndroidStudioProjects\\HowAreYou\\keyStoreAppModule.jks")
             storePassword = "anton1730"
             keyAlias = "key0"
             keyPassword = "anton1730"
@@ -27,8 +28,8 @@ android {
         applicationId = "antuere.how_are_you"
         minSdk = 24
         targetSdk = 33
-        versionCode = 25 // versionName 25 - 0.9.3
-        versionName = "0.9.3"
+        versionCode = 26 // versionName 26 - 1.0.0-rc
+        versionName = "1.0.0-rc"
 
         testInstrumentationRunnerArguments["androidx.benchmark.suppressErrors"] = "EMULATOR"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -37,6 +38,8 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+
+        resourceConfigurations += listOf("en", "ru")
     }
 
     buildTypes {
@@ -59,9 +62,10 @@ android {
     }
 
     android.applicationVariants.all {
+        val buildType = this.buildType.name
         outputs.all {
             if (this is com.android.build.gradle.internal.api.ApkVariantOutputImpl) {
-                this.outputFileName = "HowAreYou_v${defaultConfig.versionName}.apk"
+                this.outputFileName = "HowAreYou_v${defaultConfig.versionName}_$buildType.apk"
             }
         }
     }
@@ -172,7 +176,7 @@ dependencies {
 
     // Timber
     implementation(libs.timber)
-    
+
     // Landscapist glide
     implementation(libs.bundles.landscapist)
 

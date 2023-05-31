@@ -101,9 +101,7 @@ class MainActivity : FragmentActivity() {
         var timeWhenAppClosed by rememberSaveable { mutableStateOf(0L) }
 
         Scaffold(
-            modifier = Modifier.semantics {
-                testTagsAsResourceId = true
-            },
+            modifier = Modifier.semantics { testTagsAsResourceId = true },
             snackbarHost = {
                 SnackbarHost(appState.snackbarHostState) { data ->
                     DefaultSnackbar(text = data.visuals.message)

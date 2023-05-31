@@ -18,6 +18,7 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:hasFragileUserData="true"
+            android:enableOnBackInvokedCallback="true"
             android:theme="@style/Theme.App.Starting"
             android:localeConfig="@xml/locales_config"
             tools:targetApi="33">
