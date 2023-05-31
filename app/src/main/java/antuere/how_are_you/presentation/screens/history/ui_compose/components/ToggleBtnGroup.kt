@@ -1,19 +1,26 @@
 package antuere.how_are_you.presentation.screens.history.ui_compose.components
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.*
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import antuere.domain.dto.ToggleBtnState
 import antuere.how_are_you.R
 import antuere.how_are_you.presentation.base.ui_text.UiText
-import timber.log.Timber
+import antuere.how_are_you.util.extensions.fixedSize
 
 @Composable
 fun ToggleBtnGroup(
@@ -23,8 +30,6 @@ fun ToggleBtnGroup(
     onClick: (ToggleBtnState) -> Unit,
 ) {
     val shapePercent = 50
-
-    Timber.i("MVI error test : composed in toggleBtnGroup ${currentToggleBtnState.name}")
 
     Row(
         modifier = modifier.fillMaxWidth(),
@@ -67,25 +72,27 @@ fun ToggleBtnGroup(
                     // middle button
                     else -> RoundedCornerShape(0.dp)
                 },
-                border = BorderStroke(
-                    1.dp, Color.Gray
-                ),
+                border = BorderStroke(width = 1.dp, color = MaterialTheme.colorScheme.outline),
                 colors = if (currentToggleBtnState == entry.value) {
                     ButtonDefaults.outlinedButtonColors(
-                        containerColor = MaterialTheme.colorScheme.onSurface.copy(
-                            alpha = 0.7f
-                        ), contentColor = Color.Black
+                        containerColor = MaterialTheme.colorScheme.secondaryContainer,
                     )
                 } else {
                     ButtonDefaults.outlinedButtonColors(
-                        containerColor = MaterialTheme.colorScheme.surface,
-                        contentColor = Color.Black
+                        containerColor = MaterialTheme.colorScheme.background,
                     )
                 },
             ) {
                 Text(
                     text = entry.key.asString(),
-                    modifier = Modifier.padding(horizontal = 8.dp)
+                    fontSize = 14f.fixedSize,
+                    modifier = Modifier.padding(horizontal = 8.dp),
+                    softWrap = false,
+                    color = if (currentToggleBtnState == entry.value) {
+                        MaterialTheme.colorScheme.onSecondaryContainer
+                    } else {
+                        MaterialTheme.colorScheme.onSurfaceVariant
+                    }
                 )
             }
         }

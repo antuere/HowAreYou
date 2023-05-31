@@ -4,32 +4,43 @@ import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldColors
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.VisualTransformation
 import antuere.how_are_you.R
 import antuere.how_are_you.util.isKeyboardVisible
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DefaultTextField(
     modifier: Modifier = Modifier,
     value: String,
+    enabled: Boolean = true,
     onValueChange: (String) -> Unit,
     label: String,
     placeHolder: String? = null,
     singleLine: Boolean = false,
     maxLength: Int = Int.MAX_VALUE,
-    maxLines: Int = 40,
+    maxLines: Int = 25,
+    shape : Shape = MaterialTheme.shapes.large,
     @StringRes toastTextId: Int? = null,
+    colors: TextFieldColors = TextFieldDefaults.colors(
+        focusedTextColor = MaterialTheme.colorScheme.onBackground,
+        focusedContainerColor = MaterialTheme.colorScheme.background,
+        unfocusedContainerColor = MaterialTheme.colorScheme.background
+    ),
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
     visualTransformation: VisualTransformation = VisualTransformation.None,
@@ -39,7 +50,7 @@ fun DefaultTextField(
     val context = LocalContext.current
     val toastText = stringResource(toastTextId ?: R.string.too_many_chars_default)
     val focusManager = LocalFocusManager.current
-    val isVisibleKeyboard = isKeyboardVisible()
+    val isVisibleKeyboard by isKeyboardVisible()
 
     LaunchedEffect(isVisibleKeyboard) {
         if (!isVisibleKeyboard) {
@@ -66,21 +77,22 @@ fun DefaultTextField(
                 Text(text = it)
             }
         },
-        textStyle = MaterialTheme.typography.displaySmall.copy(
-            color = MaterialTheme.colorScheme.onSecondary
-        ),
         label = {
             Text(
                 text = label,
-                style = MaterialTheme.typography.displaySmall,
+                style = MaterialTheme.typography.bodyMedium,
+                fontWeight = FontWeight.Medium
             )
         },
-        keyboardOptions = keyboardOptions,
+        colors = colors,
+        shape = shape,
+        keyboardOptions = keyboardOptions.copy(capitalization = KeyboardCapitalization.Sentences),
         keyboardActions = keyboardActions,
         singleLine = singleLine,
         visualTransformation = visualTransformation,
         trailingIcon = trailingIcon,
         leadingIcon = leadingIcon,
-        maxLines = maxLines
+        maxLines = maxLines,
+        enabled = enabled
     )
 }

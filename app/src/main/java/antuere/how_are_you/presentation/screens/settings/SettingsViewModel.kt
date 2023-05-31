@@ -8,17 +8,19 @@ import antuere.domain.repository.DayRepository
 import antuere.domain.repository.SettingsRepository
 import antuere.domain.repository.ToggleBtnRepository
 import antuere.how_are_you.R
-import antuere.how_are_you.presentation.base.ui_text.UiText
+import antuere.how_are_you.presentation.base.ViewModelMvi
 import antuere.how_are_you.presentation.base.ui_biometric_dialog.IUIBiometricListener
 import antuere.how_are_you.presentation.base.ui_biometric_dialog.UIBiometricDialog
 import antuere.how_are_you.presentation.base.ui_compose_components.dialog.UIDialog
+import antuere.how_are_you.presentation.base.ui_text.UiText
 import antuere.how_are_you.presentation.screens.settings.state.SettingsIntent
 import antuere.how_are_you.presentation.screens.settings.state.SettingsSideEffect
 import antuere.how_are_you.presentation.screens.settings.state.SettingsState
-import antuere.how_are_you.presentation.base.ViewModelMvi
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.Container
 import org.orbitmvi.orbit.viewmodel.container
@@ -41,6 +43,8 @@ class SettingsViewModel @Inject constructor(
     private var isShowDialogSignOut = false
 
     init {
+        Timber.i("Init bug check: init vm settings")
+
         getSettings()
         checkIsHasDayEntity()
         checkBiometricsAvailable()
@@ -83,7 +87,8 @@ class SettingsViewModel @Inject constructor(
             is SettingsIntent.PinSettingChanged -> {
                 updateState { state.copy(isCheckedPin = intent.isChecked) }
                 if (intent.isChecked) {
-                    sideEffect(SettingsSideEffect.ShowBottomSheet)
+                    updateState { state.copy(isShowBottomSheet = true) }
+                    sideEffect(SettingsSideEffect.HideNavBar)
                 } else {
                     viewModelScope.launch(Dispatchers.IO) {
                         settingsRepository.resetPinCode()
@@ -104,7 +109,7 @@ class SettingsViewModel @Inject constructor(
                     val dialog = UIDialog(
                         title = R.string.dialog_delete_local_data_title,
                         desc = R.string.dialog_delete_local_data_desc,
-                        icon = R.drawable.ic_delete_black,
+                        icon = R.drawable.ic_delete,
                         positiveButton = UIDialog.UiButton(
                             text = R.string.dialog_delete_local_data_positive,
                             onClick = {
@@ -123,9 +128,9 @@ class SettingsViewModel @Inject constructor(
             }
             is SettingsIntent.PinCreationSheetClosed -> {
                 updateState {
-                    state.copy(isCheckedPin = intent.isPinCreated)
+                    state.copy(isCheckedPin = intent.isPinCreated, isShowBottomSheet = false)
                 }
-                sideEffect(SettingsSideEffect.HideBottomSheet)
+                sideEffect(SettingsSideEffect.ShowNavBar)
                 if (intent.isPinCreated) {
                     viewModelScope.launch(Dispatchers.IO) {
                         settingsRepository.savePinSetting(true)
@@ -170,7 +175,7 @@ class SettingsViewModel @Inject constructor(
                 settingsRepository.getPinCode()
             ) { settings, username, pinCode ->
 
-                Timber.i("MVI error test : collect from combine")
+                
                 updateState {
                     state.copy(
                         isLoading = false,

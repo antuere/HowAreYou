@@ -3,6 +3,7 @@ package antuere.how_are_you.presentation.screens.sign_up_with_email
 import androidx.lifecycle.viewModelScope
 import antuere.domain.authentication_manager.AuthenticationManager
 import antuere.domain.authentication_manager.RegisterResultListener
+import antuere.domain.repository.DayRepository
 import antuere.domain.repository.SettingsRepository
 import antuere.how_are_you.R
 import antuere.how_are_you.presentation.base.ViewModelMvi
@@ -22,6 +23,7 @@ import javax.inject.Inject
 class SignUpEmailViewModel @Inject constructor(
     private val settingsRepository: SettingsRepository,
     private val authenticationManager: AuthenticationManager,
+    private val dayRepository: DayRepository,
 ) : ViewModelMvi<SignUpEmailState, SignUpEmailSideEffect, SignUpEmailIntent>() {
 
     override val container: Container<SignUpEmailState, SignUpEmailSideEffect> =
@@ -32,16 +34,21 @@ class SignUpEmailViewModel @Inject constructor(
             is SignUpEmailIntent.ConfirmPasswordChanged -> updateStateBlocking {
                 state.copy(confirmPassword = intent.value)
             }
+
             is SignUpEmailIntent.EmailChanged -> updateStateBlocking {
                 state.copy(email = intent.value)
             }
+
             is SignUpEmailIntent.NicknameChanged -> updateStateBlocking {
                 state.copy(nickName = intent.value)
             }
+
             is SignUpEmailIntent.PasswordChanged -> updateStateBlocking {
                 state.copy(password = intent.value)
             }
+
             is SignUpEmailIntent.SignInBtnClicked -> {
+                sideEffect(SignUpEmailSideEffect.ClearFocus)
                 if (isValidateFields(
                         state.email,
                         state.password,
@@ -67,9 +74,10 @@ class SignUpEmailViewModel @Inject constructor(
 
         override fun registerSuccess(name: String) {
             viewModelScope.launch(Dispatchers.IO) {
-                settingsRepository.saveUserNickname(name)
                 authenticationManager.setUserNicknameOnServer(name)
-                delay(100)
+                settingsRepository.saveUserNickname(name)
+                delay(150)
+                dayRepository.insertLocalDaysToRemote()
 
                 sideEffect(SignUpEmailSideEffect.NavigateToSettings)
                 updateState { SignUpEmailState() }
@@ -78,7 +86,7 @@ class SignUpEmailViewModel @Inject constructor(
 
         override fun registerFailed(message: String) {
             updateState { state.copy(isShowProgressIndicator = false) }
-            sideEffect(SignUpEmailSideEffect.Snackbar(message = UiText.DefaultString(message)))
+            sideEffect(SignUpEmailSideEffect.Snackbar(message = UiText.String(message)))
         }
     }
 

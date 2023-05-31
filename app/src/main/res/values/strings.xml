@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">HowAreYou</string>
+    <string name="app_name" translatable="false">HowAreYou</string>
 
     <!-- Descriptions -->
     <string name="very_happy_smile_desc">Very happy smile</string>
@@ -11,13 +11,13 @@
     <string name="button_for_add_new_day">button for add new day</string>
 
     <!-- Transition -->
-    <string name="transition_name">transition_name_unique</string>
-    <string name="transition_name_for_fav">transition_name_favorite</string>
-    <string name="transition_name_for_cats">transition_name_cats</string>
-    <string name="transition_name_for_sign_in">transition_name_sign_in</string>
-    <string name="transition_name_for_sign_in_methods">transition_name_sign_in_methods</string>
-    <string name="transition_name_for_sum">transition_name_sum</string>
-    <string name="transition_name_item">transition_name_unique_%1$s</string>
+    <string name="transition_name" translatable="false">transition_name_unique</string>
+    <string name="transition_name_for_fav" translatable="false">transition_name_favorite</string>
+    <string name="transition_name_for_cats" translatable="false">transition_name_cats</string>
+    <string name="transition_name_for_sign_in" translatable="false">transition_name_sign_in</string>
+    <string name="transition_name_for_sign_in_methods" translatable="false">transition_name_sign_in_methods</string>
+    <string name="transition_name_for_sum" translatable="false">transition_name_sum</string>
+    <string name="transition_name_item" translatable="false">transition_name_unique_%1$s</string>
 
     <!-- Menus labels -->
     <string name="delete">Delete</string>
@@ -33,7 +33,6 @@
     <string name="mental_tips">Mental tips</string>
     <string name="login_methods">Sign in methods</string>
     <string name="current_time_tips">Current time</string>
-    <string name="youself_tips">Yourself</string>
     <string name="family_tips">Family</string>
     <string name="relationship_tips">Relationship</string>
     <string name="friends_tips">Friends</string>
@@ -71,11 +70,9 @@
     <string name="dialog_warning_neutral">Don\'t show again</string>
     <string name="dialog_warning_negative">No</string>
     <string name="dialog_sign_out_title">Sign out</string>
-    <string name="dialog_sign_out_desc">All your data will be deleted on this device, to restore them, log in to your account again.</string>
     <string name="dialog_sign_out_positive">Sign out</string>
     <string name="dialog_sign_out_negative">Cancel</string>
     <string name="dialog_delete_local_data_title">Day entries</string>
-    <string name="dialog_delete_local_data_desc">When you sign out of your account, you can save existing recordings locally on your device. Save local day entries?</string>
     <string name="dialog_delete_local_data_positive">Yes</string>
     <string name="dialog_delete_local_data_negative">No</string>
     <string name="dialog_delete_local_data_neutral">Stay logged in</string>
@@ -95,6 +92,7 @@
     <!-- Add day screen -->
     <string name="how_are_you_today">How are you today?</string>
     <string name="desc_you_day">Describe your day in a nutshell</string>
+    <string name="how_you_mention">How are you feeling?</string>
     <string name="too_many_chars_100">Cannot be more than 100 characters</string>
 
     <!-- Cats screen -->
@@ -102,17 +100,17 @@
     <string name="title_cats">What could be better than cats?</string>
     <string name="saved_complete_cats">Cat\'s image is saved!</string>
     <string name="saved_error_cats">This image can\'t be saved</string>
-    <string name="permission_denied_cats">To save the image, please grant the permission</string>
-    <string name="cats_no_internet">No internet…</string>
+    <string name="permission_denied_cats">To save the cat, please grant the permission</string>
+    <string name="cats_no_internet">I got lost…</string>
 
 
     <!-- Settings screen -->
     <string name="settings_privacy_text">Privacy</string>
     <string name="settings_general_text">General</string>
-    <string name="sign_in_advice">For a better experience sign in.</string>
-    <string name="how_are_you_text">How are you? We hope you all right.</string>
-    <string name="hello_user">Hello, dear</string>
-    <string name="hello_user_plug">Hello, dear user</string>
+    <string name="sign_in_advice">For a better experience sign in</string>
+    <string name="how_are_you_text">How are you? We hope you all right</string>
+    <string name="hello_user">Hello,</string>
+    <string name="hello_user_plug">Hello, user</string>
     <string name="sign_in">Sign in</string>
     <string name="sign_out">Sign out</string>
     <string name="create_a_pin_code">Create PIN code</string>
@@ -128,7 +126,6 @@
     <string name="biometric_unknown_error">Unknown error</string>
     <string name="biometric_none_enroll">First, set the biometrics in the device settings</string>
 
-
     <!-- Home screen -->
     <string name="snack_bar_warning_negative">Pay attention to the cards above, we hope this will help you at least a little.</string>
 
@@ -142,6 +139,8 @@
 
     <!-- Detail screen -->
     <string name="about_day">About past day</string>
+    <string name="day_edit_text">What\'s new?</string>
+    <string name="day_edit">Edit</string>
 
     <!-- HelpForYou screen -->
     <string name="help_for_you_title_card">Sometimes life\'s problems unsettle us and cause complete confusion, so we recommend turning to the help of others. A consultation with a specialist will help you overcome a difficult period.</string>
@@ -162,19 +161,20 @@
     <string name="all_days_desc">Show all days</string>
     <string name="month_days_desc">Show days of this current month</string>
     <string name="week_days_desc">Show days of this current week</string>
-    <string name="date_picker_title">Select days</string>
     <string name="start_date_field">Start date</string>
     <string name="end_date_field">End date</string>
     <string name="show_selected_days">Show selected days</string>
     <string name="select_days">Select days</string>
     <string name="ok">OK</string>
+    <string name="calendar_week">Week</string>
     <string name="cancel">Cancel</string>
     <string name="loading">Loading</string>
     <string name="close_filter">Close filter</string>
     <string name="no_days_all">Add your first day and come back!</string>
-    <string name="no_days_week">There are no entries yet for the current week, let\'s fix it!</string>
-    <string name="no_days_month">There are no entries yet for the current month, let\'s fix it!</string>
+    <string name="no_days_week">There are no entries for this week, let\'s fix it!</string>
+    <string name="no_days_month">There are no entries for the current month, let\'s fix it!</string>
     <string name="no_days_filter">There are no entries for the selected dates</string>
+    <string name="datePicker_confirm">Confirm</string>
 
     <!-- Wishes for users -->
     <string name="wish_for_users_test">We hope you had another great day, so enjoy! We are waiting for you tomorrow</string>
@@ -186,18 +186,31 @@
     <string name="wish_for_users_sad">Bad day? We would be very happy if the cards above can make your day a little better</string>
 
     <!-- Headers for history -->
-    <string name="january">%1$d January %2$d</string>
-    <string name="february">%1$d February %2$d</string>
-    <string name="march">%1$d March %2$d</string>
-    <string name="april">%1$d April %2$d</string>
-    <string name="may">%1$d May %2$d</string>
-    <string name="june">%1$d June %2$d</string>
-    <string name="july">%1$d July %2$d</string>
-    <string name="august">%1$d August %2$d</string>
-    <string name="september">%1$d September %2$d</string>
-    <string name="october">%1$d October %2$d</string>
-    <string name="november">%1$d November %2$d</string>
-    <string name="december">%1$d December %2$d</string>
+    <string name="january_args">%1$d January %2$d</string>
+    <string name="february_args">%1$d February %2$d</string>
+    <string name="march_args">%1$d March %2$d</string>
+    <string name="april_args">%1$d April %2$d</string>
+    <string name="may_args">%1$d May %2$d</string>
+    <string name="june_args">%1$d June %2$d</string>
+    <string name="july_args">%1$d July %2$d</string>
+    <string name="august_args">%1$d August %2$d</string>
+    <string name="september_args">%1$d September %2$d</string>
+    <string name="october_args">%1$d October %2$d</string>
+    <string name="november_args">%1$d November %2$d</string>
+    <string name="december_args">%1$d December %2$d</string>
+
+    <string name="january">January</string>
+    <string name="february">February</string>
+    <string name="march">March</string>
+    <string name="april">April</string>
+    <string name="may">May</string>
+    <string name="june">June</string>
+    <string name="july">July</string>
+    <string name="august">August</string>
+    <string name="september">September</string>
+    <string name="october">October</string>
+    <string name="november">November</string>
+    <string name="december">December</string>
 
     <!-- Countries for helplines -->
     <string name="russia">Russia</string>
@@ -206,10 +219,32 @@
     <string name="france">France</string>
     <string name="china">China</string>
 
+    <!-- Onboard -->
+    <string name="onboard_enter_btn">Forward to awareness!</string>
+    <string name="onboard_welcome_title">Hello!</string>
+    <string name="onboard_welcome_desc">Welcome to How Are You!\nOur app will help you track your mood and make your life more conscious</string>
+    <string name="onboard_days_title">Track your mood</string>
+    <string name="onboard_days_desc">Write down everything that happened to you and mark your mood every day! This will help you to become more aware of your life and concentrate on personal joys and experiences.\nThanks to the security system, you can be sure that no one else will be able to access your records</string>
+    <string name="onboard_cats_title">Relax with cats</string>
+    <string name="onboard_cats_desc">"Viewing kitties is soothing and gives you a charge of positive emotions!\nGet an endless stream of kitties by selecting the source from which the kitties will show up.\nTry holding your finger on a special favorite kitty and who knows, maybe the fluffy one will move to your gallery? "</string>
+    <string name="onboard_tips_title">Become more aware</string>
+    <string name="onboard_tips_desc">We offer you valuable mental tips from different areas of life to help you achieve harmony and happiness.  Gain wisdom to help you overcome challenges, develop your best qualities and enjoy a happier and more fulfilling life.\nThe library of tips will continue to grow with updates</string>
+    <string name="onboard_helplines_title">Get help</string>
+    <string name="onboard_helplines_desc">You will be able to choose your country and get the contact information of organizations providing psychological help at a distance. The list of countries will be updated with updates. \nIn addition, we offer the opportunity to write to us by e-mail or Telegram, so you can communicate with the professionals directly and get the necessary support!</string>
+
+
     <!-- Other -->
-    <string name="leak_canary_test_class_name">assertk.Assert</string>
-    <string name="click_less">Click less</string>
-    <string name="click_more">Click more</string>
+    <string name="leak_canary_test_class_name" translatable="false">assertk.Assert</string>
+    <string name="click_less" translatable="false">Click less</string>
+    <string name="click_more" translatable="false">Click more</string>
     <string name="too_many_chars_default">Cannot be more characters</string>
+    <string name="dialog_sign_out_desc">All your data will be deleted on this device, to restore them, log in to your account again</string>
+    <string name="dialog_delete_local_data_desc">When you sign out of your account, you can save existing recordings locally on your device. Save local day entries?</string>
+    <string name="youself_tips">Personal growth</string>
+    <string name="animal_choose_source">Choose source</string>
+    <string name="animal_choose_desc">Photos will be uploaded from the selected source.\nIf Unsplash doesn\'t work, try enabling VPN.</string>
+    <string name="animal_choose_pos">Save</string>
+    <string name="animal_choose_neg">Cancel</string>
+    <string name="photos_by">Photos by</string>
 
 </resources>

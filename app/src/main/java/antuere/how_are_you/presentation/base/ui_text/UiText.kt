@@ -6,7 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 
 sealed class UiText {
-    data class DefaultString(val value: String) : UiText()
+    data class String(val value: kotlin.String) : UiText()
     class StringResource(@StringRes val resId: Int) : UiText()
     class StringResourceWithArg(@StringRes val resId: Int, vararg val args: Any) : UiText()
     class StringResourceConcat(
@@ -14,13 +14,13 @@ sealed class UiText {
         val firstArgs: Array<Any>,
         @StringRes val resIdSecond: Int,
         val secondArgs: Array<Any>,
-        val divider: String = ""
+        val divider: kotlin.String = "",
     ) : UiText()
 
     @Composable
-    fun asString(): String {
+    fun asString(): kotlin.String {
         return when (this) {
-            is DefaultString -> value
+            is String -> value
             is StringResource -> stringResource(id = resId)
             is StringResourceWithArg -> stringResource(id = resId, formatArgs = args)
             is StringResourceConcat -> {
@@ -33,9 +33,9 @@ sealed class UiText {
         }
     }
 
-    fun asString(context: Context): String {
+    fun asString(context: Context): kotlin.String {
         return when (this) {
-            is DefaultString -> value
+            is String -> value
             is StringResource -> context.getString(resId)
             is StringResourceWithArg -> context.getString(resId, *args)
             is StringResourceConcat -> {

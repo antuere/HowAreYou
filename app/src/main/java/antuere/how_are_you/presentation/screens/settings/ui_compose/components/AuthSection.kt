@@ -1,8 +1,17 @@
 package antuere.how_are_you.presentation.screens.settings.ui_compose.components
 
 import androidx.compose.animation.Crossfade
-import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Divider
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -11,6 +20,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.sp
 import antuere.domain.util.Constants
 import antuere.how_are_you.R
+import antuere.how_are_you.util.extensions.fixedSize
 
 @Composable
 fun AuthSection(
@@ -21,23 +31,23 @@ fun AuthSection(
     Column(
         horizontalAlignment = Alignment.Start
     ) {
-        Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_8)))
+        Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_4)))
         Text(
             modifier = Modifier.padding(
-                horizontal = dimensionResource(id = R.dimen.padding_normal_3)
+                horizontal = dimensionResource(id = R.dimen.padding_normal_2)
             ),
             fontSize = dimensionResource(id = R.dimen.textSize_normal_2).value.sp,
             text = if (userName != Constants.USER_NOT_AUTH) "${stringResource(id = R.string.hello_user)} $userName" else stringResource(
                 id = R.string.hello_user_plug
             )
         )
-        Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_1)))
+        Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_0)))
 
         Text(
             modifier = Modifier.padding(
-                horizontal = dimensionResource(id = R.dimen.padding_normal_3)
+                horizontal = dimensionResource(id = R.dimen.padding_normal_2)
             ),
-            fontSize = dimensionResource(id = R.dimen.textSize_normal_0).value.sp,
+            fontSize = dimensionResource(id = R.dimen.textSize_normal_0).value.fixedSize,
             text = stringResource(id = R.string.how_are_you_text)
         )
 
@@ -54,7 +64,7 @@ fun AuthSection(
                             onClick = { onClickSignOut() },
                             modifier = Modifier
                                 .padding(
-                                    horizontal = dimensionResource(id = R.dimen.padding_normal_3)
+                                    horizontal = dimensionResource(id = R.dimen.padding_normal_2)
                                 )
                                 .align(Alignment.End)
                         ) {
@@ -62,37 +72,35 @@ fun AuthSection(
                         }
                     }
                 }
+
                 false -> {
                     Column(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalAlignment = Alignment.Start,
                     ) {
-                        Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_1)))
+                        Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_0)))
                         Text(
                             modifier = Modifier.padding(
-                                horizontal = dimensionResource(id = R.dimen.padding_normal_3)
+                                horizontal = dimensionResource(id = R.dimen.padding_normal_2)
                             ),
-                            fontSize = dimensionResource(id = R.dimen.textSize_normal_0).value.sp,
+                            fontSize = dimensionResource(id = R.dimen.textSize_normal_0).value.fixedSize,
                             text = stringResource(id = R.string.sign_in_advice)
                         )
                         Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_4)))
 
-                        ElevatedButton(
+                        Button(
                             onClick = { onClickSignIn() },
-                            colors = ButtonDefaults.buttonColors(),
                             elevation = ButtonDefaults.buttonElevation(
                                 defaultElevation = dimensionResource(id = R.dimen.default_elevation),
                                 pressedElevation = dimensionResource(id = R.dimen.pressed_elevation)
                             ),
                             modifier = Modifier
-                                .padding(
-                                    horizontal = dimensionResource(id = R.dimen.padding_normal_3)
-                                )
+                                .padding(horizontal = dimensionResource(id = R.dimen.padding_normal_2))
                                 .align(Alignment.CenterHorizontally)
                         ) {
                             Text(
                                 modifier = Modifier.padding(
-                                    horizontal = dimensionResource(id = R.dimen.padding_normal_3)
+                                    horizontal = dimensionResource(id = R.dimen.padding_normal_2)
                                 ),
                                 text = stringResource(id = R.string.sign_in),
                                 color = MaterialTheme.colorScheme.onPrimary
@@ -106,9 +114,10 @@ fun AuthSection(
         Divider(
             modifier = Modifier
                 .padding(
-                    horizontal = dimensionResource(id = R.dimen.padding_normal_3)
+                    horizontal = dimensionResource(id = R.dimen.padding_normal_2)
                 )
-                .fillMaxWidth(), color = MaterialTheme.colorScheme.onSecondary
+                .fillMaxWidth(),
+            color = MaterialTheme.colorScheme.onSurfaceVariant
         )
     }
 }

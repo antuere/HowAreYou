@@ -28,6 +28,7 @@ class AddDayViewModel @Inject constructor(
                 state.copy(dayDesc = intent.value)
             }
             is AddDayIntent.SmileClicked -> {
+                updateState { state.copy(isEnabledTextField = false) }
                 val day = Day(imageResId = intent.imageResId, dayText = state.dayDesc)
                 viewModelScope.launch(Dispatchers.IO) {
                     addDayUseCase(day)

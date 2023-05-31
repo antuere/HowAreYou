@@ -1,6 +1,7 @@
 package antuere.how_are_you.presentation.screens.helplines.ui_compose.components
 
 import androidx.annotation.DrawableRes
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.*
@@ -13,6 +14,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import antuere.domain.dto.helplines.SupportedCountry
 import antuere.how_are_you.R
+import antuere.how_are_you.presentation.base.ui_theme.GradientDefaults
 import antuere.how_are_you.util.extensions.getName
 import antuere.how_are_you.util.extensions.upperCaseFirstCharacter
 
@@ -59,6 +61,7 @@ fun CountrySelectionMenu(
         )
 
         ExposedDropdownMenu(
+            modifier = Modifier.background(GradientDefaults.secondary()),
             expanded = isExpanded,
             onDismissRequest = { onExpandedChange() },
         ) {

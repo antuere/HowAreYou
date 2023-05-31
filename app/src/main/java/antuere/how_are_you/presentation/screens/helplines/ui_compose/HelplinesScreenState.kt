@@ -10,6 +10,7 @@ import androidx.compose.ui.res.dimensionResource
 import antuere.domain.dto.helplines.SupportedCountry
 import antuere.how_are_you.R
 import antuere.how_are_you.presentation.base.ui_compose_components.placeholder.FullScreenProgressIndicator
+import antuere.how_are_you.presentation.base.ui_compose_components.placeholder.ShadowLine
 import antuere.how_are_you.presentation.screens.helplines.state.HelplinesIntent
 import antuere.how_are_you.presentation.screens.helplines.state.HelplinesState
 import antuere.how_are_you.presentation.screens.helplines.ui_compose.components.CountrySelectionMenu
@@ -17,15 +18,14 @@ import antuere.how_are_you.presentation.screens.helplines.ui_compose.components.
 import antuere.how_are_you.presentation.screens.helplines.ui_compose.components.HelplinesColumn
 import antuere.how_are_you.util.extensions.paddingTopBar
 import antuere.how_are_you.util.extensions.toStable
-import timber.log.Timber
 
 @Composable
 fun HelplinesScreenState(
-    lazyListState: () -> LazyListState,
     viewState: () -> HelplinesState,
+    lazyListState: () -> LazyListState,
     onIntent: (HelplinesIntent) -> Unit,
+    isShowShadow: () -> Boolean,
 ) {
-    Timber.i("MVI error test : we in parent helplines screen")
     when (val state = viewState()) {
         is HelplinesState.Loading -> {
             FullScreenProgressIndicator()
@@ -66,7 +66,7 @@ fun HelplinesScreenState(
                         onDismiss = { onIntent(HelplinesIntent.CountyMenuDismissed) }
                     )
                 }
-                Spacer(modifier = Modifier.weight(0.05F))
+                ShadowLine(modifier = Modifier.weight(0.05F).fillMaxWidth(), isShowShadow = isShowShadow)
 
                 HelplinesColumn(
                     modifier = Modifier

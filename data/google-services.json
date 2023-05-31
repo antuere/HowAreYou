@@ -8,22 +8,30 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:506067010164:android:8273fbc5d5ac051b2c8721",
+        "mobilesdk_app_id": "1:506067010164:android:6703f640584337e92c8721",
         "android_client_info": {
           "package_name": "antuere.data"
         }
       },
       "oauth_client": [
         {
-          "client_id": "506067010164-0si791b3p8628ac0esh7g9n5segi8haa.apps.googleusercontent.com",
+          "client_id": "506067010164-a5t0q4r7f1q9cfq7m3amooj68a6th7oc.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "antuere.data",
-            "certificate_hash": "0208b618bf49af76f188c06fdb2b41506f3e52a1"
+            "certificate_hash": "78e776671ffa2f6cfbf26c69bbc1b77e97313c42"
           }
         },
         {
-          "client_id": "506067010164-2vtvbo2crlrtnd1mrup4kvpm3n2i92fu.apps.googleusercontent.com",
+          "client_id": "506067010164-flgtkolfftmpjcnnbm71sgdam469ghf9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "antuere.data",
+            "certificate_hash": "f041fe94a403537cda07f8f020ea96344e288718"
+          }
+        },
+        {
+          "client_id": "506067010164-ho193qs3kgaqgfoen36qa7muv8ficcpq.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "antuere.data",
@@ -31,11 +39,11 @@
           }
         },
         {
-          "client_id": "506067010164-7ts7t5n1cs4nn6mu50140ljd60kl8d4j.apps.googleusercontent.com",
+          "client_id": "506067010164-oqujka90439cmm2bosdff9rkc9fmpaop.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "antuere.data",
-            "certificate_hash": "f041fe94a403537cda07f8f020ea96344e288718"
+            "certificate_hash": "0208b618bf49af76f188c06fdb2b41506f3e52a1"
           }
         },
         {

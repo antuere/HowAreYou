@@ -8,7 +8,6 @@ import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import antuere.domain.dto.helplines.Helpline
-import timber.log.Timber
 
 @Composable
 fun HelplinesColumn(
@@ -19,8 +18,6 @@ fun HelplinesColumn(
     onClickWebsite: (String) -> Unit,
     onClickItem: (Int) -> Unit,
 ) {
-    Timber.i("Recompose error : we in HelplinesColumn")
-
     LazyColumn(
         modifier = modifier,
         state = lazyListState,

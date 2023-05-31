@@ -1,7 +1,7 @@
 <resources>
     <!-- Categories names -->
     <string name="current_times">Current times tips</string>
-    <string name="you_self">Get you self tips</string>
+    <string name="you_self">Personal growth</string>
     <string name="family">Family tips</string>
     <string name="relationship">Relationship tips</string>
     <string name="friends">Friends tips</string>
@@ -38,12 +38,12 @@
     <string name="mental_tip_title_friends_3">Treasure</string>
 
     <!-- Mental tips desc -->
-    <string name="mental_tip_current_time_0">" When events happen that destroy the conditional norm, it is impossible not to think about them, questions arise that have no answers. Also, the set of needs and habits changes, the attitude to money, free time and everything else - this is normal."</string>
+    <string name="mental_tip_current_time_0">When events happen that destroy the conditional norm, it is impossible not to think about them, questions arise that have no answers. Also, the set of needs and habits changes, the attitude to money, free time and everything else - this is normal.</string>
     <string name="mental_tip_current_time_1">"Some people are inclined to some point of view, just to calm down. For example, they are waiting for everything to end sooner in any way — not because they wish evil to someone, but so that they can return to the previous regime. Some people may have frightening thoughts outside of their conscious desire.  "</string>
     <string name="mental_tip_current_time_2">"At this time, it is important to recognize that now everything is not the way we are used to, which means that we cannot expect the same behavior from ourselves and others. If we accept the fact that changes are taking place, we may be able to decide what to do next. "</string>
     <string name="mental_tip_current_time_3">Here we must admit that not everything is under our control: there are things that we cannot control.It is better to focus on what we can control, while it is important not to be too strict with ourselves. That is, to understand your condition and sometimes allow yourself to forget or lose something, even let some things go on without our participation.</string>
-    <string name="mental_tip_current_time_4">"Anxiety depletes the resources needed for the effective operation of memory, and leads to the fact that a person overly concentrates on mistakes.When we allow ourselves to make mistakes and observe our feelings, we can study our reaction and draw conclusions. Including understanding that mistakes don't automatically make us bad.   "</string>
-    <string name="mental_tip_current_time_5">"In difficult times, panic attacks, severe fear, even panic attacks appear or increase.You need to allow yourself to live the panic without doing anything with it, just watching.You can't die from a panic attack, it doesn't cause physical harm. However, you can start to be afraid of the panic itself, which will only worsen the situation "</string>
+    <string name="mental_tip_current_time_4">"Anxiety depletes the resources needed for the effective operation of memory, and leads to the fact that a person overly concentrates on mistakes. When we allow ourselves to make mistakes and observe our feelings, we can study our reaction and draw conclusions. Including understanding that mistakes don't automatically make us bad.   "</string>
+    <string name="mental_tip_current_time_5">"In difficult times severe fear, even panic attacks appear or increase. You need to allow yourself to live the panic without doing anything with it, just watching. You can't die from a panic attack, it doesn't cause physical harm. However, you can start to be afraid of the panic itself, which will only worsen the situation "</string>
 
     <string name="mental_tip_youself_0">"Sleep is the most important factor affecting a person's vital activity. Without it, no one can not only feel good, but also think soberly. Therefore, try to get enough sleep and start solving difficult tasks only when you are rested.   "</string>
     <string name="mental_tip_youself_1">"Do not accumulate resentments and negative emotions in yourself. It is not necessary to deliberately tighten your black stripe, revel in your suffering. Try to put it all in the past as soon as possible.  "</string>
@@ -63,8 +63,8 @@
     <string name="mental_tip_relationship_4">Manipulative relationships lack harmony. They lead to conflicts within the family and to abuse, and ultimately give nothing but pain and frustration.</string>
     <string name="mental_tip_relationship_5">In a healthy relationship, there is no place for self-affirmation at someone else\'s expense. Determine who you are — a tyrant or a victim, and work out your behavior with a therapist.</string>
 
-    <string name="mental_tip_friends_0">"We grow thanks to our good and bad life experiences. And we are grateful when in difficult moments of our life there is someone who is ready to support us.It is not always easy to cope with difficult life moments that arise in relationships between friends. However, if you are able to go through these trials, your friendship will become stronger and deeper. Don't give up on your friends and their support!  "</string>
-    <string name="mental_tip_friends_1">"Being honest to the end is one of the hardest parts of the process called friendship. People do not always want to hear the truth about themselves or their actions. But this is exactly what you should expect from a real friend.It is necessary to call a spade a spade – even if it is difficult. Because it is not so important how exactly your friend will react at the moment – but if he is a real friend, then such a person should appreciate the fact that you are honest with him    "</string>
+    <string name="mental_tip_friends_0">We grow thanks to our good and bad life experiences. And we are grateful when in difficult moments of our life there is someone who is ready to support us.It is not always easy to cope with difficult life moments that arise in relationships between friends. However, if you are able to go through these trials, your friendship will become stronger and deeper. Don\'t give up on your friends and their support!</string>
+    <string name="mental_tip_friends_1">"Being honest to the end is one of the hardest parts of the process called friendship. People do not always want to hear the truth about themselves or their actions. But this is exactly what you should expect from a real friend.It is necessary to call a spade a spade – even if it is difficult. Because it is not so important how exactly your friend will react at the moment – but if he is a real friend, then such a person should appreciate the fact that you are honest with him   "</string>
     <string name="mental_tip_friends_2">"There is no doubt that the best relationships are built on mutual interest. However, being a good friend means respecting the boundary where your mutual interests end. To maintain friendly relations, it is necessary to learn to recognize this boundary in time. "</string>
     <string name="mental_tip_friends_3">"It doesn't matter how long you've been friends. It also doesn't matter how strong you think your friendship is. You should never take such a relationship for granted, which you got absolutely for nothing. Do not allow yourself to underestimate friendship, because it is a real value and your wealth that should be cherished.  "</string>
 
@@ -79,19 +79,19 @@
     <string name="helpline_usa_0">988 Suicide &amp; Crisis Lifeline</string>
     <string name="helpline_usa_1">Crisis Text Line</string>
     <string name="helpline_usa_2">Love is Respect</string>
-    <string name="helpline_usa_3">TrevorLifeline</string>
+    <string name="helpline_usa_3" translatable="false">TrevorLifeline</string>
     <string name="helpline_usa_4">StrongHearts Native Helpline</string>
     <string name="helpline_usa_5">National Problem Gambling Helpline</string>
     <string name="helpline_usa_6">Alzheimer\'s Association Helpline</string>
     <string name="helpline_usa_7">American Cancer Society</string>
     <string name="helpline_usa_8">The International Helpline</string>
 
-    <string name="helpline_ita_0">Telefono Azzurro</string>
-    <string name="helpline_ita_1">Telefono Amico Italia</string>
-    <string name="helpline_ita_2">Telefono Amico Cevita</string>
+    <string name="helpline_ita_0" translatable="false">Telefono Azzurro</string>
+    <string name="helpline_ita_1" translatable="false">Telefono Amico Italia</string>
+    <string name="helpline_ita_2" translatable="false">Telefono Amico Cevita</string>
     <string name="helpline_ita_3">Anti Violence And Stalking Number</string>
 
-    <string name="helpline_fra_0">SOS Amitie</string>
+    <string name="helpline_fra_0" translatable="false">SOS Amitie</string>
     <string name="helpline_fra_1">3114, Suicide Prevention Number</string>
     <string name="helpline_fra_2">Croix-Rouge ecoute</string>
     <string name="helpline_fra_3">Solidarite Femmes</string>
@@ -122,7 +122,7 @@
 
     <string name="helpline_desc_ita_0">Telefono Azzurro provides 24/7, free, compassionate and confidential support by phone and online chat.\nWe support youth in Italy who may require support with abuse &amp; domestic violence, anxiety, bullying, depression, eating &amp; body image, family issues, gambling, gender &amp; sexual identity, grief &amp; loss, loneliness, parenting, pregnancy &amp; abortion, relationships, school or work issues, self-harm, stress, substance use, suicide, supporting a friend or family member, physical illness, trauma &amp; PTSD.</string>
     <string name="helpline_desc_ita_1">"Telefono Amico Italia gives anyone the opportunity to express their suffering anonymously and confidentially, allowing each individual to recover their history and meaning within society.\nOpenness and confidentiality are guaranteed, safeguarding anonymity.   "</string>
-    <string name="helpline_desc_ita_2">Helpline provided 100% by volunteers.\nWe answer the phone in a completely voluntary way, to be with you at a particular moment. We don\'t want to teach you anything, but we will listen to what you have to say by offering you a space for reflection.\nCall us, you will find a volunteer ready to listen to you, without judgment, presumption or haste.\nAlways, even for you.</string>
+    <string name="helpline_desc_ita_2">Helpline provided 100% by volunteers.\nWe answer the phone in a completely voluntary way, to be with you at a particular moment. We don\'t want to teach you anything, but we will listen to what you have to say by offering you a space for reflection.\nCall us, you will find a volunteer ready to listen to you, without judgment, presumption or haste.</string>
     <string name="helpline_desc_ita_3">We offers 24/7, free and confidential support and information by phone and online chat. We are here to help women, men in Italy who may be experiencing emotional distress related to abuse &amp; domestic violence, relationships, sexual abuse, trauma &amp; PTSD.\nWhen you reach out to us you will talk with one our friendly and supportive counselors who will collaborate with you to find solutions while giving you an empathetic and compassionate ear. They have expertise and understanding in how to help people going through difficulties similar to what you are.\nWe are always open.</string>
 
     <string name="helpline_desc_fra_0">S.O.S Amitié is a listening support service. On phone, as well as in chat and messaging, its volunteer listeners welcome the words of anyone who is going through a difficult period and who feels the need to be heard and listened to in their suffering.\nS.O.S Friendship listening is free, unconditional and without judgment or advice. It offers each caller the opportunity to put their suffering into words. \nIt aims to relieve anxiety, helps to take a step back, to regain confidence in one\'s own resources and to rediscover, for some, the simple taste of living.</string>

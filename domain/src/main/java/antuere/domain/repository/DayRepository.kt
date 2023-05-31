@@ -29,6 +29,8 @@ interface DayRepository {
 
     suspend fun insertRemote(day: Day)
 
+    suspend fun insertLocalDaysToRemote()
+
     suspend fun update(day: Day)
 
     suspend fun refreshRemoteData()

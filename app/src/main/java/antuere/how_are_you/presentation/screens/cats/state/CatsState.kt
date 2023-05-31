@@ -1,10 +1,11 @@
 package antuere.how_are_you.presentation.screens.cats.state
 
+import antuere.domain.dto.ImageSource
+
 data class CatsState(
-    var urlList: List<String> = listOf(
-        "https://source.unsplash.com/random/?cutecats",
-        "https://source.unsplash.com/random/?feline",
-        "https://source.unsplash.com/random/?cat",
-        "https://source.unsplash.com/random/?kitty"
-    )
+    val imageSource: ImageSource = ImageSource.Unsplash,
+    val allImageSources: List<ImageSource> = listOf(ImageSource.Unsplash, ImageSource.LoremFlickr),
+    val isLoading: Boolean = true,
+    val forceRecompositionFlag: Boolean = true,
+    val isShowSourceSelectionDialog: Boolean = false,
 )

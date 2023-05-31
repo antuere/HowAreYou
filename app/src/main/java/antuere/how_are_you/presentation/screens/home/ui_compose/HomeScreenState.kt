@@ -1,8 +1,15 @@
 package antuere.how_are_you.presentation.screens.home.ui_compose
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -12,9 +19,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import antuere.how_are_you.R
 import antuere.how_are_you.presentation.base.ui_compose_components.card.CardWithFab
-import antuere.how_are_you.presentation.base.ui_compose_components.card.CardWithOnClick
+import antuere.how_are_you.presentation.base.ui_compose_components.card.CardWithImage
 import antuere.how_are_you.presentation.base.ui_compose_components.placeholder.FullScreenProgressIndicator
-import antuere.how_are_you.presentation.base.ui_theme.TealMain
 import antuere.how_are_you.presentation.screens.home.state.HomeIntent
 import antuere.how_are_you.presentation.screens.home.state.HomeState
 import antuere.how_are_you.presentation.screens.home.ui_compose.components.CardWithQuote
@@ -51,19 +57,22 @@ fun HomeScreenState(
                         .weight(0.2F),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    CardWithOnClick(
+                    CardWithImage(
+                        imageRes = R.drawable.card_tips,
                         onClick = { onIntent(HomeIntent.MentalTipsClicked) },
-                        cardModifier = Modifier
+                        modifier = Modifier
                             .padding(
                                 top = dimensionResource(id = R.dimen.padding_small_1),
                                 end = dimensionResource(id = R.dimen.padding_small_0)
                             )
                             .weight(0.5F),
-                        titleText = stringResource(id = R.string.mental_tips)
+                        titleText = stringResource(id = R.string.mental_tips),
+                        imageAlignment = Alignment.TopCenter
                     )
-                    CardWithOnClick(
+                    CardWithImage(
+                        imageRes = R.drawable.card_help,
                         onClick = { onIntent(HomeIntent.HelpForYouClicked) },
-                        cardModifier = Modifier
+                        modifier = Modifier
                             .padding(
                                 top = dimensionResource(id = R.dimen.padding_small_1),
                                 start = dimensionResource(id = R.dimen.padding_small_0)
@@ -79,9 +88,10 @@ fun HomeScreenState(
                         .weight(0.2F),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    CardWithOnClick(
+                    CardWithImage(
+                        imageRes = R.drawable.card_favorites,
                         onClick = { onIntent(HomeIntent.FavoritesClicked) },
-                        cardModifier = Modifier
+                        modifier = Modifier
                             .padding(
                                 top = dimensionResource(id = R.dimen.padding_small_1),
                                 end = dimensionResource(id = R.dimen.padding_small_0)
@@ -89,9 +99,10 @@ fun HomeScreenState(
                             .weight(0.5F),
                         titleText = stringResource(id = R.string.favorites),
                     )
-                    CardWithOnClick(
+                    CardWithImage(
+                        imageRes = R.drawable.card_cat_therapy,
                         onClick = { onIntent(HomeIntent.CatsClicked) },
-                        cardModifier = Modifier
+                        modifier = Modifier
                             .padding(
                                 top = dimensionResource(id = R.dimen.padding_small_1),
                                 start = dimensionResource(id = R.dimen.padding_small_0)
@@ -102,7 +113,7 @@ fun HomeScreenState(
                 }
 
                 CardWithFab(
-                    cardModifier = Modifier
+                    modifier = Modifier
                         .fillMaxSize()
                         .weight(0.3F)
                         .padding(top = dimensionResource(id = R.dimen.padding_small_1)),
@@ -115,7 +126,6 @@ fun HomeScreenState(
                     textAlignment = Alignment.TopStart
                 ) {
                     Spacer(modifier = Modifier.weight(1F))
-
                     FloatingActionButton(
                         modifier = Modifier
                             .align(Alignment.End)
@@ -125,11 +135,12 @@ fun HomeScreenState(
                                 end = dimensionResource(id = R.dimen.padding_normal_1)
                             ),
                         onClick = { onIntent(HomeIntent.FabClicked) },
-                        containerColor = TealMain
+                        containerColor = MaterialTheme.colorScheme.primary
                     ) {
                         Icon(
                             painter = painterResource(id = state.fabButtonState.image),
-                            modifier = Modifier.size(24.dp),
+                            modifier = Modifier.size(28.dp),
+                            tint = MaterialTheme.colorScheme.onPrimary,
                             contentDescription = null
                         )
                     }

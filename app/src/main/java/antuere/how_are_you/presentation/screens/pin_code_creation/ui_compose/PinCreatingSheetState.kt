@@ -1,6 +1,5 @@
 package antuere.how_are_you.presentation.screens.pin_code_creation.ui_compose
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -10,7 +9,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import antuere.how_are_you.R
 import antuere.how_are_you.presentation.base.ui_compose_components.pin_code.NumericKeypad
@@ -28,12 +26,6 @@ fun PinCreatingSheetState(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_4)))
-        Image(
-            painter = painterResource(id = R.drawable.ic_horizontal_line),
-            contentDescription = null
-        )
-
-        Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_5)))
 
         Text(text = stringResource(id = R.string.create_a_pin_code))
         Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_5)))

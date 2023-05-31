@@ -1,5 +1,6 @@
 package antuere.how_are_you.presentation.screens.history.state
 
+import androidx.annotation.DrawableRes
 import antuere.domain.dto.Day
 import antuere.domain.dto.ToggleBtnState
 import antuere.how_are_you.R
@@ -12,7 +13,7 @@ sealed interface HistoryState {
         val aspectRatioForItem: Float = 1F,
         val toggleBtnState: ToggleBtnState = ToggleBtnState.CURRENT_MONTH,
         val dateTextPlug: UiText = UiText.StringResource(R.string.loading),
-        val toggleButtons: Map<UiText, ToggleBtnState> = toggleButtonsList
+        val toggleButtons: Map<UiText, ToggleBtnState> = toggleButtonsList,
     ) : HistoryState
 
     sealed interface Empty : HistoryState {
@@ -20,8 +21,9 @@ sealed interface HistoryState {
 
         data class FromToggleGroup(
             val message: UiText,
+            @DrawableRes val calendarImageRes: Int,
             val toggleBtnState: ToggleBtnState,
-            val toggleButtons: Map<UiText, ToggleBtnState> = toggleButtonsList
+            val toggleButtons: Map<UiText, ToggleBtnState> = toggleButtonsList,
         ) : Empty
 
         class FromFilter(val message: UiText) : Empty
@@ -34,13 +36,13 @@ sealed interface HistoryState {
             val toggleBtnState: ToggleBtnState,
             val cellsAmountForGrid: Int,
             val textHeadline: UiText,
-            val toggleButtons: Map<UiText, ToggleBtnState> = toggleButtonsList
+            val toggleButtons: Map<UiText, ToggleBtnState> = toggleButtonsList,
         ) : Loaded()
 
         data class FilterSelected(
             val dayList: List<Day>,
             val cellsAmountForGrid: Int = 3,
-            val textHeadline: UiText
+            val textHeadline: UiText,
         ) : Loaded()
     }
 }

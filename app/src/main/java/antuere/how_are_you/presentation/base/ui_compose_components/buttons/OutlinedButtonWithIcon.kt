@@ -28,25 +28,25 @@ fun OutlinedButtonWithIcon(
                 painter = painterResource(id = iconId),
                 contentDescription = "Localized description",
                 modifier = Modifier.size(ButtonDefaults.IconSize),
-                tint = MaterialTheme.colorScheme.onSecondary
+                tint = MaterialTheme.colorScheme.secondary
             )
             Spacer(Modifier.size(ButtonDefaults.IconSpacing))
             Text(
                 stringResource(id = labelId),
-                color = MaterialTheme.colorScheme.onSecondary
+                color = MaterialTheme.colorScheme.secondary
             )
         } else {
             Spacer(Modifier.size(ButtonDefaults.IconSpacing))
             Text(
                 stringResource(id = labelId),
-                color = MaterialTheme.colorScheme.onSecondary
+                color = MaterialTheme.colorScheme.secondary
             )
             Spacer(Modifier.size(ButtonDefaults.IconSpacing))
             Icon(
                 modifier = Modifier.size(ButtonDefaults.IconSize),
                 painter = painterResource(id = iconId),
                 contentDescription = "Localized description",
-                tint = MaterialTheme.colorScheme.onSecondary
+                tint = MaterialTheme.colorScheme.secondary
             )
         }
 

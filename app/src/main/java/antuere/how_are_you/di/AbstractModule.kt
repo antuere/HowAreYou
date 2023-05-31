@@ -1,7 +1,7 @@
 package antuere.how_are_you.di
 
-import antuere.data.remote.authentication_manager.AuthenticationManagerImpl
-import antuere.data.remote.remote_day_database.FirebaseRealtimeDB
+import antuere.data.network.authentication_manager.AuthenticationManagerImpl
+import antuere.data.network.remote_day_database.FirebaseRealtimeDB
 import antuere.data.repository.*
 import antuere.domain.authentication_manager.AuthenticationManager
 import antuere.domain.remote_db.RemoteDbApi
@@ -49,5 +49,9 @@ abstract class AbstractModule {
     @Binds
     @Singleton
     abstract fun bindRemoteDbApi(firebaseRealtimeDB: FirebaseRealtimeDB): RemoteDbApi
+
+    @Binds
+    @Singleton
+    abstract fun bindImageSourceRepository(imageSourceRepositoryImpl: ImageSourceRepositoryImpl): ImageSourceRepository
 
 }

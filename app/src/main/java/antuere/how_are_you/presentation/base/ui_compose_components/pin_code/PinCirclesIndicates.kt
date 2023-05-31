@@ -3,21 +3,16 @@ package antuere.how_are_you.presentation.base.ui_compose_components.pin_code
 import androidx.compose.foundation.layout.Row
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import antuere.how_are_you.R
-import antuere.how_are_you.presentation.base.ui_theme.DarkGreen
+import antuere.how_are_you.presentation.base.ui_theme.color_dark_green
+import antuere.how_are_you.presentation.base.ui_theme.color_red
 import antuere.how_are_you.presentation.screens.pin_code_creation.PinCirclesState
 import antuere.how_are_you.util.extensions.animateScaleDownOnce
-import antuere.how_are_you.util.extensions.animateScaleOnce
-import antuere.how_are_you.util.extensions.animateScaleUpOnce
 import antuere.how_are_you.util.extensions.shake
-import timber.log.Timber
 
 @Composable
 fun PinCirclesIndicates(pinCodeCirclesState: PinCirclesState) {
-    Timber.i("MVI error test : composed pin indicates")
-
     Row {
         when (pinCodeCirclesState) {
             PinCirclesState.NONE -> {
@@ -29,47 +24,34 @@ fun PinCirclesIndicates(pinCodeCirclesState: PinCirclesState) {
                 }
             }
             PinCirclesState.FIRST -> {
-                ProgressCircle(
-                    drawId = R.drawable.ic_circle_filled,
-                    modifier = Modifier.animateScaleOnce()
-                )
+                ProgressCircleAnimated(drawId = R.drawable.ic_circle_filled)
                 repeat(3) {
                     ProgressCircle(drawId = R.drawable.ic_circle_outlined)
                 }
             }
             PinCirclesState.SECOND -> {
                 ProgressCircle(drawId = R.drawable.ic_circle_filled)
-                ProgressCircle(
-                    drawId = R.drawable.ic_circle_filled,
-                    modifier = Modifier.animateScaleOnce()
-                )
+                ProgressCircleAnimated(drawId = R.drawable.ic_circle_filled)
                 ProgressCircle(drawId = R.drawable.ic_circle_outlined)
                 ProgressCircle(drawId = R.drawable.ic_circle_outlined)
             }
             PinCirclesState.THIRD -> {
                 ProgressCircle(drawId = R.drawable.ic_circle_filled)
                 ProgressCircle(drawId = R.drawable.ic_circle_filled)
-                ProgressCircle(
-                    drawId = R.drawable.ic_circle_filled,
-                    modifier = Modifier.animateScaleOnce()
-                )
+                ProgressCircleAnimated(drawId = R.drawable.ic_circle_filled)
                 ProgressCircle(drawId = R.drawable.ic_circle_outlined)
             }
             PinCirclesState.FOURTH -> {
                 ProgressCircle(drawId = R.drawable.ic_circle_filled)
                 ProgressCircle(drawId = R.drawable.ic_circle_filled)
                 ProgressCircle(drawId = R.drawable.ic_circle_filled)
-                ProgressCircle(
-                    drawId = R.drawable.ic_circle_filled,
-                    modifier = Modifier.animateScaleOnce()
-                )
+                ProgressCircleAnimated(drawId = R.drawable.ic_circle_filled)
             }
             PinCirclesState.WRONG_PIN -> {
                 repeat(4) {
                     ProgressCircle(
                         modifier = Modifier.shake(),
-                        colorFilter = ColorFilter.tint(Color.Red),
-                        alpha = 0.75F,
+                        colorFilter = ColorFilter.tint(color_red),
                         drawId = R.drawable.ic_circle_filled
                     )
                 }
@@ -77,14 +59,12 @@ fun PinCirclesIndicates(pinCodeCirclesState: PinCirclesState) {
 
             PinCirclesState.CORRECT_PIN -> {
                 repeat(4) {
-                    ProgressCircle(
+                    ProgressCircleAnimated(
                         drawId = R.drawable.ic_circle_filled,
-                        colorFilter = ColorFilter.tint(DarkGreen),
-                        modifier = Modifier.animateScaleUpOnce()
+                        colorFilter = ColorFilter.tint(color_dark_green),
                     )
                 }
             }
-
         }
     }
 }

@@ -61,7 +61,7 @@ class HelplinesViewModel @Inject constructor(
 
                 updateStateBlocking {
                     (state as HelplinesState.Loaded).copy(
-                        textFieldValue = UiText.DefaultString(intent.value),
+                        textFieldValue = UiText.String(intent.value),
                         currentFlagId = flagId
                     )
                 }

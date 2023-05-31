@@ -1,7 +1,9 @@
 package antuere.how_are_you.presentation.screens.settings.ui_compose.components
 
 import androidx.annotation.StringRes
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
@@ -11,6 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import antuere.how_are_you.R
@@ -21,7 +24,7 @@ fun SettingItem(
     @StringRes titleId: Int,
     @StringRes descriptionId: Int,
     isChecked: Boolean,
-    onCheckedChange: (Boolean) -> Unit
+    onCheckedChange: (Boolean) -> Unit,
 ) {
     Row(modifier = modifier, verticalAlignment = Alignment.CenterVertically) {
         Column(modifier = Modifier.weight(1F)) {
@@ -33,14 +36,16 @@ fun SettingItem(
                 modifier = Modifier
                     .padding(top = 4.dp),
                 text = stringResource(id = descriptionId),
-                fontSize = dimensionResource(id = R.dimen.textSize_small_0).value.sp,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                lineHeight = dimensionResource(id = R.dimen.textLine_height_default).value.sp,
+                style = MaterialTheme.typography.labelMedium.copy(
+                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.8F),
+                    fontSize = dimensionResource(id = R.dimen.textSize_small_0).value.sp,
+                    fontWeight = FontWeight.Normal
+                )
             )
         }
         Switch(
             modifier = Modifier
-                .padding(start = 8.dp),
+                .padding(start = 12.dp),
             checked = isChecked,
             onCheckedChange = onCheckedChange,
             colors = SwitchDefaults.colors(uncheckedTrackColor = MaterialTheme.colorScheme.onPrimary)

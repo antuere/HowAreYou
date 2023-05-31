@@ -6,11 +6,13 @@ interface RemoteDbApi {
 
     suspend fun getDays(): List<Day>
 
-    suspend fun deleteDay(id : Long)
+    suspend fun deleteDay(id: Long)
 
     suspend fun deleteAllDays()
 
     suspend fun insert(day: Day)
+
+    suspend fun insertDays(days: List<Day>)
 
     suspend fun update(day: Day)
 }

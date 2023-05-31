@@ -6,6 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.hilt.navigation.compose.hiltViewModel
 import antuere.how_are_you.LocalAppState
 import antuere.how_are_you.presentation.base.ui_compose_components.top_bar.AppBarState
@@ -14,16 +15,13 @@ import antuere.how_are_you.presentation.screens.secure_entry.ui_compose.SecureEn
 import antuere.how_are_you.util.extensions.findFragmentActivity
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
-import timber.log.Timber
-
 
 @Composable
 fun SecureEntryScreen(
     onNavigateHomeScreen: () -> Unit,
     viewModel: SecureEntryViewModel = hiltViewModel(),
 ) {
-    Timber.i("MVI error test : enter in secure entry screen")
-
+    val hapticFeedback = LocalHapticFeedback.current
     val appState = LocalAppState.current
     val fragmentActivity = LocalContext.current.findFragmentActivity()
     val context = LocalContext.current
@@ -54,6 +52,9 @@ fun SecureEntryScreen(
             is SecureEntrySideEffect.NavigateToHome -> onNavigateHomeScreen()
             is SecureEntrySideEffect.Snackbar -> {
                 appState.showSnackbar(sideEffect.message.asString(context))
+            }
+            SecureEntrySideEffect.Vibration -> {
+                appState.vibratePhone(hapticFeedback)
             }
         }
     }

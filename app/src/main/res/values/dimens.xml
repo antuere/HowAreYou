@@ -41,13 +41,14 @@
     <dimen name="margin_high_one">72dp</dimen>
     <dimen name="margin_high_two">80dp</dimen>
 
-    <dimen name="textSize_small_0">13sp</dimen>
-    <dimen name="textSize_small_1">15sp</dimen>
-    <dimen name="textSize_normal_0">16sp</dimen>
-    <dimen name="textSize_normal_1">18sp</dimen>
-    <dimen name="textSize_normal_2">20sp</dimen>
-    <dimen name="textSize_big_0">24sp</dimen>
-    <dimen name="textSize_big_1">32sp</dimen>
+    <dimen name="textSize_small_0">13dp</dimen>
+    <dimen name="textSize_small_1">15dp</dimen>
+    <dimen name="textSize_normal_0">16dp</dimen>
+    <dimen name="textSize_normal_1">18dp</dimen>
+    <dimen name="textSize_normal_2">20dp</dimen>
+    <dimen name="textSize_big_0">24dp</dimen>
+    <dimen name="textSize_big_1">26dp</dimen>
+    <dimen name="textSize_big_2">32dp</dimen>
 
     <dimen name="textLine_height_default">16sp</dimen>
 

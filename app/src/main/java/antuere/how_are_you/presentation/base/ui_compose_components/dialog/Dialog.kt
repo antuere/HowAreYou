@@ -1,6 +1,10 @@
 package antuere.how_are_you.presentation.base.ui_compose_components.dialog
 
-import androidx.compose.material3.*
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -11,7 +15,7 @@ import androidx.compose.ui.text.style.TextAlign
 @Composable
 fun Dialog(
     dialog: UIDialog,
-    iconColor: Color = Color.Black,
+    iconColor: Color = MaterialTheme.colorScheme.onBackground,
     closeDialog: () -> Unit,
 ) {
     AlertDialog(
@@ -26,7 +30,7 @@ fun Dialog(
             )
         },
         title = {
-            Text(stringResource(id = dialog.title), fontWeight = FontWeight.Medium)
+            Text(stringResource(id = dialog.title), fontWeight = FontWeight.Bold)
         },
         text = {
             Text(
@@ -60,7 +64,7 @@ fun Dialog(
                 )
             }
         },
-        containerColor = MaterialTheme.colorScheme.onPrimary,
+        containerColor = MaterialTheme.colorScheme.background,
         iconContentColor = iconColor
     )
 }

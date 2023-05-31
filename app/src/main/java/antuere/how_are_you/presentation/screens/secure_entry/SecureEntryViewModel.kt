@@ -6,24 +6,26 @@ import androidx.biometric.BiometricManager
 import androidx.lifecycle.viewModelScope
 import antuere.domain.authentication_manager.AuthenticationManager
 import antuere.domain.repository.DayRepository
+import antuere.domain.repository.ImageSourceRepository
 import antuere.domain.repository.SettingsRepository
 import antuere.domain.util.Constants
 import antuere.how_are_you.R
-import antuere.how_are_you.presentation.base.ui_text.UiText
+import antuere.how_are_you.presentation.base.ViewModelMvi
 import antuere.how_are_you.presentation.base.ui_biometric_dialog.IUIBiometricListener
-import antuere.how_are_you.presentation.screens.pin_code_creation.PinCirclesState
 import antuere.how_are_you.presentation.base.ui_biometric_dialog.UIBiometricDialog
 import antuere.how_are_you.presentation.base.ui_compose_components.dialog.UIDialog
+import antuere.how_are_you.presentation.base.ui_text.UiText
+import antuere.how_are_you.presentation.screens.pin_code_creation.PinCirclesState
 import antuere.how_are_you.presentation.screens.secure_entry.state.SecureEntryIntent
 import antuere.how_are_you.presentation.screens.secure_entry.state.SecureEntrySideEffect
 import antuere.how_are_you.presentation.screens.secure_entry.state.SecureEntryState
-import antuere.how_are_you.presentation.base.ViewModelMvi
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.orbitmvi.orbit.Container
 import org.orbitmvi.orbit.viewmodel.container
 import javax.inject.Inject
@@ -34,20 +36,15 @@ class SecureEntryViewModel @Inject constructor(
     private val dayRepository: DayRepository,
     private val authenticationManager: AuthenticationManager,
     private val uiBiometricDialog: UIBiometricDialog,
+    private val imageSourceRepository: ImageSourceRepository
 ) : ViewModelMvi<SecureEntryState, SecureEntrySideEffect, SecureEntryIntent>() {
 
     override val container: Container<SecureEntryState, SecureEntrySideEffect> =
         container(SecureEntryState())
 
-    private var num1: String? = null
-    private var num2: String? = null
-    private var num3: String? = null
-    private var num4: String? = null
-    private var currentNumbers = mutableListOf<String>()
-
+    private var numbers = mutableListOf<String>()
     private var savedPinCode = Constants.PIN_NOT_SET
     private var currentPinCode = Constants.PIN_NOT_SET
-
     private var wrongPinAnimationJob: Job? = null
 
     init {
@@ -57,7 +54,6 @@ class SecureEntryViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             val isSetBiometricSetting = settingsRepository.getBiomAuthSetting().first()
             savedPinCode = settingsRepository.getPinCode().first()
-            delay(450)
 
             if (isSetBiometricSetting) {
                 sideEffect(SecureEntrySideEffect.BiometricDialog(uiBiometricDialog))
@@ -70,12 +66,18 @@ class SecureEntryViewModel @Inject constructor(
         override fun onBiometricAuthFailed() {}
 
         override fun onBiometricAuthSuccess() {
-            updateState {
-                state.copy(pinCirclesState = PinCirclesState.CORRECT_PIN)
-            }
-            sideEffect(SecureEntrySideEffect.NavigateToHome)
-            viewModelScope.launch(Dispatchers.IO) {
-                settingsRepository.saveBiomAuthSetting(isEnable = true)
+            viewModelScope.launch {
+                updateState { state.copy(pinCirclesState = PinCirclesState.CORRECT_PIN) }
+                delay(280)
+                sideEffect(SecureEntrySideEffect.NavigateToHome)
+                currentPinCode = Constants.PIN_NOT_SET
+                numbers.clear()
+
+                withContext(Dispatchers.IO){
+                    settingsRepository.saveBiomAuthSetting(isEnable = true)
+                    delay(100)
+                    updateState { state.copy(pinCirclesState = PinCirclesState.NONE) }
+                }
             }
         }
 
@@ -94,13 +96,13 @@ class SecureEntryViewModel @Inject constructor(
                     throw IllegalArgumentException("Invalid number: ${intent.number}")
                 }
 
-                currentNumbers.add(intent.number)
-                checkPassword(currentNumbers)
+                numbers.add(intent.number)
+                checkPassword(numbers)
             }
             is SecureEntryIntent.PinStateReset -> {
                 updateState { state.copy(pinCirclesState = PinCirclesState.NONE) }
                 currentPinCode = Constants.PIN_NOT_SET
-                currentNumbers.clear()
+                numbers.clear()
             }
             is SecureEntryIntent.SignOutBtnClicked -> {
                 val dialog = UIDialog(
@@ -124,22 +126,17 @@ class SecureEntryViewModel @Inject constructor(
         wrongPinAnimationJob?.cancel()
         when (list.size) {
             1 -> {
-                num1 = list[0]
                 updateState { state.copy(pinCirclesState = PinCirclesState.FIRST) }
             }
             2 -> {
-                num2 = list[1]
                 updateState { state.copy(pinCirclesState = PinCirclesState.SECOND) }
             }
             3 -> {
-                num3 = list[2]
                 updateState { state.copy(pinCirclesState = PinCirclesState.THIRD) }
             }
             4 -> {
-                num4 = list[3]
                 updateState { state.copy(pinCirclesState = PinCirclesState.FOURTH) }
-                currentPinCode = num1 + num2 + num3 + num4
-
+                currentPinCode = numbers[0] + numbers[1] + numbers[2] + numbers[3]
                 validateEnteredPinCode(currentPinCode)
             }
             else -> throw IllegalArgumentException("Too much list size")
@@ -164,17 +161,21 @@ class SecureEntryViewModel @Inject constructor(
 
     private fun validateEnteredPinCode(pinCode: String) {
         if (pinCode == savedPinCode) {
-            updateState { state.copy(pinCirclesState = PinCirclesState.CORRECT_PIN) }
-            sideEffect(SecureEntrySideEffect.NavigateToHome)
-            updateState { state.copy(pinCirclesState = PinCirclesState.NONE) }
-            currentPinCode = Constants.PIN_NOT_SET
-            currentNumbers.clear()
+            viewModelScope.launch {
+                updateState { state.copy(pinCirclesState = PinCirclesState.CORRECT_PIN) }
+                delay(280)
+                sideEffect(SecureEntrySideEffect.NavigateToHome)
+                updateState { state.copy(pinCirclesState = PinCirclesState.NONE) }
+                currentPinCode = Constants.PIN_NOT_SET
+                numbers.clear()
+            }
         } else {
             wrongPinAnimationJob = viewModelScope.launch {
                 sideEffect(SecureEntrySideEffect.Snackbar(UiText.StringResource(R.string.wrong_pin_code)))
+                sideEffect(SecureEntrySideEffect.Vibration)
                 updateState { state.copy(pinCirclesState = PinCirclesState.WRONG_PIN) }
                 currentPinCode = Constants.PIN_NOT_SET
-                currentNumbers.clear()
+                numbers.clear()
 
                 delay(500)
 
@@ -188,6 +189,7 @@ class SecureEntryViewModel @Inject constructor(
             authenticationManager.signOut()
             dayRepository.deleteAllDaysLocal()
             settingsRepository.resetAllSettings()
+            imageSourceRepository.resetImageSource()
 
             delay(100)
             sideEffect(SecureEntrySideEffect.NavigateToHome)

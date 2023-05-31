@@ -6,8 +6,8 @@ import antuere.domain.dto.Day
 import antuere.domain.repository.DayRepository
 import antuere.domain.util.Constants
 import antuere.how_are_you.R
-import antuere.how_are_you.presentation.base.ui_compose_components.dialog.UIDialog
 import antuere.how_are_you.presentation.base.ViewModelMvi
+import antuere.how_are_you.presentation.base.ui_compose_components.dialog.UIDialog
 import antuere.how_are_you.presentation.screens.detail.state.DetailIntent
 import antuere.how_are_you.presentation.screens.detail.state.DetailSideEffect
 import antuere.how_are_you.presentation.screens.detail.state.DetailState
@@ -17,7 +17,6 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.Container
 import org.orbitmvi.orbit.viewmodel.container
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -41,7 +40,7 @@ class DetailViewModel @Inject constructor(
                 val dialog = UIDialog(
                     title = R.string.dialog_delete_title,
                     desc = R.string.dialog_delete_desc,
-                    icon = R.drawable.ic_delete_black,
+                    icon = R.drawable.ic_delete,
                     positiveButton = UIDialog.UiButton(
                         text = R.string.yes,
                         onClick = {
@@ -53,6 +52,7 @@ class DetailViewModel @Inject constructor(
                 )
                 sideEffect(DetailSideEffect.Dialog(dialog))
             }
+
             DetailIntent.FavoriteBtnClicked -> {
                 sideEffect(DetailSideEffect.AnimateFavoriteBtn)
                 var isFavorite = true
@@ -64,9 +64,7 @@ class DetailViewModel @Inject constructor(
                         R.drawable.ic_baseline_favorite_border
                     }
                 updateState {
-                    state.copy(
-                        favoriteBtnRes = newFabBtnRes
-                    )
+                    state.copy(favoriteBtnRes = newFabBtnRes)
                 }
                 viewModelScope.launch(Dispatchers.IO) {
                     val newDay = Day(
@@ -79,6 +77,53 @@ class DetailViewModel @Inject constructor(
                     dayRepository.update(newDay)
                 }
             }
+
+            DetailIntent.EditModeOn -> {
+                updateState {
+                    state.copy(
+                        isEditMode = true,
+                        dayTextEditable = state.dayText,
+                        daySmileResEditable = state.daySmileRes
+                    )
+                }
+            }
+
+            DetailIntent.EditModeOff -> {
+                sideEffect(DetailSideEffect.ClearFocus)
+                updateState { state.copy(isEditMode = false) }
+            }
+
+            is DetailIntent.DayDescChanged -> updateStateBlocking {
+                state.copy(dayTextEditable = intent.value)
+            }
+
+            DetailIntent.SaveBtnClicked -> {
+                sideEffect(DetailSideEffect.ClearFocus)
+                val isFavorite = state.favoriteBtnRes == R.drawable.ic_baseline_favorite
+                updateState {
+                    state.copy(
+                        dayText = state.dayTextEditable,
+                        daySmileRes = state.daySmileResEditable,
+                        isEditMode = false
+                    )
+                }
+                viewModelScope.launch(Dispatchers.IO) {
+                    val newDay = Day(
+                        dayId = dayId,
+                        imageResId = state.daySmileResEditable,
+                        dayText = state.dayTextEditable,
+                        dateString = state.dateString,
+                        isFavorite = isFavorite
+                    )
+                    dayRepository.update(newDay)
+                }
+            }
+
+            is DetailIntent.SmileResChanged -> {
+                updateState {
+                    state.copy(daySmileResEditable = intent.value)
+                }
+            }
         }
     }
 
@@ -86,7 +131,6 @@ class DetailViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             val day = dayRepository.getDayById(dayId).first()!!
 
-            Timber.i("date error : day id in device ${day.dayId}")
             val favBtnRes = if (day.isFavorite) {
                 R.drawable.ic_baseline_favorite
             } else {

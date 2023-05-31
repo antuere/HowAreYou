@@ -24,5 +24,8 @@ interface AppState {
     fun navigateUp()
 
     @Composable
+    fun DisableBackBtnWhileTransitionAnimate()
+
+    @Composable
     fun SetupAppColors()
 }

@@ -1,6 +1,6 @@
 # Add project specific ProGuard rules here.
 # You can control the set of applied configuration files using the
-# proguardFiles setting in build.gradle.
+# proguardFiles setting in build.gradle.kts.
 #
 # For more details, see
 #   http://developer.android.com/guide/developing/tools/proguard.html
@@ -21,7 +21,8 @@
 #-renamesourcefileattribute SourceFile
 
 -keepattributes Signature
--keep class antuere.data.remote.remote_day_database.entities.DayEntityRemote.** { *; }
--keep class antuere.data.remote.remote_day_database.entities.QuoteEntity.** { *; }
--keepclassmembers class antuere.data.remote.remote_day_database.entities.QuoteEntity.** { *; }
--keepclassmembers class antuere.data.remote.remote_day_database.entities.DayEntityRemote.** { *; }
+-keep class antuere.data.network.remote_day_database.entities.DayEntityRemote.** { *; }
+-keep class antuere.data.network.remote_day_database.entities.QuoteEntity.** { *; }
+-keep class com.google.android.gms.internal.** { *; }
+-keepclassmembers class antuere.data.network.remote_day_database.entities.QuoteEntity.** { *; }
+-keepclassmembers class antuere.data.network.remote_day_database.entities.DayEntityRemote.** { *; }

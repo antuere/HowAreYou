@@ -5,29 +5,31 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.hilt.navigation.compose.hiltViewModel
 import antuere.how_are_you.LocalAppState
 import antuere.how_are_you.R
 import antuere.how_are_you.presentation.base.ui_compose_components.top_bar.AppBarState
+import antuere.how_are_you.presentation.base.ui_text.UiText
 import antuere.how_are_you.presentation.screens.favorites.state.FavoritesSideEffect
 import antuere.how_are_you.presentation.screens.favorites.ui_compose.FavoritesScreenState
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
-import timber.log.Timber
 
 @Composable
 fun FavoritesScreen(
     onNavigateToDetail: (Long) -> Unit,
     viewModel: FavoritesViewModel = hiltViewModel(),
 ) {
-    Timber.i("MVI error test : enter in fav screen")
     val appState = LocalAppState.current
+    val hapticFeedback = LocalHapticFeedback.current
     val viewState by viewModel.collectAsState()
 
+    appState.DisableBackBtnWhileTransitionAnimate()
     LaunchedEffect(true) {
         appState.updateAppBar(
             AppBarState(
-                titleId = R.string.favorites,
+                topBarTitle = UiText.StringResource(R.string.favorites),
                 navigationIcon = Icons.Filled.ArrowBack,
                 onClickNavigationBtn = appState::navigateUp,
                 isVisibleBottomBar = false
@@ -39,6 +41,7 @@ fun FavoritesScreen(
         when (sideEffect) {
             is FavoritesSideEffect.Dialog -> appState.showDialog(sideEffect.uiDialog)
             is FavoritesSideEffect.NavigationToDayDetail -> onNavigateToDetail(sideEffect.dayId)
+            FavoritesSideEffect.Vibration -> appState.vibratePhone(hapticFeedback)
         }
     }
 

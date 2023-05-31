@@ -42,6 +42,7 @@ class SignInEmailViewModel @Inject constructor(
                 sideEffect(SignInEmailSideEffect.NavigateToResetPassword)
             }
             is SignInEmailIntent.SignInBtnClicked -> {
+                sideEffect(SignInEmailSideEffect.ClearFocus)
                 val email = state.email
                 val password = state.password
 
@@ -79,7 +80,7 @@ class SignInEmailViewModel @Inject constructor(
 
         override fun loginFailed(message: String) {
             updateState { state.copy(isShowProgressIndicator = false) }
-            sideEffect(SignInEmailSideEffect.Snackbar(message = UiText.DefaultString(message)))
+            sideEffect(SignInEmailSideEffect.Snackbar(message = UiText.String(message)))
         }
     }
 }

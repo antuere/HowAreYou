@@ -7,10 +7,9 @@ import androidx.datastore.preferences.core.edit
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
-import timber.log.Timber
 
 class BooleanConfiguration(
-    private val key: String,
+    key: String,
     private val default: Boolean,
     dataStore: DataStore<Preferences>
 ) : Configuration<Boolean>(dataStore) {

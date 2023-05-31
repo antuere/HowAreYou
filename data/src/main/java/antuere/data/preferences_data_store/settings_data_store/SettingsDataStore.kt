@@ -4,7 +4,11 @@ import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
-import antuere.data.preferences_data_store.configurations.*
+import antuere.data.preferences_data_store.configurations.BooleanConfiguration
+import antuere.data.preferences_data_store.configurations.Configuration
+import antuere.data.preferences_data_store.configurations.IntConfiguration
+import antuere.data.preferences_data_store.configurations.SettingsConfiguration
+import antuere.data.preferences_data_store.configurations.StringConfiguration
 import antuere.data.preferences_data_store.settings_data_store.entities.SettingsEntity
 import antuere.domain.util.Constants
 
@@ -13,14 +17,30 @@ class SettingsDataStore(context: Context, name: String) {
     private val Context.datastore: DataStore<Preferences> by preferencesDataStore(name)
     private val settingsDataStore: DataStore<Preferences> = context.datastore
 
+
+    val isFirstLaunchConfiguration: Configuration<Boolean> =
+        BooleanConfiguration(
+            key = Constants.SETTINGS_FIRST_LAUNCH_KEY,
+            default = true,
+            dataStore = settingsDataStore
+        )
+
     val nicknameConfiguration: Configuration<String> =
-        StringConfiguration(Constants.USER_NICKNAME_KEY, Constants.USER_NOT_AUTH, settingsDataStore)
+        StringConfiguration(
+            key = Constants.USER_NICKNAME_KEY,
+            default = Constants.USER_NOT_AUTH,
+            dataStore = settingsDataStore
+        )
 
     val pinCodeConfiguration: Configuration<String> =
-        StringConfiguration(Constants.PIN_CODE_SAVED_KEY, Constants.PIN_NOT_SET, settingsDataStore)
+        StringConfiguration(
+            key = Constants.PIN_CODE_SAVED_KEY,
+            default = Constants.PIN_NOT_SET,
+            dataStore = settingsDataStore
+        )
 
     val allSettingsConfiguration: Configuration<SettingsEntity> =
-        SettingsConfiguration(settingsDataStore)
+        SettingsConfiguration(dataStore = settingsDataStore)
 
     val isEnableWorriedDialogConfiguration: Configuration<Boolean> =
         BooleanConfiguration(
@@ -44,5 +64,9 @@ class SettingsDataStore(context: Context, name: String) {
         )
 
     val countryIdConfiguration: Configuration<Int> =
-        IntConfiguration(Constants.SELECTED_COUNTRY_ID, 1, settingsDataStore)
+        IntConfiguration(
+            key = Constants.SELECTED_COUNTRY_ID,
+            default = 1,
+            dataStore = settingsDataStore
+        )
 }

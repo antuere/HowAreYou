@@ -11,11 +11,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.hilt.navigation.compose.hiltViewModel
 import antuere.data.util.GalleryProvider
 import antuere.how_are_you.LocalAppState
 import antuere.how_are_you.R
+import antuere.how_are_you.presentation.base.ui_compose_components.buttons.IconButtonScaleable
 import antuere.how_are_you.presentation.base.ui_compose_components.top_bar.AppBarState
+import antuere.how_are_you.presentation.base.ui_text.UiText
 import antuere.how_are_you.presentation.screens.cats.state.CatsIntent
 import antuere.how_are_you.presentation.screens.cats.state.CatsSideEffect
 import antuere.how_are_you.presentation.screens.cats.ui_compose.CatsScreenState
@@ -23,15 +26,14 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
-import timber.log.Timber
 
 @Composable
 fun CatsScreen(
     viewModel: CatsViewModel = hiltViewModel(),
 ) {
-    Timber.i("MVI error test : enter in catsScreen screen")
     val appState = LocalAppState.current
     val context = LocalContext.current
+    val uriHandler = LocalUriHandler.current
     val hapticFeedback = LocalHapticFeedback.current
     val scope = rememberCoroutineScope()
     val viewState by viewModel.collectAsState()
@@ -43,12 +45,20 @@ fun CatsScreen(
         }
     )
 
+    appState.DisableBackBtnWhileTransitionAnimate()
+
     LaunchedEffect(true) {
         appState.updateAppBar(
             AppBarState(
-                titleId = R.string.cats,
+                topBarTitle = UiText.StringResource(R.string.cats),
                 navigationIcon = Icons.Filled.ArrowBack,
                 onClickNavigationBtn = appState::navigateUp,
+                actions = {
+                    IconButtonScaleable(
+                        onClick = { viewModel.onIntent(CatsIntent.ChooseSourceClicked) },
+                        iconRes = R.drawable.ic_image_source
+                    )
+                },
                 isVisibleBottomBar = false
             )
         )
@@ -65,17 +75,24 @@ fun CatsScreen(
                     )
                 }
             }
+
             is CatsSideEffect.Snackbar -> {
                 appState.showSnackbar(
                     message = sideEffect.message.asString(context),
                     duration = 1000
                 )
             }
+
             CatsSideEffect.RequestPermission -> {
                 writeExternalPermissionLauncher.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
             }
+
             CatsSideEffect.Vibration -> {
                 appState.vibratePhone(hapticFeedback)
+            }
+
+            is CatsSideEffect.NavigateToSourceWebsite -> {
+                uriHandler.openUri(sideEffect.website)
             }
         }
     }

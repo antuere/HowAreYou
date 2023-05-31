@@ -7,7 +7,9 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
@@ -15,20 +17,20 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import antuere.how_are_you.LocalAppState
 import antuere.how_are_you.R
 import antuere.how_are_you.presentation.base.ui_compose_components.top_bar.AppBarState
+import antuere.how_are_you.presentation.base.ui_text.UiText
 import antuere.how_are_you.presentation.screens.helplines.state.HelplinesSideEffect
 import antuere.how_are_you.presentation.screens.helplines.ui_compose.HelplinesScreenState
 import antuere.how_are_you.util.extensions.animateScrollAndCentralize
+import antuere.how_are_you.util.extensions.isScrollInInitialState
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
-import timber.log.Timber
 
 @Composable
 fun HelplinesScreen(
     viewModel: HelplinesViewModel = hiltViewModel(),
 ) {
-    Timber.i("MVI error test : enter in helplines screen, view model id ${viewModel.toString()}")
     val appState = LocalAppState.current
     val context = LocalContext.current
     val uriHandler = LocalUriHandler.current
@@ -36,6 +38,14 @@ fun HelplinesScreen(
     val scope = rememberCoroutineScope()
 
     val viewState by viewModel.collectAsState()
+
+    val isShowShadowAboveList by remember {
+        derivedStateOf {
+            !lazyListState.isScrollInInitialState()
+        }
+    }
+
+    appState.DisableBackBtnWhileTransitionAnimate()
 
     viewModel.collectSideEffect { sideEffect ->
         when (sideEffect) {
@@ -53,7 +63,7 @@ fun HelplinesScreen(
             }
             is HelplinesSideEffect.ScrollToCenterItem -> {
                 scope.launch {
-                    delay(200)
+                    delay(325)
                     lazyListState.animateScrollAndCentralize(sideEffect.itemIndex, this)
                 }
             }
@@ -68,7 +78,7 @@ fun HelplinesScreen(
     LaunchedEffect(true) {
         appState.updateAppBar(
             AppBarState(
-                titleId = R.string.helplines,
+                topBarTitle = UiText.StringResource(R.string.helplines),
                 navigationIcon = Icons.Filled.ArrowBack,
                 onClickNavigationBtn = appState::navigateUp,
                 isVisibleBottomBar = false
@@ -79,6 +89,7 @@ fun HelplinesScreen(
     HelplinesScreenState(
         lazyListState = { lazyListState },
         viewState = { viewState },
-        onIntent = { viewModel.onIntent(it) }
+        onIntent = { viewModel.onIntent(it) },
+        isShowShadow = { isShowShadowAboveList }
     )
 }
