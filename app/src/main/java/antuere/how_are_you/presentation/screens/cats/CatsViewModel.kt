@@ -47,7 +47,7 @@ class CatsViewModel @Inject constructor(
                     catsImageBitmap = intent.bitmap
                     sideEffect(CatsSideEffect.RequestPermission)
                 } else {
-//                    saveImageToGallery(intent.bitmap)
+                    saveImageToGallery(intent.bitmap)
                 }
             }
 
