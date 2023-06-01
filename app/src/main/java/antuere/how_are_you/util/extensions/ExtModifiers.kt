@@ -4,6 +4,7 @@ import androidx.compose.animation.core.*
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.PagerState
+import androidx.compose.foundation.progressSemantics
 import androidx.compose.foundation.relocation.BringIntoViewRequester
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -83,6 +84,95 @@ fun Modifier.bringIntoViewForFocused(
     }
 }
 
+
+fun Modifier.progressBox(
+    progress: Float,
+    color: Color,
+    strokeWidth: Float = 5f,
+): Modifier {
+    return drawWithCache {
+        val width = size.width
+        val height = size.height
+
+        val xStartPoint = width / 2
+        val yStartPoint = height / 2
+
+        val barEndForRight = xStartPoint + (progress * width / 2)
+        val barEndForLeft = xStartPoint - (progress * width / 2)
+        val barEndForTop = yStartPoint + (progress * height / 2)
+        val barEndForBot = yStartPoint - (progress * height / 2)
+
+        onDrawWithContent {
+            drawContent()
+
+            // TOP Progress line draw to right
+            drawLine(
+                color = color,
+                start = Offset(xStartPoint, 0f),
+                end = Offset(barEndForRight, 0f),
+                strokeWidth = strokeWidth
+            )
+
+            // TOP Progress line draw to left
+            drawLine(
+                color = color,
+                start = Offset(xStartPoint, 0f),
+                end = Offset(barEndForLeft, 0f),
+                strokeWidth = strokeWidth
+            )
+
+            // LEFT Progress line draw to top
+            drawLine(
+                color = color,
+                start = Offset(0f, yStartPoint),
+                end = Offset(0f, barEndForTop),
+                strokeWidth = strokeWidth
+            )
+
+            // LEFT Progress line draw to bot
+            drawLine(
+                color = color,
+                start = Offset(0f, yStartPoint),
+                end = Offset(0f, barEndForBot),
+                strokeWidth = strokeWidth
+            )
+
+            // BOT Progress line draw to right
+            drawLine(
+                color = color,
+                start = Offset(xStartPoint, size.height),
+                end = Offset(barEndForRight, size.height),
+                strokeWidth = strokeWidth
+            )
+
+            // BOT Progress line draw to left
+            drawLine(
+                color = color,
+                start = Offset(xStartPoint, size.height),
+                end = Offset(barEndForLeft, size.height),
+                strokeWidth = strokeWidth
+            )
+
+            // RIGHT Progress line draw to top
+            drawLine(
+                color = color,
+                start = Offset(size.width, yStartPoint),
+                end = Offset(size.width, barEndForTop),
+                strokeWidth = strokeWidth
+            )
+
+            // RIGHT Progress line draw to bot
+            drawLine(
+                color = color,
+                start = Offset(size.width, yStartPoint),
+                end = Offset(size.width, barEndForBot),
+                strokeWidth = strokeWidth
+            )
+        }
+    }
+        .progressSemantics(progress)
+}
+
 @OptIn(ExperimentalTextApi::class)
 fun Modifier.borderWithText(
     text: String,
@@ -94,41 +184,40 @@ fun Modifier.borderWithText(
         val textMeasurer = rememberTextMeasurer()
         val context = LocalContext.current
 
-        this
-            .drawWithCache {
-                val textSize = textMeasurer.measure(text, textStyle).size
-                val endTextPoint = dpToPixel(20, context) + textSize.width
-                val path = Path().apply {
-                    moveTo(dpToPixel(12, context), 0f)
-                    lineTo(0f, 0f)
-                    lineTo(0f, size.height)
-                    lineTo(size.width, size.height)
-                    lineTo(size.width, 0f)
-                    lineTo(endTextPoint, 0f)
-                }
-                val stoke = Stroke(
-                    width = dpToPixel(strokeWidth, context),
-                    pathEffect = PathEffect.cornerPathEffect(dpToPixel(8, context))
-                )
-                val textOffset = Offset(x = dpToPixel(16, context), y = -textSize.height / 1.7f)
-
-                onDrawWithContent {
-                    drawContent()
-
-                    drawPath(
-                        path = path,
-                        color = color,
-                        style = stoke
-                    )
-
-                    drawText(
-                        textMeasurer = textMeasurer,
-                        text = text,
-                        style = textStyle,
-                        topLeft = textOffset
-                    )
-                }
+        drawWithCache {
+            val textSize = textMeasurer.measure(text, textStyle).size
+            val endTextPoint = dpToPixel(20, context) + textSize.width
+            val path = Path().apply {
+                moveTo(dpToPixel(12, context), 0f)
+                lineTo(0f, 0f)
+                lineTo(0f, size.height)
+                lineTo(size.width, size.height)
+                lineTo(size.width, 0f)
+                lineTo(endTextPoint, 0f)
             }
+            val stoke = Stroke(
+                width = dpToPixel(strokeWidth, context),
+                pathEffect = PathEffect.cornerPathEffect(dpToPixel(8, context))
+            )
+            val textOffset = Offset(x = dpToPixel(16, context), y = -textSize.height / 1.7f)
+
+            onDrawWithContent {
+                drawContent()
+
+                drawPath(
+                    path = path,
+                    color = color,
+                    style = stoke
+                )
+
+                drawText(
+                    textMeasurer = textMeasurer,
+                    text = text,
+                    style = textStyle,
+                    topLeft = textOffset
+                )
+            }
+        }
             .padding(16.dp)
     },
     inspectorInfo = debugInspectorInfo {
@@ -148,7 +237,7 @@ fun Modifier.shake() = composed(
             )
         )
 
-        this.graphicsLayer {
+        graphicsLayer {
             scaleX = scale
             scaleY = scale
         }
