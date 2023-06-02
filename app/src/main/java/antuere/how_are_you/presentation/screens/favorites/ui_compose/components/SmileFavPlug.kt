@@ -1,4 +1,4 @@
-package antuere.how_are_you.presentation.screens.favorites.ui_compose
+package antuere.how_are_you.presentation.screens.favorites.ui_compose.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Spacer

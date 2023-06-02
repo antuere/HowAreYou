@@ -10,7 +10,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.draw.drawWithCache
-import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.focus.onFocusEvent
 import androidx.compose.ui.geometry.Offset
@@ -33,7 +32,6 @@ import com.valentinilk.shimmer.defaultShimmerTheme
 import com.valentinilk.shimmer.rememberShimmer
 import com.valentinilk.shimmer.shimmer
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.math.absoluteValue
 
@@ -268,40 +266,17 @@ fun Modifier.animateRotation() = composed(
         )
 
         Modifier
-            .rotate(rotation)
-            .scale(scale)
+            .graphicsLayer {
+                rotationZ = rotation
+                scaleX = scale
+                scaleY = scale
+            }
     },
     inspectorInfo = debugInspectorInfo {
         name = "animateMoving"
     }
 )
 
-fun Modifier.animateScaleOnce() = composed(
-    factory = {
-        var isAnimated by remember { mutableStateOf(true) }
-        val scale by animateFloatAsState(
-            targetValue = if (isAnimated) 1.2f else 1f,
-            animationSpec = repeatable(
-                iterations = 1,
-                animation = tween(durationMillis = 125),
-                repeatMode = RepeatMode.Restart
-            ),
-        )
-
-        LaunchedEffect(key1 = isAnimated) {
-            delay(125)
-            isAnimated = false
-        }
-
-        Modifier.graphicsLayer {
-            scaleX = if (isAnimated) scale else 1f
-            scaleY = if (isAnimated) scale else 1f
-        }
-    },
-    inspectorInfo = debugInspectorInfo {
-        name = "animateScaleOnce"
-    }
-)
 
 fun Modifier.animateScaleDownOnce() = composed(
     factory = {
@@ -323,33 +298,6 @@ fun Modifier.animateScaleDownOnce() = composed(
     },
     inspectorInfo = debugInspectorInfo {
         name = "animateScaleDownOnce"
-    }
-)
-
-fun Modifier.animateScaleUpOnce() = composed(
-    factory = {
-        var isAnimated by remember { mutableStateOf(true) }
-        val scale by animateFloatAsState(
-            targetValue = if (isAnimated) 1.2f else 1f,
-            animationSpec = repeatable(
-                iterations = 1,
-                animation = tween(durationMillis = 150),
-                repeatMode = RepeatMode.Reverse
-            ),
-        )
-
-        LaunchedEffect(key1 = isAnimated) {
-            delay(150)
-            isAnimated = false
-        }
-
-        Modifier.graphicsLayer {
-            scaleX = if (isAnimated) scale else 1f
-            scaleY = if (isAnimated) scale else 1f
-        }
-    },
-    inspectorInfo = debugInspectorInfo {
-        name = "animateScaleUpOnce"
     }
 )
 
