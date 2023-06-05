@@ -4,7 +4,7 @@ Android app for tracking your mental state with many useful features
 ## Features
 - Tracking your mood every day
 - An endless flow of cute and soothing cats, with the ability to save photo on the device
-- Mental tips for every day from 5 categories: Current times, Personal growth, Family, Realtioship, Friends
+- Mental tips for every day from 5 categories: Current times, Personal growth, Family, Relationship, Friends
 - Helplines for different countries, it is also possible to write to our specialists in Telegram or by email
 - Every day new motivational quotes
 - Registration via mail or google to save your days on the server
@@ -32,9 +32,9 @@ Android app for tracking your mental state with many useful features
 
 | Jetpack Compose     | Material design |   
 | :------: | :------: |
-| MVI pattern       | Coroutines 
+| Orbit MVI      | Coroutines 
 | Room   | Clean architecture with 3 modules |
-| Retrofit         |Dagger-hilt       
+|  Dagger-hilt     |  Baseline Profile and macrobenchmarks   
 | DataStore   | Accompanist         
 |Firebase auth and real-time database | SplashScreenAPI   |
 | Support predictive back (for the future Android 14) | Support per-app language preferences (Android 13+) 
