@@ -1,7 +1,7 @@
 package antuere.how_are_you.presentation.screens.add_day
 
 
-import androidx.lifecycle.*
+import androidx.lifecycle.viewModelScope
 import antuere.domain.dto.Day
 import antuere.domain.usecases.AddDayUseCase
 import antuere.how_are_you.presentation.base.ViewModelMvi
@@ -28,8 +28,8 @@ class AddDayViewModel @Inject constructor(
                 state.copy(dayDesc = intent.value)
             }
             is AddDayIntent.SmileClicked -> {
-                updateState { state.copy(isEnabledTextField = false) }
                 val day = Day(imageResId = intent.imageResId, dayText = state.dayDesc)
+                updateState { state.copy(isEnabledTextField = false) }
                 viewModelScope.launch(Dispatchers.IO) {
                     addDayUseCase(day)
                 }

@@ -6,7 +6,6 @@ import androidx.compose.foundation.relocation.BringIntoViewRequester
 import androidx.compose.foundation.relocation.bringIntoViewRequester
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -15,6 +14,7 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.input.ImeAction
 import antuere.how_are_you.R
 import antuere.how_are_you.presentation.base.ui_compose_components.buttons.DefaultButton
+import antuere.how_are_you.presentation.base.ui_compose_components.progress_indicator.PopUpProgressIndicator
 import antuere.how_are_you.presentation.base.ui_compose_components.text_field.EmailTextField
 import antuere.how_are_you.presentation.screens.reset_password.state.ResetPasswordIntent
 import antuere.how_are_you.presentation.screens.reset_password.state.ResetPasswordState
@@ -41,7 +41,7 @@ fun ResetPasswordScreenState(
         verticalArrangement = Arrangement.Center
     ) {
         if (viewState().isShowProgressIndicator) {
-            CircularProgressIndicator()
+            PopUpProgressIndicator()
         } else {
             Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_2)))
             ResetPasswordTitleText()
