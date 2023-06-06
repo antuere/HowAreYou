@@ -21,7 +21,7 @@ import antuere.how_are_you.R
 import antuere.how_are_you.presentation.base.ui_compose_components.IconApp
 import antuere.how_are_you.presentation.base.ui_compose_components.buttons.DefaultButton
 import antuere.how_are_you.presentation.base.ui_compose_components.buttons.DefaultTextButton
-import antuere.how_are_you.presentation.base.ui_compose_components.placeholder.FullScreenProgressIndicator
+import antuere.how_are_you.presentation.base.ui_compose_components.progress_indicator.PopUpProgressIndicator
 import antuere.how_are_you.presentation.base.ui_compose_components.text_field.EmailTextField
 import antuere.how_are_you.presentation.base.ui_compose_components.text_field.PasswordTextField
 import antuere.how_are_you.presentation.screens.sign_in_with_email.state.SignInEmailIntent
@@ -42,7 +42,7 @@ fun SignInEmailScreenState(
     }
 
     if (viewState().isShowProgressIndicator) {
-        FullScreenProgressIndicator()
+        PopUpProgressIndicator()
     } else {
         Column(
             modifier = Modifier

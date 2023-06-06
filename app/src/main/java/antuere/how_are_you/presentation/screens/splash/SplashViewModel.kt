@@ -32,12 +32,10 @@ class SplashViewModel @Inject constructor(
         get() = _startScreen
 
     init {
-        viewModelScope.launch {
-            defineStartScreen()
-        }
+        defineStartScreen()
     }
 
-    private suspend fun defineStartScreen() {
+    private fun defineStartScreen() {
         viewModelScope.launch(Dispatchers.IO) {
             val isFirstLaunch = settingsRepository.isFirstLaunch()
 

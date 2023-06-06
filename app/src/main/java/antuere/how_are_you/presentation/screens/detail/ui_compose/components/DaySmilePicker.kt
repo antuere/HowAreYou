@@ -1,4 +1,4 @@
-package antuere.how_are_you.presentation.screens.detail.ui_compose
+package antuere.how_are_you.presentation.screens.detail.ui_compose.components
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image

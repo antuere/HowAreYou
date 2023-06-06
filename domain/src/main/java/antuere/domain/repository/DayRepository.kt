@@ -27,6 +27,8 @@ interface DayRepository {
 
     suspend fun insertLocal(day: Day)
 
+    suspend fun insertLocal(days: List<Day>)
+
     suspend fun insertRemote(day: Day)
 
     suspend fun insertLocalDaysToRemote()

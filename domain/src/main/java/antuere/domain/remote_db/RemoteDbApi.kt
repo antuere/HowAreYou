@@ -12,7 +12,7 @@ interface RemoteDbApi {
 
     suspend fun insert(day: Day)
 
-    suspend fun insertDays(days: List<Day>)
+    suspend fun insert(days: List<Day>)
 
     suspend fun update(day: Day)
 }

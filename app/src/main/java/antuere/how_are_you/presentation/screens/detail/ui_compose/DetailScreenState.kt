@@ -20,6 +20,9 @@ import androidx.compose.ui.unit.sp
 import antuere.how_are_you.R
 import antuere.how_are_you.presentation.base.ui_compose_components.placeholder.FullScreenProgressIndicator
 import antuere.how_are_you.presentation.screens.detail.state.DetailIntent
+import antuere.how_are_you.presentation.screens.detail.ui_compose.components.DayEditTextField
+import antuere.how_are_you.presentation.screens.detail.ui_compose.components.DaySmile
+import antuere.how_are_you.presentation.screens.detail.ui_compose.components.DaySmilePicker
 import antuere.how_are_you.util.extensions.paddingTopBar
 import antuere.how_are_you.util.extensions.toStable
 import kotlinx.collections.immutable.ImmutableList

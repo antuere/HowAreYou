@@ -1,4 +1,4 @@
-package antuere.how_are_you.presentation.screens.detail.ui_compose
+package antuere.how_are_you.presentation.screens.detail.ui_compose.components
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack

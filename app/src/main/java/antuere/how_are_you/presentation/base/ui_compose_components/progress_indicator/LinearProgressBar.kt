@@ -13,7 +13,6 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.unit.dp
-import timber.log.Timber
 
 @Composable
 fun LinearProgressBar(
@@ -23,7 +22,6 @@ fun LinearProgressBar(
     strokeWidth: Float = 5f,
     orientation: LinearProgressBarOrientation = LinearProgressBarOrientation.HORIZONTAL,
 ) {
-    Timber.i("Cats test: enter in linear progress bar")
     when (orientation) {
         LinearProgressBarOrientation.VERTICAL -> {
             Canvas(
@@ -53,7 +51,6 @@ fun LinearProgressBarWrapper(
     orientation: LinearProgressBarOrientation = LinearProgressBarOrientation.HORIZONTAL,
     scale: () -> Float,
 ) {
-    Timber.i("Cats test: enter in wrapper")
     val animatedProgress by animateFloatAsState(
         targetValue = (1 - scale()) * 25,
         animationSpec = tween(600)

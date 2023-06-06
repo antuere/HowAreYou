@@ -1,13 +1,18 @@
 package antuere.how_are_you.presentation.screens.sign_in_methods.ui_compose
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import antuere.how_are_you.R
 import antuere.how_are_you.presentation.base.ui_compose_components.buttons.ButtonWithIcon
-import antuere.how_are_you.presentation.base.ui_compose_components.placeholder.FullScreenProgressIndicator
+import antuere.how_are_you.presentation.base.ui_compose_components.progress_indicator.PopUpProgressIndicator
 import antuere.how_are_you.presentation.screens.sign_in_methods.state.SignInMethodsIntent
 import antuere.how_are_you.presentation.screens.sign_in_methods.state.SignInMethodsState
 import antuere.how_are_you.util.extensions.paddingTopBar
@@ -18,7 +23,7 @@ fun SignInMethodsScreenState(
     onIntent: (SignInMethodsIntent) -> Unit,
 ) {
     if (viewState().isLoading) {
-        FullScreenProgressIndicator()
+        PopUpProgressIndicator()
     } else {
         Column(
             modifier = Modifier

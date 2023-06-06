@@ -9,7 +9,7 @@ import antuere.domain.remote_db.RemoteDbApi
 import antuere.domain.util.TimeUtility.convertToUTC
 import com.google.firebase.database.DatabaseReference
 import kotlinx.coroutines.tasks.await
-import java.util.*
+import java.util.Locale
 import javax.inject.Inject
 
 class FirebaseRealtimeDB @Inject constructor(
@@ -73,7 +73,7 @@ class FirebaseRealtimeDB @Inject constructor(
             .setValue(dayRemote).await()
     }
 
-    override suspend fun insertDays(days: List<Day>) {
+    override suspend fun insert(days: List<Day>) {
         if (!authManager.isHasUser()) return
         val daysNode = daysNode ?: return
         val daysRemote = days.map {

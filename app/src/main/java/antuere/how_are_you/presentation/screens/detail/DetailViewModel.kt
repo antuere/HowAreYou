@@ -25,8 +25,7 @@ class DetailViewModel @Inject constructor(
     state: SavedStateHandle,
 ) : ViewModelMvi<DetailState, DetailSideEffect, DetailIntent>() {
 
-    override val container: Container<DetailState, DetailSideEffect> =
-        container(DetailState())
+    override val container: Container<DetailState, DetailSideEffect> = container(DetailState())
 
     private val dayId = state.get<Long>(Constants.DAY_ID_KEY)!!
 
@@ -129,7 +128,7 @@ class DetailViewModel @Inject constructor(
 
     private fun getDay() {
         viewModelScope.launch(Dispatchers.IO) {
-            val day = dayRepository.getDayById(dayId).first()!!
+            val day = dayRepository.getDayById(dayId).first() ?: return@launch
 
             val favBtnRes = if (day.isFavorite) {
                 R.drawable.ic_baseline_favorite

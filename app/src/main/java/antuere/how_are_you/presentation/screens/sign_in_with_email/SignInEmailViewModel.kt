@@ -73,8 +73,8 @@ class SignInEmailViewModel @Inject constructor(
                 val userNickname = authenticationManager.getUserNickName() ?: "Unknown"
                 settingsRepository.saveUserNickname(userNickname)
 
-                sideEffect(SignInEmailSideEffect.NavigateToSettings)
                 updateState { SignInEmailState() }
+                sideEffect(SignInEmailSideEffect.NavigateToSettings)
             }
         }
 

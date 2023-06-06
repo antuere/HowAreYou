@@ -37,15 +37,15 @@ class SignInMethodsViewModel @Inject constructor(
             SignInMethodsIntent.EmailMethodClicked -> {
                 sideEffect(SignInMethodsSideEffect.NavigateToEmailMethod)
             }
+
             SignInMethodsIntent.GoogleMethodClicked -> {
                 sideEffect(SignInMethodsSideEffect.GoogleSignInDialog(signInClient))
             }
+
             is SignInMethodsIntent.GoogleAccAdded -> {
                 if (intent.task.isSuccessful) {
-                    val account = intent.task.result
-                    if (account != null) {
-                        signInWithGoogle(account)
-                    }
+                    val account = intent.task.result ?: return
+                    signInWithGoogle(account)
                 } else {
                     sideEffect(
                         SignInMethodsSideEffect.Snackbar(
@@ -86,7 +86,7 @@ class SignInMethodsViewModel @Inject constructor(
 
     private fun signInWithGoogle(account: GoogleSignInAccount) {
         val name = account.displayName ?: account.givenName ?: "Google user"
-        val idToken = account.idToken!!
+        val idToken = account.idToken ?: return
 
         authenticationManager.startAuthByGoogle(
             accIdToken = idToken,

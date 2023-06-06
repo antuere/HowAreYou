@@ -121,8 +121,7 @@ class HomeViewModel @Inject constructor(
         val lastFiveDays = dayRepository.getDaysByLimit(5).first()
         delay(500)
 
-        val isNeedShowWorriedDialog =
-            HelperForHome.isShowWarningForSummary(lastFiveDays)
+        val isNeedShowWorriedDialog = HelperForHome.isShowWarningForSummary(lastFiveDays)
 
         if (isNeedShowWorriedDialog && isShowWorriedDialogSetting) {
             val dialog = UIDialog(

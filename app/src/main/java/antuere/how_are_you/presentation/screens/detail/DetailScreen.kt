@@ -12,7 +12,7 @@ import antuere.how_are_you.LocalAppState
 import antuere.how_are_you.presentation.screens.detail.state.DetailIntent
 import antuere.how_are_you.presentation.screens.detail.state.DetailSideEffect
 import antuere.how_are_you.presentation.screens.detail.ui_compose.DetailScreenState
-import antuere.how_are_you.presentation.screens.detail.ui_compose.DetailScreenTopBar
+import antuere.how_are_you.presentation.screens.detail.ui_compose.components.DetailScreenTopBar
 import antuere.how_are_you.util.extensions.toStable
 import kotlinx.collections.immutable.toImmutableList
 import org.orbitmvi.orbit.compose.collectAsState

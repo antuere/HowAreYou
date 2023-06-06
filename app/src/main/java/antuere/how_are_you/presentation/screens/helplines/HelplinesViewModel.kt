@@ -30,7 +30,8 @@ class HelplinesViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             val supportedCountries = helplinesRepository.getSupportedCountries()
             val selectedCountryId = settingsRepository.getSelectedCountryId()
-            val selectedCountry = supportedCountries.find { it.id == selectedCountryId }!!
+            val selectedCountry =
+                supportedCountries.find { it.id == selectedCountryId } ?: return@launch
 
             updateState {
                 HelplinesState.Loaded(supportedCountries, selectedCountry)
@@ -54,6 +55,7 @@ class HelplinesViewModel @Inject constructor(
                     settingsRepository.saveSelectedCountryId(intent.country)
                 }
             }
+
             is HelplinesIntent.CountryFieldChanged -> {
                 val lowerCaseValue = intent.value.lowercase()
                 val foundCountry = intent.countriesMap[lowerCaseValue]
@@ -67,6 +69,7 @@ class HelplinesViewModel @Inject constructor(
                 }
 
             }
+
             HelplinesIntent.CountyMenuClicked -> {
                 val currentState = (state as HelplinesState.Loaded)
                 updateState {
@@ -75,6 +78,7 @@ class HelplinesViewModel @Inject constructor(
                     )
                 }
             }
+
             HelplinesIntent.CountyMenuDismissed -> {
                 val currentState = (state as HelplinesState.Loaded)
                 updateState {
@@ -85,12 +89,15 @@ class HelplinesViewModel @Inject constructor(
                     )
                 }
             }
+
             is HelplinesIntent.HelplineClicked -> {
                 sideEffect(HelplinesSideEffect.ScrollToCenterItem(intent.itemIndex))
             }
+
             is HelplinesIntent.PhoneClicked -> {
                 sideEffect(HelplinesSideEffect.NavigateToDialNumber(intent.phone))
             }
+
             is HelplinesIntent.WebsiteClicked -> {
                 sideEffect(HelplinesSideEffect.NavigateToWebsite(intent.website))
             }

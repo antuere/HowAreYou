@@ -24,7 +24,6 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.Container
 import org.orbitmvi.orbit.viewmodel.container
-import timber.log.Timber
 import javax.inject.Inject
 
 
@@ -43,8 +42,6 @@ class SettingsViewModel @Inject constructor(
     private var isShowDialogSignOut = false
 
     init {
-        Timber.i("Init bug check: init vm settings")
-
         getSettings()
         checkIsHasDayEntity()
         checkBiometricsAvailable()
@@ -174,8 +171,6 @@ class SettingsViewModel @Inject constructor(
                 settingsRepository.getUserNickname(),
                 settingsRepository.getPinCode()
             ) { settings, username, pinCode ->
-
-                
                 updateState {
                     state.copy(
                         isLoading = false,

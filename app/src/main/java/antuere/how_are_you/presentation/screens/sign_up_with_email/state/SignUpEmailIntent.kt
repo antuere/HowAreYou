@@ -5,5 +5,5 @@ sealed interface SignUpEmailIntent {
     data class NicknameChanged(val value: String) : SignUpEmailIntent
     data class ConfirmPasswordChanged(val value: String) : SignUpEmailIntent
     data class PasswordChanged(val value: String) : SignUpEmailIntent
-    object SignInBtnClicked : SignUpEmailIntent
+    object SignUpBtnClicked : SignUpEmailIntent
 }

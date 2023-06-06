@@ -22,7 +22,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import antuere.how_are_you.R
 import antuere.how_are_you.presentation.base.ui_compose_components.IconApp
 import antuere.how_are_you.presentation.base.ui_compose_components.buttons.DefaultButton
-import antuere.how_are_you.presentation.base.ui_compose_components.placeholder.FullScreenProgressIndicator
+import antuere.how_are_you.presentation.base.ui_compose_components.progress_indicator.PopUpProgressIndicator
 import antuere.how_are_you.presentation.base.ui_compose_components.text_field.DefaultTextField
 import antuere.how_are_you.presentation.base.ui_compose_components.text_field.EmailTextField
 import antuere.how_are_you.presentation.base.ui_compose_components.text_field.PasswordTextField
@@ -36,7 +36,7 @@ import antuere.how_are_you.util.extensions.paddingTopBar
 fun SignUpEmailScreenState(
     viewState: () -> SignUpEmailState,
     onIntent: (SignUpEmailIntent) -> Unit,
-    focusManager: FocusManager
+    focusManager: FocusManager,
 ) {
     val scope = rememberCoroutineScope()
     val bringIntoViewRequester = remember {
@@ -44,7 +44,7 @@ fun SignUpEmailScreenState(
     }
 
     if (viewState().isShowProgressIndicator) {
-        FullScreenProgressIndicator()
+        PopUpProgressIndicator()
     } else {
         Column(
             modifier = Modifier
@@ -111,7 +111,7 @@ fun SignUpEmailScreenState(
                         scope = scope
                     ),
                 keyboardActions = KeyboardActions(onDone = {
-                    onIntent(SignUpEmailIntent.SignInBtnClicked)
+                    onIntent(SignUpEmailIntent.SignUpBtnClicked)
                 }),
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
                 labelId = R.string.confirm_password,
@@ -130,7 +130,7 @@ fun SignUpEmailScreenState(
                     .bringIntoViewRequester(bringIntoViewRequester),
                 labelId = R.string.sign_up,
                 onClick = {
-                    onIntent(SignUpEmailIntent.SignInBtnClicked)
+                    onIntent(SignUpEmailIntent.SignUpBtnClicked)
                 },
             )
             Spacer(modifier = Modifier.weight(1F))
