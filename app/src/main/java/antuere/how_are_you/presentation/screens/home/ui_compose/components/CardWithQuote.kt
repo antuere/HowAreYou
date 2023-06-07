@@ -66,9 +66,8 @@ fun CardWithQuote(
                 contentDescription = "Quote icon",
                 tint = Color.Unspecified
             )
-
+            Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.spacer_height_2)))
             Text(
-                modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_normal_0)),
                 text = titleText,
                 fontSize = dimensionResource(id = R.dimen.textSize_normal_1).value.fixedSize,
                 fontWeight = FontWeight.Bold,

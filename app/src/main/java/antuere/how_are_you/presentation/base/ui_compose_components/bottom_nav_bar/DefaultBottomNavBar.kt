@@ -18,70 +18,67 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hierarchy
-import androidx.navigation.compose.currentBackStackEntryAsState
 import antuere.how_are_you.presentation.base.navigation.BottomDestinations
 
 
 @Composable
-fun DefaultBottomNavBar(navController: NavController, isVisible: Boolean) {
-    if (isVisible) {
-        val navBackStackEntry by navController.currentBackStackEntryAsState()
-        val currentDestination = navBackStackEntry?.destination
+fun DefaultBottomNavBar(navController: NavController) {
+    val navBackStackEntry = navController.currentBackStackEntry
+    val currentDestination = navBackStackEntry?.destination
 
-        NavigationBar(
-            containerColor = MaterialTheme.colorScheme.surface,
-            tonalElevation = 0.dp
-        ) {
-            BottomDestinations.getDestinations().forEach { dest ->
-                val isSelected =
-                    currentDestination?.hierarchy?.any { it.route == dest.screen.route } == true
-                val interactionSource = remember { MutableInteractionSource() }
-                val isPressed by interactionSource.collectIsPressedAsState()
-                val scaleMenuItem by animateFloatAsState(if (isPressed) 0.95f else 1f)
+    NavigationBar(
+        containerColor = MaterialTheme.colorScheme.surface,
+        tonalElevation = 0.dp
+    ) {
+        BottomDestinations.getDestinations().forEach { dest ->
+            val isSelected =
+                currentDestination?.hierarchy?.any { it.route == dest.screen.route } == true
+            val interactionSource = remember { MutableInteractionSource() }
+            val isPressed by interactionSource.collectIsPressedAsState()
+            val scaleMenuItem by animateFloatAsState(if (isPressed) 0.95f else 1f)
 
-                NavigationBarItem(
-                    modifier = Modifier.graphicsLayer {
-                        scaleY = scaleMenuItem
-                        scaleX = scaleMenuItem
-                    },
-                    interactionSource = interactionSource,
-                    icon = {
-                        Icon(
-                            imageVector = if (isSelected) dest.iconFilled else dest.iconOutline,
-                            contentDescription = null
+            NavigationBarItem(
+                modifier = Modifier.graphicsLayer {
+                    scaleY = scaleMenuItem
+                    scaleX = scaleMenuItem
+                },
+                interactionSource = interactionSource,
+                icon = {
+                    Icon(
+                        imageVector = if (isSelected) dest.iconFilled else dest.iconOutline,
+                        contentDescription = null
+                    )
+                },
+                label = {
+                    Text(
+                        text = dest.title.asString(),
+                        style = if (isSelected) MaterialTheme.typography.labelMedium.copy(
+                            color = MaterialTheme.colorScheme.onSurface,
+                            fontSize = 15.sp,
+                        ) else MaterialTheme.typography.labelMedium.copy(
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            fontSize = 14.sp
                         )
-                    },
-                    label = {
-                        Text(
-                            text = dest.title.asString(),
-                            style = if (isSelected) MaterialTheme.typography.labelMedium.copy(
-                                color = MaterialTheme.colorScheme.onSurface,
-                                fontSize = 15.sp,
-                            ) else MaterialTheme.typography.labelMedium.copy(
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                fontSize = 14.sp
-                            )
-                        )
-                    },
-                    selected = isSelected,
-                    onClick = {
-                        if (!isSelected) {
-                            navController.navigate(dest.screen.route) {
-                                popUpTo(navController.graph.id) {
-                                    saveState = true
-                                }
-                                launchSingleTop = true
-                                restoreState = true
+                    )
+                },
+                selected = isSelected,
+                onClick = {
+                    if (!isSelected) {
+                        navController.navigate(dest.screen.route) {
+                            popUpTo(navController.graph.id) {
+                                saveState = true
                             }
+                            launchSingleTop = true
+                            restoreState = true
                         }
-                    },
-                    colors = NavigationBarItemDefaults.colors(
-                        selectedIconColor = MaterialTheme.colorScheme.onSecondaryContainer,
-                        indicatorColor = MaterialTheme.colorScheme.secondaryContainer,
-                        unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                    ),
-                )
-            }
+                    }
+                },
+                colors = NavigationBarItemDefaults.colors(
+                    selectedIconColor = MaterialTheme.colorScheme.onSecondaryContainer,
+                    indicatorColor = MaterialTheme.colorScheme.secondaryContainer,
+                    unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                ),
+            )
         }
     }
 }

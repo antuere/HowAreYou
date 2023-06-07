@@ -12,132 +12,129 @@ import antuere.how_are_you.presentation.base.ui_text.UiText
 fun DefaultTopBar(
     title: UiText? = null,
     topBarType: TopBarType,
-    isVisible: Boolean,
     navigationIcon: ImageVector? = null,
     navigationOnClick: () -> Unit = {},
     actions: @Composable RowScope.() -> Unit = {},
 ) {
-    if (isVisible) {
-        when (topBarType) {
-            TopBarType.CENTER_ALIGNED -> {
-                CenterAlignedTopAppBar(
-                    navigationIcon = {
-                        navigationIcon?.apply {
-                            IconButton(onClick = { navigationOnClick() }) {
-                                Icon(
-                                    imageVector = this,
-                                    contentDescription = null,
-                                    tint = MaterialTheme.colorScheme.onSurface
-                                )
-                            }
-                        }
-                    },
-                    title = {
-                        title?.apply {
-                            Text(
-                                text = this.asString(),
-                                fontWeight = FontWeight.Bold,
-                                color = MaterialTheme.colorScheme.onSurface,
+    when (topBarType) {
+        TopBarType.CENTER_ALIGNED -> {
+            CenterAlignedTopAppBar(
+                navigationIcon = {
+                    navigationIcon?.apply {
+                        IconButton(onClick = { navigationOnClick() }) {
+                            Icon(
+                                imageVector = this,
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.onSurface
                             )
                         }
-                    },
-                    actions = actions,
-                    colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                        containerColor = MaterialTheme.colorScheme.surface,
-                        actionIconContentColor = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
+                    }
+                },
+                title = {
+                    title?.apply {
+                        Text(
+                            text = this.asString(),
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.onSurface,
+                        )
+                    }
+                },
+                actions = actions,
+                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.surface,
+                    actionIconContentColor = MaterialTheme.colorScheme.onSurfaceVariant
                 )
-            }
+            )
+        }
 
-            TopBarType.SMALL -> {
-                TopAppBar(
-                    navigationIcon = {
-                        navigationIcon?.apply {
-                            IconButton(onClick = { navigationOnClick() }) {
-                                Icon(
-                                    imageVector = this,
-                                    contentDescription = null,
-                                    tint = MaterialTheme.colorScheme.onSurface
-                                )
-                            }
-                        }
-                    },
-                    title = {
-                        title?.apply {
-                            Text(
-                                text = this.asString(),
-                                fontWeight = FontWeight.Bold,
-                                color = MaterialTheme.colorScheme.onSurface,
+        TopBarType.SMALL -> {
+            TopAppBar(
+                navigationIcon = {
+                    navigationIcon?.apply {
+                        IconButton(onClick = { navigationOnClick() }) {
+                            Icon(
+                                imageVector = this,
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.onSurface
                             )
                         }
-                    },
-                    actions = actions,
-                    colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                        containerColor = MaterialTheme.colorScheme.surface,
-                        actionIconContentColor = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
+                    }
+                },
+                title = {
+                    title?.apply {
+                        Text(
+                            text = this.asString(),
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.onSurface,
+                        )
+                    }
+                },
+                actions = actions,
+                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.surface,
+                    actionIconContentColor = MaterialTheme.colorScheme.onSurfaceVariant
                 )
-            }
+            )
+        }
 
-            TopBarType.MEDIUM -> {
-                MediumTopAppBar(
-                    navigationIcon = {
-                        navigationIcon?.apply {
-                            IconButton(onClick = { navigationOnClick() }) {
-                                Icon(
-                                    imageVector = this,
-                                    contentDescription = null,
-                                    tint = MaterialTheme.colorScheme.onSurface
-                                )
-                            }
-                        }
-                    },
-                    title = {
-                        title?.apply {
-                            Text(
-                                text = this.asString(),
-                                fontWeight = FontWeight.Bold,
-                                color = MaterialTheme.colorScheme.onSurface,
+        TopBarType.MEDIUM -> {
+            MediumTopAppBar(
+                navigationIcon = {
+                    navigationIcon?.apply {
+                        IconButton(onClick = { navigationOnClick() }) {
+                            Icon(
+                                imageVector = this,
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.onSurface
                             )
                         }
-                    },
-                    actions = actions,
-                    colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                        containerColor = MaterialTheme.colorScheme.surface,
-                        actionIconContentColor = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
+                    }
+                },
+                title = {
+                    title?.apply {
+                        Text(
+                            text = this.asString(),
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.onSurface,
+                        )
+                    }
+                },
+                actions = actions,
+                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.surface,
+                    actionIconContentColor = MaterialTheme.colorScheme.onSurfaceVariant
                 )
-            }
+            )
+        }
 
-            TopBarType.LARGE -> {
-                LargeTopAppBar(
-                    navigationIcon = {
-                        navigationIcon?.apply {
-                            IconButton(onClick = { navigationOnClick() }) {
-                                Icon(
-                                    imageVector = this,
-                                    contentDescription = null,
-                                    tint = MaterialTheme.colorScheme.onSurface
-                                )
-                            }
-                        }
-                    },
-                    title = {
-                        title?.apply {
-                            Text(
-                                text = this.asString(),
-                                fontWeight = FontWeight.Bold,
-                                color = MaterialTheme.colorScheme.onSurface,
+        TopBarType.LARGE -> {
+            LargeTopAppBar(
+                navigationIcon = {
+                    navigationIcon?.apply {
+                        IconButton(onClick = { navigationOnClick() }) {
+                            Icon(
+                                imageVector = this,
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.onSurface
                             )
                         }
-                    },
-                    actions = actions,
-                    colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                        containerColor = MaterialTheme.colorScheme.surface,
-                        actionIconContentColor = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
+                    }
+                },
+                title = {
+                    title?.apply {
+                        Text(
+                            text = this.asString(),
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.onSurface,
+                        )
+                    }
+                },
+                actions = actions,
+                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.surface,
+                    actionIconContentColor = MaterialTheme.colorScheme.onSurfaceVariant
                 )
-            }
+            )
         }
     }
 }

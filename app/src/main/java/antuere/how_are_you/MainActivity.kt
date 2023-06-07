@@ -108,20 +108,20 @@ class MainActivity : FragmentActivity() {
                 }
             },
             bottomBar = {
-                DefaultBottomNavBar(
-                    navController = navController,
-                    isVisible = appBarState.isVisibleBottomBar
-                )
+                if (appBarState.isVisibleBottomBar) {
+                    DefaultBottomNavBar(navController = navController)
+                }
             },
             topBar = {
-                DefaultTopBar(
-                    title = appBarState.topBarTitle,
-                    topBarType = appBarState.topBarType,
-                    isVisible = appBarState.isVisibleTopBar,
-                    navigationIcon = appBarState.navigationIcon,
-                    navigationOnClick = appBarState.onClickNavigationBtn,
-                    actions = appBarState.actions
-                )
+                if (appBarState.isVisibleTopBar) {
+                    DefaultTopBar(
+                        title = appBarState.topBarTitle,
+                        topBarType = appBarState.topBarType,
+                        navigationIcon = appBarState.navigationIcon,
+                        navigationOnClick = appBarState.onClickNavigationBtn,
+                        actions = appBarState.actions
+                    )
+                }
             }) { innerPadding ->
             CompositionLocalProvider(LocalAppState provides appState) {
                 AnimatedNavHost(
