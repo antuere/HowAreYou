@@ -1,3 +1,6 @@
+import java.util.Properties
+import java.io.FileInputStream
+
 plugins {
     alias(libs.plugins.android.app)
     alias(libs.plugins.kotlin.kapt)
@@ -9,18 +12,20 @@ plugins {
     id(libs.plugins.google.firebase.perf.get().pluginId)
 }
 
+val keystorePropertiesFile = rootProject.file("keystore.properties")
+val keystoreProperties = Properties()
+keystoreProperties.load(FileInputStream(keystorePropertiesFile))
+
 android {
     namespace = "antuere.how_are_you"
     compileSdk = 33
 
     signingConfigs {
-        create("release") {
-//            storeFile  = file("C:\\Users\\AntuE\\AndroidStudioProjects\\HowAreYou\\keyStore\\keyStoreApp.jks")
-            storeFile =
-                file("C:\\Users\\user\\AndroidStudioProjects\\HowAreYou\\keyStoreAppModule.jks")
-            storePassword = "anton1730"
-            keyAlias = "key0"
-            keyPassword = "anton1730"
+        create("release_apk") {
+            keyAlias = keystoreProperties["keyAlias"] as String
+            keyPassword = keystoreProperties["keyPassword"] as String
+            storeFile = file(keystoreProperties["storeFile"] as String)
+            storePassword = keystoreProperties["storePassword"] as String
         }
     }
 
@@ -33,7 +38,7 @@ android {
 
         testInstrumentationRunnerArguments["androidx.benchmark.suppressErrors"] = "EMULATOR"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        signingConfig = signingConfigs.getByName("release")
+        signingConfig = signingConfigs.getByName("release_apk")
 
         vectorDrawables {
             useSupportLibrary = true
