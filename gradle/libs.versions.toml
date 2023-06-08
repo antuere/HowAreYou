@@ -5,20 +5,17 @@ android-test-monitor = "1.6.1"
 benchmark-macro = "1.1.1"
 biometric = "1.2.0-alpha05"
 compose-activity = "1.6.1"
-compose-bom = "2023.05.01"
-compose-material3 = "1.1.0-beta02"
-constraint-layout = "2.1.4"
-core = "1.9.0"
-coroutine-core = "1.6.3"
-coroutine-android = "1.6.4"
+compose-bom = "2023.06.00"
+core = "1.10.1"
+coroutine-core = "1.7.1"
+coroutine-android = "1.7.1"
 data-store = "1.1.0-dev01"
-dagger-hilt = "2.44"
+dagger-hilt = "2.46.1"
 dagger-hilt-navigation = "1.0.0"
 dagger-hilt-compiler = "1.0.0"
-desugar-jdk = "2.0.2"
+desugar-jdk = "2.0.3"
 espresso-core = "3.5.0"
-fragment = "2.5.1"
-firebase-bom = "31.2.2"
+firebase-bom = "32.1.0"
 firebase-crashlytics-plugin = "2.9.4"
 firebase-perf-plugin = "1.4.2"
 google-services = "4.3.15"
@@ -26,23 +23,20 @@ gradle = "8.0.2"
 junit = "4.13.2"
 junit-ext = "1.1.5"
 kotlin-general = "1.8.21"
-kotlin-compiler-ext = "1.3.2"
 kotlin-immutable-collections = "0.3.5"
-landscapist-bom = "2.1.2"
+landscapist-bom = "2.2.1"
 leak-canary = "2.9.1"
 legacy-support = "1.0.0"
-lifecycle = "2.6.0-rc01"
-lifecycle-extensions = "2.2.0"
+lifecycle = "2.6.1"
 material = "1.8.0"
-navigation = "2.5.3"
+navigation = "2.6.0"
 navigation-safeargs = "2.5.2"
 orbitMvi = "6.0.0"
-play-services-auth = "20.4.1"
-profile-installer = "1.3.0"
-retrofit = "2.9.0"
+play-services-auth = "20.5.0"
+profile-installer = "1.3.1"
 room = "2.5.1"
-splash-screen = "1.0.0"
-shimmer = "1.0.3"
+splash-screen = "1.0.1"
+shimmer = "1.0.5"
 textFlow = "1.1.0"
 timber = "5.0.1"
 uiautomator = "2.2.0"
@@ -51,19 +45,15 @@ uiautomator = "2.2.0"
 # Gradle
 android-gradle = { module = "com.android.tools.build:gradle", version.ref = "gradle" }
 kotlin-gradle = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin-general" }
-
 # Core
 kotlin-immutable-collections = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version.ref = "kotlin-immutable-collections" }
 kotlin-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutine-core" }
 kotlin-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutine-android" }
-
 androidx-coreKtx = { module = "androidx.core:core-ktx", version.ref = "core" }
 androidx-legacy = { module = "androidx.legacy:legacy-support-v4", version.ref = "legacy-support" }
 androidx-biometricKtx = { module = "androidx.biometric:biometric-ktx", version.ref = "biometric" }
 androidx-dataStore = { module = "androidx.datastore:datastore-preferences", version.ref = "data-store" }
-
 play-services-auth = { module = "com.google.android.gms:play-services-auth", version.ref = "play-services-auth" }
-
 # UI
 google-android-material = { module = "com.google.android.material:material", version.ref = "material" }
 androidx-splashScreen = { module = "androidx.core:core-splashscreen", version.ref = "splash-screen" }
@@ -72,13 +62,11 @@ landscapist-glide = { module = "com.github.skydoves:landscapist-glide" }
 textFlow = { module = "io.github.oleksandrbalan:textflow", version.ref = "textFlow" }
 landscapist-animation = { module = "com.github.skydoves:landscapist-animation" }
 shimmer = { module = "com.valentinilk.shimmer:compose-shimmer", version.ref = "shimmer" }
-
 # Dagger-Hilt
 google-hilt-android-core = { module = "com.google.dagger:hilt-android", version.ref = "dagger-hilt" }
 google-hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "dagger-hilt" }
 androidx-hilt-compiler = { module = "androidx.hilt:hilt-compiler", version.ref = "dagger-hilt-compiler" }
 androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "dagger-hilt-navigation" }
-
 # Firebase
 google-firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebase-bom" }
 google-firebase-storageKtx = { module = "com.google.firebase:firebase-storage-ktx" }
@@ -87,11 +75,10 @@ google-firebase-authKtx = { module = "com.google.firebase:firebase-auth-ktx" }
 google-firebase-crashlyticsKtx = { module = "com.google.firebase:firebase-crashlytics-ktx" }
 google-firebase-analyticsKtx = { module = "com.google.firebase:firebase-analytics-ktx" }
 google-firebase-perfKtx = { module = "com.google.firebase:firebase-perf-ktx" }
-
 # Compose
 androidx-compose-bom = { module = "androidx.compose:compose-bom", version.ref = "compose-bom" }
 androidx-compose-ui-graphics = { module = "androidx.compose.ui:ui-graphics" }
-androidx-compose-material3 = { module = "androidx.compose.material3:material3"}
+androidx-compose-material3 = { module = "androidx.compose.material3:material3" }
 androidx-compose-material3-window = { module = "androidx.compose.material3:material3-window-size-class" }
 androidx-compose-material = { module = "androidx.compose.material:material" }
 androidx-compose-material-icons-core = { module = "androidx.compose.material:material-icons-core" }
@@ -103,26 +90,21 @@ androidx-compose-ui-test-junut4 = { module = "androidx.compose.ui:ui-test-junit4
 androidx-compose-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest" }
 androidx-compose-runtime-livedata = { module = "androidx.compose.runtime:runtime-livedata" }
 androidx-compose-activity = { module = "androidx.activity:activity-compose", version.ref = "compose-activity" }
-
 # Navigation
 androidx-navigation-fragment = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "navigation" }
 androidx-navigation-ui-ktx = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "navigation" }
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigation" }
-
 # Accompanist
 google-accompanist-navigation-anim = { module = "com.google.accompanist:accompanist-navigation-animation", version.ref = "accompanist" }
 google-accompanist-pager-indicators = { module = "com.google.accompanist:accompanist-pager-indicators", version.ref = "accompanist" }
 google-accompanist-system-ui-controller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanist" }
-
 # Room
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
 androidx-roomKtx = { module = "androidx.room:room-ktx", version.ref = "room" }
 androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
-
 # Orbit MVI
 orbit-viewmodel = { module = "org.orbit-mvi:orbit-viewmodel", version.ref = "orbitMvi" }
 orbit-compose = { module = "org.orbit-mvi:orbit-compose", version.ref = "orbitMvi" }
-
 # Test
 test-junit = { module = "junit:junit", version.ref = "junit" }
 androidx-test-junit-ext = { module = "androidx.test.ext:junit", version.ref = "junit-ext" }
@@ -130,14 +112,12 @@ androidx-test-espresso = { module = "androidx.test.espresso:espresso-core", vers
 androidx-test-uiautomator = { module = "androidx.test.uiautomator:uiautomator", version.ref = "uiautomator" }
 androidx-test-monitor = { module = "androidx.test:monitor", version.ref = "android-test-monitor" }
 androidx-benchmark-macro = { module = "androidx.benchmark:benchmark-macro-junit4", version.ref = "benchmark-macro" }
-
 # Lifecycle
 androidx-lifecycle-livedataKtx = { module = "androidx.lifecycle:lifecycle-livedata-ktx", version.ref = "lifecycle" }
 androidx-lifecycle-viewmodelKtx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycle" }
 androidx-lifecycle-runtime-compose = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "lifecycle" }
 androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycle" }
 androidx-lifecycle-viewmodel-savedstate = { module = "androidx.lifecycle:lifecycle-viewmodel-savedstate", version.ref = "lifecycle" }
-
 # Utils
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
 leakCanary = { module = "com.squareup.leakcanary:leakcanary-android", version.ref = "leak-canary" }
@@ -153,7 +133,6 @@ androidx-navigation-safeargs = { id = "androidx.navigation.safeargs", version.re
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin-general" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin-general" }
 kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin-general" }
-kotlin-plugin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin-general" }
 google-dagger-hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "dagger-hilt" }
 google-gms-googleServices = { id = "com.google.gms.google-services", version.ref = "google-services" }
 google-firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebase-crashlytics-plugin" }

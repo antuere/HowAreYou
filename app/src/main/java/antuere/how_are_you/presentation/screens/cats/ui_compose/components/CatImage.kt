@@ -62,19 +62,18 @@ fun CatImage(
             loading = {
                 Image(
                     modifier = Modifier
-                        .fillMaxSize(0.5F)
+                        .fillMaxSize(0.3F)
                         .animateRotation()
                         .align(Alignment.Center),
                     painter = painterResource(id = R.drawable.cat_placeholder),
                     contentDescription = "Cat loading"
                 )
             },
-            success = {
+            success = { _, painter ->
                 val animatedProgress by animateFloatAsState(
                     targetValue = (1 - scale) * 25,
                     animationSpec = tween(500)
                 )
-                val bitmap = it.imageBitmap ?: return@GlideImage
                 Image(
                     modifier = Modifier
                         .progressBox(
@@ -99,7 +98,7 @@ fun CatImage(
                         }
                         .fillMaxSize()
                         .clip(MaterialTheme.shapes.extraLarge),
-                    bitmap = bitmap,
+                    painter = painter,
                     contentDescription = contentDescription,
                     contentScale = ContentScale.Crop
                 )
