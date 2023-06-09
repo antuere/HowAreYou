@@ -35,7 +35,8 @@ Android app for tracking your mental state with many useful features
 | Orbit MVI      | Coroutines 
 | Room   | Clean architecture with 3 modules |
 |  Dagger-hilt     |  Baseline Profile and macrobenchmarks   
-| DataStore   | Accompanist         
+| DataStore   | Accompanist        
+| Biometric   | Landscapist
 |Firebase auth and real-time database | SplashScreenAPI   |
 | Support predictive back (for the future Android 14) | Support per-app language preferences (Android 13+) 
 |  Gradle KTS  | Gradle Version Catalog
