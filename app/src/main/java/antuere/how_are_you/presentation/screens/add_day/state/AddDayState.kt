@@ -9,5 +9,5 @@ data class AddDayState(
         antuere.data.R.drawable.smile_happy,
         antuere.data.R.drawable.smile_very_happy
     ),
-    val isEnabledTextField : Boolean = true
+    val isEnableTextField : Boolean = true
 )

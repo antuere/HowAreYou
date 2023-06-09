@@ -1,4 +1,4 @@
-package antuere.data.local_day_database.entities
+package antuere.domain.dto
 
 enum class SmileImage {
     VERY_HAPPY,

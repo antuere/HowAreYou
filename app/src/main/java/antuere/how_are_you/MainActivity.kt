@@ -53,9 +53,9 @@ class MainActivity : FragmentActivity() {
         })
     }
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         Timber.plant(Timber.DebugTree())
         WindowCompat.setDecorFitsSystemWindows(window, false)
         registerReceiver(dateChangeReceiver, IntentFilter(Intent.ACTION_DATE_CHANGED))
@@ -67,6 +67,7 @@ class MainActivity : FragmentActivity() {
                 }
             }
         }
+
 
         setContent {
             HowAreYouTheme {
@@ -80,9 +81,9 @@ class MainActivity : FragmentActivity() {
 
                 if (!isShowSplash) {
                     RenderUI(
-                        startScreen = { startScreen },
-                        isEnablePin = { isEnablePin },
-                        appState = appState
+                        startScreen = startScreen,
+                        appState = appState,
+                        isEnablePin = { isEnablePin }
                     )
                 }
             }
@@ -92,9 +93,9 @@ class MainActivity : FragmentActivity() {
     @Composable
     @OptIn(ExperimentalAnimationApi::class, ExperimentalComposeUiApi::class)
     private fun RenderUI(
-        startScreen: () -> Screen,
-        isEnablePin: () -> Boolean,
+        startScreen: Screen,
         appState: AppStateImpl,
+        isEnablePin: () -> Boolean,
     ) {
         val appBarState by appState.appBarState
         val navController = appState.navController
@@ -129,7 +130,7 @@ class MainActivity : FragmentActivity() {
                         .systemBarsPadding()
                         .navigationBarsPadding(),
                     navController = navController,
-                    startDestination = startScreen().route
+                    startDestination = startScreen.route
                 ) {
                     initRootNavGraph(
                         navController = navController,

@@ -46,7 +46,6 @@ fun CatImage(
     var imageAsBitmap: Bitmap? = null
     var selected by remember { mutableStateOf(false) }
     val scale by animateFloatAsState(if (selected) 0.96f else 1f)
-
     key(recompositionFlag) {
         GlideImage(
             modifier = modifier,

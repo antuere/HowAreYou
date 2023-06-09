@@ -53,7 +53,7 @@ fun AddDayScreenState(
                 .weight(0.85F),
             value = { viewState().dayDesc },
             onValueChange = { onIntent(AddDayIntent.DayDescChanged(it)) },
-            isEnabled = { viewState().isEnabledTextField }
+            isEnabled = { viewState().isEnableTextField }
         )
         Spacer(modifier = Modifier.weight(0.15F))
 

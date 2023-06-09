@@ -3,6 +3,7 @@ package antuere.data.local_day_database.entities
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import antuere.domain.dto.SmileImage
 import antuere.domain.util.TimeUtility
 
 

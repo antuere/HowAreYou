@@ -13,7 +13,7 @@ import antuere.domain.util.TimeUtility.convertToUTC
 class DayEntityRemoteMapper : DomainMapper<DayEntityRemote, Day> {
 
     override fun mapToDomainModel(model: DayEntityRemote): Day {
-        val imageId = SmileProvider.getSmileStringByString(model.imageName)
+        val imageId = SmileProvider.getSmileResId(model.imageName)
         return Day(
             dayId = model.dayId.convertFromUTC(),
             imageResId = imageId,
@@ -24,7 +24,7 @@ class DayEntityRemoteMapper : DomainMapper<DayEntityRemote, Day> {
     }
 
     override fun mapFromDomainModel(domainModel: Day): DayEntityRemote {
-        val imageName = SmileProvider.getSmileImageById(domainModel.imageResId)
+        val imageName = SmileProvider.getSmileImage(domainModel.imageResId)
         return DayEntityRemote(
             dayId = domainModel.dayId.convertToUTC(),
             imageName = imageName.name,

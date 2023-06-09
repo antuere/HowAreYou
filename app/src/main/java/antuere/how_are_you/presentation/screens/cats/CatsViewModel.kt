@@ -21,7 +21,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CatsViewModel @Inject constructor(
-    private val imageSourceRepository: ImageSourceRepository
+    private val imageSourceRepository: ImageSourceRepository,
 ) :
     ViewModelMvi<CatsState, CatsSideEffect, CatsIntent>() {
 

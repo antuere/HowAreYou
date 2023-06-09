@@ -1,13 +1,14 @@
 package antuere.data.util
 
+import androidx.annotation.DrawableRes
 import antuere.data.R
-import antuere.data.local_day_database.entities.SmileImage
+import antuere.domain.dto.SmileImage
 
 
 object SmileProvider {
 
     // Converter image id to SmileImage
-    fun getSmileImageById(id: Int): SmileImage {
+    fun getSmileImage(@DrawableRes id: Int): SmileImage {
         return when (id) {
             R.drawable.smile_very_happy -> SmileImage.VERY_HAPPY
             R.drawable.smile_happy -> SmileImage.HAPPY
@@ -18,9 +19,9 @@ object SmileProvider {
         }
     }
 
-    // Converter image id to string
-    fun getSmileStringByString(nameSmile: String): Int {
-        return when (nameSmile) {
+    // Converter smileName to drawable id
+    fun getSmileResId(smileName: String): Int {
+        return when (smileName) {
             SmileImage.VERY_HAPPY.name -> R.drawable.smile_very_happy
             SmileImage.HAPPY.name -> R.drawable.smile_happy
             SmileImage.LOW.name -> R.drawable.smile_low
@@ -30,8 +31,8 @@ object SmileProvider {
         }
     }
 
-    // Converter SmileImage to image id
-    fun getResIdSmileBySmileImage(smileImage: SmileImage): Int {
+    // Converter SmileImage to drawable id
+    fun getSmileResId(smileImage: SmileImage): Int {
         return when (smileImage) {
             SmileImage.VERY_HAPPY -> R.drawable.smile_very_happy
             SmileImage.HAPPY -> R.drawable.smile_happy
