@@ -4,73 +4,60 @@ import antuere.domain.dto.Day
 import antuere.domain.util.TimeUtility
 import antuere.how_are_you.R
 import antuere.how_are_you.presentation.base.ui_text.UiText
-import java.util.Calendar
+import java.time.Month
 
 object HelperForHistory {
 
-    private fun getMonthTitle(num: Int): Int {
-        return when (num) {
-            0 -> R.string.january_args
-            1 -> R.string.february_args
-            2 -> R.string.march_args
-            3 -> R.string.april_args
-            4 -> R.string.may_args
-            5 -> R.string.june_args
-            6 -> R.string.july_args
-            7 -> R.string.august_args
-            8 -> R.string.september_args
-            9 -> R.string.october_args
-            10 -> R.string.november_args
-            11 -> R.string.december_args
-            else -> throw IllegalArgumentException("Invalid number of month")
+    private fun getMonthTitle(month: Month): Int {
+        return when (month) {
+            Month.JANUARY -> R.string.january_args
+            Month.FEBRUARY -> R.string.february_args
+            Month.MARCH -> R.string.march_args
+            Month.APRIL -> R.string.april_args
+            Month.MAY -> R.string.may_args
+            Month.JUNE -> R.string.june_args
+            Month.JULY -> R.string.july_args
+            Month.AUGUST -> R.string.august_args
+            Month.SEPTEMBER -> R.string.september_args
+            Month.OCTOBER -> R.string.october_args
+            Month.NOVEMBER -> R.string.november_args
+            Month.DECEMBER -> R.string.december_args
         }
     }
 
-    fun getHeaderForCalendar(numOfMonth : Int) : Int {
-        return when (numOfMonth) {
-            0 -> R.string.january
-            1 -> R.string.february
-            2 -> R.string.march
-            3 -> R.string.april
-            4 -> R.string.may
-            5 -> R.string.june
-            6 -> R.string.july
-            7 -> R.string.august
-            8 -> R.string.september
-            9 -> R.string.october
-            10 -> R.string.november
-            11 -> R.string.december
-            else -> throw IllegalArgumentException("Invalid number of month")
+    fun getHeaderForCalendar(month: Month): Int {
+        return when (month) {
+            Month.JANUARY -> R.string.january
+            Month.FEBRUARY -> R.string.february
+            Month.MARCH -> R.string.march
+            Month.APRIL -> R.string.april
+            Month.MAY -> R.string.may
+            Month.JUNE -> R.string.june
+            Month.JULY -> R.string.july
+            Month.AUGUST -> R.string.august
+            Month.SEPTEMBER -> R.string.september
+            Month.OCTOBER -> R.string.october
+            Month.NOVEMBER -> R.string.november
+            Month.DECEMBER -> R.string.december
         }
     }
 
     fun getHeaderForHistory(dayList: List<Day>): UiText {
+        val firstDay = TimeUtility.parseLongToLocalDate(dayList.first().dayId)
+        val lastDay = TimeUtility.parseLongToLocalDate(dayList.last().dayId)
 
-        val firstDay = TimeUtility.parseLongToCalendar(dayList.first().dayId)
-        val lastDay = TimeUtility.parseLongToCalendar(dayList.last().dayId)
-
-        if (firstDay == lastDay) {
-            val day = firstDay.get(Calendar.DAY_OF_MONTH)
-            val month = getMonthTitle(firstDay.get(Calendar.MONTH))
-            val year = firstDay.get(Calendar.YEAR)
-
-            return UiText.StringResourceWithArg(resId = month, day, year)
+        return if (firstDay == lastDay) {
+            val month = getMonthTitle(firstDay.month)
+            UiText.StringResourceWithArg(resId = month, firstDay.dayOfMonth, firstDay.year)
 
         } else {
-
-            val dayFirst = firstDay.get(Calendar.DAY_OF_MONTH)
-            val monthFirst = getMonthTitle(firstDay.get(Calendar.MONTH))
-            val yearFirst = firstDay.get(Calendar.YEAR)
-
-            val dayLast = lastDay.get(Calendar.DAY_OF_MONTH)
-            val monthLast = getMonthTitle(lastDay.get(Calendar.MONTH))
-            val yearLast = lastDay.get(Calendar.YEAR)
-
-            return UiText.StringResourceConcat(
+            val monthFirst = getMonthTitle(firstDay.month)
+            val monthLast = getMonthTitle(lastDay.month)
+            UiText.StringResourceConcat(
                 resIdFirst = monthLast,
-                firstArgs = arrayOf(dayLast, yearLast),
+                firstArgs = arrayOf(lastDay.dayOfMonth, lastDay.year),
                 resIdSecond = monthFirst,
-                secondArgs = arrayOf(dayFirst, yearFirst),
+                secondArgs = arrayOf(firstDay.dayOfMonth, firstDay.year),
                 divider = "-"
             )
         }
