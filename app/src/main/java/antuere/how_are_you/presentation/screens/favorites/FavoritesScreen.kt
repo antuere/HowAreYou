@@ -12,7 +12,7 @@ import antuere.how_are_you.R
 import antuere.how_are_you.presentation.base.ui_compose_components.top_bar.AppBarState
 import antuere.how_are_you.presentation.base.ui_text.UiText
 import antuere.how_are_you.presentation.screens.favorites.state.FavoritesSideEffect
-import antuere.how_are_you.presentation.screens.favorites.ui_compose.FavoritesScreenState
+import antuere.how_are_you.presentation.screens.favorites.ui_compose.FavoritesScreenContent
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
@@ -45,5 +45,5 @@ fun FavoritesScreen(
         }
     }
 
-    FavoritesScreenState(viewState = { viewState }, onIntent = { viewModel.onIntent(it) })
+    FavoritesScreenContent(viewState = { viewState }, onIntent = { viewModel.onIntent(it) })
 }

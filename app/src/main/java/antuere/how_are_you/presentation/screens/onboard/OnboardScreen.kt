@@ -7,7 +7,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import antuere.how_are_you.LocalAppState
 import antuere.how_are_you.presentation.base.ui_compose_components.top_bar.AppBarState
 import antuere.how_are_you.presentation.screens.onboard.state.OnboardSideEffect
-import antuere.how_are_you.presentation.screens.onboard.ui_compose.OnboardScreenState
+import antuere.how_are_you.presentation.screens.onboard.ui_compose.OnboardScreenContent
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
@@ -34,7 +34,7 @@ fun OnboardScreen(
         }
     }
 
-    OnboardScreenState(
+    OnboardScreenContent(
         viewState = { viewState },
         onIntent = { viewModel.onIntent(it) }
     )

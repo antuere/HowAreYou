@@ -1,5 +1,8 @@
 package antuere.domain.authentication_manager
 
+import antuere.domain.dto.AuthMethod
+import antuere.domain.dto.AuthProvider
+
 interface AuthenticationManager {
 
     val userId: String
@@ -23,6 +26,14 @@ interface AuthenticationManager {
         registerResultListener: RegisterResultListener,
     )
 
+    fun getAuthMethod(): AuthMethod
+
+    fun reAuthenticate(
+        onSuccess: () -> Unit,
+        onFailure: (String?) -> Unit,
+        authProvider: AuthProvider,
+    )
+
     fun signOut()
 
     fun isHasUser(): Boolean
@@ -30,6 +41,8 @@ interface AuthenticationManager {
     fun setUserNicknameOnServer(name: String)
 
     fun resetPassword(email: String, resetPassResultListener: ResetPassResultListener)
+
+    suspend fun deleteAccount(onSuccess: () -> Unit, onFailure: (String?) -> Unit)
 
     suspend fun isHasThisAccountOnServer(): Boolean
 

@@ -9,7 +9,7 @@ import antuere.how_are_you.R
 import antuere.how_are_you.presentation.base.ui_compose_components.top_bar.AppBarState
 import antuere.how_are_you.presentation.base.ui_text.UiText
 import antuere.how_are_you.presentation.screens.home.state.HomeSideEffect
-import antuere.how_are_you.presentation.screens.home.ui_compose.HomeScreenState
+import antuere.how_are_you.presentation.screens.home.ui_compose.HomeScreenContent
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
@@ -54,5 +54,5 @@ fun HomeScreen(
         appState.dismissSnackbar()
     }
 
-    HomeScreenState(viewState = { viewState }, onIntent = { viewModel().onIntent(it) })
+    HomeScreenContent(viewState = { viewState }, onIntent = { viewModel().onIntent(it) })
 }

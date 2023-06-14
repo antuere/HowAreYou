@@ -28,7 +28,7 @@ import antuere.how_are_you.util.extensions.toStable
 import kotlinx.collections.immutable.ImmutableList
 
 @Composable
-fun DetailScreenState(
+fun DetailScreenContent(
     onIntent: (DetailIntent) -> Unit,
     isLoading: Boolean,
     isEditMode: Boolean,

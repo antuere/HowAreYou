@@ -12,7 +12,7 @@ import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.hilt.navigation.compose.hiltViewModel
 import antuere.how_are_you.LocalAppState
 import antuere.how_are_you.presentation.screens.history.state.HistorySideEffect
-import antuere.how_are_you.presentation.screens.history.ui_compose.HistoryScreenState
+import antuere.how_are_you.presentation.screens.history.ui_compose.HistoryScreenContent
 import antuere.how_are_you.util.extensions.isScrollInInitialState
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
@@ -54,7 +54,7 @@ fun HistoryScreen(
         appState.dismissSnackbar()
     }
 
-    HistoryScreenState(
+    HistoryScreenContent(
         viewState = { viewState },
         onIntent = { viewModel.onIntent(it) },
         rotation = { rotation.value },

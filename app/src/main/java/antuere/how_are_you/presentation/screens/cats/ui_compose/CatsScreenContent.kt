@@ -28,7 +28,7 @@ import antuere.how_are_you.util.extensions.paddingTopBar
 import kotlinx.collections.immutable.toImmutableList
 
 @Composable
-fun CatsScreenState(
+fun CatsScreenContent(
     viewState: () -> CatsState,
     onIntent: (CatsIntent) -> Unit,
 ) {

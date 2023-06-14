@@ -17,7 +17,7 @@ import antuere.how_are_you.presentation.screens.favorites.ui_compose.components.
 import antuere.how_are_you.util.extensions.paddingTopBar
 
 @Composable
-fun FavoritesScreenState(
+fun FavoritesScreenContent(
     viewState: () -> FavoritesState,
     onIntent: (FavoritesIntent) -> Unit,
 ) {

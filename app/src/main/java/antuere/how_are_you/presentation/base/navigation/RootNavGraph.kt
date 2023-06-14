@@ -12,6 +12,7 @@ import antuere.how_are_you.presentation.base.ui_animations.materialSharedAxisXIn
 import antuere.how_are_you.presentation.base.ui_animations.materialSharedAxisXOut
 import antuere.how_are_you.presentation.base.ui_animations.materialSharedAxisZIn
 import antuere.how_are_you.presentation.base.ui_animations.materialSharedAxisZOut
+import antuere.how_are_you.presentation.screens.account_settings.AccountSettingsScreen
 import antuere.how_are_you.presentation.screens.add_day.AddDayScreen
 import antuere.how_are_you.presentation.screens.cats.CatsScreen
 import antuere.how_are_you.presentation.screens.detail.DetailScreen
@@ -175,9 +176,20 @@ fun NavGraphBuilder.initRootNavGraph(
                 Screen.History.route, Screen.Home.route -> materialFadeThroughOut()
                 else -> materialSharedAxisZOut(forward = true)
             }
-        }
+        },
     ) {
-        SettingsScreen(onNavigateSignIn = navController.navigateToSignIn())
+        SettingsScreen(
+            onNavigateSignIn = navController.navigateToSignIn(),
+            onNavigateAccountSettings = navController.navigateToAccountSettings()
+        )
+    }
+
+    composable(
+        route = Screen.AccountSettings.route,
+        enterTransition = { materialSharedAxisZIn(forward = true) },
+        exitTransition = { materialSharedAxisZOut(forward = false) }
+    ) {
+        AccountSettingsScreen()
     }
 
     composable(

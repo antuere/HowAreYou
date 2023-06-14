@@ -21,7 +21,7 @@ import antuere.how_are_you.util.extensions.fixedSize
 import antuere.how_are_you.util.extensions.paddingTopBar
 
 @Composable
-fun SecureEntryScreenState(
+fun SecureEntryScreenContent(
     viewState: () -> SecureEntryState,
     onIntent: (SecureEntryIntent) -> Unit,
 ) {

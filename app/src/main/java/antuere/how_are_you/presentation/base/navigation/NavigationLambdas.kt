@@ -72,6 +72,11 @@ fun NavController.navigateToFavorites(): () -> Unit = remember {
 }
 
 @Composable
+fun NavController.navigateToAccountSettings(): () -> Unit = remember {
+    { this.navigate(Screen.AccountSettings.route) }
+}
+
+@Composable
 fun NavController.navigateToHelpForYou(): () -> Unit = remember {
     { this.navigate(Screen.HelpForYou.route) }
 }

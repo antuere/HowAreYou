@@ -19,7 +19,7 @@ import com.google.accompanist.pager.HorizontalPagerIndicator
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun MentalTipsScreenState(
+fun MentalTipsScreenContent(
     viewState: () -> MentalTipsState,
 ) {
     val pagerState = rememberPagerState()

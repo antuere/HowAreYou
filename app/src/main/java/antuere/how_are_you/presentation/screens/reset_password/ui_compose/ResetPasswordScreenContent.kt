@@ -24,7 +24,7 @@ import antuere.how_are_you.util.extensions.paddingTopBar
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun ResetPasswordScreenState(
+fun ResetPasswordScreenContent(
     viewState: () -> ResetPasswordState,
     onIntent: (ResetPasswordIntent) -> Unit,
 ) {
@@ -65,8 +65,7 @@ fun ResetPasswordScreenState(
             Spacer(modifier = Modifier.weight(1F))
 
             DefaultButton(
-                modifier = Modifier
-                    .bringIntoViewRequester(bringIntoViewRequester),
+                modifier = Modifier.bringIntoViewRequester(bringIntoViewRequester),
                 labelId = R.string.reset_password,
                 onClick = {
                     onIntent(ResetPasswordIntent.ResetBtnClicked)

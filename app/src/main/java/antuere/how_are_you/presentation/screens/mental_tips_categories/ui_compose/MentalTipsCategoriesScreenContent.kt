@@ -15,7 +15,7 @@ import antuere.how_are_you.presentation.screens.mental_tips_categories.state.Men
 import antuere.how_are_you.util.extensions.paddingTopBar
 
 @Composable
-fun MentalTipsCategoriesScreenState(
+fun MentalTipsCategoriesScreenContent(
     viewState: () -> MentalTipsCategoriesState,
     onIntent: (MentalTipsCategoriesIntent) -> Unit,
 ) {

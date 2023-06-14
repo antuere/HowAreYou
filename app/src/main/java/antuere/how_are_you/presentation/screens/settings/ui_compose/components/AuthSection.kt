@@ -26,7 +26,7 @@ import antuere.how_are_you.util.extensions.fixedSize
 fun AuthSection(
     userName: String,
     onClickSignIn: () -> Unit,
-    onClickSignOut: () -> Unit,
+    onClickAccountSettings: () -> Unit,
 ) {
     Column(
         horizontalAlignment = Alignment.Start
@@ -61,14 +61,14 @@ fun AuthSection(
                         Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_4)))
 
                         OutlinedButton(
-                            onClick = { onClickSignOut() },
+                            onClick = { onClickAccountSettings() },
                             modifier = Modifier
                                 .padding(
                                     horizontal = dimensionResource(id = R.dimen.padding_normal_2)
                                 )
                                 .align(Alignment.End)
                         ) {
-                            Text(text = stringResource(id = R.string.sign_out))
+                            Text(text = stringResource(id = R.string.account_settings))
                         }
                     }
                 }

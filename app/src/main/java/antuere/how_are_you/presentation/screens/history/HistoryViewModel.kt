@@ -71,7 +71,7 @@ class HistoryViewModel @Inject constructor(
                         onClick = {
                             deleteDay(intent.day.dayId)
                         }),
-                    negativeButton = UIDialog.UiButton(text = R.string.no)
+                    negativeButton = UIDialog.UiButton(text = R.string.dialog_no)
                 )
                 sideEffect(HistorySideEffect.Vibration)
                 sideEffect(HistorySideEffect.Dialog(uiDialog))

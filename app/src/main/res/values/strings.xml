@@ -59,7 +59,9 @@
     <string name="reset_password_plug">Enter email from your account. Tap on button below and an email with instructions for resetting your password will be sent to your email address.</string>
     <string name="email_reset_successful">Successful. Check your mail please</string>
     <string name="empty_fields">Please fill the fields</string>
+    <string name="empty_password">Please enter your password</string>
     <string name="passwords_error">Passwords don\'t match</string>
+    <string name="password_invalid">Wrong password</string>
 
     <!-- Dialogs/SnackBars -->
     <string name="dialog_delete_title">Delete day</string>
@@ -73,12 +75,15 @@
     <string name="dialog_sign_out_positive">Sign out</string>
     <string name="dialog_sign_out_negative">Cancel</string>
     <string name="dialog_delete_local_data_title">Day entries</string>
+    <string name="dialog_reauth_title">Re-authenticate</string>
+    <string name="dialog_reauth_desc">"To delete your account, you will need to reauthenticate on the following screen.\nIf you signed up with a Google account, your HowAreYou account will be immediately deleted after re-authentication.\nThis action is not reversible! "</string>
+    <string name="dialog_reauth_positive">OK</string>
     <string name="dialog_delete_local_data_positive">Yes</string>
     <string name="dialog_delete_local_data_negative">No</string>
     <string name="dialog_delete_local_data_neutral">Stay logged in</string>
 
     <string name="yes">Delete</string>
-    <string name="no">Cancel</string>
+    <string name="dialog_no">Cancel</string>
 
     <!-- Biometric auth dialog-->
     <string name="biometric_auth_title">Log in to the HowAreYou</string>
@@ -103,6 +108,20 @@
     <string name="permission_denied_cats">To save the cat, please grant the permission</string>
     <string name="cats_no_internet">I got lost…</string>
 
+    <!-- Account settings screen -->
+    <string name="delete_data">Delete day entries</string>
+    <string name="dialog_delete_data_title">Delete data</string>
+    <string name="dialog_delete_data_desc">"Confirm data delete. Your recorded days will be deleted on the server and on the device! If you want to delete data only on the server, use delete account. "</string>
+    <string name="dialog_delete_data_positive">Delete records</string>
+    <string name="delete_account">Delete account</string>
+    <string name="sign_out">Sign out</string>
+    <string name="default_error">Something went wrong</string>
+    <string name="delete_data_success">Your entries have been successfully deleted</string>
+    <string name="delete_acc_success">Your account was successfully deleted</string>
+    <string name="reauth_password_title">Your password</string>
+    <string name="reauth_password_desc">"Enter your password and the account with all your data will be deleted.\nThis action is not reversible! "</string>
+    <string name="reauth_password_positive">Delete account</string>
+
 
     <!-- Settings screen -->
     <string name="settings_privacy_text">Privacy</string>
@@ -112,7 +131,7 @@
     <string name="hello_user">Hello,</string>
     <string name="hello_user_plug">Hello, user</string>
     <string name="sign_in">Sign in</string>
-    <string name="sign_out">Sign out</string>
+    <string name="account_settings">Manage account</string>
     <string name="create_a_pin_code">Create PIN code</string>
     <string name="show_worried_dialog_title">Show worried dialog</string>
     <string name="show_worried_dialog_desc">Show dialog if mood drop have been noticed in the last 5 days</string>

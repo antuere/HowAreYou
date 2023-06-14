@@ -26,7 +26,7 @@ import antuere.how_are_you.util.extensions.paddingTopBar
 import kotlinx.collections.immutable.toImmutableList
 
 @Composable
-fun AddDayScreenState(
+fun AddDayScreenContent(
     viewState: () -> AddDayState,
     onIntent: (AddDayIntent) -> Unit,
 ) {

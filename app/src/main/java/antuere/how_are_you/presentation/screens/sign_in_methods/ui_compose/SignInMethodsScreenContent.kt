@@ -18,7 +18,7 @@ import antuere.how_are_you.presentation.screens.sign_in_methods.state.SignInMeth
 import antuere.how_are_you.util.extensions.paddingTopBar
 
 @Composable
-fun SignInMethodsScreenState(
+fun SignInMethodsScreenContent(
     viewState: () -> SignInMethodsState,
     onIntent: (SignInMethodsIntent) -> Unit,
 ) {

@@ -56,13 +56,18 @@ class FirebaseRealtimeDB @Inject constructor(
             .setValue(null).await()
     }
 
-    override suspend fun deleteAllDays() {
-        if (!authManager.isHasUser()) return
-        val query = daysNode?.get()?.await() ?: return
-        if (!query.exists()) return
-        query.children.forEach {
-            it.ref.removeValue()
-        }
+    override suspend fun deleteAllDays(onSuccess: () -> Unit, onFailure: (String?) -> Unit) {
+        if (!authManager.isHasUser()) return onFailure(null)
+        val query = daysNode?.get()?.await() ?: return onFailure(null)
+        if (!query.exists()) return onFailure(null)
+
+        query.ref.setValue(null).addOnCompleteListener {
+            if (it.isSuccessful) {
+                onSuccess()
+            } else {
+                onFailure(it.exception?.message ?: it.toString())
+            }
+        }.await()
     }
 
     override suspend fun insert(day: Day) {

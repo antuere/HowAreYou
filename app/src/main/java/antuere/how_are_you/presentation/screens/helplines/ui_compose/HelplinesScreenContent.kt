@@ -1,7 +1,12 @@
 package antuere.how_are_you.presentation.screens.helplines.ui_compose
 
 import android.os.Build
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -20,7 +25,7 @@ import antuere.how_are_you.util.extensions.paddingTopBar
 import antuere.how_are_you.util.extensions.toStable
 
 @Composable
-fun HelplinesScreenState(
+fun HelplinesScreenContent(
     viewState: () -> HelplinesState,
     lazyListState: () -> LazyListState,
     onIntent: (HelplinesIntent) -> Unit,

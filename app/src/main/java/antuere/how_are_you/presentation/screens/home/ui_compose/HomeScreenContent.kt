@@ -27,7 +27,7 @@ import antuere.how_are_you.presentation.screens.home.ui_compose.components.CardW
 import antuere.how_are_you.util.extensions.paddingBotAndTopBar
 
 @Composable
-fun HomeScreenState(
+fun HomeScreenContent(
     viewState: () -> HomeState,
     onIntent: (HomeIntent) -> Unit,
 ) {

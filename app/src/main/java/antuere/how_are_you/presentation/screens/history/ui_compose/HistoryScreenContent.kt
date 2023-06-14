@@ -32,7 +32,7 @@ import antuere.how_are_you.util.extensions.paddingBotAndTopBar
 
 
 @Composable
-fun HistoryScreenState(
+fun HistoryScreenContent(
     viewState: () -> HistoryState,
     lazyGridState: () -> LazyGridState,
     onIntent: (HistoryIntent) -> Unit,

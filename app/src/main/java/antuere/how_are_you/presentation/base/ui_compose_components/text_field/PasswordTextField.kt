@@ -6,16 +6,21 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.material.icons.outlined.Error
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import timber.log.Timber
 
 @Composable
 fun PasswordTextField(
@@ -25,9 +30,11 @@ fun PasswordTextField(
     keyboardOptions: KeyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
     value: String,
     onValueChange: (String) -> Unit,
+    isError: Boolean = false,
+    errorMessage: String? = null,
 ) {
     var passwordVisible by rememberSaveable { mutableStateOf(false) }
-
+    Timber.i("Acc settings check: enter in password textfield")
     DefaultTextField(
         modifier = modifier,
         value = value,
@@ -36,9 +43,11 @@ fun PasswordTextField(
         keyboardActions = keyboardActions,
         keyboardOptions = keyboardOptions.copy(keyboardType = KeyboardType.Password),
         singleLine = true,
+        isError = isError,
+        errorMessage = errorMessage,
         visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
         trailingIcon = {
-            val image = if (passwordVisible)
+            val passwordIcon = if (passwordVisible)
                 Icons.Filled.Visibility
             else Icons.Filled.VisibilityOff
 
@@ -46,9 +55,9 @@ fun PasswordTextField(
 
             IconButton(onClick = { passwordVisible = passwordVisible.not() }) {
                 Icon(
-                    imageVector = image,
+                    imageVector = if (!isError) passwordIcon else Icons.Outlined.Error,
                     contentDescription = description,
-                    tint = MaterialTheme.colorScheme.secondary
+                    tint = if (!isError) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.error
                 )
             }
         }

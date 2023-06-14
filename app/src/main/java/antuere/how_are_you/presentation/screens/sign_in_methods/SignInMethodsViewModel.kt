@@ -50,7 +50,7 @@ class SignInMethodsViewModel @Inject constructor(
                     sideEffect(
                         SignInMethodsSideEffect.Snackbar(
                             message = UiText.String(
-                                intent.task.exception?.message ?: "Error with google authentication"
+                                intent.task.exception?.message ?: "Error with Google Authentication"
                             )
                         )
                     )

@@ -29,7 +29,7 @@ import antuere.how_are_you.util.extensions.paddingTopBar
 import eu.wewox.textflow.TextFlow
 
 @Composable
-fun HelpForYouScreenState(
+fun HelpForYouScreenContent(
     viewState: () -> HelpForYouState,
     onIntent: (HelpForYouIntent) -> Unit,
 ) {

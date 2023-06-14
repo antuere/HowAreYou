@@ -3,15 +3,11 @@ package antuere.how_are_you.presentation.screens.settings
 import android.content.Intent
 import androidx.biometric.BiometricManager
 import androidx.lifecycle.viewModelScope
-import antuere.domain.authentication_manager.AuthenticationManager
-import antuere.domain.repository.DayRepository
 import antuere.domain.repository.SettingsRepository
-import antuere.domain.repository.ToggleBtnRepository
 import antuere.how_are_you.R
 import antuere.how_are_you.presentation.base.ViewModelMvi
 import antuere.how_are_you.presentation.base.ui_biometric_dialog.IUIBiometricListener
 import antuere.how_are_you.presentation.base.ui_biometric_dialog.UIBiometricDialog
-import antuere.how_are_you.presentation.base.ui_compose_components.dialog.UIDialog
 import antuere.how_are_you.presentation.base.ui_text.UiText
 import antuere.how_are_you.presentation.screens.settings.state.SettingsIntent
 import antuere.how_are_you.presentation.screens.settings.state.SettingsSideEffect
@@ -19,7 +15,6 @@ import antuere.how_are_you.presentation.screens.settings.state.SettingsState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.Container
@@ -29,21 +24,15 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
-    private val dayRepository: DayRepository,
     private val settingsRepository: SettingsRepository,
-    private val toggleBtnRepository: ToggleBtnRepository,
-    private val authenticationManager: AuthenticationManager,
     private val uiBiometricDialog: UIBiometricDialog,
 ) : ViewModelMvi<SettingsState, SettingsSideEffect, SettingsIntent>() {
 
     override val container: Container<SettingsState, SettingsSideEffect> =
         container(SettingsState())
 
-    private var isShowDialogSignOut = false
-
     init {
         getSettings()
-        checkIsHasDayEntity()
         checkBiometricsAvailable()
     }
 
@@ -101,27 +90,8 @@ class SettingsViewModel @Inject constructor(
                 }
             }
             is SettingsIntent.SignInBtnClicked -> sideEffect(SettingsSideEffect.NavigateToSignIn)
-            is SettingsIntent.SignOutBtnClicked -> {
-                if (isShowDialogSignOut) {
-                    val dialog = UIDialog(
-                        title = R.string.dialog_delete_local_data_title,
-                        desc = R.string.dialog_delete_local_data_desc,
-                        icon = R.drawable.ic_delete,
-                        positiveButton = UIDialog.UiButton(
-                            text = R.string.dialog_delete_local_data_positive,
-                            onClick = {
-                                signOut(isSaveDayEntities = true)
-                            }),
-                        negativeButton = UIDialog.UiButton(
-                            text = R.string.dialog_delete_local_data_negative,
-                            onClick = {
-                                signOut(isSaveDayEntities = false)
-                            }),
-                    )
-                    sideEffect(SettingsSideEffect.Dialog(dialog))
-                } else {
-                    signOut(false)
-                }
+            is SettingsIntent.AccountSettingsBtnClicked -> {
+                sideEffect(SettingsSideEffect.NavigateToAccountSettings)
             }
             is SettingsIntent.PinCreationSheetClosed -> {
                 updateState {
@@ -141,26 +111,6 @@ class SettingsViewModel @Inject constructor(
     private fun checkBiometricsAvailable() {
         updateState {
             state.copy(isEnableBiomAuthOnDevice = uiBiometricDialog.deviceHasBiometricHardware)
-        }
-    }
-
-    private fun checkIsHasDayEntity() {
-        viewModelScope.launch(Dispatchers.IO) {
-            dayRepository.getLastDay().collectLatest {
-                isShowDialogSignOut = it != null
-            }
-        }
-    }
-
-
-    private fun signOut(isSaveDayEntities: Boolean) {
-        viewModelScope.launch(Dispatchers.IO) {
-            if (!isSaveDayEntities) {
-                dayRepository.deleteAllDaysLocal()
-            }
-            authenticationManager.signOut()
-            toggleBtnRepository.resetToggleButtonState()
-            settingsRepository.resetUserNickname()
         }
     }
 

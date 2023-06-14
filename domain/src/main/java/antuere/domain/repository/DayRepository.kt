@@ -23,7 +23,7 @@ interface DayRepository {
 
     suspend fun deleteAllDaysLocal()
 
-    suspend fun deleteAllDaysRemote()
+    suspend fun deleteAllDaysRemote(onSuccess: () -> Unit, onFailure: (String?) -> Unit)
 
     suspend fun insertLocal(day: Day)
 

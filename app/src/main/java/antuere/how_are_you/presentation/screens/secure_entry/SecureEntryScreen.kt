@@ -11,7 +11,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import antuere.how_are_you.LocalAppState
 import antuere.how_are_you.presentation.base.ui_compose_components.top_bar.AppBarState
 import antuere.how_are_you.presentation.screens.secure_entry.state.SecureEntrySideEffect
-import antuere.how_are_you.presentation.screens.secure_entry.ui_compose.SecureEntryScreenState
+import antuere.how_are_you.presentation.screens.secure_entry.ui_compose.SecureEntryScreenContent
 import antuere.how_are_you.util.extensions.findFragmentActivity
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
@@ -59,7 +59,7 @@ fun SecureEntryScreen(
         }
     }
 
-    SecureEntryScreenState(
+    SecureEntryScreenContent(
         viewState = { viewState },
         onIntent = { viewModel.onIntent(it) }
     )

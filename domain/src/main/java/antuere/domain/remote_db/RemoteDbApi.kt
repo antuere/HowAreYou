@@ -8,7 +8,7 @@ interface RemoteDbApi {
 
     suspend fun deleteDay(id: Long)
 
-    suspend fun deleteAllDays()
+    suspend fun deleteAllDays(onSuccess: () -> Unit, onFailure: (String?) -> Unit)
 
     suspend fun insert(day: Day)
 

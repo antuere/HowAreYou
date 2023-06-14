@@ -25,7 +25,7 @@ import antuere.how_are_you.util.extensions.paddingBotAndTopBar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SettingsScreenState(
+fun SettingsScreenContent(
     viewState: () -> SettingsState,
     onIntent: (SettingsIntent) -> Unit,
     bottomSheetState: SheetState,
@@ -59,7 +59,7 @@ fun SettingsScreenState(
             AuthSection(
                 userName = viewState().userNickname,
                 onClickSignIn = { onIntent(SettingsIntent.SignInBtnClicked) },
-                onClickSignOut = { onIntent(SettingsIntent.SignOutBtnClicked) },
+                onClickAccountSettings = { onIntent(SettingsIntent.AccountSettingsBtnClicked) },
             )
             GeneralSettings(
                 isCheckedWorriedDialog = viewState().isCheckedWorriedDialog,

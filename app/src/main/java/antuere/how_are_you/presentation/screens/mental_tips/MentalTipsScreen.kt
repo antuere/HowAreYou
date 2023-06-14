@@ -9,7 +9,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import antuere.how_are_you.LocalAppState
 import antuere.how_are_you.presentation.base.ui_compose_components.top_bar.AppBarState
 import antuere.how_are_you.presentation.base.ui_text.UiText
-import antuere.how_are_you.presentation.screens.mental_tips.ui_compose.MentalTipsScreenState
+import antuere.how_are_you.presentation.screens.mental_tips.ui_compose.MentalTipsScreenContent
 import org.orbitmvi.orbit.compose.collectAsState
 
 @Composable
@@ -31,5 +31,5 @@ fun MentalTipsScreen(
         )
     }
 
-    MentalTipsScreenState(viewState = { viewState })
+    MentalTipsScreenContent(viewState = { viewState })
 }

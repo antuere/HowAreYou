@@ -46,7 +46,7 @@ class DetailViewModel @Inject constructor(
                             deleteDay()
                         }),
                     negativeButton = UIDialog.UiButton(
-                        text = R.string.no,
+                        text = R.string.dialog_no,
                         onClick = {})
                 )
                 sideEffect(DetailSideEffect.Dialog(dialog))

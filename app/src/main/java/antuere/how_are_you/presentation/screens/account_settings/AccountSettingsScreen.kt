@@ -1,4 +1,4 @@
-package antuere.how_are_you.presentation.screens.sign_in_methods
+package antuere.how_are_you.presentation.screens.account_settings
 
 import android.app.Activity
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -14,17 +14,16 @@ import antuere.how_are_you.LocalAppState
 import antuere.how_are_you.R
 import antuere.how_are_you.presentation.base.ui_compose_components.top_bar.AppBarState
 import antuere.how_are_you.presentation.base.ui_text.UiText
-import antuere.how_are_you.presentation.screens.sign_in_methods.state.SignInMethodsIntent
-import antuere.how_are_you.presentation.screens.sign_in_methods.state.SignInMethodsSideEffect
-import antuere.how_are_you.presentation.screens.sign_in_methods.ui_compose.SignInMethodsScreenContent
+import antuere.how_are_you.presentation.screens.account_settings.state.AccountSettingsIntent
+import antuere.how_are_you.presentation.screens.account_settings.state.AccountSettingsSideEffect
+import antuere.how_are_you.presentation.screens.account_settings.ui_compose.AccountSettingsScreenContent
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
 @Composable
-fun SignInMethodsScreen(
-    onNavigateSignInEmail: () -> Unit,
-    viewModel: SignInMethodsViewModel = hiltViewModel(),
+fun AccountSettingsScreen(
+    viewModel: AccountSettingsViewModel = hiltViewModel(),
 ) {
     val appState = LocalAppState.current
     val context = LocalContext.current
@@ -34,7 +33,7 @@ fun SignInMethodsScreen(
         rememberLauncherForActivityResult(contract = ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
                 val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
-                SignInMethodsIntent.GoogleAccAdded(task).run(viewModel::onIntent)
+                AccountSettingsIntent.GoogleAccAdded(task).run(viewModel::onIntent)
             }
         }
 
@@ -42,28 +41,30 @@ fun SignInMethodsScreen(
     LaunchedEffect(true) {
         appState.updateAppBar(
             AppBarState(
-                topBarTitle = UiText.StringResource(R.string.login_methods),
+                topBarTitle = UiText.StringResource(R.string.account_settings),
                 navigationIcon = Icons.Filled.ArrowBack,
                 onClickNavigationBtn = appState::navigateUp,
-                isVisibleBottomBar = false
+                isVisibleBottomBar = false,
             )
         )
     }
 
     viewModel.collectSideEffect { sideEffect ->
         when (sideEffect) {
-            is SignInMethodsSideEffect.GoogleSignInDialog -> {
-                launcher.launch(sideEffect.signInClient.signInIntent)
+            is AccountSettingsSideEffect.Dialog -> appState.showDialog(sideEffect.uiDialog)
+            AccountSettingsSideEffect.NavigateToSettings -> appState.navigateUp()
+            is AccountSettingsSideEffect.Snackbar -> {
+                appState.showSnackbar(sideEffect.message.asString(context))
             }
-            SignInMethodsSideEffect.NavigateToEmailMethod -> onNavigateSignInEmail()
-            SignInMethodsSideEffect.NavigateUp -> appState.navigateUp()
-            is SignInMethodsSideEffect.Snackbar -> {
-                appState.showSnackbar(
-                    sideEffect.message.asString(context)
-                )
+
+            is AccountSettingsSideEffect.GoogleSignInDialog -> {
+                launcher.launch(sideEffect.signInClient.signInIntent)
             }
         }
     }
 
-    SignInMethodsScreenContent(viewState = { viewState }, onIntent = { viewModel.onIntent(it) })
+    AccountSettingsScreenContent(
+        viewState = { viewState },
+        onIntent = { viewModel.onIntent(it) },
+    )
 }

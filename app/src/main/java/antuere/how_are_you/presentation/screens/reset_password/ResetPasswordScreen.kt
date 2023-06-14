@@ -13,7 +13,7 @@ import antuere.how_are_you.R
 import antuere.how_are_you.presentation.base.ui_compose_components.top_bar.AppBarState
 import antuere.how_are_you.presentation.base.ui_text.UiText
 import antuere.how_are_you.presentation.screens.reset_password.state.ResetPasswordSideEffect
-import antuere.how_are_you.presentation.screens.reset_password.ui_compose.ResetPasswordScreenState
+import antuere.how_are_you.presentation.screens.reset_password.ui_compose.ResetPasswordScreenContent
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
@@ -52,5 +52,5 @@ fun ResetPasswordScreen(
         }
     }
 
-    ResetPasswordScreenState(onIntent = { viewModel.onIntent(it) }, viewState = { viewState })
+    ResetPasswordScreenContent(onIntent = { viewModel.onIntent(it) }, viewState = { viewState })
 }

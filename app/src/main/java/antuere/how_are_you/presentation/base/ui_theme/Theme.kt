@@ -30,7 +30,8 @@ private val DarkColorScheme = darkColorScheme(
     onSurfaceVariant = theme_onSurfaceVariant,
     background = theme_background,
     onBackground = theme_onBackground,
-    outline = theme_outline
+    outline = theme_outline,
+    error = theme_error
 )
 
 private val LightColorScheme = lightColorScheme(
@@ -49,7 +50,8 @@ private val LightColorScheme = lightColorScheme(
     onSurfaceVariant = theme_onSurfaceVariant,
     background = theme_background,
     onBackground = theme_onBackground,
-    outline = theme_outline
+    outline = theme_outline,
+    error = theme_error
 )
 
 @Composable

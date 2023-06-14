@@ -5,6 +5,10 @@ import antuere.domain.authentication_manager.AuthenticationManager
 import antuere.domain.authentication_manager.LoginResultListener
 import antuere.domain.authentication_manager.RegisterResultListener
 import antuere.domain.authentication_manager.ResetPassResultListener
+import antuere.domain.dto.AuthMethod
+import antuere.domain.dto.AuthProvider
+import com.google.firebase.FirebaseException
+import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.database.DatabaseReference
@@ -59,6 +63,22 @@ class AuthenticationManagerImpl @Inject constructor(
                 null
             }
         } else null
+    }
+
+    override fun getAuthMethod(): AuthMethod {
+        val user = firebaseAuth.currentUser ?: return AuthMethod.NOT_AUTH
+
+        user.providerData.forEach {
+            if (it.providerId == EmailAuthProvider.PROVIDER_ID) {
+                return AuthMethod.EMAIL
+            }
+
+            if (it.providerId == GoogleAuthProvider.PROVIDER_ID) {
+                return AuthMethod.GOOGLE
+            }
+        }
+
+        return AuthMethod.NOT_AUTH
     }
 
     private fun getUserNode(): DatabaseReference? {
@@ -117,5 +137,58 @@ class AuthenticationManagerImpl @Inject constructor(
 
     override fun signOut() {
         firebaseAuth.signOut()
+    }
+
+    override suspend fun deleteAccount(
+        onSuccess:() -> Unit,
+        onFailure: (String?) -> Unit,
+    ) {
+        getUserNode()?.setValue(null)?.await()
+        val user = firebaseAuth.currentUser ?: return onFailure(null)
+        user.delete()
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    onSuccess()
+                } else {
+                    onFailure(task.exception?.message ?: task.toString())
+                }
+            }
+            .addOnFailureListener {
+                onFailure(it.message ?: it.toString())
+            }
+            .await()
+    }
+
+    override fun reAuthenticate(
+        onSuccess: () -> Unit,
+        onFailure: (String?) -> Unit,
+        authProvider: AuthProvider,
+    ) {
+        val user = firebaseAuth.currentUser ?: return
+        val credential = when (authProvider) {
+            is AuthProvider.Email -> {
+                val userEmail = user.email ?: return
+                EmailAuthProvider.getCredential(userEmail, authProvider.password)
+            }
+
+            is AuthProvider.GoogleAccount -> {
+                GoogleAuthProvider.getCredential(authProvider.accIdToken, null)
+            }
+        }
+        try {
+            user.reauthenticate(credential)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        onSuccess()
+                    } else {
+                        onFailure(task.exception?.message ?: task.toString())
+                    }
+                }
+                .addOnFailureListener {
+                    onFailure(it.message ?: it.toString())
+                }
+        } catch (e: FirebaseException) {
+            onFailure(e.message ?: e.toString())
+        }
     }
 }

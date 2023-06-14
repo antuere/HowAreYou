@@ -21,6 +21,7 @@ val theme_onSurfaceVariant = Color(0xFF505C61)
 val theme_background = Color(0xFFF8F7F2)
 val theme_onBackground = Color(0xFF002B3A)
 val theme_outline = Color(0xFF71787D)
+val theme_error = Color(0xFFCF0909)
 
 // Blue theme
 

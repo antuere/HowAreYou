@@ -101,8 +101,11 @@ class DayRepositoryImpl @Inject constructor(
         dayDataBaseRoom.dayDatabaseDao.clear()
     }
 
-    override suspend fun deleteAllDaysRemote() {
-        firebaseRealtimeDB.deleteAllDays()
+    override suspend fun deleteAllDaysRemote(
+        onSuccess: () -> Unit,
+        onFailure: (String?) -> Unit,
+    ) {
+        firebaseRealtimeDB.deleteAllDays(onSuccess, onFailure)
     }
 
     override suspend fun insertLocal(day: Day) {

@@ -25,7 +25,7 @@ import com.google.accompanist.pager.HorizontalPagerIndicator
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun OnboardScreenState(
+fun OnboardScreenContent(
     viewState: () -> OnboardState,
     onIntent: (OnboardIntent) -> Unit,
 ) {

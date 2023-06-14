@@ -1,4 +1,4 @@
-package antuere.how_are_you.presentation.screens.sign_up_with_email.ui_compose
+package antuere.how_are_you.presentation.screens.sign_in_with_email.ui_compose
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
@@ -16,27 +16,25 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.res.dimensionResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.KeyboardType
 import antuere.how_are_you.R
 import antuere.how_are_you.presentation.base.ui_compose_components.IconApp
 import antuere.how_are_you.presentation.base.ui_compose_components.buttons.DefaultButton
+import antuere.how_are_you.presentation.base.ui_compose_components.buttons.DefaultTextButton
 import antuere.how_are_you.presentation.base.ui_compose_components.progress_indicator.PopUpProgressIndicator
-import antuere.how_are_you.presentation.base.ui_compose_components.text_field.DefaultTextField
 import antuere.how_are_you.presentation.base.ui_compose_components.text_field.EmailTextField
 import antuere.how_are_you.presentation.base.ui_compose_components.text_field.PasswordTextField
-import antuere.how_are_you.presentation.screens.sign_up_with_email.state.SignUpEmailIntent
-import antuere.how_are_you.presentation.screens.sign_up_with_email.state.SignUpEmailState
+import antuere.how_are_you.presentation.screens.sign_in_with_email.state.SignInEmailIntent
+import antuere.how_are_you.presentation.screens.sign_in_with_email.state.SignInEmailState
 import antuere.how_are_you.util.extensions.bringIntoViewForFocused
 import antuere.how_are_you.util.extensions.paddingTopBar
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun SignUpEmailScreenState(
-    viewState: () -> SignUpEmailState,
-    onIntent: (SignUpEmailIntent) -> Unit,
-    focusManager: FocusManager,
+fun SignInEmailScreenContent(
+    viewState: () -> SignInEmailState,
+    onIntent: (SignInEmailIntent) -> Unit,
+    focusManager : FocusManager
 ) {
     val scope = rememberCoroutineScope()
     val bringIntoViewRequester = remember {
@@ -52,28 +50,11 @@ fun SignUpEmailScreenState(
                 .paddingTopBar()
                 .imePadding()
                 .verticalScroll(rememberScrollState()),
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
         ) {
             IconApp(modifier = Modifier.padding(vertical = dimensionResource(id = R.dimen.padding_normal_5)))
             Spacer(modifier = Modifier.weight(1F))
-
-            DefaultTextField(
-                modifier = Modifier
-                    .padding(horizontal = dimensionResource(id = R.dimen.padding_normal_3))
-                    .fillMaxWidth(),
-                value = viewState().nickName,
-                onValueChange = { onIntent(SignUpEmailIntent.NicknameChanged(it)) },
-                label = stringResource(id = R.string.nickname),
-                keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Text,
-                    imeAction = ImeAction.Next
-                ),
-                keyboardActions = KeyboardActions(onNext = {
-                    focusManager.moveFocus(FocusDirection.Down)
-                }),
-                singleLine = true
-            )
-            Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_5)))
 
             EmailTextField(
                 modifier = Modifier
@@ -84,21 +65,7 @@ fun SignUpEmailScreenState(
                     focusManager.moveFocus(FocusDirection.Down)
                 }),
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
-                onValueChange = { onIntent(SignUpEmailIntent.EmailChanged(it)) },
-            )
-            Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_5)))
-
-            PasswordTextField(
-                modifier = Modifier
-                    .padding(horizontal = dimensionResource(id = R.dimen.padding_normal_3))
-                    .fillMaxWidth(),
-                labelId = R.string.password,
-                value = viewState().password,
-                keyboardActions = KeyboardActions(onNext = {
-                    focusManager.moveFocus(FocusDirection.Down)
-                }),
-                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
-                onValueChange = { onIntent(SignUpEmailIntent.PasswordChanged(it)) },
+                onValueChange = { onIntent(SignInEmailIntent.EmailChanged(it)) }
             )
             Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_5)))
 
@@ -110,13 +77,22 @@ fun SignUpEmailScreenState(
                         bringIntoViewRequester = bringIntoViewRequester,
                         scope = scope
                     ),
+                labelId = R.string.password,
+                value = viewState().password,
                 keyboardActions = KeyboardActions(onDone = {
-                    onIntent(SignUpEmailIntent.SignUpBtnClicked)
+                    onIntent(SignInEmailIntent.SignInBtnClicked)
                 }),
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-                labelId = R.string.confirm_password,
-                value = viewState().confirmPassword,
-                onValueChange = { onIntent(SignUpEmailIntent.ConfirmPasswordChanged(it)) },
+                onValueChange = { onIntent(SignInEmailIntent.PasswordChanged(it)) }
+            )
+            Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_2)))
+
+            DefaultTextButton(
+                modifier = Modifier
+                    .padding(end = dimensionResource(id = R.dimen.padding_normal_3))
+                    .align(Alignment.End),
+                labelId = R.string.reset_password_hint,
+                onClick = { onIntent(SignInEmailIntent.ResetPassBtnClicked) }
             )
             Spacer(modifier = Modifier.weight(1F))
 
@@ -128,12 +104,18 @@ fun SignUpEmailScreenState(
                     )
                     .fillMaxWidth()
                     .bringIntoViewRequester(bringIntoViewRequester),
-                labelId = R.string.sign_up,
+                labelId = R.string.sign_in,
                 onClick = {
-                    onIntent(SignUpEmailIntent.SignUpBtnClicked)
-                },
+                    onIntent(SignInEmailIntent.SignInBtnClicked)
+                }
             )
             Spacer(modifier = Modifier.weight(1F))
+
+            DefaultTextButton(
+                modifier = Modifier.padding(bottom = dimensionResource(id = R.dimen.padding_normal_2)),
+                labelId = R.string.don_have_acc,
+                onClick = { onIntent(SignInEmailIntent.SignUpBtnClicked) }
+            )
         }
     }
 }
