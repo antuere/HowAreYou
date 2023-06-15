@@ -76,7 +76,7 @@
     <string name="dialog_sign_out_negative">Cancel</string>
     <string name="dialog_delete_local_data_title">Day entries</string>
     <string name="dialog_reauth_title">Re-authenticate</string>
-    <string name="dialog_reauth_desc">"To delete your account, you will need to reauthenticate on the following screen.\nIf you signed up with a Google account, your HowAreYou account will be immediately deleted after re-authentication.\nThis action is not reversible! "</string>
+    <string name="dialog_reauth_desc">"To delete your account, you will need to reauthenticate.\nIf you signed up with a Google account, your HowAreYou account will be immediately deleted after re-authentication.\nThis action is not reversible! "</string>
     <string name="dialog_reauth_positive">OK</string>
     <string name="dialog_delete_local_data_positive">Yes</string>
     <string name="dialog_delete_local_data_negative">No</string>
@@ -265,5 +265,6 @@
     <string name="animal_choose_pos">Save</string>
     <string name="animal_choose_neg">Cancel</string>
     <string name="photos_by">Photos by</string>
+    <string name="saveLocalData">Keep my days local on the device</string>
 
 </resources>

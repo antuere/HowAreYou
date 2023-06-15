@@ -8,7 +8,10 @@ sealed interface AccountSettingsIntent {
     object DeleteAccountBtnClicked : AccountSettingsIntent
     object PasswordEntered : AccountSettingsIntent
     object DeleteDataBtnClicked : AccountSettingsIntent
+    object StartReauthClicked : AccountSettingsIntent
     object ReauthPasswordDialogClosed : AccountSettingsIntent
+    object AccDeleteDialogClosed : AccountSettingsIntent
+    object SaveLocalDataSettingChanged : AccountSettingsIntent
     data class ConfirmedPasswordChanged(val value: String) : AccountSettingsIntent
     data class GoogleAccAdded(val task: Task<GoogleSignInAccount>) : AccountSettingsIntent
 }

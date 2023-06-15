@@ -36,7 +36,7 @@
     <string name="email">Почта</string>
     <string name="password">Пароль</string>
     <string name="confirm_password">Подтвердите пароль</string>
-    <string name="nickname">Ваше имя</string>
+    <string name="nickname">Имя</string>
     <string name="sign_up">Зарегистрироваться</string>
     <string name="don_have_acc">Нет аккаунта? Создайте!</string>
     <string name="login_progress_name">Отличный день сегодня…</string>
@@ -127,7 +127,7 @@
     <string name="dialog_delete_local_data_title">Ваши дни</string>
     <string name="dialog_delete_local_data_desc">При выходе из своей учетной записи, вы можете сохранить ваши дни локально на своем устройстве. Сохранить ваши дни?</string>
     <string name="dialog_reauth_title">Aутентификация</string>
-    <string name="dialog_reauth_desc">Для удаления аккаунта, вам нужно будет пройти повторную аутентификацию на следующем экране.\nЕсли вы регистрировались с помощью аккаунта Google, то после повторной аутентификации ваш аккаунт HowAreYou будет сразу же удален.\nЭто действие необратимо!</string>
+    <string name="dialog_reauth_desc">Для удаления аккаунта, вам нужно будет пройти повторную аутентификацию.\nЕсли вы регистрировались с помощью аккаунта Google, то после повторной аутентификации ваш аккаунт HowAreYou будет сразу же удален.\nЭто действие необратимо!</string>
     <string name="dialog_reauth_positive">OK</string>
     <string name="dialog_delete_local_data_positive">Да</string>
     <string name="dialog_delete_local_data_negative">Нет</string>
@@ -206,4 +206,5 @@
     <string name="dialog_delete_data_title">Удаление данных</string>
     <string name="dialog_delete_data_desc">"Подтвердите удаление данных. Ваши записанные дни будут удалены на сервере и на устройстве! Если вы хотите удалить данные только на сервере, воспользуйтесь удалением аккаунта. "</string>
     <string name="dialog_delete_data_positive">Удалить записи</string>
+    <string name="saveLocalData">Оставить мои дни локально на устройстве</string>
 </resources>

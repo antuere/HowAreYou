@@ -13,12 +13,11 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.sp
 import antuere.how_are_you.R
+import antuere.how_are_you.presentation.base.ui_compose_components.text_field.ReadOnlyTextField
 import antuere.how_are_you.presentation.screens.account_settings.state.AccountSettingsIntent
 import antuere.how_are_you.util.extensions.paddingTopBar
 
@@ -32,14 +31,14 @@ fun MainContentAccountSettings(
             .fillMaxSize()
             .paddingTopBar()
             .verticalScroll(rememberScrollState())
+            .padding(dimensionResource(id = R.dimen.padding_normal_1))
     ) {
-        Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_4)))
-        Text(
-            modifier = Modifier.align(Alignment.CenterHorizontally),
-            fontSize = dimensionResource(id = R.dimen.textSize_normal_2).value.sp,
-            text = nickname
+        ReadOnlyTextField(
+            modifier = Modifier.fillMaxWidth(0.9F),
+            label = stringResource(id = R.string.nickname),
+            value = nickname
         )
-        Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_0)))
+        Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_4)))
 
         Button(
             onClick = { onIntent(AccountSettingsIntent.DeleteDataBtnClicked) },
@@ -47,9 +46,7 @@ fun MainContentAccountSettings(
                 defaultElevation = dimensionResource(id = R.dimen.default_elevation),
                 pressedElevation = dimensionResource(id = R.dimen.pressed_elevation)
             ),
-            modifier = Modifier
-                .padding(horizontal = dimensionResource(id = R.dimen.padding_normal_2))
-                .fillMaxWidth(0.8F)
+            modifier = Modifier.fillMaxWidth(0.8F)
         ) {
             Text(
                 text = stringResource(id = R.string.delete_data),
@@ -64,9 +61,7 @@ fun MainContentAccountSettings(
                 defaultElevation = dimensionResource(id = R.dimen.default_elevation),
                 pressedElevation = dimensionResource(id = R.dimen.pressed_elevation)
             ),
-            modifier = Modifier
-                .padding(horizontal = dimensionResource(id = R.dimen.padding_normal_2))
-                .fillMaxWidth(0.8F)
+            modifier = Modifier.fillMaxWidth(0.8F)
         ) {
             Text(
                 text = stringResource(id = R.string.delete_account),
@@ -81,9 +76,7 @@ fun MainContentAccountSettings(
                 defaultElevation = dimensionResource(id = R.dimen.default_elevation),
                 pressedElevation = dimensionResource(id = R.dimen.pressed_elevation)
             ),
-            modifier = Modifier
-                .padding(horizontal = dimensionResource(id = R.dimen.padding_normal_2))
-                .fillMaxWidth(0.8F)
+            modifier = Modifier.fillMaxWidth(0.8F)
         ) {
             Text(
                 text = stringResource(id = R.string.sign_out),

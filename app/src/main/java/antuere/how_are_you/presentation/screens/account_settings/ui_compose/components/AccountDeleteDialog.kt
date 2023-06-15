@@ -7,8 +7,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -23,23 +21,20 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.window.DialogProperties
 import antuere.how_are_you.R
 import antuere.how_are_you.presentation.base.ui_compose_components.dialog.DefaultDialogFlowRow
-import antuere.how_are_you.presentation.base.ui_compose_components.text_field.PasswordTextField
-import antuere.how_are_you.presentation.screens.account_settings.state.AccountSettingsState
 import antuere.how_are_you.util.extensions.fixedSize
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ReauthWithPasswordDialog(
+fun AccountDeleteDialog(
     modifier: Modifier = Modifier,
     onDismissRequest: () -> Unit = {},
-    onPasswordChanged: (String) -> Unit,
-    onClickDeleteAcc: () -> Unit,
-    viewState: () -> AccountSettingsState,
+    onSaveLocalDataSettingChanged: () -> Unit,
+    onClickStartReauth: () -> Unit,
+    isSaveLocalData: Boolean,
 ) {
     AlertDialog(
         onDismissRequest = onDismissRequest,
@@ -64,30 +59,24 @@ fun ReauthWithPasswordDialog(
                 Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_2)))
 
                 Text(
-                    text = stringResource(R.string.reauth_password_title),
+                    text = stringResource(R.string.dialog_reauth_title),
                     fontWeight = FontWeight.Bold,
                     style = MaterialTheme.typography.headlineSmall.copy(fontSize = 24f.fixedSize)
                 )
                 Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_2)))
 
                 Text(
-                    text = stringResource(R.string.reauth_password_desc),
+                    text = stringResource(R.string.dialog_reauth_desc),
                     style = MaterialTheme.typography.bodyMedium,
                     textAlign = TextAlign.Center
                 )
                 Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.padding_normal_2)))
 
-                PasswordTextField(
-                    labelId = R.string.password,
-                    value = viewState().userEnteredPassword,
-                    onValueChange = onPasswordChanged,
-                    isError = viewState().isShowErrorInTextField,
-                    errorMessage = viewState().errorMessage.asString(),
-                    keyboardActions = KeyboardActions(onDone = {
-                        onClickDeleteAcc()
-                    }),
-                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+                SaveDataCheckbox(
+                    isSaveLocalData = isSaveLocalData,
+                    onValueChange = onSaveLocalDataSettingChanged
                 )
+
                 Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.padding_normal_2)))
 
                 Box(modifier = Modifier.align(Alignment.End)) {
@@ -98,9 +87,9 @@ fun ReauthWithPasswordDialog(
                                 color = MaterialTheme.colorScheme.primary
                             )
                         }
-                        TextButton(onClick = onClickDeleteAcc) {
+                        TextButton(onClick = onClickStartReauth) {
                             Text(
-                                stringResource(id = R.string.reauth_password_positive),
+                                stringResource(id = R.string.dialog_reauth_positive),
                                 color = MaterialTheme.colorScheme.primary
                             )
                         }

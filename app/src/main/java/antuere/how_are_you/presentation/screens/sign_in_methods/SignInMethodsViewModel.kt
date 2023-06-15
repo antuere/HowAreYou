@@ -43,10 +43,13 @@ class SignInMethodsViewModel @Inject constructor(
             }
 
             is SignInMethodsIntent.GoogleAccAdded -> {
+                updateState { state.copy(isLoading = true) }
+
                 if (intent.task.isSuccessful) {
                     val account = intent.task.result ?: return
                     signInWithGoogle(account)
                 } else {
+                    updateState { state.copy(isLoading = false) }
                     sideEffect(
                         SignInMethodsSideEffect.Snackbar(
                             message = UiText.String(
@@ -63,8 +66,6 @@ class SignInMethodsViewModel @Inject constructor(
 
         override fun registerSuccess(name: String) {
             viewModelScope.launch(Dispatchers.IO) {
-                updateState { state.copy(isLoading = true) }
-
                 val isHasThisAccountOnServer = authenticationManager.isHasThisAccountOnServer()
                 if (isHasThisAccountOnServer) {
                     dayRepository.refreshRemoteData()
@@ -75,6 +76,8 @@ class SignInMethodsViewModel @Inject constructor(
                 }
                 settingsRepository.saveUserNickname(name)
 
+                updateState { state.copy(isLoading = false) }
+                delay(20)
                 sideEffect(SignInMethodsSideEffect.NavigateUp)
             }
         }

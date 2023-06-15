@@ -31,7 +31,8 @@ private val DarkColorScheme = darkColorScheme(
     background = theme_background,
     onBackground = theme_onBackground,
     outline = theme_outline,
-    error = theme_error
+    error = theme_error,
+    outlineVariant = theme_outline_variant,
 )
 
 private val LightColorScheme = lightColorScheme(
@@ -51,7 +52,8 @@ private val LightColorScheme = lightColorScheme(
     background = theme_background,
     onBackground = theme_onBackground,
     outline = theme_outline,
-    error = theme_error
+    error = theme_error,
+    outlineVariant = theme_outline_variant,
 )
 
 @Composable

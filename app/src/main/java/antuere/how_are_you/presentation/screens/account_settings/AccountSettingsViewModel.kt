@@ -47,17 +47,7 @@ class AccountSettingsViewModel @Inject constructor(
     override fun onIntent(intent: AccountSettingsIntent) {
         when (intent) {
             AccountSettingsIntent.DeleteAccountBtnClicked -> {
-                val dialog = UIDialog(
-                    title = R.string.dialog_reauth_title,
-                    desc = R.string.dialog_reauth_desc,
-                    icon = R.drawable.ic_reauth,
-                    positiveButton = UIDialog.UiButton(text = R.string.dialog_reauth_positive,
-                        onClick = {
-                            startReauth()
-                        }),
-                    negativeButton = UIDialog.UiButton(text = R.string.dialog_no)
-                )
-                sideEffect(AccountSettingsSideEffect.Dialog(dialog))
+                updateState { state.copy(isShowAccDeleteDialog = true) }
             }
 
             AccountSettingsIntent.DeleteDataBtnClicked -> {
@@ -92,6 +82,24 @@ class AccountSettingsViewModel @Inject constructor(
                     sideEffect(AccountSettingsSideEffect.Dialog(dialog))
                 } else {
                     signOut(false)
+                }
+            }
+
+            AccountSettingsIntent.StartReauthClicked -> {
+                val authProvider = authenticationManager.getAuthMethod()
+
+                if (authProvider == AuthMethod.EMAIL) {
+                    updateState {
+                        state.copy(
+                            isShowReauthDialog = true,
+                            isShowAccDeleteDialog = false
+                        )
+                    }
+                }
+
+                if (authProvider == AuthMethod.GOOGLE) {
+                    updateState { state.copy(isShowAccDeleteDialog = false) }
+                    sideEffect(AccountSettingsSideEffect.GoogleSignInDialog(signInClient))
                 }
             }
 
@@ -166,6 +174,16 @@ class AccountSettingsViewModel @Inject constructor(
             AccountSettingsIntent.ReauthPasswordDialogClosed -> {
                 updateState { state.copy(isShowReauthDialog = false, userEnteredPassword = "") }
             }
+
+            AccountSettingsIntent.AccDeleteDialogClosed -> {
+                updateState { state.copy(isShowAccDeleteDialog = false, isSaveLocalData = false) }
+            }
+
+            AccountSettingsIntent.SaveLocalDataSettingChanged -> {
+                updateState { state.copy(isSaveLocalData = !state.isSaveLocalData) }
+            }
+
+
         }
     }
 
@@ -187,18 +205,6 @@ class AccountSettingsViewModel @Inject constructor(
 
     }
 
-    private fun startReauth() {
-        val authProvider = authenticationManager.getAuthMethod()
-
-        if (authProvider == AuthMethod.EMAIL) {
-            updateState { state.copy(isShowReauthDialog = true) }
-        }
-
-        if (authProvider == AuthMethod.GOOGLE) {
-            sideEffect(AccountSettingsSideEffect.GoogleSignInDialog(signInClient))
-        }
-    }
-
     private fun signOut(isSaveDayEntities: Boolean) {
         viewModelScope.launch(Dispatchers.IO) {
             if (!isSaveDayEntities) {
@@ -218,6 +224,9 @@ class AccountSettingsViewModel @Inject constructor(
             authenticationManager.deleteAccount(
                 onSuccess = {
                     launch(Dispatchers.IO) {
+                        if (!state.isSaveLocalData) {
+                            dayRepository.deleteAllDaysLocal()
+                        }
                         settingsRepository.resetUserNickname()
                         updateState {
                             state.copy(
@@ -244,6 +253,7 @@ class AccountSettingsViewModel @Inject constructor(
                 },
             )
 
+            delay(200)
             coroutineContext.job.children.forEach {
                 it.join()
             }
@@ -269,6 +279,7 @@ class AccountSettingsViewModel @Inject constructor(
                 }
             )
 
+            delay(200)
             coroutineContext.job.children.forEach {
                 it.join()
             }

@@ -22,7 +22,6 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.VisualTransformation
 import antuere.how_are_you.R
 import antuere.how_are_you.util.isKeyboardVisible
-import timber.log.Timber
 
 @Composable
 fun DefaultTextField(
@@ -52,8 +51,6 @@ fun DefaultTextField(
     isError: Boolean = false,
     errorMessage: String? = null,
 ) {
-    Timber.i("Acc settings check: enter in DEFAULT textfield")
-
     val context = LocalContext.current
     val toastText = stringResource(toastTextId ?: R.string.too_many_chars_default)
     val focusManager = LocalFocusManager.current
