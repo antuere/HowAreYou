@@ -11,6 +11,7 @@ data class AccountSettingsState(
     val isShowErrorInTextField: Boolean = false,
     val isSaveLocalData: Boolean = false,
     val userNickname: String = Constants.USER_NOT_AUTH,
+    val userEmail: String = "",
     val userEnteredPassword: String = "",
     val errorMessage: UiText = UiText.String(""),
 )

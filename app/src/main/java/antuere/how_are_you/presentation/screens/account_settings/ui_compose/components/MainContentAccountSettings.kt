@@ -24,6 +24,7 @@ import antuere.how_are_you.util.extensions.paddingTopBar
 @Composable
 fun MainContentAccountSettings(
     nickname: String,
+    email: String,
     onIntent: (AccountSettingsIntent) -> Unit,
 ) {
     Column(
@@ -37,6 +38,13 @@ fun MainContentAccountSettings(
             modifier = Modifier.fillMaxWidth(0.9F),
             label = stringResource(id = R.string.nickname),
             value = nickname
+        )
+        Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_4)))
+
+        ReadOnlyTextField(
+            modifier = Modifier.fillMaxWidth(0.9F),
+            label = stringResource(id = R.string.email),
+            value = email
         )
         Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_4)))
 

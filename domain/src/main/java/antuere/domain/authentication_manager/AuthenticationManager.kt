@@ -48,4 +48,6 @@ interface AuthenticationManager {
 
     suspend fun getUserNickName(): String?
 
+    suspend fun getUserEmail(): String?
+
 }

@@ -65,6 +65,11 @@ class AuthenticationManagerImpl @Inject constructor(
         } else null
     }
 
+    override suspend fun getUserEmail(): String? {
+        val user = firebaseAuth.currentUser ?: return null
+        return user.email
+    }
+
     override fun getAuthMethod(): AuthMethod {
         val user = firebaseAuth.currentUser ?: return AuthMethod.NOT_AUTH
 
@@ -140,7 +145,7 @@ class AuthenticationManagerImpl @Inject constructor(
     }
 
     override suspend fun deleteAccount(
-        onSuccess:() -> Unit,
+        onSuccess: () -> Unit,
         onFailure: (String?) -> Unit,
     ) {
         getUserNode()?.setValue(null)?.await()

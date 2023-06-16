@@ -38,9 +38,11 @@ class AccountSettingsViewModel @Inject constructor(
         AccountSettingsState()
     )
     private var isShowDialogSignOut = false
+    private var userEmail = ""
+    private var userName = ""
 
     init {
-        getUserNickname()
+        getUserProfileInfo()
         checkIsHasDayEntities()
     }
 
@@ -193,13 +195,20 @@ class AccountSettingsViewModel @Inject constructor(
         }
     }
 
-    private fun getUserNickname() {
+    private fun getUserProfileInfo() {
         viewModelScope.launch(Dispatchers.IO) {
-            val nickname = settingsRepository.getUserNickname().first()
+            launch {
+                userName = settingsRepository.getUserNickname().first()
+            }
+
+            launch {
+                userEmail = authenticationManager.getUserEmail() ?: "Email not found"
+            }
+
+            this.coroutineContext.job.children.forEach { it.join() }
+
             updateState {
-                state.copy(
-                    isLoading = false, userNickname = nickname
-                )
+                state.copy(isLoading = false, userEmail = userEmail, userNickname = userName)
             }
         }
 

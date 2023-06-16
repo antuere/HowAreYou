@@ -37,6 +37,10 @@ fun AccountSettingsScreenContent(
             )
         }
 
-        MainContentAccountSettings(nickname = viewState().userNickname, onIntent = onIntent)
+        MainContentAccountSettings(
+            nickname = viewState().userNickname,
+            email = viewState().userEmail,
+            onIntent = onIntent
+        )
     }
 }
