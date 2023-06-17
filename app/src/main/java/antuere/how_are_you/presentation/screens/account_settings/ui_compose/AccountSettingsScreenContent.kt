@@ -14,12 +14,16 @@ fun AccountSettingsScreenContent(
     viewState: () -> AccountSettingsState,
     onIntent: (AccountSettingsIntent) -> Unit,
 ) {
-    if (viewState().isLoading) {
-        FullScreenProgressIndicator()
-    } else {
-        if (viewState().isShowProgressIndicator) {
+    when {
+        viewState().isLoading -> {
+            FullScreenProgressIndicator()
+        }
+
+        viewState().isShowProgressIndicator -> {
             PopUpProgressIndicator()
-        } else if (viewState().isShowReauthDialog) {
+        }
+
+        viewState().isShowReauthDialog -> {
             ReauthWithPasswordDialog(
                 onDismissRequest = { onIntent(AccountSettingsIntent.ReauthPasswordDialogClosed) },
                 onPasswordChanged = { onIntent(AccountSettingsIntent.ConfirmedPasswordChanged(it)) },
@@ -28,7 +32,7 @@ fun AccountSettingsScreenContent(
             )
         }
 
-        if (viewState().isShowAccDeleteDialog) {
+        viewState().isShowAccDeleteDialog -> {
             AccountDeleteDialog(
                 onDismissRequest = { onIntent(AccountSettingsIntent.AccDeleteDialogClosed) },
                 onSaveLocalDataSettingChanged = { onIntent(AccountSettingsIntent.SaveLocalDataSettingChanged) },
@@ -36,7 +40,9 @@ fun AccountSettingsScreenContent(
                 isSaveLocalData = viewState().isSaveLocalData
             )
         }
+    }
 
+    if (!viewState().isLoading) {
         MainContentAccountSettings(
             nickname = viewState().userNickname,
             email = viewState().userEmail,

@@ -9,13 +9,17 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.sp
 import antuere.how_are_you.R
 import antuere.how_are_you.presentation.base.ui_compose_components.text_field.ReadOnlyTextField
 import antuere.how_are_you.presentation.screens.account_settings.state.AccountSettingsIntent
@@ -32,29 +36,54 @@ fun MainContentAccountSettings(
             .fillMaxSize()
             .paddingTopBar()
             .verticalScroll(rememberScrollState())
-            .padding(dimensionResource(id = R.dimen.padding_normal_1))
+            .padding(dimensionResource(id = R.dimen.padding_normal_1)),
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
+        Text(
+            modifier = Modifier.align(Alignment.Start),
+            text = stringResource(id = R.string.settings_acc_info),
+            fontWeight = FontWeight.Bold,
+            fontSize = dimensionResource(id = R.dimen.textSize_normal_2).value.sp,
+        )
+        Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_2)))
+
         ReadOnlyTextField(
-            modifier = Modifier.fillMaxWidth(0.9F),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = dimensionResource(id = R.dimen.padding_small_2)),
             label = stringResource(id = R.string.nickname),
             value = nickname
         )
-        Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_4)))
+        Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_2)))
 
         ReadOnlyTextField(
-            modifier = Modifier.fillMaxWidth(0.9F),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = dimensionResource(id = R.dimen.padding_small_2)),
             label = stringResource(id = R.string.email),
             value = email
         )
         Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_4)))
 
+        Divider(
+            modifier = Modifier.fillMaxWidth(),
+            color = MaterialTheme.colorScheme.onSurfaceVariant
+        )
+        Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_4)))
+
+        Text(
+            modifier = Modifier.align(Alignment.Start),
+            text = stringResource(id = R.string.settings_acc_manage),
+            fontWeight = FontWeight.Bold,
+            fontSize = dimensionResource(id = R.dimen.textSize_normal_2).value.sp,
+        )
+        Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_2)))
+
         Button(
             onClick = { onIntent(AccountSettingsIntent.DeleteDataBtnClicked) },
-            elevation = ButtonDefaults.buttonElevation(
-                defaultElevation = dimensionResource(id = R.dimen.default_elevation),
-                pressedElevation = dimensionResource(id = R.dimen.pressed_elevation)
-            ),
-            modifier = Modifier.fillMaxWidth(0.8F)
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = dimensionResource(id = R.dimen.padding_small_2))
         ) {
             Text(
                 text = stringResource(id = R.string.delete_data),
@@ -64,31 +93,22 @@ fun MainContentAccountSettings(
         Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_4)))
 
         Button(
-            onClick = { onIntent(AccountSettingsIntent.DeleteAccountBtnClicked) },
-            elevation = ButtonDefaults.buttonElevation(
-                defaultElevation = dimensionResource(id = R.dimen.default_elevation),
-                pressedElevation = dimensionResource(id = R.dimen.pressed_elevation)
-            ),
-            modifier = Modifier.fillMaxWidth(0.8F)
-        ) {
-            Text(
-                text = stringResource(id = R.string.delete_account),
-                color = MaterialTheme.colorScheme.onPrimary
-            )
-        }
-        Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_4)))
-
-        Button(
             onClick = { onIntent(AccountSettingsIntent.SignOutBtnClicked) },
-            elevation = ButtonDefaults.buttonElevation(
-                defaultElevation = dimensionResource(id = R.dimen.default_elevation),
-                pressedElevation = dimensionResource(id = R.dimen.pressed_elevation)
-            ),
-            modifier = Modifier.fillMaxWidth(0.8F)
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = dimensionResource(id = R.dimen.padding_small_2))
         ) {
             Text(
                 text = stringResource(id = R.string.sign_out),
                 color = MaterialTheme.colorScheme.onPrimary
+            )
+        }
+        Spacer(modifier = Modifier.weight(1f))
+
+        TextButton(onClick = { onIntent(AccountSettingsIntent.DeleteAccountBtnClicked) }) {
+            Text(
+                text = stringResource(id = R.string.delete_account),
+                color = MaterialTheme.colorScheme.error
             )
         }
     }

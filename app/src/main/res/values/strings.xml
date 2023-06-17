@@ -110,6 +110,8 @@
 
     <!-- Account settings screen -->
     <string name="delete_data">Delete day entries</string>
+    <string name="settings_acc_info">Account</string>
+    <string name="settings_acc_manage">Management</string>
     <string name="dialog_delete_data_title">Delete data</string>
     <string name="dialog_delete_data_desc">"Confirm data delete. Your recorded days will be deleted on the server and on the device! If you want to delete data only on the server, use delete account. "</string>
     <string name="dialog_delete_data_positive">Delete records</string>

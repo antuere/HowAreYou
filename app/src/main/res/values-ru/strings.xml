@@ -207,4 +207,6 @@
     <string name="dialog_delete_data_desc">"Подтвердите удаление данных. Ваши записанные дни будут удалены на сервере и на устройстве! Если вы хотите удалить данные только на сервере, воспользуйтесь удалением аккаунта. "</string>
     <string name="dialog_delete_data_positive">Удалить записи</string>
     <string name="saveLocalData">Оставить мои дни локально на устройстве</string>
+    <string name="settings_acc_info">Аккаунт</string>
+    <string name="settings_acc_manage">Управление</string>
 </resources>

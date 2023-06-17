@@ -18,10 +18,12 @@ fun ReadOnlyTextField(
     label: String,
     value: String,
     colors: TextFieldColors = TextFieldDefaults.colors(
-        focusedTextColor = MaterialTheme.colorScheme.secondary,
+        focusedTextColor = MaterialTheme.colorScheme.outlineVariant,
         unfocusedTextColor = MaterialTheme.colorScheme.outlineVariant,
         focusedContainerColor = MaterialTheme.colorScheme.background,
+        focusedLabelColor = MaterialTheme.colorScheme.outlineVariant,
         unfocusedContainerColor = MaterialTheme.colorScheme.background,
+        focusedIndicatorColor = MaterialTheme.colorScheme.outlineVariant
     ),
     shape: Shape = MaterialTheme.shapes.large,
     singleLine: Boolean = true,
