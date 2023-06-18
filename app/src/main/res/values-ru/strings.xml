@@ -157,6 +157,7 @@
     <string name="hello_user_plug">Привет, пользователь</string>
     <string name="sign_in">Войти</string>
     <string name="sign_out">Выйти</string>
+    <string name="settings_sign_in_title">Регистрация</string>
     <string name="create_a_pin_code">Создайте PIN-код</string>
     <string name="show_worried_dialog_title">Показывать беспокоющийся диалог</string>
 
@@ -204,9 +205,10 @@
     <string name="password_invalid">Неверный пароль</string>
     <string name="empty_password">Пожалуйста, введите пароль</string>
     <string name="dialog_delete_data_title">Удаление данных</string>
-    <string name="dialog_delete_data_desc">"Подтвердите удаление данных. Ваши записанные дни будут удалены на сервере и на устройстве! Если вы хотите удалить данные только на сервере, воспользуйтесь удалением аккаунта. "</string>
+    <string name="dialog_delete_data_desc">Подтвердите удаление данных. \nВаши записанные дни будут удалены на сервере и на устройстве! \nЕсли вы хотите удалить данные только на сервере, воспользуйтесь удалением аккаунта</string>
     <string name="dialog_delete_data_positive">Удалить записи</string>
     <string name="saveLocalData">Оставить мои дни локально на устройстве</string>
     <string name="settings_acc_info">Аккаунт</string>
     <string name="settings_acc_manage">Управление</string>
+    <string name="settings_sign_in_desc">После регистрации ваши дни будут сохраняться на надежном сервере и вы сможете пользоваться нашим приложением на любом другом устройстве, не боясь потери данных! Мы будем хранить только ваше имя и дни, в безопасном зашифрованном виде!</string>
 </resources>

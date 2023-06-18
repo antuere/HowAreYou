@@ -15,7 +15,7 @@ class UIDialogListener {
     @Composable
     fun SetupDialogListener() {
         currentDialog?.let {
-            Dialog(dialog = it, closeDialog = { currentDialog = null })
+            Dialog(dialog = it, onDismiss = { currentDialog = null })
         }
     }
 }

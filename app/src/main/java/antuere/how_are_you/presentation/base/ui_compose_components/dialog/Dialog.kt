@@ -22,12 +22,12 @@ import kotlin.math.max
 fun Dialog(
     dialog: UIDialog,
     iconColor: Color = MaterialTheme.colorScheme.onBackground,
-    closeDialog: () -> Unit,
+    onDismiss: () -> Unit,
 ) {
     AlertDialog(
         onDismissRequest = {
             dialog.dismissAction()
-            closeDialog()
+            onDismiss()
         },
         icon = {
             Icon(
@@ -48,7 +48,7 @@ fun Dialog(
             TextButton(
                 onClick = {
                     dialog.positiveButton.onClick()
-                    closeDialog()
+                    onDismiss()
                 }
             ) {
                 Text(
@@ -58,16 +58,18 @@ fun Dialog(
             }
         },
         dismissButton = {
-            TextButton(
-                onClick = {
-                    dialog.negativeButton.onClick()
-                    closeDialog()
+            dialog.negativeButton?.let {
+                TextButton(
+                    onClick = {
+                        it.onClick()
+                        onDismiss()
+                    }
+                ) {
+                    Text(
+                        stringResource(id = it.text),
+                        color = MaterialTheme.colorScheme.primary
+                    )
                 }
-            ) {
-                Text(
-                    stringResource(id = dialog.negativeButton.text),
-                    color = MaterialTheme.colorScheme.primary
-                )
             }
         },
         containerColor = MaterialTheme.colorScheme.background,

@@ -8,6 +8,7 @@ import antuere.how_are_you.R
 import antuere.how_are_you.presentation.base.ViewModelMvi
 import antuere.how_are_you.presentation.base.ui_biometric_dialog.IUIBiometricListener
 import antuere.how_are_you.presentation.base.ui_biometric_dialog.UIBiometricDialog
+import antuere.how_are_you.presentation.base.ui_compose_components.dialog.UIDialog
 import antuere.how_are_you.presentation.base.ui_text.UiText
 import antuere.how_are_you.presentation.screens.settings.state.SettingsIntent
 import antuere.how_are_you.presentation.screens.settings.state.SettingsSideEffect
@@ -70,6 +71,7 @@ class SettingsViewModel @Inject constructor(
                     }
                 }
             }
+
             is SettingsIntent.PinSettingChanged -> {
                 updateState { state.copy(isCheckedPin = intent.isChecked) }
                 if (intent.isChecked) {
@@ -83,16 +85,19 @@ class SettingsViewModel @Inject constructor(
                     }
                 }
             }
+
             is SettingsIntent.WorriedDialogSettingChanged -> {
                 updateState { state.copy(isCheckedWorriedDialog = intent.isChecked) }
                 viewModelScope.launch(Dispatchers.IO) {
                     settingsRepository.saveWorriedDialogSetting(intent.isChecked)
                 }
             }
+
             is SettingsIntent.SignInBtnClicked -> sideEffect(SettingsSideEffect.NavigateToSignIn)
             is SettingsIntent.AccountSettingsBtnClicked -> {
                 sideEffect(SettingsSideEffect.NavigateToAccountSettings)
             }
+
             is SettingsIntent.PinCreationSheetClosed -> {
                 updateState {
                     state.copy(isCheckedPin = intent.isPinCreated, isShowBottomSheet = false)
@@ -104,6 +109,16 @@ class SettingsViewModel @Inject constructor(
                     }
                     sideEffect(SettingsSideEffect.Snackbar(UiText.StringResource(R.string.pin_code_create_success)))
                 }
+            }
+
+            SettingsIntent.SignInAdviceClicked -> {
+                val dialog = UIDialog(
+                    title = R.string.settings_sign_in_title,
+                    desc = R.string.settings_sign_in_desc,
+                    icon = R.drawable.ic_cloud,
+                    positiveButton = UIDialog.UiButton(text = R.string.ok),
+                )
+                sideEffect(SettingsSideEffect.Dialog(dialog))
             }
         }
     }

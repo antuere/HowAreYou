@@ -60,6 +60,7 @@ fun SettingsScreenContent(
                 userName = viewState().userNickname,
                 onClickSignIn = { onIntent(SettingsIntent.SignInBtnClicked) },
                 onClickAccountSettings = { onIntent(SettingsIntent.AccountSettingsBtnClicked) },
+                onClickSignInAdvice = { onIntent(SettingsIntent.SignInAdviceClicked) }
             )
             GeneralSettings(
                 isCheckedWorriedDialog = viewState().isCheckedWorriedDialog,

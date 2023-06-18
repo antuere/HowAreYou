@@ -113,7 +113,7 @@
     <string name="settings_acc_info">Account</string>
     <string name="settings_acc_manage">Management</string>
     <string name="dialog_delete_data_title">Delete data</string>
-    <string name="dialog_delete_data_desc">"Confirm data delete. Your recorded days will be deleted on the server and on the device! If you want to delete data only on the server, use delete account. "</string>
+    <string name="dialog_delete_data_desc">Confirm data delete.\nYour recorded days will be deleted on the server and on the device! \nIf you want to delete data only on the server, use delete account</string>
     <string name="dialog_delete_data_positive">Delete records</string>
     <string name="delete_account">Delete account</string>
     <string name="sign_out">Sign out</string>
@@ -134,6 +134,8 @@
     <string name="hello_user_plug">Hello, user</string>
     <string name="sign_in">Sign in</string>
     <string name="account_settings">Manage account</string>
+    <string name="settings_sign_in_title">Registration</string>
+    <string name="settings_sign_in_desc">After registration, your days will be stored on a secure server and you can use our app on any other device without fear of data loss!\nWe will store only your nickname and days, in a secure encrypted form!</string>
     <string name="create_a_pin_code">Create PIN code</string>
     <string name="show_worried_dialog_title">Show worried dialog</string>
     <string name="show_worried_dialog_desc">Show dialog if mood drop have been noticed in the last 5 days</string>

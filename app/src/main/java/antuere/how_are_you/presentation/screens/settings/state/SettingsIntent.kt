@@ -7,4 +7,5 @@ sealed interface SettingsIntent {
     data class PinCreationSheetClosed(val isPinCreated: Boolean) : SettingsIntent
     object AccountSettingsBtnClicked : SettingsIntent
     object SignInBtnClicked : SettingsIntent
+    object SignInAdviceClicked : SettingsIntent
 }
