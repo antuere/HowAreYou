@@ -1,9 +1,9 @@
 
 ## This page provides privacy policy and other useful information for the HowAreYou app user:
 <details>
-<summary>
-  <h3>Privacy Policy</h3></summary>
-  
+<summary>Privacy Policy</summary>
+
+  ### Privacy Policy
   Onitrona built the HowAreYou app as free app. This SERVICE is provided by Onitrona at no cost and is intended for use as is.
 
 This page is used to inform visitors regarding our policies with the collection, use, and disclosure of Personal Information if anyone decided to use our Service.
@@ -70,7 +70,7 @@ If you have any questions or suggestions about our Privacy Policy, do not hesita
 
 <h2></h2>
 <details>
-<summary><h4>How delete user account</h4></summary>
+<summary>How delete user account</summary>
   To delete your HowAreYou account, you need to:
   
 1. In the application settings, go to manage account;
@@ -81,7 +81,7 @@ If you have any questions or suggestions about our Privacy Policy, do not hesita
 </details>
 
 <details>
-<summary><h4>How delete user data</h4></summary>
+<summary>How delete user data</summary>
 To delete your recorded days from the server you need to:
   
 1. In the application settings, go to manage account;
