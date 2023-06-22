@@ -1,9 +1,11 @@
+<div align="center">
+ <img src="https://github.com/antuere/HowAreYou/assets/98087954/ee00840e-9692-44df-a9a4-c9dc8ee64156" width="206" height="206">
+</div>
 
-## This page provides privacy policy and other useful information for the HowAreYou app user:
+## This page provides privacy policy and other useful information for the HowAreYou app user
 <details>
-<summary>Privacy Policy</summary>
+<summary><h3>Privacy Policy</h3></summary>
 
-  ### Privacy Policy
   Onitrona built the HowAreYou app as free app. This SERVICE is provided by Onitrona at no cost and is intended for use as is.
 
 This page is used to inform visitors regarding our policies with the collection, use, and disclosure of Personal Information if anyone decided to use our Service.
@@ -68,9 +70,10 @@ This policy is effective as of 2023-06-21
 If you have any questions or suggestions about our Privacy Policy, do not hesitate to contact us at antuere@yandex.ru.
 </details>
 
-<h2></h2>
+---
+
 <details>
-<summary>How delete user account</summary>
+<summary><h4>How delete user account</h4></summary>
   To delete your HowAreYou account, you need to:
   
 1. In the application settings, go to manage account;
@@ -81,7 +84,7 @@ If you have any questions or suggestions about our Privacy Policy, do not hesita
 </details>
 
 <details>
-<summary>How delete user data</summary>
+<summary><h4>How delete user data</h4></summary>
 To delete your recorded days from the server you need to:
   
 1. In the application settings, go to manage account;
