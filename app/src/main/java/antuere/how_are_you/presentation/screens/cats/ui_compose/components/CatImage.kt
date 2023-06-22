@@ -71,7 +71,7 @@ fun CatImage(
             success = { _, painter ->
                 val animatedProgress by animateFloatAsState(
                     targetValue = (1 - scale) * 25,
-                    animationSpec = tween(500)
+                    animationSpec = tween(600)
                 )
                 Image(
                     modifier = Modifier

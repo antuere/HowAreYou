@@ -3,6 +3,7 @@ package antuere.how_are_you.presentation.screens.settings.ui_compose.components
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Info
 import androidx.compose.material3.Icon
@@ -31,7 +32,7 @@ fun SignInAdviceRow(
             fontSize = dimensionResource(id = R.dimen.textSize_normal_0).value.fixedSize,
             text = stringResource(id = R.string.sign_in_advice)
         )
-        Spacer(modifier = Modifier.weight(1f))
+        Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.spacer_height_2)))
 
         IconButton(
             modifier = Modifier.size(24.dp),
