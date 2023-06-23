@@ -14,9 +14,9 @@ layout: home
 
 <br>
 
--[Privacy policy]({% link privacy_policy.md %})
--[How delete user account]({% link delete_acc.md %})
--[How delete user data]({% link delete_data.md %})
+- [Privacy policy]({% link privacy_policy.md %})
+- [How delete user account]({% link delete_acc.md %})
+- [How delete user data]({% link delete_data.md %})
 
 
 <br>
