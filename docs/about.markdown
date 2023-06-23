@@ -25,5 +25,6 @@ HowAreYou is an app, for tracking your mental state, which also allows you to vi
 </div>
 
 ---
+<br>
 The app is open source, details [here](https://github.com/antuere/HowAreYou).
 
