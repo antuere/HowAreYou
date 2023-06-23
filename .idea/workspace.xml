@@ -1,0 +1,972 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AndroidLayouts">
+    <shared>
+      <config>
+        <device id="_device_class_phone" />
+        <device id="_device_class_tablet" />
+        <device id="pixel_6" />
+        <device id="5.1in WVGA" />
+        <device id="pixel_4" />
+        <device id="pixel_5" />
+        <device id="tv_1080p" />
+        <device id="wearos_rect" />
+        <device id="tv_4k" />
+        <device id="_device_class_foldable" />
+        <target>android-33</target>
+      </config>
+    </shared>
+  </component>
+  <component name="AndroidLogFilters">
+    <option name="TOOL_WINDOW_LOG_LEVEL" value="verbose" />
+    <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="Show only selected application" />
+  </component>
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="NONE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="238fa176-6b00-4155-b5c8-88c2fc26867f" name="Changes" comment="Moved to source folder favicons." />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[27151FDH2003S8]" />
+  <component name="ExportTestResults" exportFormat="Xml" outputFolder="$PROJECT_DIR$" openResultsInEditor="true" userTempatePath="" />
+  <component name="ExternalProjectsData">
+    <projectState path="$PROJECT_DIR$">
+      <ProjectState />
+    </projectState>
+  </component>
+  <component name="ExternalProjectsManager">
+    <system id="GRADLE">
+      <state>
+        <task path="$PROJECT_DIR$">
+          <activation />
+        </task>
+        <task path="$PROJECT_DIR$/app">
+          <activation />
+        </task>
+        <projects_view>
+          <tree_state>
+            <expand>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="HowAreYou" type="f1a62948:ProjectNode" />
+              </path>
+            </expand>
+            <select />
+          </tree_state>
+        </projects_view>
+      </state>
+    </system>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="navigationResourceFile" />
+        <option value="layoutResourceFile" />
+        <option value="Class" />
+        <option value="Kotlin Script" />
+        <option value="valueResourceFile" />
+        <option value="Kotlin Object" />
+        <option value="Kotlin Class" />
+        <option value="Kotlin Data Class" />
+        <option value="Kotlin Interface" />
+        <option value="Kotlin Sealed Interface" />
+        <option value="Kotlin Sealed Class" />
+        <option value="Kotlin Enum" />
+        <option value="Kotlin File" />
+        <option value="resourceFile" />
+      </list>
+    </option>
+  </component>
+  <component name="GenerateSignedApkSettings">
+    <option name="EXPORT_PRIVATE_KEY" value="false" />
+    <option name="KEY_STORE_PATH" value="C:\Users\user\AndroidStudioProjects\ZeroApp\keyStoreAppModule.jks" />
+    <option name="KEY_ALIAS" value="key0" />
+    <option name="REMEMBER_PASSWORDS" value="true" />
+    <option name="BUILD_TARGET_KEY" value="apk" />
+  </component>
+  <component name="Git.Settings">
+    <option name="PREVIOUS_COMMIT_AUTHORS">
+      <list>
+        <option value="AntuEre &lt;antuere@yandex.ru&gt;" />
+      </list>
+    </option>
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="develop" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RESET_MODE" value="HARD" />
+    <option name="SIGN_OFF_COMMIT" value="true" />
+  </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
+  </component>
+  <component name="GithubProjectSettings">
+    <option name="branchProtectionPatterns">
+      <list>
+        <option value="master" />
+      </list>
+    </option>
+  </component>
+  <component name="GithubPullRequestsUISettings">
+    <option name="recentNewPullRequestHead">
+      <RepoCoordinatesHolder>
+        <option name="owner" value="antuere" />
+        <option name="repository" value="HowAreYou" />
+      </RepoCoordinatesHolder>
+    </option>
+  </component>
+  <component name="KotlinCodeInsightWorkspaceSettings">
+    <option name="optimizeImportsOnTheFly" value="true" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
+  <component name="ProjectId" id="2DWMBfdiJmI25NaA77f3NJmT1a2" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="autoscrollFromSource" value="true" />
+    <option name="autoscrollToSource" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_MARK_IGNORED_FILES_AS_EXCLUDED&quot;: &quot;true&quot;,
+    &quot;AnalyzeApkAction.lastApkPath&quot;: &quot;C:/Users/user/Desktop/HowAreYou_v1.0.0_rс.apk&quot;,
+    &quot;ApkExportedModule&quot;: &quot;HowAreYou.app&quot;,
+    &quot;BundleExportedModule&quot;: &quot;HowAreYou.app&quot;,
+    &quot;PROJECT_COMPLICATED_NOTIFICATION_LAST_HIDDEN_VERSION&quot;: &quot;2022.2&quot;,
+    &quot;ResourceManagerPrefKey.ResourceType&quot;: &quot;FONT&quot;,
+    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;ToolWindowLayout Inspector.ShowToolbar&quot;: &quot;false&quot;,
+    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;com.google.services.firebase.aqiPopupShown&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/user/AndroidStudioProjects/HowAreYou/keyStoreHowAreYou.jks&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Suggestions&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.17&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;memory.settings&quot;,
+    &quot;two.files.diff.last.used.file&quot;: &quot;C:/Users/user/AndroidStudioProjects/HowAreYou/app/src/main/baseline-prof.txt&quot;
+  }
+}</component>
+  <component name="PsdUISettings">
+    <option name="MODULE_TAB" value="Default Config" />
+    <option name="BUILD_VARIANTS_TAB" value="Build Types" />
+    <option name="LAST_EDITED_SIGNING_CONFIG" value="debug" />
+    <option name="LAST_EDITED_BUILD_TYPE" value="release" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\user\AndroidStudioProjects\HowAreYou\app\src\main\java\antuere\how_are_you\presentation\base\ui_theme\test" />
+      <recent name="C:\Users\user\AndroidStudioProjects\HowAreYou\app\src\main" />
+      <recent name="C:\Users\user\AndroidStudioProjects\HowAreYou\app" />
+      <recent name="C:\Users\user\AndroidStudioProjects\HowAreYou\app\src\main\res\animator" />
+      <recent name="C:\Users\user\AndroidStudioProjects\ZeroApp\app\src\main\java\com\example\zeroapp\util" />
+    </key>
+    <key name="android.template.1963243339">
+      <recent name="antuere.data.remote_day_database" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\user\AndroidStudioProjects\HowAreYou\docs" />
+      <recent name="C:\Users\user\AndroidStudioProjects\HowAreYou\docs\_includes" />
+      <recent name="C:\Users\user\AndroidStudioProjects\HowAreYou\app\src\main" />
+      <recent name="C:\Users\user\AndroidStudioProjects\HowAreYou\app\src\main\java\antuere\how_are_you\presentation\base\ui_compose_components\progress_indicator" />
+      <recent name="C:\Users\user\AndroidStudioProjects\HowAreYou\app\src\main\java\antuere\how_are_you\presentation\screens\detail\ui_compose\components" />
+    </key>
+    <key name="android.template.-496553233">
+      <recent name="com.example.zeroapp.presentation.cats" />
+    </key>
+    <key name="MoveKotlinTopLevelDeclarationsDialog.RECENTS_KEY">
+      <recent name="antuere.domain.dto" />
+      <recent name="antuere.how_are_you.presentation.screens.splash" />
+      <recent name="antuere.macrobenchmark" />
+      <recent name="antuere.data.util" />
+      <recent name="antuere.how_are_you.presentation.base" />
+    </key>
+    <key name="android.template.207604597">
+      <recent name="com.example.zeroapp.presentation.register" />
+    </key>
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="com.example.zeroapp.presentation.pin_code_сreating" />
+    </key>
+    <key name="android.template.1767074739">
+      <recent name="com.example.zeroapp" />
+    </key>
+    <key name="CopyKotlinDeclarationDialog.RECENTS_KEY">
+      <recent name="com.example.zeroapp.presentation.base.ui_dialog_compose" />
+      <recent name="com.example.zeroapp.presentation.base.recycle_view" />
+      <recent name="antuere.data.remote_day_database.entities" />
+      <recent name="antuere.domain.dto" />
+      <recent name="antuere.data.remoteDataBase.converters" />
+    </key>
+    <key name="android.template.-746683076">
+      <recent name="com.example.zeroapp.presentation.mental_tips" />
+    </key>
+    <key name="android.template.336649833">
+      <recent name="com.example.zeroapp" />
+    </key>
+    <key name="android.template.325666582">
+      <recent name="antuere.data" />
+    </key>
+  </component>
+  <component name="RunAnythingCache">
+    <option name="myCommands">
+      <command value="gradle signReport" />
+      <command value="gradlew versionCatalogUpdate --interactive" />
+    </option>
+  </component>
+  <component name="RunManager" selected="Android App.app">
+    <configuration name="app" type="AndroidRunConfigurationType" factoryName="Android App" activateToolWindowBeforeRun="false">
+      <module name="HowAreYou.app.main" />
+      <option name="DEPLOY" value="true" />
+      <option name="DEPLOY_APK_FROM_BUNDLE" value="false" />
+      <option name="DEPLOY_AS_INSTANT" value="false" />
+      <option name="ARTIFACT_NAME" value="" />
+      <option name="PM_INSTALL_OPTIONS" value="" />
+      <option name="ALL_USERS" value="false" />
+      <option name="ALWAYS_INSTALL_WITH_PM" value="false" />
+      <option name="CLEAR_APP_STORAGE" value="false" />
+      <option name="DYNAMIC_FEATURES_DISABLED_LIST" value="" />
+      <option name="ACTIVITY_EXTRA_FLAGS" value="" />
+      <option name="MODE" value="default_activity" />
+      <option name="CLEAR_LOGCAT" value="false" />
+      <option name="SHOW_LOGCAT_AUTOMATICALLY" value="false" />
+      <option name="INSPECTION_WITHOUT_ACTIVITY_RESTART" value="false" />
+      <option name="TARGET_SELECTION_MODE" value="DEVICE_AND_SNAPSHOT_COMBO_BOX" />
+      <option name="SELECTED_CLOUD_MATRIX_CONFIGURATION_ID" value="-1" />
+      <option name="SELECTED_CLOUD_MATRIX_PROJECT_ID" value="" />
+      <option name="DEBUGGER_TYPE" value="Auto" />
+      <Auto>
+        <option name="USE_JAVA_AWARE_DEBUGGER" value="false" />
+        <option name="SHOW_STATIC_VARS" value="true" />
+        <option name="WORKING_DIR" value="" />
+        <option name="TARGET_LOGGING_CHANNELS" value="lldb process:gdb-remote packets" />
+        <option name="SHOW_OPTIMIZED_WARNING" value="true" />
+      </Auto>
+      <Hybrid>
+        <option name="USE_JAVA_AWARE_DEBUGGER" value="false" />
+        <option name="SHOW_STATIC_VARS" value="true" />
+        <option name="WORKING_DIR" value="" />
+        <option name="TARGET_LOGGING_CHANNELS" value="lldb process:gdb-remote packets" />
+        <option name="SHOW_OPTIMIZED_WARNING" value="true" />
+      </Hybrid>
+      <Java />
+      <Native>
+        <option name="USE_JAVA_AWARE_DEBUGGER" value="false" />
+        <option name="SHOW_STATIC_VARS" value="true" />
+        <option name="WORKING_DIR" value="" />
+        <option name="TARGET_LOGGING_CHANNELS" value="lldb process:gdb-remote packets" />
+        <option name="SHOW_OPTIMIZED_WARNING" value="true" />
+      </Native>
+      <Profilers>
+        <option name="ADVANCED_PROFILING_ENABLED" value="false" />
+        <option name="STARTUP_PROFILING_ENABLED" value="false" />
+        <option name="STARTUP_CPU_PROFILING_ENABLED" value="false" />
+        <option name="STARTUP_CPU_PROFILING_CONFIGURATION_NAME" value="Java/Kotlin Method Sample (legacy)" />
+        <option name="STARTUP_NATIVE_MEMORY_PROFILING_ENABLED" value="false" />
+        <option name="NATIVE_MEMORY_SAMPLE_RATE_BYTES" value="2048" />
+      </Profilers>
+      <option name="DEEP_LINK" value="" />
+      <option name="ACTIVITY_CLASS" value="" />
+      <option name="SEARCH_ACTIVITY_IN_GLOBAL_SCOPE" value="false" />
+      <option name="SKIP_ACTIVITY_VALIDATION" value="false" />
+      <method v="2">
+        <option name="Android.Gradle.BeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ExampleStartupBenchmark" type="AndroidTestRunConfigurationType" factoryName="Android Instrumented Tests" temporary="true" nameIsGenerated="true">
+      <module name="HowAreYou.macrobenchmark.main" />
+      <option name="TESTING_TYPE" value="2" />
+      <option name="METHOD_NAME" value="" />
+      <option name="CLASS_NAME" value="antuere.macrobenchmark.ExampleStartupBenchmark" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="TEST_NAME_REGEX" value="" />
+      <option name="INSTRUMENTATION_RUNNER_CLASS" value="" />
+      <option name="EXTRA_OPTIONS" value="" />
+      <option name="RETENTION_ENABLED" value="No" />
+      <option name="RETENTION_MAX_SNAPSHOTS" value="2" />
+      <option name="RETENTION_COMPRESS_SNAPSHOTS" value="false" />
+      <option name="CLEAR_LOGCAT" value="false" />
+      <option name="SHOW_LOGCAT_AUTOMATICALLY" value="false" />
+      <option name="INSPECTION_WITHOUT_ACTIVITY_RESTART" value="false" />
+      <option name="TARGET_SELECTION_MODE" value="DEVICE_AND_SNAPSHOT_COMBO_BOX" />
+      <option name="SELECTED_CLOUD_MATRIX_CONFIGURATION_ID" value="-1" />
+      <option name="SELECTED_CLOUD_MATRIX_PROJECT_ID" value="" />
+      <option name="DEBUGGER_TYPE" value="Auto" />
+      <Auto>
+        <option name="USE_JAVA_AWARE_DEBUGGER" value="false" />
+        <option name="SHOW_STATIC_VARS" value="true" />
+        <option name="WORKING_DIR" value="" />
+        <option name="TARGET_LOGGING_CHANNELS" value="lldb process:gdb-remote packets" />
+        <option name="SHOW_OPTIMIZED_WARNING" value="true" />
+      </Auto>
+      <Hybrid>
+        <option name="USE_JAVA_AWARE_DEBUGGER" value="false" />
+        <option name="SHOW_STATIC_VARS" value="true" />
+        <option name="WORKING_DIR" value="" />
+        <option name="TARGET_LOGGING_CHANNELS" value="lldb process:gdb-remote packets" />
+        <option name="SHOW_OPTIMIZED_WARNING" value="true" />
+      </Hybrid>
+      <Java />
+      <Native>
+        <option name="USE_JAVA_AWARE_DEBUGGER" value="false" />
+        <option name="SHOW_STATIC_VARS" value="true" />
+        <option name="WORKING_DIR" value="" />
+        <option name="TARGET_LOGGING_CHANNELS" value="lldb process:gdb-remote packets" />
+        <option name="SHOW_OPTIMIZED_WARNING" value="true" />
+      </Native>
+      <Profilers>
+        <option name="ADVANCED_PROFILING_ENABLED" value="false" />
+        <option name="STARTUP_PROFILING_ENABLED" value="false" />
+        <option name="STARTUP_CPU_PROFILING_ENABLED" value="false" />
+        <option name="STARTUP_CPU_PROFILING_CONFIGURATION_NAME" value="Java/Kotlin Method Sample (legacy)" />
+        <option name="STARTUP_NATIVE_MEMORY_PROFILING_ENABLED" value="false" />
+        <option name="NATIVE_MEMORY_SAMPLE_RATE_BYTES" value="2048" />
+      </Profilers>
+      <method v="2">
+        <option name="Android.Gradle.BeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="onboardFlowBaselineOFF()" type="AndroidTestRunConfigurationType" factoryName="Android Instrumented Tests" temporary="true" nameIsGenerated="true">
+      <module name="HowAreYou.macrobenchmark.main" />
+      <option name="TESTING_TYPE" value="3" />
+      <option name="METHOD_NAME" value="onboardFlowBaselineOFF" />
+      <option name="CLASS_NAME" value="antuere.macrobenchmark.ExampleStartupBenchmark" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="TEST_NAME_REGEX" value="" />
+      <option name="INSTRUMENTATION_RUNNER_CLASS" value="" />
+      <option name="EXTRA_OPTIONS" value="" />
+      <option name="RETENTION_ENABLED" value="No" />
+      <option name="RETENTION_MAX_SNAPSHOTS" value="2" />
+      <option name="RETENTION_COMPRESS_SNAPSHOTS" value="false" />
+      <option name="CLEAR_LOGCAT" value="false" />
+      <option name="SHOW_LOGCAT_AUTOMATICALLY" value="false" />
+      <option name="INSPECTION_WITHOUT_ACTIVITY_RESTART" value="false" />
+      <option name="TARGET_SELECTION_MODE" value="DEVICE_AND_SNAPSHOT_COMBO_BOX" />
+      <option name="SELECTED_CLOUD_MATRIX_CONFIGURATION_ID" value="-1" />
+      <option name="SELECTED_CLOUD_MATRIX_PROJECT_ID" value="" />
+      <option name="DEBUGGER_TYPE" value="Auto" />
+      <Auto>
+        <option name="USE_JAVA_AWARE_DEBUGGER" value="false" />
+        <option name="SHOW_STATIC_VARS" value="true" />
+        <option name="WORKING_DIR" value="" />
+        <option name="TARGET_LOGGING_CHANNELS" value="lldb process:gdb-remote packets" />
+        <option name="SHOW_OPTIMIZED_WARNING" value="true" />
+      </Auto>
+      <Hybrid>
+        <option name="USE_JAVA_AWARE_DEBUGGER" value="false" />
+        <option name="SHOW_STATIC_VARS" value="true" />
+        <option name="WORKING_DIR" value="" />
+        <option name="TARGET_LOGGING_CHANNELS" value="lldb process:gdb-remote packets" />
+        <option name="SHOW_OPTIMIZED_WARNING" value="true" />
+      </Hybrid>
+      <Java />
+      <Native>
+        <option name="USE_JAVA_AWARE_DEBUGGER" value="false" />
+        <option name="SHOW_STATIC_VARS" value="true" />
+        <option name="WORKING_DIR" value="" />
+        <option name="TARGET_LOGGING_CHANNELS" value="lldb process:gdb-remote packets" />
+        <option name="SHOW_OPTIMIZED_WARNING" value="true" />
+      </Native>
+      <Profilers>
+        <option name="ADVANCED_PROFILING_ENABLED" value="false" />
+        <option name="STARTUP_PROFILING_ENABLED" value="false" />
+        <option name="STARTUP_CPU_PROFILING_ENABLED" value="false" />
+        <option name="STARTUP_CPU_PROFILING_CONFIGURATION_NAME" value="Java/Kotlin Method Sample (legacy)" />
+        <option name="STARTUP_NATIVE_MEMORY_PROFILING_ENABLED" value="false" />
+        <option name="NATIVE_MEMORY_SAMPLE_RATE_BYTES" value="2048" />
+      </Profilers>
+      <method v="2">
+        <option name="Android.Gradle.BeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="startup()" type="AndroidTestRunConfigurationType" factoryName="Android Instrumented Tests" temporary="true" nameIsGenerated="true">
+      <module name="HowAreYou.macrobenchmark.main" />
+      <option name="TESTING_TYPE" value="3" />
+      <option name="METHOD_NAME" value="startup" />
+      <option name="CLASS_NAME" value="antuere.macrobenchmark.ExampleStartupBenchmark" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="TEST_NAME_REGEX" value="" />
+      <option name="INSTRUMENTATION_RUNNER_CLASS" value="" />
+      <option name="EXTRA_OPTIONS" value="" />
+      <option name="RETENTION_ENABLED" value="No" />
+      <option name="RETENTION_MAX_SNAPSHOTS" value="2" />
+      <option name="RETENTION_COMPRESS_SNAPSHOTS" value="false" />
+      <option name="CLEAR_LOGCAT" value="false" />
+      <option name="SHOW_LOGCAT_AUTOMATICALLY" value="false" />
+      <option name="INSPECTION_WITHOUT_ACTIVITY_RESTART" value="false" />
+      <option name="TARGET_SELECTION_MODE" value="DEVICE_AND_SNAPSHOT_COMBO_BOX" />
+      <option name="SELECTED_CLOUD_MATRIX_CONFIGURATION_ID" value="-1" />
+      <option name="SELECTED_CLOUD_MATRIX_PROJECT_ID" value="" />
+      <option name="DEBUGGER_TYPE" value="Auto" />
+      <Auto>
+        <option name="USE_JAVA_AWARE_DEBUGGER" value="false" />
+        <option name="SHOW_STATIC_VARS" value="true" />
+        <option name="WORKING_DIR" value="" />
+        <option name="TARGET_LOGGING_CHANNELS" value="lldb process:gdb-remote packets" />
+        <option name="SHOW_OPTIMIZED_WARNING" value="true" />
+      </Auto>
+      <Hybrid>
+        <option name="USE_JAVA_AWARE_DEBUGGER" value="false" />
+        <option name="SHOW_STATIC_VARS" value="true" />
+        <option name="WORKING_DIR" value="" />
+        <option name="TARGET_LOGGING_CHANNELS" value="lldb process:gdb-remote packets" />
+        <option name="SHOW_OPTIMIZED_WARNING" value="true" />
+      </Hybrid>
+      <Java />
+      <Native>
+        <option name="USE_JAVA_AWARE_DEBUGGER" value="false" />
+        <option name="SHOW_STATIC_VARS" value="true" />
+        <option name="WORKING_DIR" value="" />
+        <option name="TARGET_LOGGING_CHANNELS" value="lldb process:gdb-remote packets" />
+        <option name="SHOW_OPTIMIZED_WARNING" value="true" />
+      </Native>
+      <Profilers>
+        <option name="ADVANCED_PROFILING_ENABLED" value="false" />
+        <option name="STARTUP_PROFILING_ENABLED" value="false" />
+        <option name="STARTUP_CPU_PROFILING_ENABLED" value="false" />
+        <option name="STARTUP_CPU_PROFILING_CONFIGURATION_NAME" value="Java/Kotlin Method Sample (legacy)" />
+        <option name="STARTUP_NATIVE_MEMORY_PROFILING_ENABLED" value="false" />
+        <option name="NATIVE_MEMORY_SAMPLE_RATE_BYTES" value="2048" />
+      </Profilers>
+      <method v="2">
+        <option name="Android.Gradle.BeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Check libraries updates" type="GradleRunConfiguration" factoryName="Gradle">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="versionCatalogUpdate" />
+            <option value="--interactive" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <method v="2" />
+    </configuration>
+    <configuration name="ExampleUnitTest.addition_isCorrect" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":app:testDebugUnitTest" />
+            <option value="--tests" />
+            <option value="&quot;com.example.zeroapp.ExampleUnitTest.addition_isCorrect&quot;" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <method v="2" />
+    </configuration>
+    <configuration name="ZeroApp [signReport]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="signReport" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <method v="2" />
+    </configuration>
+    <configuration name="generateBaselineProfile" type="GradleRunConfiguration" factoryName="Gradle">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="--rerun-tasks -P android.testInstrumentationRunnerArguments.class=antuere.macrobenchmark.BaselineProfileGenerator" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":macrobenchmark:pixel2Api31BenchmarkAndroidTest" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Android App.app" />
+      <item itemvalue="Android Instrumented Tests.onboardFlowBaselineOFF()" />
+      <item itemvalue="Android Instrumented Tests.ExampleStartupBenchmark" />
+      <item itemvalue="Android Instrumented Tests.startup()" />
+      <item itemvalue="Gradle.Check libraries updates" />
+      <item itemvalue="Gradle.generateBaselineProfile" />
+      <item itemvalue="Gradle.ExampleUnitTest.addition_isCorrect" />
+      <item itemvalue="Gradle.ZeroApp [signReport]" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Gradle.ZeroApp [signReport]" />
+        <item itemvalue="Gradle.ExampleUnitTest.addition_isCorrect" />
+        <item itemvalue="Android Instrumented Tests.startup()" />
+        <item itemvalue="Android Instrumented Tests.ExampleStartupBenchmark" />
+        <item itemvalue="Android Instrumented Tests.onboardFlowBaselineOFF()" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="SvnConfiguration">
+    <configuration>C:\Users\user\AppData\Roaming\Subversion</configuration>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="238fa176-6b00-4155-b5c8-88c2fc26867f" name="Changes" comment="" />
+      <created>1660810252251</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1660810252251</updated>
+    </task>
+    <task id="LOCAL-00109" summary="Fix russian translate; Add Firebase Performance; Change animation duration&#10;&#10;- New version - 0.6.1;&#10;- Fix translation on Russian language;&#10;- Increase animation duration;&#10;- Add Firebase Performance monitor;">
+      <created>1679301369322</created>
+      <option name="number" value="00109" />
+      <option name="presentableId" value="LOCAL-00109" />
+      <option name="project" value="LOCAL" />
+      <updated>1679301369323</updated>
+    </task>
+    <task id="LOCAL-00110" summary="Improve animations; Add encryption for days data; &#10;&#10;- New version - 0.6.2;&#10;- Improve animations between screen navigation;&#10;- Add encryption for day text saved on Firebase;">
+      <created>1679322963594</created>
+      <option name="number" value="00110" />
+      <option name="presentableId" value="LOCAL-00110" />
+      <option name="project" value="LOCAL" />
+      <updated>1679322963595</updated>
+    </task>
+    <task id="LOCAL-00111" summary="Add more complex logic for animation&#10;&#10;- New version - 0.6.3;&#10;- Used new animations;&#10;- Increase animation duration;">
+      <created>1679385708031</created>
+      <option name="number" value="00111" />
+      <option name="presentableId" value="LOCAL-00111" />
+      <option name="project" value="LOCAL" />
+      <updated>1679385708032</updated>
+    </task>
+    <task id="LOCAL-00112" summary="Start design development, Fix bug with filter in History screen;&#10;&#10;- Change all colors in app;&#10;- Add images for cards in Home screen;&#10;- Add roboto_bold;&#10;- Fix bug with filter closing in History screen">
+      <created>1679657668822</created>
+      <option name="number" value="00112" />
+      <option name="presentableId" value="LOCAL-00112" />
+      <option name="project" value="LOCAL" />
+      <updated>1679657668823</updated>
+    </task>
+    <task id="LOCAL-00113" summary="Add new colors; Add vibration for invalid PIN-code; Improve translation on Russian; &#10;&#10;- Compose UI components now have correct roles of colors by material3;&#10;- Add vibration for invalid PIN-code on SecureEntryScreen&#10;- Improve translation on Russian language;">
+      <created>1679916380531</created>
+      <option name="number" value="00113" />
+      <option name="presentableId" value="LOCAL-00113" />
+      <option name="project" value="LOCAL" />
+      <updated>1679916380532</updated>
+    </task>
+    <task id="LOCAL-00114" summary="Improve PinCirclesIndicate animations. &#10;&#10;- Improve PinCirclesIndicate animations for SecureEntry and Settings screens;">
+      <created>1680014747286</created>
+      <option name="number" value="00114" />
+      <option name="presentableId" value="LOCAL-00114" />
+      <option name="project" value="LOCAL" />
+      <updated>1680014747286</updated>
+    </task>
+    <task id="LOCAL-00115" summary="Change top bar logic in History screen, Improve render App Icon in screens, Change color for snackbar. &#10;&#10;- Top bar in HistoryScreen render correct, if days entries dont exist yet, filter btn not showing;&#10;- Icon app in SecureScreen, SignInScreen and SignUpScreen have correct padding and size;&#10;- Change color for snackbar;">
+      <created>1680177179311</created>
+      <option name="number" value="00115" />
+      <option name="presentableId" value="LOCAL-00115" />
+      <option name="project" value="LOCAL" />
+      <updated>1680177179312</updated>
+    </task>
+    <task id="LOCAL-00116" summary="Change tones on colors, change color to buttons in nav bar&#10;&#10;- Change tones of primary colors;&#10;- Now navigation button always dark.">
+      <created>1680594644560</created>
+      <option name="number" value="00116" />
+      <option name="presentableId" value="LOCAL-00116" />
+      <option name="project" value="LOCAL" />
+      <updated>1680594644560</updated>
+    </task>
+    <task id="LOCAL-00117" summary="Improve design of home screen&#10;&#10;- Add icon for quote card;&#10;- Add gradients colors for all cards in home screen;">
+      <created>1680790062524</created>
+      <option name="number" value="00117" />
+      <option name="presentableId" value="LOCAL-00117" />
+      <option name="project" value="LOCAL" />
+      <updated>1680790062524</updated>
+    </task>
+    <task id="LOCAL-00118" summary="Updated to Compose 1.4; Filter behavior in history screen changed;&#10;&#10;- Bottom sheet from history screen replaced on DateRangePicker;&#10;- Add new color logic to text fields;&#10;- Updated compose to 1.4">
+      <created>1680875849035</created>
+      <option name="number" value="00118" />
+      <option name="presentableId" value="LOCAL-00118" />
+      <option name="project" value="LOCAL" />
+      <updated>1680875849035</updated>
+    </task>
+    <task id="LOCAL-00119" summary="Migrate to pager in Compose 1.4; Add new colors; Optimize used libraries;&#10;&#10;- Migrate from accompanist pager to Compose 1.4 pager;&#10;- Add util class GradientDefaults;&#10;- Add gradients for all cards in the app;&#10;- Delete unnecessary libraries and classes.">
+      <created>1681128128016</created>
+      <option name="number" value="00119" />
+      <option name="presentableId" value="LOCAL-00119" />
+      <option name="project" value="LOCAL" />
+      <updated>1681128128016</updated>
+    </task>
+    <task id="LOCAL-00120" summary="Add blocking backhandler; ShadowLine for scrollable elements; Improve add day screen &#10;&#10;- New version - 0.7.1;&#10;- While transition between screens not finished - backhandler now disable;&#10;- Add top shadow for scrollable elements when scrollable start;&#10;- Keyboard behavior fixed for add day screen;&#10;- Little optimized unnecessary recompositions.">
+      <created>1681223723873</created>
+      <option name="number" value="00120" />
+      <option name="presentableId" value="LOCAL-00120" />
+      <option name="project" value="LOCAL" />
+      <updated>1681223723874</updated>
+    </task>
+    <task id="LOCAL-00121" summary="Delete all debug logs by Timber">
+      <created>1681386291326</created>
+      <option name="number" value="00121" />
+      <option name="presentableId" value="LOCAL-00121" />
+      <option name="project" value="LOCAL" />
+      <updated>1681386291327</updated>
+    </task>
+    <task id="LOCAL-00122" summary="Improve padding for screens Sign in, Sign Up, Reset pass, Update to Gradle 8, Kotlin 1.8">
+      <created>1681480528751</created>
+      <option name="number" value="00122" />
+      <option name="presentableId" value="LOCAL-00122" />
+      <option name="project" value="LOCAL" />
+      <updated>1681480528751</updated>
+    </task>
+    <task id="LOCAL-00123" summary="Implement day editor in DetailScreen, change colors for gradients, Add UiText for DefaultTopBar">
+      <created>1681735907265</created>
+      <option name="number" value="00123" />
+      <option name="presentableId" value="LOCAL-00123" />
+      <option name="project" value="LOCAL" />
+      <updated>1681735907266</updated>
+    </task>
+    <task id="LOCAL-00124" summary="Rework Typography logic, add new font.">
+      <created>1681741601273</created>
+      <option name="number" value="00124" />
+      <option name="presentableId" value="LOCAL-00124" />
+      <option name="project" value="LOCAL" />
+      <updated>1681741601273</updated>
+    </task>
+    <task id="LOCAL-00125" summary="Add time limit for update quote from server">
+      <created>1681742767051</created>
+      <option name="number" value="00125" />
+      <option name="presentableId" value="LOCAL-00125" />
+      <option name="project" value="LOCAL" />
+      <updated>1681742767051</updated>
+    </task>
+    <task id="LOCAL-00126" summary="Add app icons, add support for &quot;Per-app language&quot;&#10;&#10;- New version - 0.8.0;&#10;- Add supports &quot;Per-app language&quot; for api33+;&#10;- Change app icons;&#10;- Change fonts weight;&#10;- Delete unnecessary XML files and fonts;">
+      <created>1681828526823</created>
+      <option name="number" value="00126" />
+      <option name="presentableId" value="LOCAL-00126" />
+      <option name="project" value="LOCAL" />
+      <updated>1681828526823</updated>
+    </task>
+    <task id="LOCAL-00127" summary="Improve animation for expandable card in HelplinesScreen; For test add different gradient for day in HistoryScreen.">
+      <created>1681916561024</created>
+      <option name="number" value="00127" />
+      <option name="presentableId" value="LOCAL-00127" />
+      <option name="project" value="LOCAL" />
+      <updated>1681916561024</updated>
+    </task>
+    <task id="LOCAL-00128" summary="Change smiles images, add new gradients for history screen, add gradient for snackbar.">
+      <created>1682001728678</created>
+      <option name="number" value="00128" />
+      <option name="presentableId" value="LOCAL-00128" />
+      <option name="project" value="LOCAL" />
+      <updated>1682001728678</updated>
+    </task>
+    <task id="LOCAL-00129" summary="Add vibration for long click in days grid">
+      <created>1682076935075</created>
+      <option name="number" value="00129" />
+      <option name="presentableId" value="LOCAL-00129" />
+      <option name="project" value="LOCAL" />
+      <updated>1682076935075</updated>
+    </task>
+    <task id="LOCAL-00130" summary="Change dayText description sized">
+      <created>1682085154040</created>
+      <option name="number" value="00130" />
+      <option name="presentableId" value="LOCAL-00130" />
+      <option name="project" value="LOCAL" />
+      <updated>1682085154040</updated>
+    </task>
+    <task id="LOCAL-00131" summary="Add CalendarImage for HistoryScreen.">
+      <created>1682347779065</created>
+      <option name="number" value="00131" />
+      <option name="presentableId" value="LOCAL-00131" />
+      <option name="project" value="LOCAL" />
+      <updated>1682347779065</updated>
+    </task>
+    <task id="LOCAL-00132" summary="Add new images plugs for history screen, change some strings on russian.">
+      <created>1682429082491</created>
+      <option name="number" value="00132" />
+      <option name="presentableId" value="LOCAL-00132" />
+      <option name="project" value="LOCAL" />
+      <updated>1682429082492</updated>
+    </task>
+    <task id="LOCAL-00133" summary="Add image to header in HelpForYouScreen">
+      <created>1682433506537</created>
+      <option name="number" value="00133" />
+      <option name="presentableId" value="LOCAL-00133" />
+      <option name="project" value="LOCAL" />
+      <updated>1682433506537</updated>
+    </task>
+    <task id="LOCAL-00134" summary="Add plug in favorites screen, update and optimize svg images.&#10;&#10;- New version - 0.9.0;&#10;- Add image plug in favorites screen;&#10;- Update and optimize all svg images;">
+      <created>1682510833156</created>
+      <option name="number" value="00134" />
+      <option name="presentableId" value="LOCAL-00134" />
+      <option name="project" value="LOCAL" />
+      <updated>1682510833157</updated>
+    </task>
+    <task id="LOCAL-00135" summary="Add custom border in text for add day (for test) - not optimized yet.">
+      <created>1682607376806</created>
+      <option name="number" value="00135" />
+      <option name="presentableId" value="LOCAL-00135" />
+      <option name="project" value="LOCAL" />
+      <updated>1682607376806</updated>
+    </task>
+    <task id="LOCAL-00136" summary="Add borderWithText for SmileRow in AddDayScreen">
+      <created>1682689946517</created>
+      <option name="number" value="00136" />
+      <option name="presentableId" value="LOCAL-00136" />
+      <option name="project" value="LOCAL" />
+      <updated>1682689946517</updated>
+    </task>
+    <task id="LOCAL-00137" summary="Update baseline-prof, improves and fixes for AddDayScreen and CatsScreen.&#10;&#10;- Update baseline profile(startup performance increase to 14%);&#10;- Add colored stroke for smile row in addDayScreen;&#10;- Fix bug with saved bitmap in catsScreen;&#10;- Update compose bom to 2023.05.01 and gradle to 8.0.1;">
+      <created>1684416367677</created>
+      <option name="number" value="00137" />
+      <option name="presentableId" value="LOCAL-00137" />
+      <option name="project" value="LOCAL" />
+      <updated>1684416367677</updated>
+    </task>
+    <task id="LOCAL-00138" summary="Add version number to Settings screen; Improve support for large fonts.&#10;&#10;- New version: 0.9.2;&#10;- Add version number in Settings screen;&#10;- Add fixed size for fonts;&#10;- Improve support for large fonts;">
+      <created>1684851905681</created>
+      <option name="number" value="00138" />
+      <option name="presentableId" value="LOCAL-00138" />
+      <option name="project" value="LOCAL" />
+      <updated>1684851905682</updated>
+    </task>
+    <task id="LOCAL-00139" summary="Refactor MainActivity, Navigation logic.&#10;&#10;- Improve logic for determining the initial screen by SplashViewModel;&#10;- Refactor navigation logic, added popBackStack;&#10;- Refactor bottom navigation, added BottomDestinations class.">
+      <created>1685024003871</created>
+      <option name="number" value="00139" />
+      <option name="presentableId" value="LOCAL-00139" />
+      <option name="project" value="LOCAL" />
+      <updated>1685024003871</updated>
+    </task>
+    <task id="LOCAL-00140" summary="Start implement OnboardScreen (not finish yet).">
+      <created>1685109297804</created>
+      <option name="number" value="00140" />
+      <option name="presentableId" value="LOCAL-00140" />
+      <option name="project" value="LOCAL" />
+      <updated>1685109297804</updated>
+    </task>
+    <task id="LOCAL-00141" summary="Implement onboard screens; delete unnecessary vectors.">
+      <created>1685372671358</created>
+      <option name="number" value="00141" />
+      <option name="presentableId" value="LOCAL-00141" />
+      <option name="project" value="LOCAL" />
+      <updated>1685372671358</updated>
+    </task>
+    <task id="LOCAL-00142" summary="Update baseline profile, add new benchmark tests&#10;&#10;- New version - 0.9.3;&#10;- Update baseline profile;&#10;- Add new macrobenchmarks;">
+      <created>1685457021736</created>
+      <option name="number" value="00142" />
+      <option name="presentableId" value="LOCAL-00142" />
+      <option name="project" value="LOCAL" />
+      <updated>1685457021737</updated>
+    </task>
+    <task id="LOCAL-00143" summary="Optimize all resources, add predictive back support, remove title from cats screen; &#10;&#10;- New version - 1.0.0-rc;&#10;- Add predictive back support for future Android 14;&#10;- Update baseline profile;&#10;- Optimize all resources;&#10;- Remove title from cats screen and add fillMaxSize modifier to CatsImage;">
+      <created>1685544307029</created>
+      <option name="number" value="00143" />
+      <option name="presentableId" value="LOCAL-00143" />
+      <option name="project" value="LOCAL" />
+      <updated>1685544307029</updated>
+    </task>
+    <task id="LOCAL-00144" summary="Change logic for progress indicators in CatImage screen">
+      <created>1685629801052</created>
+      <option name="number" value="00144" />
+      <option name="presentableId" value="LOCAL-00144" />
+      <option name="project" value="LOCAL" />
+      <updated>1685629801053</updated>
+    </task>
+    <task id="LOCAL-00145" summary="Fixed cats load bug.">
+      <created>1685631173337</created>
+      <option name="number" value="00145" />
+      <option name="presentableId" value="LOCAL-00145" />
+      <option name="project" value="LOCAL" />
+      <updated>1685631173338</updated>
+    </task>
+    <task id="LOCAL-00146" summary="Optimize expand button in HelplineItem, Update Gradle to 8.0.2">
+      <created>1685709208714</created>
+      <option name="number" value="00146" />
+      <option name="presentableId" value="LOCAL-00146" />
+      <option name="project" value="LOCAL" />
+      <updated>1685709208715</updated>
+    </task>
+    <task id="LOCAL-00147" summary="Refactor all coroutines, add PopUpProgressIndicator">
+      <created>1686055567375</created>
+      <option name="number" value="00147" />
+      <option name="presentableId" value="LOCAL-00147" />
+      <option name="project" value="LOCAL" />
+      <updated>1686055567375</updated>
+    </task>
+    <task id="LOCAL-00148" summary="Update OrbitMVI to 6.0; Add PopUpProgressIndicator to ResetScreen.">
+      <created>1686062888396</created>
+      <option name="number" value="00148" />
+      <option name="presentableId" value="LOCAL-00148" />
+      <option name="project" value="LOCAL" />
+      <updated>1686062888396</updated>
+    </task>
+    <task id="LOCAL-00149" summary="Add secure SignIn config, previous delete and not work anymore.">
+      <created>1686142930538</created>
+      <option name="number" value="00149" />
+      <option name="presentableId" value="LOCAL-00149" />
+      <option name="project" value="LOCAL" />
+      <updated>1686142930538</updated>
+    </task>
+    <task id="LOCAL-00150" summary="Fix text title size for CardWithQuote and optimize DefaultBottomNavBar">
+      <created>1686147669838</created>
+      <option name="number" value="00150" />
+      <option name="presentableId" value="LOCAL-00150" />
+      <option name="project" value="LOCAL" />
+      <updated>1686147669838</updated>
+    </task>
+    <task id="LOCAL-00151" summary="Update BaselineProfile and version catalog dependencies.">
+      <created>1686236708169</created>
+      <option name="number" value="00151" />
+      <option name="presentableId" value="LOCAL-00151" />
+      <option name="project" value="LOCAL" />
+      <updated>1686236708169</updated>
+    </task>
+    <task id="LOCAL-00152" summary="Refactor Util.kt and SmileProvider, Delete unnecessary DI functions.">
+      <created>1686315349022</created>
+      <option name="number" value="00152" />
+      <option name="presentableId" value="LOCAL-00152" />
+      <option name="project" value="LOCAL" />
+      <updated>1686315349022</updated>
+    </task>
+    <task id="LOCAL-00153" summary="Refactor names of compose functions, Add tested version of AccountSettingsScreen&#10;&#10;- Change name for compose functions: from &quot;..ScreenState&quot; to &quot;..ScreenContent&quot;;&#10;- Add tested version of AccountSettingsScreen, now support deleting data and account, and sign out;">
+      <created>1686753939993</created>
+      <option name="number" value="00153" />
+      <option name="presentableId" value="LOCAL-00153" />
+      <option name="project" value="LOCAL" />
+      <updated>1686753939993</updated>
+    </task>
+    <task id="LOCAL-00154" summary="Improve account settings screen">
+      <created>1686829669025</created>
+      <option name="number" value="00154" />
+      <option name="presentableId" value="LOCAL-00154" />
+      <option name="project" value="LOCAL" />
+      <updated>1686829669025</updated>
+    </task>
+    <task id="LOCAL-00155" summary="Change app icon">
+      <created>1687441621212</created>
+      <option name="number" value="00155" />
+      <option name="presentableId" value="LOCAL-00155" />
+      <option name="project" value="LOCAL" />
+      <updated>1687441621212</updated>
+    </task>
+    <task id="LOCAL-00156" summary="Add tested favicons for site in GitHub Pages.">
+      <created>1687442103373</created>
+      <option name="number" value="00156" />
+      <option name="presentableId" value="LOCAL-00156" />
+      <option name="project" value="LOCAL" />
+      <updated>1687442103373</updated>
+    </task>
+    <task id="LOCAL-00157" summary="Moved to source folder favicons.">
+      <created>1687443713748</created>
+      <option name="number" value="00157" />
+      <option name="presentableId" value="LOCAL-00157" />
+      <option name="project" value="LOCAL" />
+      <updated>1687443713748</updated>
+    </task>
+    <option name="localTasksCounter" value="158" />
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="CUSTOM_BOOLEAN_PROPERTIES">
+                <map>
+                  <entry key="Show.Git.Branches" value="true" />
+                </map>
+              </option>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="develop" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Add plug in favorites screen, update and optimize svg images.&#10;&#10;- New version - 0.9.0;&#10;- Add image plug in favorites screen;&#10;- Update and optimize all svg images;" />
+    <MESSAGE value="Add custom border in text for add day (for test) - not optimized yet." />
+    <MESSAGE value="Add borderWithText for SmileRow in AddDayScreen" />
+    <MESSAGE value="Update baseline-prof, improves and fixes for AddDayScreen and CatsScreen.&#10;&#10;- Update baseline profile(startup performance increase to 14%);&#10;- Add colored stroke for smile row in addDayScreen;&#10;- Fix bug with saved bitmap in catsScreen;&#10;- Update compose bom to 2023.05.01 and gradle to 8.0.1;" />
+    <MESSAGE value="Add version number to Settings screen; Improve support for large fonts.&#10;&#10;- New version: 0.9.2;&#10;- Add version number in Settings screen;&#10;- Add fixed size for fonts;&#10;- Improve support for large fonts;" />
+    <MESSAGE value="Refactor MainActivity, Navigation logic.&#10;&#10;- Improve logic for determining the initial screen by SplashViewModel;&#10;- Refactor navigation logic, added popBackStack;&#10;- Refactor bottom navigation, added BottomDestinations class." />
+    <MESSAGE value="Start implement OnboardScreen (not finish yet)." />
+    <MESSAGE value="Implement onboard screens; delete unnecessary vectors." />
+    <MESSAGE value="Update baseline profile, add new benchmark tests&#10;&#10;- New version - 0.9.3;&#10;- Update baseline profile;&#10;- Add new macrobenchmarks;" />
+    <MESSAGE value="Optimize all resources, remove title from cats screen; &#10;&#10;- New version - 1.0.0-rc;&#10;- Update baseline profile;&#10;- Optimize all resources;&#10;- Remove title from cats screen and add fillMaxSize modifier to CatsImage;" />
+    <MESSAGE value="Optimize all resources, add predictive back support, remove title from cats screen; &#10;&#10;- New version - 1.0.0-rc;&#10;- Add predictive back support for future Android 14;&#10;- Update baseline profile;&#10;- Optimize all resources;&#10;- Remove title from cats screen and add fillMaxSize modifier to CatsImage;" />
+    <MESSAGE value="Change logic for progress indicators in CatImage screen" />
+    <MESSAGE value="Fixed cats load bug." />
+    <MESSAGE value="Optimize expand button in HelplineItem, Update Gradle to 8.0.2" />
+    <MESSAGE value="Refactor all coroutines, add PopUpProgressIndicator" />
+    <MESSAGE value="Update OrbitMVI to 6.0; Add PopUpProgressIndicator to ResetScreen." />
+    <MESSAGE value="Add secure SignIn config, previous delete and not work anymore." />
+    <MESSAGE value="Fix text title size for CardWithQuote and optimize DefaultBottomNavBar" />
+    <MESSAGE value="Update BaselineProfile and version catalog dependencies." />
+    <MESSAGE value="Refactor Util.kt and SmileProvider, Delete unnecessary DI functions." />
+    <MESSAGE value="Refactor names of compose functions, Add tested version of AccountSettingsScreen&#10;&#10;- Change name for compose functions: from &quot;..ScreenState&quot; to &quot;..ScreenContent&quot;;&#10;- Add tested version of AccountSettingsScreen, now support deleting data and account, and sign out;" />
+    <MESSAGE value="Improve account settings screen" />
+    <MESSAGE value="Change app icon" />
+    <MESSAGE value="Add tested favicons for site in GitHub Pages." />
+    <MESSAGE value="Moved to source folder favicons." />
+    <option name="LAST_COMMIT_MESSAGE" value="Moved to source folder favicons." />
+    <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="true" />
+  </component>
+</project>
