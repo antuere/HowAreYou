@@ -8,6 +8,8 @@
 
 ---
 
+<br>
+
 <details>
 <summary>Privacy Policy</summary>
  
