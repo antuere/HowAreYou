@@ -100,5 +100,6 @@ Pay attention, that in this case records will be also deleted on your device! If
 You can read about data retention times [here](https://firebase.google.com/terms/data-processing-terms#6.-data-deletion).
 </details>
 <br>
+
 ---
 
