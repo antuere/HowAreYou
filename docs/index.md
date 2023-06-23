@@ -1,10 +1,11 @@
 <div align="center">
- <img src="https://github.com/antuere/HowAreYou/assets/98087954/ee00840e-9692-44df-a9a4-c9dc8ee64156" width="180" height="180">
+ <img src="https://github.com/antuere/HowAreYou/assets/98087954/ee00840e-9692-44df-a9a4-c9dc8ee64156" width="130" height="130">
 </div>
+<br>
 
 ## This page provides privacy policy and other useful information for the HowAreYou app user
 <details>
-<summary>Privacy Policy</summary>
+<summary><h3>Privacy Policy</h3></summary>
  
   ### Privacy policy
   
@@ -75,7 +76,7 @@ If you have any questions or suggestions about our Privacy Policy, do not hesita
 ---
 
 <details>
-<summary>How delete user account</summary>
+<summary><h2>How delete user account</h2></summary>
   To delete your HowAreYou account, you need to:
   
 1. In the application settings, go to manage account;
@@ -86,7 +87,7 @@ If you have any questions or suggestions about our Privacy Policy, do not hesita
 </details>
 
 <details>
-<summary>How delete user data</summary>
+<summary><h2>How delete user data</h2></summary>
 To delete your recorded days from the server you need to:
   
 1. In the application settings, go to manage account;

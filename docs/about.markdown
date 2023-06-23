@@ -1,6 +1,6 @@
 ---
 layout: page
-title: About HowAreYou
+title: About
 permalink: /about/
 ---
 
@@ -24,6 +24,6 @@ HowAreYou is an app, for tracking your mental state, which also allows you to vi
  <img src="https://github.com/antuere/HowAreYou/assets/98087954/0a104ef3-32c5-4d26-bfac-c024725e7e78" width="270" height="600">
 </div>
 
-
+---
 The app is open source, details [here](https://github.com/antuere/HowAreYou).
 
