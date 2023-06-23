@@ -34,18 +34,22 @@ fun DefaultTextField(
     singleLine: Boolean = false,
     maxLength: Int = Int.MAX_VALUE,
     maxLines: Int = 25,
-    shape : Shape = MaterialTheme.shapes.large,
+    shape: Shape = MaterialTheme.shapes.large,
     @StringRes toastTextId: Int? = null,
     colors: TextFieldColors = TextFieldDefaults.colors(
         focusedTextColor = MaterialTheme.colorScheme.onBackground,
         focusedContainerColor = MaterialTheme.colorScheme.background,
-        unfocusedContainerColor = MaterialTheme.colorScheme.background
+        unfocusedContainerColor = MaterialTheme.colorScheme.background,
+        errorContainerColor = MaterialTheme.colorScheme.background,
+        errorTextColor = MaterialTheme.colorScheme.error,
     ),
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
     visualTransformation: VisualTransformation = VisualTransformation.None,
     trailingIcon: @Composable (() -> Unit)? = null,
     leadingIcon: @Composable (() -> Unit)? = null,
+    isError: Boolean = false,
+    errorMessage: String? = null,
 ) {
     val context = LocalContext.current
     val toastText = stringResource(toastTextId ?: R.string.too_many_chars_default)
@@ -80,9 +84,19 @@ fun DefaultTextField(
         label = {
             Text(
                 text = label,
-                style = MaterialTheme.typography.bodyMedium,
-                fontWeight = FontWeight.Medium
+                style = MaterialTheme.typography.bodyMedium.copy(
+                    color = if (isError) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onBackground,
+                    fontWeight = FontWeight.Medium
+                )
             )
+        },
+        supportingText = {
+            if (isError) {
+                Text(
+                    text = errorMessage ?: stringResource(id = R.string.default_error),
+                    color = MaterialTheme.colorScheme.error
+                )
+            }
         },
         colors = colors,
         shape = shape,
@@ -93,6 +107,7 @@ fun DefaultTextField(
         trailingIcon = trailingIcon,
         leadingIcon = leadingIcon,
         maxLines = maxLines,
-        enabled = enabled
+        enabled = enabled,
+        isError = isError
     )
 }

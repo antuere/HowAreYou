@@ -3,10 +3,7 @@ package antuere.how_are_you.presentation.screens.settings
 import android.content.Intent
 import androidx.biometric.BiometricManager
 import androidx.lifecycle.viewModelScope
-import antuere.domain.authentication_manager.AuthenticationManager
-import antuere.domain.repository.DayRepository
 import antuere.domain.repository.SettingsRepository
-import antuere.domain.repository.ToggleBtnRepository
 import antuere.how_are_you.R
 import antuere.how_are_you.presentation.base.ViewModelMvi
 import antuere.how_are_you.presentation.base.ui_biometric_dialog.IUIBiometricListener
@@ -19,34 +16,24 @@ import antuere.how_are_you.presentation.screens.settings.state.SettingsState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.Container
 import org.orbitmvi.orbit.viewmodel.container
-import timber.log.Timber
 import javax.inject.Inject
 
 
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
-    private val dayRepository: DayRepository,
     private val settingsRepository: SettingsRepository,
-    private val toggleBtnRepository: ToggleBtnRepository,
-    private val authenticationManager: AuthenticationManager,
     private val uiBiometricDialog: UIBiometricDialog,
 ) : ViewModelMvi<SettingsState, SettingsSideEffect, SettingsIntent>() {
 
     override val container: Container<SettingsState, SettingsSideEffect> =
         container(SettingsState())
 
-    private var isShowDialogSignOut = false
-
     init {
-        Timber.i("Init bug check: init vm settings")
-
         getSettings()
-        checkIsHasDayEntity()
         checkBiometricsAvailable()
     }
 
@@ -84,6 +71,7 @@ class SettingsViewModel @Inject constructor(
                     }
                 }
             }
+
             is SettingsIntent.PinSettingChanged -> {
                 updateState { state.copy(isCheckedPin = intent.isChecked) }
                 if (intent.isChecked) {
@@ -97,35 +85,19 @@ class SettingsViewModel @Inject constructor(
                     }
                 }
             }
+
             is SettingsIntent.WorriedDialogSettingChanged -> {
                 updateState { state.copy(isCheckedWorriedDialog = intent.isChecked) }
                 viewModelScope.launch(Dispatchers.IO) {
                     settingsRepository.saveWorriedDialogSetting(intent.isChecked)
                 }
             }
+
             is SettingsIntent.SignInBtnClicked -> sideEffect(SettingsSideEffect.NavigateToSignIn)
-            is SettingsIntent.SignOutBtnClicked -> {
-                if (isShowDialogSignOut) {
-                    val dialog = UIDialog(
-                        title = R.string.dialog_delete_local_data_title,
-                        desc = R.string.dialog_delete_local_data_desc,
-                        icon = R.drawable.ic_delete,
-                        positiveButton = UIDialog.UiButton(
-                            text = R.string.dialog_delete_local_data_positive,
-                            onClick = {
-                                signOut(isSaveDayEntities = true)
-                            }),
-                        negativeButton = UIDialog.UiButton(
-                            text = R.string.dialog_delete_local_data_negative,
-                            onClick = {
-                                signOut(isSaveDayEntities = false)
-                            }),
-                    )
-                    sideEffect(SettingsSideEffect.Dialog(dialog))
-                } else {
-                    signOut(false)
-                }
+            is SettingsIntent.AccountSettingsBtnClicked -> {
+                sideEffect(SettingsSideEffect.NavigateToAccountSettings)
             }
+
             is SettingsIntent.PinCreationSheetClosed -> {
                 updateState {
                     state.copy(isCheckedPin = intent.isPinCreated, isShowBottomSheet = false)
@@ -138,32 +110,22 @@ class SettingsViewModel @Inject constructor(
                     sideEffect(SettingsSideEffect.Snackbar(UiText.StringResource(R.string.pin_code_create_success)))
                 }
             }
+
+            SettingsIntent.SignInAdviceClicked -> {
+                val dialog = UIDialog(
+                    title = R.string.settings_sign_in_title,
+                    desc = R.string.settings_sign_in_desc,
+                    icon = R.drawable.ic_cloud,
+                    positiveButton = UIDialog.UiButton(text = R.string.ok),
+                )
+                sideEffect(SettingsSideEffect.Dialog(dialog))
+            }
         }
     }
 
     private fun checkBiometricsAvailable() {
         updateState {
             state.copy(isEnableBiomAuthOnDevice = uiBiometricDialog.deviceHasBiometricHardware)
-        }
-    }
-
-    private fun checkIsHasDayEntity() {
-        viewModelScope.launch(Dispatchers.IO) {
-            dayRepository.getLastDay().collectLatest {
-                isShowDialogSignOut = it != null
-            }
-        }
-    }
-
-
-    private fun signOut(isSaveDayEntities: Boolean) {
-        viewModelScope.launch(Dispatchers.IO) {
-            if (!isSaveDayEntities) {
-                dayRepository.deleteAllDaysLocal()
-            }
-            authenticationManager.signOut()
-            toggleBtnRepository.resetToggleButtonState()
-            settingsRepository.resetUserNickname()
         }
     }
 
@@ -174,8 +136,6 @@ class SettingsViewModel @Inject constructor(
                 settingsRepository.getUserNickname(),
                 settingsRepository.getPinCode()
             ) { settings, username, pinCode ->
-
-                
                 updateState {
                     state.copy(
                         isLoading = false,

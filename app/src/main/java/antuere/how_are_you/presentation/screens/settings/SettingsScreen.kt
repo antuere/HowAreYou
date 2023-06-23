@@ -12,7 +12,7 @@ import antuere.how_are_you.R
 import antuere.how_are_you.presentation.base.ui_compose_components.top_bar.AppBarState
 import antuere.how_are_you.presentation.base.ui_text.UiText
 import antuere.how_are_you.presentation.screens.settings.state.SettingsSideEffect
-import antuere.how_are_you.presentation.screens.settings.ui_compose.SettingsScreenState
+import antuere.how_are_you.presentation.screens.settings.ui_compose.SettingsScreenContent
 import antuere.how_are_you.util.extensions.findFragmentActivity
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
@@ -21,6 +21,7 @@ import org.orbitmvi.orbit.compose.collectSideEffect
 @Composable
 fun SettingsScreen(
     onNavigateSignIn: () -> Unit,
+    onNavigateAccountSettings: () -> Unit,
     viewModel: SettingsViewModel = hiltViewModel(),
 ) {
     val appState = LocalAppState.current
@@ -48,7 +49,6 @@ fun SettingsScreen(
                 isVisibleBottomBar = true
             )
         )
-        appState.dismissSnackbar()
     }
 
     viewModel.collectSideEffect { sideEffect ->
@@ -63,7 +63,8 @@ fun SettingsScreen(
                     activity = fragmentActivity
                 )
             }
-            is SettingsSideEffect.NavigateToSignIn -> onNavigateSignIn()
+            SettingsSideEffect.NavigateToSignIn -> onNavigateSignIn()
+            SettingsSideEffect.NavigateToAccountSettings -> onNavigateAccountSettings()
             is SettingsSideEffect.BiometricNoneEnroll -> {
                 launcher.launch(sideEffect.enrollIntent)
             }
@@ -76,7 +77,7 @@ fun SettingsScreen(
         }
     }
 
-    SettingsScreenState(
+    SettingsScreenContent(
         viewState = { viewState },
         onIntent = { viewModel.onIntent(it) },
         bottomSheetState = bottomSheetState

@@ -5,6 +5,7 @@ sealed interface SettingsIntent {
     data class PinSettingChanged(val isChecked: Boolean) : SettingsIntent
     data class BiometricAuthSettingChanged(val isChecked: Boolean) : SettingsIntent
     data class PinCreationSheetClosed(val isPinCreated: Boolean) : SettingsIntent
-    object SignOutBtnClicked : SettingsIntent
+    object AccountSettingsBtnClicked : SettingsIntent
     object SignInBtnClicked : SettingsIntent
+    object SignInAdviceClicked : SettingsIntent
 }

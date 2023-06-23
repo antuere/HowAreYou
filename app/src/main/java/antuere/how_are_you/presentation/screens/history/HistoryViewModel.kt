@@ -22,7 +22,6 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.Container
 import org.orbitmvi.orbit.viewmodel.container
-import timber.log.Timber
 import javax.inject.Inject
 
 
@@ -44,7 +43,6 @@ class HistoryViewModel @Inject constructor(
     private var savedToggleBtnState: ToggleBtnState? = null
 
     init {
-        Timber.i("Init bug check: init vm history")
         getToggleButtonState()
         viewModelScope.launch(Dispatchers.IO) {
             dayRepository.getLastDay().collectLatest {
@@ -73,7 +71,7 @@ class HistoryViewModel @Inject constructor(
                         onClick = {
                             deleteDay(intent.day.dayId)
                         }),
-                    negativeButton = UIDialog.UiButton(text = R.string.no)
+                    negativeButton = UIDialog.UiButton(text = R.string.dialog_no)
                 )
                 sideEffect(HistorySideEffect.Vibration)
                 sideEffect(HistorySideEffect.Dialog(uiDialog))
@@ -107,12 +105,12 @@ class HistoryViewModel @Inject constructor(
                     FilterState.Disabled(toggleBtnState)
                 }
                 savedToggleBtnState = toggleBtnState
+                subscribeOnDaysFlow()
             }
         }
-        subscribeOnDaysFlow()
     }
 
-    private fun subscribeOnDaysFlow() {
+    private suspend fun subscribeOnDaysFlow() {
         val daysFlow = filterState.flatMapLatest { filterState ->
             when (filterState) {
                 is FilterState.Activated -> {
@@ -146,16 +144,14 @@ class HistoryViewModel @Inject constructor(
             }
         }
 
-        viewModelScope.launch(Dispatchers.IO) {
-            daysFlow.collectLatest { days ->
-                when (val filterState = filterState.first()) {
-                    is FilterState.Activated -> {
-                        getDaysByFilter(days)
-                    }
+        daysFlow.collectLatest { days ->
+            when (val filterState = filterState.first()) {
+                is FilterState.Activated -> {
+                    getDaysByFilter(days)
+                }
 
-                    is FilterState.Disabled -> {
-                        getDaysByToggleState(days, filterState.toggleBtnState)
-                    }
+                is FilterState.Disabled -> {
+                    getDaysByToggleState(days, filterState.toggleBtnState)
                 }
             }
         }
@@ -197,7 +193,7 @@ class HistoryViewModel @Inject constructor(
 
             ToggleBtnState.LAST_WEEK -> {
                 updateState {
-                    if (days.isEmpty() && !isHasSavedDays) {
+                    if (!isHasSavedDays && days.isEmpty()) {
                         return@updateState HistoryState.Empty.NoEntriesYet(
                             UiText.StringResource(R.string.no_days_all)
                         )
@@ -220,7 +216,7 @@ class HistoryViewModel @Inject constructor(
 
             ToggleBtnState.CURRENT_MONTH -> {
                 updateState {
-                    if (days.isEmpty() && !isHasSavedDays) {
+                    if (!isHasSavedDays && days.isEmpty()) {
                         return@updateState HistoryState.Empty.NoEntriesYet(
                             UiText.StringResource(R.string.no_days_all)
                         )

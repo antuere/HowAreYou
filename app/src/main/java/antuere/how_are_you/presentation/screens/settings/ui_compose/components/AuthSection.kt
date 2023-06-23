@@ -26,7 +26,8 @@ import antuere.how_are_you.util.extensions.fixedSize
 fun AuthSection(
     userName: String,
     onClickSignIn: () -> Unit,
-    onClickSignOut: () -> Unit,
+    onClickSignInAdvice: () -> Unit,
+    onClickAccountSettings: () -> Unit,
 ) {
     Column(
         horizontalAlignment = Alignment.Start
@@ -44,9 +45,7 @@ fun AuthSection(
         Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_0)))
 
         Text(
-            modifier = Modifier.padding(
-                horizontal = dimensionResource(id = R.dimen.padding_normal_2)
-            ),
+            modifier = Modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_normal_2)),
             fontSize = dimensionResource(id = R.dimen.textSize_normal_0).value.fixedSize,
             text = stringResource(id = R.string.how_are_you_text)
         )
@@ -61,14 +60,12 @@ fun AuthSection(
                         Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_4)))
 
                         OutlinedButton(
-                            onClick = { onClickSignOut() },
+                            onClick = { onClickAccountSettings() },
                             modifier = Modifier
-                                .padding(
-                                    horizontal = dimensionResource(id = R.dimen.padding_normal_2)
-                                )
+                                .padding(horizontal = dimensionResource(id = R.dimen.padding_normal_2))
                                 .align(Alignment.End)
                         ) {
-                            Text(text = stringResource(id = R.string.sign_out))
+                            Text(text = stringResource(id = R.string.account_settings))
                         }
                     }
                 }
@@ -79,14 +76,12 @@ fun AuthSection(
                         horizontalAlignment = Alignment.Start,
                     ) {
                         Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_0)))
-                        Text(
-                            modifier = Modifier.padding(
-                                horizontal = dimensionResource(id = R.dimen.padding_normal_2)
-                            ),
-                            fontSize = dimensionResource(id = R.dimen.textSize_normal_0).value.fixedSize,
-                            text = stringResource(id = R.string.sign_in_advice)
+
+                        SignInAdviceRow(
+                            modifier = Modifier.padding(start = dimensionResource(id = R.dimen.padding_normal_2)),
+                            onClickInfo = onClickSignInAdvice
                         )
-                        Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_4)))
+                        Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_1)))
 
                         Button(
                             onClick = { onClickSignIn() },
@@ -99,9 +94,7 @@ fun AuthSection(
                                 .align(Alignment.CenterHorizontally)
                         ) {
                             Text(
-                                modifier = Modifier.padding(
-                                    horizontal = dimensionResource(id = R.dimen.padding_normal_2)
-                                ),
+                                modifier = Modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_normal_2)),
                                 text = stringResource(id = R.string.sign_in),
                                 color = MaterialTheme.colorScheme.onPrimary
                             )
@@ -113,9 +106,7 @@ fun AuthSection(
         Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_4)))
         Divider(
             modifier = Modifier
-                .padding(
-                    horizontal = dimensionResource(id = R.dimen.padding_normal_2)
-                )
+                .padding(horizontal = dimensionResource(id = R.dimen.padding_normal_2))
                 .fillMaxWidth(),
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )

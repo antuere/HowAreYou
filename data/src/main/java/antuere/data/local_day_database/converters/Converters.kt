@@ -1,8 +1,7 @@
 package antuere.data.local_day_database.converters
 
 import androidx.room.TypeConverter
-import antuere.data.local_day_database.entities.SmileImage
-import java.util.*
+import antuere.domain.dto.SmileImage
 
 class Converters {
     @TypeConverter

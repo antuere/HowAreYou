@@ -11,7 +11,7 @@ import antuere.how_are_you.R
 import antuere.how_are_you.presentation.base.ui_compose_components.top_bar.AppBarState
 import antuere.how_are_you.presentation.base.ui_text.UiText
 import antuere.how_are_you.presentation.screens.mental_tips_categories.state.MentalTipsCategoriesSideEffect
-import antuere.how_are_you.presentation.screens.mental_tips_categories.ui_compose.MentalTipsCategoriesScreenState
+import antuere.how_are_you.presentation.screens.mental_tips_categories.ui_compose.MentalTipsCategoriesScreenContent
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
@@ -43,7 +43,7 @@ fun MentalTipsCategoriesScreen(
         }
     }
 
-    MentalTipsCategoriesScreenState(
+    MentalTipsCategoriesScreenContent(
         viewState = { viewState },
         onIntent = { viewModel.onIntent(it) }
     )

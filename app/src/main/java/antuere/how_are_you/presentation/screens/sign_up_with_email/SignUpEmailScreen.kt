@@ -13,7 +13,7 @@ import antuere.how_are_you.R
 import antuere.how_are_you.presentation.base.ui_compose_components.top_bar.AppBarState
 import antuere.how_are_you.presentation.base.ui_text.UiText
 import antuere.how_are_you.presentation.screens.sign_up_with_email.state.SignUpEmailSideEffect
-import antuere.how_are_you.presentation.screens.sign_up_with_email.ui_compose.SignUpEmailScreenState
+import antuere.how_are_you.presentation.screens.sign_up_with_email.ui_compose.SignUpEmailScreenContent
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
@@ -53,7 +53,7 @@ fun SignUpEmailScreen(
         }
     }
 
-    SignUpEmailScreenState(
+    SignUpEmailScreenContent(
         viewState = { viewState },
         onIntent = { viewModel.onIntent(it) },
         focusManager = focusManager

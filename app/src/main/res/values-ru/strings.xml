@@ -36,7 +36,7 @@
     <string name="email">Почта</string>
     <string name="password">Пароль</string>
     <string name="confirm_password">Подтвердите пароль</string>
-    <string name="nickname">Ваше имя</string>
+    <string name="nickname">Имя</string>
     <string name="sign_up">Зарегистрироваться</string>
     <string name="don_have_acc">Нет аккаунта? Создайте!</string>
     <string name="login_progress_name">Отличный день сегодня…</string>
@@ -126,11 +126,14 @@
     <string name="dialog_sign_out_negative">Отмена</string>
     <string name="dialog_delete_local_data_title">Ваши дни</string>
     <string name="dialog_delete_local_data_desc">При выходе из своей учетной записи, вы можете сохранить ваши дни локально на своем устройстве. Сохранить ваши дни?</string>
+    <string name="dialog_reauth_title">Aутентификация</string>
+    <string name="dialog_reauth_desc">Для удаления аккаунта, вам нужно будет пройти повторную аутентификацию.\nЕсли вы регистрировались с помощью аккаунта Google, то после повторной аутентификации ваш аккаунт HowAreYou будет сразу же удален.\nЭто действие необратимо!</string>
+    <string name="dialog_reauth_positive">OK</string>
     <string name="dialog_delete_local_data_positive">Да</string>
     <string name="dialog_delete_local_data_negative">Нет</string>
     <string name="dialog_delete_local_data_neutral">Остаться в аккаунте</string>
     <string name="yes">Удалить</string>
-    <string name="no">Отмена</string>
+    <string name="dialog_no">Отмена</string>
     <string name="biometric_auth_title">Войти в HowAreYou</string>
     <string name="biometric_auth_desc">Давайте проверим ваш отпечаток</string>
     <string name="biometric_auth_negative_btn">Отмена</string>
@@ -154,6 +157,7 @@
     <string name="hello_user_plug">Привет, пользователь</string>
     <string name="sign_in">Войти</string>
     <string name="sign_out">Выйти</string>
+    <string name="settings_sign_in_title">Регистрация</string>
     <string name="create_a_pin_code">Создайте PIN-код</string>
     <string name="show_worried_dialog_title">Показывать беспокоющийся диалог</string>
 
@@ -189,4 +193,22 @@
     <string name="onboard_helplines_title">Получайте помощь</string>
     <string name="onboard_helplines_desc">Вы сможете выбрать свою страну и получить контактные данные организаций, предоставляющих психологическую помощь на расстоянии. Список стран будет пополняться с обновлениями. \nКроме того, мы предлагаем возможность написать нам на почту или в Telegram, чтобы вы могли пообщаться с профессионалами напрямую и получить необходимую поддержку!</string>
     <string name="onboard_enter_btn">Вперед к осознанности!</string>
+    <string name="account_settings">Управление аккаунтом</string>
+    <string name="delete_data">Удалить записанные дни</string>
+    <string name="delete_account">Удалить аккаунт</string>
+    <string name="default_error">Что-то пошло не так</string>
+    <string name="delete_data_success">Ваши записи успешно удалены</string>
+    <string name="delete_acc_success">Ваш аккаунт успешно удален</string>
+    <string name="reauth_password_title">Ваш пароль</string>
+    <string name="reauth_password_desc">"Введите ваш пароль. Аккаунт вместе со всеми данными будет удален.\nЭто действие необратимо!"</string>
+    <string name="reauth_password_positive">Удалить аккаунт</string>
+    <string name="password_invalid">Неверный пароль</string>
+    <string name="empty_password">Пожалуйста, введите пароль</string>
+    <string name="dialog_delete_data_title">Удаление данных</string>
+    <string name="dialog_delete_data_desc">Подтвердите удаление данных. \nВаши записанные дни будут удалены на сервере и на устройстве! \nЕсли вы хотите удалить данные только на сервере, воспользуйтесь удалением аккаунта</string>
+    <string name="dialog_delete_data_positive">Удалить записи</string>
+    <string name="saveLocalData">Оставить мои дни локально на устройстве</string>
+    <string name="settings_acc_info">Аккаунт</string>
+    <string name="settings_acc_manage">Управление</string>
+    <string name="settings_sign_in_desc">После регистрации ваши дни будут сохраняться на надежном сервере и вы сможете пользоваться нашим приложением на любом другом устройстве, не боясь потери данных! Мы будем хранить только ваше имя и дни, в безопасном зашифрованном виде!</string>
 </resources>

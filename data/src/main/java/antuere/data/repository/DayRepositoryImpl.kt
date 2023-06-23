@@ -29,12 +29,8 @@ class DayRepositoryImpl @Inject constructor(
     override suspend fun refreshRemoteData() {
         val daysFromServer = firebaseRealtimeDB.getDays()
         if (daysFromServer.isNotEmpty()) {
-            CoroutineScope(Dispatchers.IO).launch {
-                deleteAllDaysLocal()
-                daysFromServer.forEach { day ->
-                    insertLocal(day)
-                }
-            }
+            deleteAllDaysLocal()
+            insertLocal(daysFromServer)
         }
     }
 
@@ -105,13 +101,21 @@ class DayRepositoryImpl @Inject constructor(
         dayDataBaseRoom.dayDatabaseDao.clear()
     }
 
-    override suspend fun deleteAllDaysRemote() {
-        firebaseRealtimeDB.deleteAllDays()
+    override suspend fun deleteAllDaysRemote(
+        onSuccess: () -> Unit,
+        onFailure: (String?) -> Unit,
+    ) {
+        firebaseRealtimeDB.deleteAllDays(onSuccess, onFailure)
     }
 
     override suspend fun insertLocal(day: Day) {
         val dayEntity = dayEntityMapper.mapFromDomainModel(day)
         dayDataBaseRoom.dayDatabaseDao.insert(dayEntity)
+    }
+
+    override suspend fun insertLocal(days: List<Day>) {
+        val dayEntityList = days.map { dayEntityMapper.mapFromDomainModel(it) }
+        dayDataBaseRoom.dayDatabaseDao.insert(dayEntityList)
     }
 
     override suspend fun insertRemote(day: Day) {
@@ -120,7 +124,7 @@ class DayRepositoryImpl @Inject constructor(
 
     override suspend fun insertLocalDaysToRemote() {
         val localDaysList = getAllDays().first()
-        firebaseRealtimeDB.insertDays(localDaysList)
+        firebaseRealtimeDB.insert(localDaysList)
     }
 
     override suspend fun update(day: Day) {

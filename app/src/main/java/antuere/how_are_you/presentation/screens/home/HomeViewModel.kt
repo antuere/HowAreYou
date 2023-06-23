@@ -21,7 +21,6 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.Container
 import org.orbitmvi.orbit.viewmodel.container
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -39,7 +38,6 @@ class HomeViewModel @Inject constructor(
     private val currentDateTimeStamp = MutableStateFlow(TimeUtility.parseCurrentTime().time)
 
     init {
-        Timber.i("splash error: HOME VM INIT")
         viewModelScope.launch(Dispatchers.IO) {
             getSavedData()
             checkLastFiveDays()
@@ -123,8 +121,7 @@ class HomeViewModel @Inject constructor(
         val lastFiveDays = dayRepository.getDaysByLimit(5).first()
         delay(500)
 
-        val isNeedShowWorriedDialog =
-            HelperForHome.isShowWarningForSummary(lastFiveDays)
+        val isNeedShowWorriedDialog = HelperForHome.isShowWarningForSummary(lastFiveDays)
 
         if (isNeedShowWorriedDialog && isShowWorriedDialogSetting) {
             val dialog = UIDialog(

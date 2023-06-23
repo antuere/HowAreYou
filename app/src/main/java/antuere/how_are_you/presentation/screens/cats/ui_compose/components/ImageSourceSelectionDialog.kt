@@ -20,19 +20,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.Layout
-import androidx.compose.ui.layout.Placeable
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.dp
 import antuere.domain.dto.ImageSource
 import antuere.how_are_you.R
+import antuere.how_are_you.presentation.base.ui_compose_components.dialog.DefaultDialogFlowRow
 import antuere.how_are_you.util.extensions.fixedSize
 import kotlinx.collections.immutable.ImmutableList
-import kotlin.math.max
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -104,89 +100,6 @@ fun ImageSourceSelectionDialog(
                     }
                 }
 
-            }
-        }
-    }
-}
-
-//Implementation by androidx.compose.material3
-@Composable
-fun DefaultDialogFlowRow(
-    mainAxisSpacing: Dp = 8.dp,
-    crossAxisSpacing: Dp = 12.dp,
-    content: @Composable () -> Unit
-) {
-    Layout(content) { measurables, constraints ->
-        val sequences = mutableListOf<List<Placeable>>()
-        val crossAxisSizes = mutableListOf<Int>()
-        val crossAxisPositions = mutableListOf<Int>()
-
-        var mainAxisSpace = 0
-        var crossAxisSpace = 0
-
-        val currentSequence = mutableListOf<Placeable>()
-        var currentMainAxisSize = 0
-        var currentCrossAxisSize = 0
-
-        fun canAddToCurrentSequence(placeable: Placeable) =
-            currentSequence.isEmpty() || currentMainAxisSize + mainAxisSpacing.roundToPx() +
-                    placeable.width <= constraints.maxWidth
-
-        fun startNewSequence() {
-            if (sequences.isNotEmpty()) {
-                crossAxisSpace += crossAxisSpacing.roundToPx()
-            }
-            sequences += currentSequence.toList()
-            crossAxisSizes += currentCrossAxisSize
-            crossAxisPositions += crossAxisSpace
-
-            crossAxisSpace += currentCrossAxisSize
-            mainAxisSpace = max(mainAxisSpace, currentMainAxisSize)
-
-            currentSequence.clear()
-            currentMainAxisSize = 0
-            currentCrossAxisSize = 0
-        }
-
-        for (measurable in measurables) {
-            val placeable = measurable.measure(constraints)
-
-            if (!canAddToCurrentSequence(placeable)) startNewSequence()
-
-            if (currentSequence.isNotEmpty()) {
-                currentMainAxisSize += mainAxisSpacing.roundToPx()
-            }
-            currentSequence.add(placeable)
-            currentMainAxisSize += placeable.width
-            currentCrossAxisSize = max(currentCrossAxisSize, placeable.height)
-        }
-
-        if (currentSequence.isNotEmpty()) startNewSequence()
-
-        val mainAxisLayoutSize = max(mainAxisSpace, constraints.minWidth)
-
-        val crossAxisLayoutSize = max(crossAxisSpace, constraints.minHeight)
-
-        layout(mainAxisLayoutSize, crossAxisLayoutSize) {
-            sequences.forEachIndexed { i, placeables ->
-                val childrenMainAxisSizes = IntArray(placeables.size) { j ->
-                    placeables[j].width +
-                            if (j < placeables.lastIndex) mainAxisSpacing.roundToPx() else 0
-                }
-                val arrangement = Arrangement.End
-                val mainAxisPositions = IntArray(childrenMainAxisSizes.size) { 0 }
-                with(arrangement) {
-                    arrange(
-                        mainAxisLayoutSize, childrenMainAxisSizes,
-                        layoutDirection, mainAxisPositions
-                    )
-                }
-                placeables.forEachIndexed { j, placeable ->
-                    placeable.place(
-                        x = mainAxisPositions[j],
-                        y = crossAxisPositions[i]
-                    )
-                }
             }
         }
     }

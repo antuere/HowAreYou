@@ -16,7 +16,7 @@ import antuere.how_are_you.presentation.base.ui_compose_components.top_bar.AppBa
 import antuere.how_are_you.presentation.base.ui_text.UiText
 import antuere.how_are_you.presentation.screens.sign_in_methods.state.SignInMethodsIntent
 import antuere.how_are_you.presentation.screens.sign_in_methods.state.SignInMethodsSideEffect
-import antuere.how_are_you.presentation.screens.sign_in_methods.ui_compose.SignInMethodsScreenState
+import antuere.how_are_you.presentation.screens.sign_in_methods.ui_compose.SignInMethodsScreenContent
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
@@ -65,5 +65,5 @@ fun SignInMethodsScreen(
         }
     }
 
-    SignInMethodsScreenState(viewState = { viewState }, onIntent = { viewModel.onIntent(it) })
+    SignInMethodsScreenContent(viewState = { viewState }, onIntent = { viewModel.onIntent(it) })
 }

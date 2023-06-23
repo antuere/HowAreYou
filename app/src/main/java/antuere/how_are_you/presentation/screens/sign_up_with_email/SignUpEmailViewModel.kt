@@ -47,7 +47,7 @@ class SignUpEmailViewModel @Inject constructor(
                 state.copy(password = intent.value)
             }
 
-            is SignUpEmailIntent.SignInBtnClicked -> {
+            is SignUpEmailIntent.SignUpBtnClicked -> {
                 sideEffect(SignUpEmailSideEffect.ClearFocus)
                 if (isValidateFields(
                         state.email,
@@ -79,8 +79,8 @@ class SignUpEmailViewModel @Inject constructor(
                 delay(150)
                 dayRepository.insertLocalDaysToRemote()
 
-                sideEffect(SignUpEmailSideEffect.NavigateToSettings)
                 updateState { SignUpEmailState() }
+                sideEffect(SignUpEmailSideEffect.NavigateToSettings)
             }
         }
 

@@ -37,20 +37,23 @@ class SignInMethodsViewModel @Inject constructor(
             SignInMethodsIntent.EmailMethodClicked -> {
                 sideEffect(SignInMethodsSideEffect.NavigateToEmailMethod)
             }
+
             SignInMethodsIntent.GoogleMethodClicked -> {
                 sideEffect(SignInMethodsSideEffect.GoogleSignInDialog(signInClient))
             }
+
             is SignInMethodsIntent.GoogleAccAdded -> {
+                updateState { state.copy(isLoading = true) }
+
                 if (intent.task.isSuccessful) {
-                    val account = intent.task.result
-                    if (account != null) {
-                        signInWithGoogle(account)
-                    }
+                    val account = intent.task.result ?: return
+                    signInWithGoogle(account)
                 } else {
+                    updateState { state.copy(isLoading = false) }
                     sideEffect(
                         SignInMethodsSideEffect.Snackbar(
                             message = UiText.String(
-                                intent.task.exception?.message ?: "Error with google authentication"
+                                intent.task.exception?.message ?: "Error with Google Authentication"
                             )
                         )
                     )
@@ -63,8 +66,6 @@ class SignInMethodsViewModel @Inject constructor(
 
         override fun registerSuccess(name: String) {
             viewModelScope.launch(Dispatchers.IO) {
-                updateState { state.copy(isLoading = true) }
-
                 val isHasThisAccountOnServer = authenticationManager.isHasThisAccountOnServer()
                 if (isHasThisAccountOnServer) {
                     dayRepository.refreshRemoteData()
@@ -75,6 +76,8 @@ class SignInMethodsViewModel @Inject constructor(
                 }
                 settingsRepository.saveUserNickname(name)
 
+                updateState { state.copy(isLoading = false) }
+                delay(20)
                 sideEffect(SignInMethodsSideEffect.NavigateUp)
             }
         }
@@ -86,7 +89,7 @@ class SignInMethodsViewModel @Inject constructor(
 
     private fun signInWithGoogle(account: GoogleSignInAccount) {
         val name = account.displayName ?: account.givenName ?: "Google user"
-        val idToken = account.idToken!!
+        val idToken = account.idToken ?: return
 
         authenticationManager.startAuthByGoogle(
             accIdToken = idToken,

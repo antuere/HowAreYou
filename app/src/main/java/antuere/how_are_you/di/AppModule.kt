@@ -19,25 +19,6 @@ import javax.inject.Singleton
 object AppModule {
 
     @Provides
-    fun provideTransitionName(@ApplicationContext context: Context): String {
-        return context.getString(R.string.transition_name)
-    }
-
-//    @Provides
-//    @Singleton
-//    fun provideGlide(@ApplicationContext context: Context): RequestManager {
-//        return Glide.with(context)
-//            .setDefaultRequestOptions(
-//                RequestOptions()
-//                    .circleCrop()
-//                    .skipMemoryCache(true)
-//                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-//                    .placeholder(R.drawable.cat_placeholder)
-//                    .error(R.drawable.cat_black)
-//            )
-//    }
-
-    @Provides
     @Singleton
     fun provideFirebaseAuth(): FirebaseAuth {
         return FirebaseAuth.getInstance()

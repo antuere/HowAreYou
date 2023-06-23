@@ -47,7 +47,7 @@ class FavoritesViewModel @Inject constructor(
                         onClick = {
                             deleteDay(intent.day.dayId)
                         }),
-                    negativeButton = UIDialog.UiButton(text = R.string.no)
+                    negativeButton = UIDialog.UiButton(text = R.string.dialog_no)
                 )
                 sideEffect(FavoritesSideEffect.Vibration)
                 sideEffect(FavoritesSideEffect.Dialog(uiDialog))

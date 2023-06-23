@@ -19,7 +19,7 @@ import antuere.how_are_you.R
 import antuere.how_are_you.presentation.base.ui_compose_components.top_bar.AppBarState
 import antuere.how_are_you.presentation.base.ui_text.UiText
 import antuere.how_are_you.presentation.screens.helplines.state.HelplinesSideEffect
-import antuere.how_are_you.presentation.screens.helplines.ui_compose.HelplinesScreenState
+import antuere.how_are_you.presentation.screens.helplines.ui_compose.HelplinesScreenContent
 import antuere.how_are_you.util.extensions.animateScrollAndCentralize
 import antuere.how_are_you.util.extensions.isScrollInInitialState
 import kotlinx.coroutines.delay
@@ -86,7 +86,7 @@ fun HelplinesScreen(
         )
     }
 
-    HelplinesScreenState(
+    HelplinesScreenContent(
         lazyListState = { lazyListState },
         viewState = { viewState },
         onIntent = { viewModel.onIntent(it) },

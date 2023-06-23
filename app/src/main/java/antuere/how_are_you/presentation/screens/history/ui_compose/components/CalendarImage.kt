@@ -40,7 +40,7 @@ fun CalendarImage(
     val context = LocalContext.current
     val headerText = remember(toggleBtnState) {
         if (toggleBtnState == ToggleBtnState.CURRENT_MONTH)
-            UiText.StringResource(HelperForHistory.getHeaderForCalendar(TimeUtility.getMonthNumber()))
+            UiText.StringResource(HelperForHistory.getHeaderForCalendar(TimeUtility.getMonth()))
         else UiText.String("${context.getString(R.string.calendar_week)} ${TimeUtility.getWeekNumber()}")
     }
 

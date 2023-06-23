@@ -3,7 +3,8 @@ package antuere.how_are_you.presentation.base.ui_biometric_dialog
 import android.app.KeyguardManager
 import android.content.Context
 import androidx.biometric.BiometricManager
-import androidx.biometric.BiometricManager.Authenticators.*
+import androidx.biometric.BiometricManager.Authenticators.BIOMETRIC_STRONG
+import androidx.biometric.BiometricManager.Authenticators.BIOMETRIC_WEAK
 import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
@@ -35,6 +36,7 @@ class UIBiometricDialog(private val context: Context) {
                 BiometricManager.BIOMETRIC_SUCCESS, BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED -> {
                     true
                 }
+
                 else -> false
             }
         }
@@ -45,12 +47,15 @@ class UIBiometricDialog(private val context: Context) {
             BiometricManager.BIOMETRIC_SUCCESS -> {
                 BiometricsAvailableState.Available
             }
+
             BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE -> {
                 BiometricsAvailableState.NoHardware
             }
+
             BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED -> {
                 BiometricsAvailableState.NoneEnrolled(UiText.StringResource(R.string.biometric_none_enroll))
             }
+
             else -> BiometricsAvailableState.SomeError(UiText.StringResource(R.string.biometric_unknown_error))
         }
     }
@@ -94,7 +99,7 @@ class UIBiometricDialog(private val context: Context) {
                 .build()
 
             if (keyguardManager.isDeviceSecure) {
-                biometricPrompt!!.authenticate(promptInfo!!)
+                biometricPrompt?.authenticate(promptInfo ?: return)
             }
         }
     }

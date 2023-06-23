@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
 import antuere.how_are_you.presentation.screens.pin_code_creation.state.PinCreationSideEffect
-import antuere.how_are_you.presentation.screens.pin_code_creation.ui_compose.PinCreatingSheetState
+import antuere.how_are_you.presentation.screens.pin_code_creation.ui_compose.PinCreatingSheetContent
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
@@ -23,7 +23,7 @@ fun PinCreatingSheet(
         }
     }
 
-    PinCreatingSheetState(
+    PinCreatingSheetContent(
         viewState = { viewState },
         onIntent = { viewModel.onIntent(it) },
     )

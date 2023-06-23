@@ -45,7 +45,7 @@ class ExampleStartupBenchmark {
     private fun startup(mode: CompilationMode) = benchmarkRule.measureRepeated(
         packageName = "antuere.how_are_you",
         metrics = listOf(StartupTimingMetric()),
-        iterations = 5,
+        iterations = 10,
         startupMode = StartupMode.COLD,
         compilationMode = mode
     ) {
@@ -56,14 +56,16 @@ class ExampleStartupBenchmark {
     private fun onboardFlow(mode: CompilationMode) = benchmarkRule.measureRepeated(
         packageName = "antuere.how_are_you",
         metrics = listOf(FrameTimingMetric()),
-        iterations = 1,
+        iterations = 10,
         startupMode = StartupMode.COLD,
         compilationMode = mode
     ) {
         pressHome()
         startActivityAndWait()
 
-        scrollOnboardAndEnterApp()
+        if (device.findObject(By.res("onboard_pager")) != null){
+            scrollOnboardAndEnterApp()
+        }
     }
 
 }

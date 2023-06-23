@@ -21,7 +21,7 @@ import antuere.how_are_you.presentation.base.ui_compose_components.top_bar.AppBa
 import antuere.how_are_you.presentation.base.ui_text.UiText
 import antuere.how_are_you.presentation.screens.cats.state.CatsIntent
 import antuere.how_are_you.presentation.screens.cats.state.CatsSideEffect
-import antuere.how_are_you.presentation.screens.cats.ui_compose.CatsScreenState
+import antuere.how_are_you.presentation.screens.cats.ui_compose.CatsScreenContent
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.compose.collectAsState
@@ -97,5 +97,5 @@ fun CatsScreen(
         }
     }
 
-    CatsScreenState(viewState = { viewState }, onIntent = { viewModel.onIntent(it) })
+    CatsScreenContent(viewState = { viewState }, onIntent = { viewModel.onIntent(it) })
 }

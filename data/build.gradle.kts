@@ -11,20 +11,10 @@ android {
     namespace = "antuere.data"
     compileSdk = 33
 
-    signingConfigs {
-        create("release") {
-            storeFile = file("C:\\Users\\AntuE\\AndroidStudioProjects\\HowAreYou\\keyStore\\keyStoreApp.jks")
-            storePassword = "anton1730"
-            keyAlias = "key0"
-            keyPassword = "anton1730"
-        }
-    }
-
     defaultConfig {
         minSdk = 24
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
-        signingConfig = signingConfigs.getByName("release")
 
         kapt {
             arguments {

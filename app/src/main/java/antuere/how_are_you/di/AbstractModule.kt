@@ -33,7 +33,6 @@ abstract class AbstractModule {
     @Singleton
     abstract fun bindSettingsRepository(settingsRepositoryImpl: SettingsRepositoryImpl): SettingsRepository
 
-
     @Binds
     @Singleton
     abstract fun bindMentalTipsRepository(mentalTipsRepositoryImpl: MentalTipsRepositoryImpl): MentalTipsRepository

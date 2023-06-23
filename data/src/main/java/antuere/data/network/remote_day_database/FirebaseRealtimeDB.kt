@@ -9,7 +9,7 @@ import antuere.domain.remote_db.RemoteDbApi
 import antuere.domain.util.TimeUtility.convertToUTC
 import com.google.firebase.database.DatabaseReference
 import kotlinx.coroutines.tasks.await
-import java.util.*
+import java.util.Locale
 import javax.inject.Inject
 
 class FirebaseRealtimeDB @Inject constructor(
@@ -56,13 +56,18 @@ class FirebaseRealtimeDB @Inject constructor(
             .setValue(null).await()
     }
 
-    override suspend fun deleteAllDays() {
-        if (!authManager.isHasUser()) return
-        val query = daysNode?.get()?.await() ?: return
-        if (!query.exists()) return
-        query.children.forEach {
-            it.ref.removeValue()
-        }
+    override suspend fun deleteAllDays(onSuccess: () -> Unit, onFailure: (String?) -> Unit) {
+        if (!authManager.isHasUser()) return onFailure(null)
+        val query = daysNode?.get()?.await() ?: return onFailure(null)
+        if (!query.exists()) return onFailure(null)
+
+        query.ref.setValue(null).addOnCompleteListener {
+            if (it.isSuccessful) {
+                onSuccess()
+            } else {
+                onFailure(it.exception?.message ?: it.toString())
+            }
+        }.await()
     }
 
     override suspend fun insert(day: Day) {
@@ -73,7 +78,7 @@ class FirebaseRealtimeDB @Inject constructor(
             .setValue(dayRemote).await()
     }
 
-    override suspend fun insertDays(days: List<Day>) {
+    override suspend fun insert(days: List<Day>) {
         if (!authManager.isHasUser()) return
         val daysNode = daysNode ?: return
         val daysRemote = days.map {

@@ -15,3 +15,5 @@
 local.properties
 keyStoreAppModule.jks
 /app/release/
+keyStoreHowAreYou.jks
+/keyStore.properties
