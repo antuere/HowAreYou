@@ -1,5 +1,5 @@
 # Build settings (GFM)
-markdown: kramdown 
+markdown: GFM 
 theme: minima
 plugins:
   - jekyll-feed
