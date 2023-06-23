@@ -4,6 +4,10 @@
 <br>
 
 ## This page provides privacy policy and other useful information for the HowAreYou app user
+
+
+---
+
 <details>
 <summary>Privacy Policy</summary>
  
@@ -73,8 +77,12 @@ This policy is effective as of 2023-06-21
 If you have any questions or suggestions about our Privacy Policy, do not hesitate to contact us at antuere@yandex.ru.
 </details>
 
----
 <br>
+
+---
+
+<br>
+
 <details>
 <summary>How delete user account</summary>
   To delete your HowAreYou account, you need to:
