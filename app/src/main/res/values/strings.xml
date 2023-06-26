@@ -93,6 +93,8 @@
     <!-- Methods for login screen -->
     <string name="login_email">Sign in with email</string>
     <string name="login_google">Sign in with Google</string>
+    <string name="privacy_policy_info_start">When you sign in or register, you agree to</string>
+    <string name="privacy_policy_info_end">The privacy policy</string>
 
     <!-- Add day screen -->
     <string name="how_are_you_today">How are you today?</string>
@@ -133,11 +135,12 @@
     <string name="hello_user">Hello,</string>
     <string name="hello_user_plug">Hello, user</string>
     <string name="sign_in">Sign in</string>
+    <string name="settings_privacy_policy">Privacy policy</string>
     <string name="account_settings">Manage account</string>
     <string name="settings_sign_in_title">Registration</string>
     <string name="settings_sign_in_desc">After registration, your days will be stored on a secure server and you can use our app on any other device without fear of data loss!\nWe will store only your nickname and days, in a secure encrypted form!</string>
     <string name="create_a_pin_code">Create PIN code</string>
-    <string name="show_worried_dialog_title">Show worried dialog</string>
+    <string name="show_worried_dialog_title">Worried dialog</string>
     <string name="show_worried_dialog_desc">Show dialog if mood drop have been noticed in the last 5 days</string>
     <string name="enable_biometric_authentication">Enable biometric authentication</string>
     <string name="enable_biometric_authentication_desc">Use biometrics to login to the app</string>

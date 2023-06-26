@@ -58,7 +58,7 @@ fun HelpForYouScreen(
                 }
             }
             HelpForYouSideEffect.NavigateToTelegram -> {
-                uriHandler.openUri(Constants.HELP_TELEGRAM)
+                uriHandler.openUri(Constants.HELP_TELEGRAM_LINK)
             }
         }
     }

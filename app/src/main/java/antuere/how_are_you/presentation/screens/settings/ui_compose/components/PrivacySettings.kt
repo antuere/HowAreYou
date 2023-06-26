@@ -24,6 +24,7 @@ fun PrivacySettings(
     isShowBiometricSetting: Boolean,
     isCheckedBiometric: Boolean,
     checkChangeBiometric: (Boolean) -> Unit,
+    onClickPrivacyPolicy: () -> Unit
 ) {
     Column(
         horizontalAlignment = Alignment.Start
@@ -40,31 +41,45 @@ fun PrivacySettings(
         )
         Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_2)))
 
-        SettingItem(
+        SettingItemWithSwitch(
             modifier = Modifier.padding(
-                start = dimensionResource(id = R.dimen.padding_normal_4),
+                start = dimensionResource(id = R.dimen.padding_normal_3),
                 end = dimensionResource(id = R.dimen.padding_normal_2)
             ),
             titleId = R.string.enable_pin_code,
             descriptionId = R.string.enable_pin_code_desc,
             isChecked = isCheckedPinCode,
-            onCheckedChange = checkChangePinCode
+            onCheckedChange = checkChangePinCode,
+            iconId = R.drawable.ic_settings_pin
         )
 
         AnimatedVisibility(visible = isShowBiometricSetting) {
-            SettingItem(
+            SettingItemWithSwitch(
                 modifier = Modifier.padding(
                     top = dimensionResource(id = R.dimen.padding_small_2),
-                    start = dimensionResource(id = R.dimen.padding_normal_4),
+                    start = dimensionResource(id = R.dimen.padding_normal_3),
                     end = dimensionResource(id = R.dimen.padding_normal_2)
                 ),
                 titleId = R.string.enable_biometric_authentication,
                 descriptionId = R.string.enable_biometric_authentication_desc,
                 isChecked = isCheckedBiometric,
-                onCheckedChange = checkChangeBiometric
+                onCheckedChange = checkChangeBiometric,
+                iconId = R.drawable.ic_finger_print
             )
         }
         Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_4)))
+
+        SettingItem(
+            modifier = Modifier.padding(
+                start = dimensionResource(id = R.dimen.padding_normal_3),
+                end = dimensionResource(id = R.dimen.padding_normal_2)
+            ),
+            titleId = R.string.settings_privacy_policy ,
+            iconId = R.drawable.ic_settings_privacy_policy ,
+            onClick = onClickPrivacyPolicy
+        )
+        Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_4)))
+
         Divider(
             modifier = Modifier.padding(
                 horizontal = dimensionResource(id = R.dimen.padding_normal_2)

@@ -59,6 +59,14 @@ class SignInMethodsViewModel @Inject constructor(
                     )
                 }
             }
+
+            is SignInMethodsIntent.PrivacyPolicyClicked -> {
+                sideEffect(
+                    SignInMethodsSideEffect.NavigateToPrivacyPolicy(
+                        intent.url
+                    )
+                )
+            }
         }
     }
 

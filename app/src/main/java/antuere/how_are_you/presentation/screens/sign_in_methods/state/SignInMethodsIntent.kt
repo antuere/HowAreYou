@@ -7,4 +7,5 @@ sealed interface SignInMethodsIntent {
     object GoogleMethodClicked : SignInMethodsIntent
     object EmailMethodClicked : SignInMethodsIntent
     data class GoogleAccAdded(val task: Task<GoogleSignInAccount>) : SignInMethodsIntent
+    data class PrivacyPolicyClicked(val url: String) : SignInMethodsIntent
 }

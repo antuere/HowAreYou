@@ -4,7 +4,9 @@ package antuere.domain.util
 object Constants {
 
     const val HELP_EMAIL = "antuere@yandex.ru"
-    const val HELP_TELEGRAM = "https://telegram.me/antuere"
+    const val HELP_TELEGRAM_LINK = "https://telegram.me/antuere"
+
+    const val PRIVACY_POLICY_LINK = "https://howareyou.onitrona.ru/privacy_policy"
 
     const val USER_NOT_AUTH = "user not auth yet"
     const val PIN_NOT_SET = "user not auth yet"
