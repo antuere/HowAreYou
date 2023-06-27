@@ -65,5 +65,5 @@ This policy is effective as of 2023-06-21
 
 **Contact Us**
 
-If you have any questions or suggestions about our Privacy Policy, do not hesitate to contact us at antuere@yandex.ru.
+If you have any questions or suggestions about our Privacy Policy, do not hesitate to contact us at howareyou@onitrona.ru.
 
