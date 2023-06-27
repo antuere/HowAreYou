@@ -3,8 +3,8 @@ package antuere.domain.util
 
 object Constants {
 
-    const val HELP_EMAIL = "antuere@yandex.ru"
-    const val HELP_TELEGRAM_LINK = "https://telegram.me/antuere"
+    const val HELP_EMAIL = "help@hay.onitrona.ru"
+    const val HELP_TELEGRAM_LINK = "https://telegram.me/howAreYouApp"
 
     const val PRIVACY_POLICY_LINK = "https://howareyou.onitrona.ru/privacy_policy"
 
