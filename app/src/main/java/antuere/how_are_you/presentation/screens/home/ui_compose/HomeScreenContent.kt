@@ -25,17 +25,21 @@ import antuere.how_are_you.presentation.screens.home.state.HomeIntent
 import antuere.how_are_you.presentation.screens.home.state.HomeState
 import antuere.how_are_you.presentation.screens.home.ui_compose.components.CardWithQuote
 import antuere.how_are_you.util.extensions.paddingBotAndTopBar
+import timber.log.Timber
 
 @Composable
 fun HomeScreenContent(
     viewState: () -> HomeState,
     onIntent: (HomeIntent) -> Unit,
 ) {
+    Timber.i("Home vm test: enter in homescreen content")
     when (val state = viewState()) {
         is HomeState.Loading -> {
+            Timber.i("Home vm test: enter in homescreen loading")
             FullScreenProgressIndicator()
         }
         is HomeState.Loaded -> {
+            Timber.i("Home vm test: enter in homescreen load")
             Column(
                 modifier = Modifier
                     .fillMaxSize()

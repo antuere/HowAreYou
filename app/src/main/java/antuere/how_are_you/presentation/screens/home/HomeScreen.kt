@@ -12,6 +12,7 @@ import antuere.how_are_you.presentation.screens.home.state.HomeSideEffect
 import antuere.how_are_you.presentation.screens.home.ui_compose.HomeScreenContent
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
+import timber.log.Timber
 
 @Composable
 fun HomeScreen(
@@ -23,6 +24,7 @@ fun HomeScreen(
     onNavigateToAddDay: () -> Unit,
     viewModel: () -> HomeViewModel,
 ) {
+    Timber.i("Home vm test: enter in homescreen")
     val context = LocalContext.current
     val appState = LocalAppState.current
     val viewState by viewModel().collectAsState()

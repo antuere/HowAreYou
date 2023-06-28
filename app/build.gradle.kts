@@ -14,7 +14,10 @@ plugins {
 
 val keystorePropertiesFile = rootProject.file("keystore.properties")
 val keystoreProperties = Properties()
-keystoreProperties.load(FileInputStream(keystorePropertiesFile))
+
+if(keystorePropertiesFile.exists()){
+    keystoreProperties.load(FileInputStream(keystorePropertiesFile))
+}
 
 android {
     namespace = "antuere.how_are_you"
@@ -33,8 +36,8 @@ android {
         applicationId = "antuere.how_are_you"
         minSdk = 24
         targetSdk = 33
-        versionCode = 26 // versionName 26 - 1.0.0-rc
-        versionName = "1.0.0-rc"
+        versionCode = 27 // versionName 27 - 1.0.0-rc-2
+        versionName = "1.0.0-rc-2"
 
         testInstrumentationRunnerArguments["androidx.benchmark.suppressErrors"] = "EMULATOR"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"

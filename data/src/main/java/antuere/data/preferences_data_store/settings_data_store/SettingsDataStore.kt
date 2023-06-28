@@ -17,7 +17,6 @@ class SettingsDataStore(context: Context, name: String) {
     private val Context.datastore: DataStore<Preferences> by preferencesDataStore(name)
     private val settingsDataStore: DataStore<Preferences> = context.datastore
 
-
     val isFirstLaunchConfiguration: Configuration<Boolean> =
         BooleanConfiguration(
             key = Constants.SETTINGS_FIRST_LAUNCH_KEY,

@@ -21,6 +21,7 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.Container
 import org.orbitmvi.orbit.viewmodel.container
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -38,6 +39,7 @@ class HomeViewModel @Inject constructor(
     private val currentDateTimeStamp = MutableStateFlow(TimeUtility.parseCurrentTime().time)
 
     init {
+        Timber.i("Home vm test: init vm")
         viewModelScope.launch(Dispatchers.IO) {
             getSavedData()
             checkLastFiveDays()
