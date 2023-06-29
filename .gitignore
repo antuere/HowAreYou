@@ -17,3 +17,4 @@ keyStoreAppModule.jks
 /app/release/
 keyStoreHowAreYou.jks
 /keyStore.properties
+/domain/src/main/java/antuere/domain/util/SecretKeys.kt

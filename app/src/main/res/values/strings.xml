@@ -109,6 +109,11 @@
     <string name="saved_error_cats">This image can\'t be saved</string>
     <string name="permission_denied_cats">To save the cat, please grant the permission</string>
     <string name="cats_no_internet">I got lost…</string>
+    <string name="animal_choose_source">Choose source</string>
+    <string name="animal_choose_desc">Photos will be uploaded from the selected source</string>
+    <string name="animal_choose_pos">Save</string>
+    <string name="animal_choose_neg">Cancel</string>
+    <string name="photos_by">Photos by</string>
 
     <!-- Account settings screen -->
     <string name="delete_data">Delete day entries</string>
@@ -267,11 +272,6 @@
     <string name="dialog_sign_out_desc">All your data will be deleted on this device, to restore them, log in to your account again</string>
     <string name="dialog_delete_local_data_desc">When you sign out of your account, you can save existing recordings locally on your device. Save local day entries?</string>
     <string name="youself_tips">Personal growth</string>
-    <string name="animal_choose_source">Choose source</string>
-    <string name="animal_choose_desc">Photos will be uploaded from the selected source.\nIf Unsplash doesn\'t work, try enabling VPN.</string>
-    <string name="animal_choose_pos">Save</string>
-    <string name="animal_choose_neg">Cancel</string>
-    <string name="photos_by">Photos by</string>
     <string name="saveLocalData">Keep my days local on the device</string>
 
 </resources>
