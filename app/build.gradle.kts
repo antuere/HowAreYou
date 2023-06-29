@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.util.capitalizeDecapitalize.capitalizeAsciiOnly
+import com.android.build.gradle.internal.tasks.FinalizeBundleTask
 import java.util.Properties
 import java.io.FileInputStream
 
@@ -70,10 +72,25 @@ android {
     }
 
     android.applicationVariants.all {
-        val buildType = this.buildType.name
+        val buildTypeName = this.buildType.name
         outputs.all {
+            val aabPackageName = "HowAreYou_v${defaultConfig.versionName}_$buildTypeName.aab"
+            val bundleFinalizeTaskName = StringBuilder("sign").run {
+                productFlavors.forEach {
+                    append(it.name.capitalizeAsciiOnly())
+                }
+                append(buildType.name.capitalizeAsciiOnly())
+                append("Bundle")
+                toString()
+            }
+            tasks.named(bundleFinalizeTaskName, FinalizeBundleTask::class.java) {
+                val file = finalBundleFile.asFile.get()
+                val finalFile = File(file.parentFile, aabPackageName)
+                finalBundleFile.set(finalFile)
+            }
+
             if (this is com.android.build.gradle.internal.api.ApkVariantOutputImpl) {
-                this.outputFileName = "HowAreYou_v${defaultConfig.versionName}_$buildType.apk"
+                this.outputFileName = "HowAreYou_v${defaultConfig.versionName}_$buildTypeName.apk"
             }
         }
     }
