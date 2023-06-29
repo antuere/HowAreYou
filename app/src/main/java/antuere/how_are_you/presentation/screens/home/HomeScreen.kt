@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
+import androidx.hilt.navigation.compose.hiltViewModel
 import antuere.how_are_you.LocalAppState
 import antuere.how_are_you.R
 import antuere.how_are_you.presentation.base.ui_compose_components.top_bar.AppBarState
@@ -12,7 +13,6 @@ import antuere.how_are_you.presentation.screens.home.state.HomeSideEffect
 import antuere.how_are_you.presentation.screens.home.ui_compose.HomeScreenContent
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
-import timber.log.Timber
 
 @Composable
 fun HomeScreen(
@@ -22,14 +22,13 @@ fun HomeScreen(
     onNavigateToCats: () -> Unit,
     onNavigateToDetail: (Long) -> Unit,
     onNavigateToAddDay: () -> Unit,
-    viewModel: () -> HomeViewModel,
+    viewModel: HomeViewModel = hiltViewModel(),
 ) {
-    Timber.i("Home vm test: enter in homescreen")
     val context = LocalContext.current
     val appState = LocalAppState.current
-    val viewState by viewModel().collectAsState()
+    val viewState by viewModel.collectAsState()
 
-    viewModel().collectSideEffect { sideEffect ->
+    viewModel.collectSideEffect { sideEffect ->
         when (sideEffect) {
             is HomeSideEffect.Dialog -> {
                 appState.showDialog(sideEffect.uiDialog)
@@ -56,5 +55,5 @@ fun HomeScreen(
         appState.dismissSnackbar()
     }
 
-    HomeScreenContent(viewState = { viewState }, onIntent = { viewModel().onIntent(it) })
+    HomeScreenContent(viewState = { viewState }, onIntent = { viewModel.onIntent(it) })
 }

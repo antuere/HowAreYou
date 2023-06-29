@@ -1,5 +1,7 @@
 package antuere.how_are_you.presentation.base.navigation
 
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -21,7 +23,6 @@ import antuere.how_are_you.presentation.screens.help_for_you.HelpForYouScreen
 import antuere.how_are_you.presentation.screens.helplines.HelplinesScreen
 import antuere.how_are_you.presentation.screens.history.HistoryScreen
 import antuere.how_are_you.presentation.screens.home.HomeScreen
-import antuere.how_are_you.presentation.screens.home.HomeViewModel
 import antuere.how_are_you.presentation.screens.mental_tips.MentalTipsScreen
 import antuere.how_are_you.presentation.screens.mental_tips_categories.MentalTipsCategoriesScreen
 import antuere.how_are_you.presentation.screens.onboard.OnboardScreen
@@ -37,12 +38,11 @@ import com.google.accompanist.navigation.animation.composable
 @OptIn(ExperimentalAnimationApi::class)
 fun NavGraphBuilder.initRootNavGraph(
     navController: NavController,
-    homeViewModelLambda: () -> HomeViewModel,
 ) {
     composable(
         route = Screen.Onboard.route,
-        enterTransition = { materialSharedAxisZIn(forward = true) },
-        exitTransition = { materialSharedAxisZOut(forward = false) }
+        enterTransition = { EnterTransition.None },
+        exitTransition = { ExitTransition.None }
     ) {
         OnboardScreen(onNavigateHomeScreen = navController.navigateToHome())
     }
@@ -69,7 +69,6 @@ fun NavGraphBuilder.initRootNavGraph(
             onNavigateToCats = navController.navigateToCats(),
             onNavigateToDetail = navController.navigateToDayDetail(),
             onNavigateToAddDay = navController.navigateToAddDay(),
-            viewModel = homeViewModelLambda
         )
     }
 
@@ -241,8 +240,8 @@ fun NavGraphBuilder.initRootNavGraph(
 
     composable(
         route = Screen.SecureEntry.route,
-        enterTransition = { materialSharedAxisZIn(forward = true) },
-        exitTransition = { materialSharedAxisZOut(forward = false) }
+        enterTransition = { EnterTransition.None },
+        exitTransition = { ExitTransition.None }
     ) {
         SecureEntryScreen(onNavigateHomeScreen = navController.navigateToHome())
     }
