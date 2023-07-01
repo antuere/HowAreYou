@@ -67,4 +67,6 @@ This policy is effective as of 2023-06-21
 
 If you have any questions or suggestions about our Privacy Policy, do not hesitate to contact us at howareyou@onitrona.ru.
 
+---
+
 [^1]: Not a real organization. The application was developed by Anton Cherevan, as an individual developer.
