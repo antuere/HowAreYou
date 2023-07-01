@@ -4,7 +4,7 @@ title: Privacy policy
 permalink: "/privacy_policy"
 ---
 
-Onitrona built the HowAreYou app as free app. This SERVICE is provided by Onitrona at no cost and is intended for use as is.
+Onitrona[^1] built the HowAreYou app as free app. This SERVICE is provided by Onitrona at no cost and is intended for use as is.
 
 This page is used to inform visitors regarding our policies with the collection, use, and disclosure of Personal Information if anyone decided to use our Service.
 
@@ -67,3 +67,4 @@ This policy is effective as of 2023-06-21
 
 If you have any questions or suggestions about our Privacy Policy, do not hesitate to contact us at howareyou@onitrona.ru.
 
+[^1]: Not a real organization. The application was developed by Anton Cherevan, as an individual developer.
