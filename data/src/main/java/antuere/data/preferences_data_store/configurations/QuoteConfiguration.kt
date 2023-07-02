@@ -20,8 +20,8 @@ class QuoteConfiguration(
         stringPreferencesKey(Constants.QUOTE_TEXT_KEY)
 
     override val flow: Flow<Quote> = dataStore.data.map { preferences ->
-        val author = preferences[authorPreferencesKey] ?: ""
-        val text = preferences[textPreferencesKey] ?: ""
+        val author = preferences[authorPreferencesKey] ?: "Walt Disney"
+        val text = preferences[textPreferencesKey] ?: "If you can dream about it, you can do it"
 
         Quote(text, author)
     }

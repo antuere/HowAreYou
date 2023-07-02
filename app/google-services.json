@@ -15,14 +15,6 @@
       },
       "oauth_client": [
         {
-          "client_id": "506067010164-a5t0q4r7f1q9cfq7m3amooj68a6th7oc.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "antuere.how_are_you",
-            "certificate_hash": "78e776671ffa2f6cfbf26c69bbc1b77e97313c42"
-          }
-        },
-        {
           "client_id": "506067010164-flgtkolfftmpjcnnbm71sgdam469ghf9.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -36,6 +28,14 @@
           "android_info": {
             "package_name": "antuere.how_are_you",
             "certificate_hash": "89ba7c58dc5bf2bcf4421edc2e9279638c801a8f"
+          }
+        },
+        {
+          "client_id": "506067010164-kmphnar6u3g3drgn06a3h6b7ni06h3bt.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "antuere.how_are_you",
+            "certificate_hash": "99a720df4915374322540257876b5be6d87c6339"
           }
         },
         {

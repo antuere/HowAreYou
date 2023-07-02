@@ -37,15 +37,16 @@ fun GeneralSettings(
         )
         Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_2)))
 
-        SettingItem(
+        SettingItemWithSwitch(
             modifier = Modifier.padding(
-                start = dimensionResource(id = R.dimen.padding_normal_4),
+                start = dimensionResource(id = R.dimen.padding_normal_3),
                 end = dimensionResource(id = R.dimen.padding_normal_2)
             ),
             titleId = R.string.show_worried_dialog_title,
             descriptionId = R.string.show_worried_dialog_desc,
             isChecked = isCheckedWorriedDialog,
-            onCheckedChange = onCheckedChangeWorriedDialog
+            onCheckedChange = onCheckedChangeWorriedDialog,
+            iconId = R.drawable.ic_settings_dialog
         )
 
         Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_4)))

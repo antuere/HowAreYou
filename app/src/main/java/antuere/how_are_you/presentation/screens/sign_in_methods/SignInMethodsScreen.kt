@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.hilt.navigation.compose.hiltViewModel
 import antuere.how_are_you.LocalAppState
 import antuere.how_are_you.R
@@ -28,6 +29,7 @@ fun SignInMethodsScreen(
 ) {
     val appState = LocalAppState.current
     val context = LocalContext.current
+    val uriHandler = LocalUriHandler.current
     val viewState by viewModel.collectAsState()
 
     val launcher =
@@ -61,6 +63,10 @@ fun SignInMethodsScreen(
                 appState.showSnackbar(
                     sideEffect.message.asString(context)
                 )
+            }
+
+            is SignInMethodsSideEffect.NavigateToPrivacyPolicy -> {
+                uriHandler.openUri(sideEffect.website)
             }
         }
     }

@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.util.capitalizeDecapitalize.capitalizeAsciiOnly
+import com.android.build.gradle.internal.tasks.FinalizeBundleTask
 import java.util.Properties
 import java.io.FileInputStream
 
@@ -14,7 +16,10 @@ plugins {
 
 val keystorePropertiesFile = rootProject.file("keystore.properties")
 val keystoreProperties = Properties()
-keystoreProperties.load(FileInputStream(keystorePropertiesFile))
+
+if(keystorePropertiesFile.exists()){
+    keystoreProperties.load(FileInputStream(keystorePropertiesFile))
+}
 
 android {
     namespace = "antuere.how_are_you"
@@ -33,8 +38,8 @@ android {
         applicationId = "antuere.how_are_you"
         minSdk = 24
         targetSdk = 33
-        versionCode = 26 // versionName 26 - 1.0.0-rc
-        versionName = "1.0.0-rc"
+        versionCode = 28 // versionName 28 - 1.0.0
+        versionName = "1.0.0"
 
         testInstrumentationRunnerArguments["androidx.benchmark.suppressErrors"] = "EMULATOR"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -67,10 +72,25 @@ android {
     }
 
     android.applicationVariants.all {
-        val buildType = this.buildType.name
+        val buildTypeName = this.buildType.name
         outputs.all {
+            val aabPackageName = "HowAreYou_v${defaultConfig.versionName}_$buildTypeName.aab"
+            val bundleFinalizeTaskName = StringBuilder("sign").run {
+                productFlavors.forEach {
+                    append(it.name.capitalizeAsciiOnly())
+                }
+                append(buildType.name.capitalizeAsciiOnly())
+                append("Bundle")
+                toString()
+            }
+            tasks.named(bundleFinalizeTaskName, FinalizeBundleTask::class.java) {
+                val file = finalBundleFile.asFile.get()
+                val finalFile = File(file.parentFile, aabPackageName)
+                finalBundleFile.set(finalFile)
+            }
+
             if (this is com.android.build.gradle.internal.api.ApkVariantOutputImpl) {
-                this.outputFileName = "HowAreYou_v${defaultConfig.versionName}_$buildType.apk"
+                this.outputFileName = "HowAreYou_v${defaultConfig.versionName}_$buildTypeName.apk"
             }
         }
     }

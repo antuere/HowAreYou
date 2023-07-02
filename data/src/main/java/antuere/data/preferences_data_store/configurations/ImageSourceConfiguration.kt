@@ -17,10 +17,10 @@ class ImageSourceConfiguration(
     private val preferencesKey = stringPreferencesKey(Constants.CHECKED_IMAGE_SOURCE_KEY)
 
     override val flow: Flow<ImageSource> = dataStore.data.map { preferences ->
-        when (preferences[preferencesKey] ?: ImageSource.Unsplash.name) {
-            ImageSource.Unsplash.name -> ImageSource.Unsplash
-            ImageSource.LoremFlickr.name -> ImageSource.LoremFlickr
-            else -> ImageSource.Unsplash
+        when (preferences[preferencesKey] ?: ImageSource.Cataas.name) {
+            ImageSource.Cataas.name -> ImageSource.Cataas
+            ImageSource.TheCatApi.name -> ImageSource.TheCatApi
+            else -> ImageSource.Cataas
         }
     }
 

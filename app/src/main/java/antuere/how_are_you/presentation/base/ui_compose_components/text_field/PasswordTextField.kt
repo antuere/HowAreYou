@@ -20,7 +20,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
-import timber.log.Timber
 
 @Composable
 fun PasswordTextField(
@@ -34,7 +33,6 @@ fun PasswordTextField(
     errorMessage: String? = null,
 ) {
     var passwordVisible by rememberSaveable { mutableStateOf(false) }
-    Timber.i("Acc settings check: enter in password textfield")
     DefaultTextField(
         modifier = modifier,
         value = value,

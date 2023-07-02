@@ -74,6 +74,7 @@ fun SettingsScreenContent(
                 isShowBiometricSetting = viewState().isEnableBiomAuthOnDevice && viewState().userPinCode.length == 4,
                 isCheckedBiometric = viewState().isCheckedBiomAuth,
                 checkChangeBiometric = { onIntent(SettingsIntent.BiometricAuthSettingChanged(it)) },
+                onClickPrivacyPolicy = {onIntent(SettingsIntent.PrivacyPolicyClicked)}
             )
 
             InfoAboutApp(

@@ -120,6 +120,10 @@ class SettingsViewModel @Inject constructor(
                 )
                 sideEffect(SettingsSideEffect.Dialog(dialog))
             }
+
+            SettingsIntent.PrivacyPolicyClicked -> {
+                sideEffect(SettingsSideEffect.NavigateToPrivacyPolicyWebSite)
+            }
         }
     }
 

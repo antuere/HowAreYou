@@ -6,7 +6,9 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.hilt.navigation.compose.hiltViewModel
+import antuere.domain.util.Constants
 import antuere.how_are_you.LocalAppState
 import antuere.how_are_you.R
 import antuere.how_are_you.presentation.base.ui_compose_components.top_bar.AppBarState
@@ -27,6 +29,7 @@ fun SettingsScreen(
     val appState = LocalAppState.current
     val fragmentActivity = LocalContext.current.findFragmentActivity()
     val context = LocalContext.current
+    val uriHandler = LocalUriHandler.current
     val viewState by viewModel.collectAsState()
 
     val bottomSheetState = rememberModalBottomSheetState(
@@ -57,22 +60,30 @@ fun SettingsScreen(
             is SettingsSideEffect.Snackbar -> {
                 appState.showSnackbar(sideEffect.message.asString(context))
             }
+
             is SettingsSideEffect.BiometricDialog -> {
                 sideEffect.dialog.startBiometricAuth(
                     biometricListener = viewModel.biometricAuthStateListener,
                     activity = fragmentActivity
                 )
             }
+
             SettingsSideEffect.NavigateToSignIn -> onNavigateSignIn()
             SettingsSideEffect.NavigateToAccountSettings -> onNavigateAccountSettings()
             is SettingsSideEffect.BiometricNoneEnroll -> {
                 launcher.launch(sideEffect.enrollIntent)
             }
+
             SettingsSideEffect.HideNavBar -> {
                 appState.changeVisibilityBottomBar(false)
             }
+
             SettingsSideEffect.ShowNavBar -> {
                 appState.changeVisibilityBottomBar(true)
+            }
+
+            SettingsSideEffect.NavigateToPrivacyPolicyWebSite -> {
+                uriHandler.openUri(Constants.PRIVACY_POLICY_LINK)
             }
         }
     }

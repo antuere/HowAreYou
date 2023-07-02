@@ -1,5 +1,7 @@
 package antuere.how_are_you.presentation.base.navigation
 
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -37,12 +39,12 @@ import com.google.accompanist.navigation.animation.composable
 @OptIn(ExperimentalAnimationApi::class)
 fun NavGraphBuilder.initRootNavGraph(
     navController: NavController,
-    homeViewModelLambda: () -> HomeViewModel,
+    homeViewModel: () -> HomeViewModel
 ) {
     composable(
         route = Screen.Onboard.route,
-        enterTransition = { materialSharedAxisZIn(forward = true) },
-        exitTransition = { materialSharedAxisZOut(forward = false) }
+        enterTransition = { EnterTransition.None },
+        exitTransition = { ExitTransition.None }
     ) {
         OnboardScreen(onNavigateHomeScreen = navController.navigateToHome())
     }
@@ -69,7 +71,7 @@ fun NavGraphBuilder.initRootNavGraph(
             onNavigateToCats = navController.navigateToCats(),
             onNavigateToDetail = navController.navigateToDayDetail(),
             onNavigateToAddDay = navController.navigateToAddDay(),
-            viewModel = homeViewModelLambda
+            viewModel = homeViewModel
         )
     }
 
@@ -241,8 +243,8 @@ fun NavGraphBuilder.initRootNavGraph(
 
     composable(
         route = Screen.SecureEntry.route,
-        enterTransition = { materialSharedAxisZIn(forward = true) },
-        exitTransition = { materialSharedAxisZOut(forward = false) }
+        enterTransition = { EnterTransition.None },
+        exitTransition = { ExitTransition.None }
     ) {
         SecureEntryScreen(onNavigateHomeScreen = navController.navigateToHome())
     }
