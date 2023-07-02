@@ -132,7 +132,9 @@ class MainActivity : FragmentActivity() {
                     navController = navController,
                     startDestination = startScreen.route
                 ) {
-                    initRootNavGraph(navController = navController)
+                    initRootNavGraph(
+                        navController = navController,
+                        homeViewModel = { homeViewModel })
                 }
 
                 ComposableLifecycle { _, event ->

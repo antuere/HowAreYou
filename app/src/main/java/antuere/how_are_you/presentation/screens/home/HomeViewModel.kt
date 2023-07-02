@@ -73,7 +73,7 @@ class HomeViewModel @Inject constructor(
     fun dayChanged() {
         viewModelScope.launch(Dispatchers.IO) {
             quoteRepository.updateQuoteRemote()
-            delay(200)
+            delay(300)
             currentDateTimeStamp.update {
                 TimeUtility.parseCurrentTime().time
             }
