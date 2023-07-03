@@ -1,3 +1,9 @@
+<div align="right">
+<a href="https://play.google.com/store/apps/details?id=antuere.how_are_you">
+<img src="https://github.com/antuere/HowAreYou/assets/98087954/aea265e1-92b0-4b8e-8edd-84077e4dde64" width="180" height="52" alt="Google play"/>
+</a>
+</div>
+
 # HowAreYou
 Android app for tracking your mental state with many useful features
 
