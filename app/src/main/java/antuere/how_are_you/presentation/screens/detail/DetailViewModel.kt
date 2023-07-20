@@ -4,6 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import antuere.domain.dto.Day
 import antuere.domain.repository.DayRepository
+import antuere.domain.repository.SettingsRepository
 import antuere.domain.util.Constants
 import antuere.how_are_you.R
 import antuere.how_are_you.presentation.base.ViewModelMvi
@@ -22,6 +23,7 @@ import javax.inject.Inject
 @HiltViewModel
 class DetailViewModel @Inject constructor(
     private val dayRepository: DayRepository,
+    private val settingsRepository: SettingsRepository,
     state: SavedStateHandle,
 ) : ViewModelMvi<DetailState, DetailSideEffect, DetailIntent>() {
 
@@ -30,7 +32,9 @@ class DetailViewModel @Inject constructor(
     private val dayId = state.get<Long>(Constants.DAY_ID_KEY)!!
 
     init {
-        getDay()
+        viewModelScope.launch(Dispatchers.IO) {
+            getDay()
+        }
     }
 
     override fun onIntent(intent: DetailIntent) {
@@ -126,25 +130,24 @@ class DetailViewModel @Inject constructor(
         }
     }
 
-    private fun getDay() {
-        viewModelScope.launch(Dispatchers.IO) {
-            val day = dayRepository.getDayById(dayId).first() ?: return@launch
+    private suspend fun getDay() {
+        val day = dayRepository.getDayById(dayId).first() ?: return
+        val savedFontSize = settingsRepository.getFontSizeDayView()
+        val favBtnRes = if (day.isFavorite) {
+            R.drawable.ic_baseline_favorite
+        } else {
+            R.drawable.ic_baseline_favorite_border
+        }
 
-            val favBtnRes = if (day.isFavorite) {
-                R.drawable.ic_baseline_favorite
-            } else {
-                R.drawable.ic_baseline_favorite_border
-            }
-
-            updateState {
-                state.copy(
-                    isLoading = false,
-                    daySmileRes = day.imageResId,
-                    dayText = day.dayText,
-                    dateString = day.dateString,
-                    favoriteBtnRes = favBtnRes
-                )
-            }
+        updateState {
+            state.copy(
+                isLoading = false,
+                daySmileRes = day.imageResId,
+                dayText = day.dayText,
+                dateString = day.dateString,
+                fontSize = savedFontSize,
+                favoriteBtnRes = favBtnRes
+            )
         }
     }
 

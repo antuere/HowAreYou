@@ -20,7 +20,8 @@ import antuere.how_are_you.R
 @Composable
 fun GeneralSettings(
     isCheckedWorriedDialog: Boolean,
-    onCheckedChangeWorriedDialog: (Boolean) -> Unit
+    onCheckedChangeWorriedDialog: (Boolean) -> Unit,
+    onClickDayCustomization: () -> Unit,
 ) {
     Column(
         horizontalAlignment = Alignment.Start
@@ -36,6 +37,17 @@ fun GeneralSettings(
             fontSize = dimensionResource(id = R.dimen.textSize_normal_2).value.sp
         )
         Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_2)))
+
+        SettingItem(
+            modifier = Modifier.padding(
+                start = dimensionResource(id = R.dimen.padding_normal_3),
+                end = dimensionResource(id = R.dimen.padding_normal_2)
+            ),
+            titleId = R.string.settings_day_customization,
+            iconId = R.drawable.ic_palette,
+            onClick = onClickDayCustomization
+        )
+        Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_4)))
 
         SettingItemWithSwitch(
             modifier = Modifier.padding(

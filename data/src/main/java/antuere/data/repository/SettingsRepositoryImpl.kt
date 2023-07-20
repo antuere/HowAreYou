@@ -61,8 +61,16 @@ class SettingsRepositoryImpl @Inject constructor(
         settingsDataStore.countryIdConfiguration.set(supportedCountry.id)
     }
 
+    override suspend fun saveFontSizeDayView(fontSize: Int) {
+        settingsDataStore.fontSizeDayView.set(fontSize)
+    }
+
     override suspend fun getSelectedCountryId(): Int {
         return settingsDataStore.countryIdConfiguration.load()
+    }
+
+    override suspend fun getFontSizeDayView(): Int {
+        return settingsDataStore.fontSizeDayView.load()
     }
 
     override suspend fun saveUserNickname(nickname: String) {
@@ -94,5 +102,6 @@ class SettingsRepositoryImpl @Inject constructor(
         settingsDataStore.nicknameConfiguration.reset()
         settingsDataStore.allSettingsConfiguration.reset()
         settingsDataStore.countryIdConfiguration.reset()
+        settingsDataStore.fontSizeDayView.reset()
     }
 }

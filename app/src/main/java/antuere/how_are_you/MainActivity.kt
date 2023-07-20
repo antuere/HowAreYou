@@ -13,8 +13,10 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTagsAsResourceId
+import androidx.compose.ui.unit.Density
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
 import androidx.fragment.app.FragmentActivity
@@ -101,30 +103,36 @@ class MainActivity : FragmentActivity() {
         val navController = appState.navController
         var timeWhenAppClosed by rememberSaveable { mutableStateOf(0L) }
 
-        Scaffold(
-            modifier = Modifier.semantics { testTagsAsResourceId = true },
-            snackbarHost = {
-                SnackbarHost(appState.snackbarHostState) { data ->
-                    DefaultSnackbar(text = data.visuals.message)
-                }
-            },
-            bottomBar = {
-                if (appBarState.isVisibleBottomBar) {
-                    DefaultBottomNavBar(navController = navController)
-                }
-            },
-            topBar = {
-                if (appBarState.isVisibleTopBar) {
-                    DefaultTopBar(
-                        title = appBarState.topBarTitle,
-                        topBarType = appBarState.topBarType,
-                        navigationIcon = appBarState.navigationIcon,
-                        navigationOnClick = appBarState.onClickNavigationBtn,
-                        actions = appBarState.actions
-                    )
-                }
-            }) { innerPadding ->
-            CompositionLocalProvider(LocalAppState provides appState) {
+        CompositionLocalProvider(
+            LocalAppState provides appState,
+            LocalDensity provides Density(
+                density = LocalDensity.current.density,
+                fontScale = 1f
+            )
+        ) {
+            Scaffold(
+                modifier = Modifier.semantics { testTagsAsResourceId = true },
+                snackbarHost = {
+                    SnackbarHost(appState.snackbarHostState) { data ->
+                        DefaultSnackbar(text = data.visuals.message)
+                    }
+                },
+                bottomBar = {
+                    if (appBarState.isVisibleBottomBar) {
+                        DefaultBottomNavBar(navController = navController)
+                    }
+                },
+                topBar = {
+                    if (appBarState.isVisibleTopBar) {
+                        DefaultTopBar(
+                            title = appBarState.topBarTitle,
+                            topBarType = appBarState.topBarType,
+                            navigationIcon = appBarState.navigationIcon,
+                            navigationOnClick = appBarState.onClickNavigationBtn,
+                            actions = appBarState.actions
+                        )
+                    }
+                }) { innerPadding ->
                 AnimatedNavHost(
                     modifier = Modifier
                         .systemBarsPadding()

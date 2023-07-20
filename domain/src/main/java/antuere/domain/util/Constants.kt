@@ -25,6 +25,7 @@ object Constants {
     const val SELECTED_COUNTRY_ID = "selected_country_key"
 
     const val SETTINGS_BIOMETRIC_KEY = "biometric_auth_key"
+    const val SETTINGS_FONT_SIZE_DAY_VIEW_KEY = "font_size_key"
     const val SETTINGS_FIRST_LAUNCH_KEY = "launch_key"
     const val SETTINGS_PIN_CODE_KEY = "pin_code_auth_key"
     const val SETTINGS_WORRIED_DIALOG_KEY = "worried_dialog_key"

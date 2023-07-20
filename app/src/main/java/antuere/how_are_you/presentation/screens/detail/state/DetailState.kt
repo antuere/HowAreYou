@@ -12,6 +12,7 @@ data class DetailState(
     val dayText: String = "",
     val dayTextEditable: String = "",
     val dateString: String = "",
+    val fontSize: Int = 20,
     val smileImages: List<Int> = listOf(
         antuere.data.R.drawable.smile_sad,
         antuere.data.R.drawable.smile_none,

@@ -35,6 +35,7 @@ fun DetailScreenContent(
     daySmileImage: Int,
     dayText: String,
     dayTextEditable: String,
+    fontSize: Int,
     smileImages: ImmutableList<Int>,
 ) {
     if (isLoading) {
@@ -90,19 +91,12 @@ fun DetailScreenContent(
                         )
                         Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_4)))
 
-//                        GradientCard(
-//                            modifier = Modifier
-//                                .fillMaxSize(0.85F)
-//                                .weight(1F),
-//                            gradient = GradientDefaults.surface(),
-//                            elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
-//                        ) {
                         Text(
                             modifier = Modifier
                                 .fillMaxHeight(0.8F)
                                 .fillMaxWidth(0.9F),
                             text = dayText,
-                            fontSize = dimensionResource(id = R.dimen.textSize_normal_2).value.sp,
+                            fontSize = fontSize.sp,
                         )
                     }
                 }

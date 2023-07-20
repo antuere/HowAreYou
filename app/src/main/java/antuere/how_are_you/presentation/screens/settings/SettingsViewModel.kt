@@ -46,7 +46,7 @@ class SettingsViewModel @Inject constructor(
         override fun onBiometricAuthSuccess() {
             updateState { state.copy(isCheckedBiomAuth = true) }
             viewModelScope.launch(Dispatchers.IO) {
-                settingsRepository.saveBiomAuthSetting(true)
+                settingsRepository.saveBiomAuthSetting(isEnable = true)
             }
             sideEffect(
                 SettingsSideEffect.Snackbar(UiText.StringResource(R.string.biom_auth_create_success))
@@ -123,6 +123,10 @@ class SettingsViewModel @Inject constructor(
 
             SettingsIntent.PrivacyPolicyClicked -> {
                 sideEffect(SettingsSideEffect.NavigateToPrivacyPolicyWebSite)
+            }
+
+            SettingsIntent.DayCustomizationClicked -> {
+                sideEffect(SettingsSideEffect.NavigateToDayCustomization)
             }
         }
     }

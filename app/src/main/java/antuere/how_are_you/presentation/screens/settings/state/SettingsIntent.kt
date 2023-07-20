@@ -8,5 +8,6 @@ sealed interface SettingsIntent {
     object AccountSettingsBtnClicked : SettingsIntent
     object SignInBtnClicked : SettingsIntent
     object PrivacyPolicyClicked : SettingsIntent
+    object DayCustomizationClicked : SettingsIntent
     object SignInAdviceClicked : SettingsIntent
 }

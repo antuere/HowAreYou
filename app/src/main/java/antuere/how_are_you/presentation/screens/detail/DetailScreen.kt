@@ -64,6 +64,7 @@ fun DetailScreen(
         daySmileImage = viewState.daySmileRes,
         dayText = viewState.dayText,
         dayTextEditable = viewState.dayTextEditable,
+        fontSize = viewState.fontSize,
         smileImages = viewState.smileImages.toImmutableList()
     )
 }

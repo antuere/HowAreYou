@@ -77,6 +77,11 @@ fun NavController.navigateToAccountSettings(): () -> Unit = remember {
 }
 
 @Composable
+fun NavController.navigateToDayCustomization(): () -> Unit = remember {
+    { this.navigate(Screen.DayCustomization.route) }
+}
+
+@Composable
 fun NavController.navigateToHelpForYou(): () -> Unit = remember {
     { this.navigate(Screen.HelpForYou.route) }
 }

@@ -68,4 +68,11 @@ class SettingsDataStore(context: Context, name: String) {
             default = 1,
             dataStore = settingsDataStore
         )
+
+    val fontSizeDayView: Configuration<Int> =
+        IntConfiguration(
+            key = Constants.SETTINGS_FONT_SIZE_DAY_VIEW_KEY,
+            default = 18,
+            dataStore = settingsDataStore
+        )
 }

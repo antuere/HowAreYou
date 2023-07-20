@@ -17,6 +17,7 @@ import antuere.how_are_you.presentation.base.ui_animations.materialSharedAxisZOu
 import antuere.how_are_you.presentation.screens.account_settings.AccountSettingsScreen
 import antuere.how_are_you.presentation.screens.add_day.AddDayScreen
 import antuere.how_are_you.presentation.screens.cats.CatsScreen
+import antuere.how_are_you.presentation.screens.day_customization.DayCustomizationScreen
 import antuere.how_are_you.presentation.screens.detail.DetailScreen
 import antuere.how_are_you.presentation.screens.favorites.FavoritesScreen
 import antuere.how_are_you.presentation.screens.help_for_you.HelpForYouScreen
@@ -39,7 +40,7 @@ import com.google.accompanist.navigation.animation.composable
 @OptIn(ExperimentalAnimationApi::class)
 fun NavGraphBuilder.initRootNavGraph(
     navController: NavController,
-    homeViewModel: () -> HomeViewModel
+    homeViewModel: () -> HomeViewModel,
 ) {
     composable(
         route = Screen.Onboard.route,
@@ -182,7 +183,8 @@ fun NavGraphBuilder.initRootNavGraph(
     ) {
         SettingsScreen(
             onNavigateSignIn = navController.navigateToSignIn(),
-            onNavigateAccountSettings = navController.navigateToAccountSettings()
+            onNavigateAccountSettings = navController.navigateToAccountSettings(),
+            onNavigateDayCustomization = navController.navigateToDayCustomization()
         )
     }
 
@@ -192,6 +194,14 @@ fun NavGraphBuilder.initRootNavGraph(
         exitTransition = { materialSharedAxisZOut(forward = false) }
     ) {
         AccountSettingsScreen()
+    }
+
+    composable(
+        route = Screen.DayCustomization.route,
+        enterTransition = { materialSharedAxisZIn(forward = true) },
+        exitTransition = { materialSharedAxisZOut(forward = false) }
+    ) {
+        DayCustomizationScreen()
     }
 
     composable(

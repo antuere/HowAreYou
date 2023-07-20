@@ -2,6 +2,7 @@ package antuere.how_are_you.presentation.screens.settings.ui_compose
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.rememberScrollState
@@ -34,7 +35,8 @@ fun SettingsScreenContent(
         ModalBottomSheet(
             onDismissRequest = { onIntent(SettingsIntent.PinCreationSheetClosed(false)) },
             sheetState = bottomSheetState,
-            containerColor = MaterialTheme.colorScheme.onPrimary
+            containerColor = MaterialTheme.colorScheme.onPrimary,
+            windowInsets = WindowInsets(0)
         ) {
             Box(
                 modifier = Modifier.fillMaxWidth(),
@@ -66,6 +68,9 @@ fun SettingsScreenContent(
                 isCheckedWorriedDialog = viewState().isCheckedWorriedDialog,
                 onCheckedChangeWorriedDialog = {
                     onIntent(SettingsIntent.WorriedDialogSettingChanged(it))
+                },
+                onClickDayCustomization = {
+                    onIntent(SettingsIntent.DayCustomizationClicked)
                 }
             )
             PrivacySettings(
@@ -74,7 +79,7 @@ fun SettingsScreenContent(
                 isShowBiometricSetting = viewState().isEnableBiomAuthOnDevice && viewState().userPinCode.length == 4,
                 isCheckedBiometric = viewState().isCheckedBiomAuth,
                 checkChangeBiometric = { onIntent(SettingsIntent.BiometricAuthSettingChanged(it)) },
-                onClickPrivacyPolicy = {onIntent(SettingsIntent.PrivacyPolicyClicked)}
+                onClickPrivacyPolicy = { onIntent(SettingsIntent.PrivacyPolicyClicked) }
             )
 
             InfoAboutApp(

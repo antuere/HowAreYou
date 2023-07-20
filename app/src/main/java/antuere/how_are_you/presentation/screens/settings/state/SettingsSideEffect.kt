@@ -12,6 +12,7 @@ sealed interface SettingsSideEffect {
     data class BiometricDialog(val dialog: UIBiometricDialog) : SettingsSideEffect
     object NavigateToSignIn : SettingsSideEffect
     object NavigateToAccountSettings : SettingsSideEffect
+    object NavigateToDayCustomization : SettingsSideEffect
     object NavigateToPrivacyPolicyWebSite : SettingsSideEffect
     object HideNavBar : SettingsSideEffect
     object ShowNavBar : SettingsSideEffect

@@ -24,6 +24,7 @@ import org.orbitmvi.orbit.compose.collectSideEffect
 fun SettingsScreen(
     onNavigateSignIn: () -> Unit,
     onNavigateAccountSettings: () -> Unit,
+    onNavigateDayCustomization: () -> Unit,
     viewModel: SettingsViewModel = hiltViewModel(),
 ) {
     val appState = LocalAppState.current
@@ -70,6 +71,7 @@ fun SettingsScreen(
 
             SettingsSideEffect.NavigateToSignIn -> onNavigateSignIn()
             SettingsSideEffect.NavigateToAccountSettings -> onNavigateAccountSettings()
+            SettingsSideEffect.NavigateToDayCustomization -> onNavigateDayCustomization()
             is SettingsSideEffect.BiometricNoneEnroll -> {
                 launcher.launch(sideEffect.enrollIntent)
             }

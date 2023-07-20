@@ -20,6 +20,8 @@ interface SettingsRepository {
 
     suspend fun getSelectedCountryId(): Int
 
+    suspend fun getFontSizeDayView(): Int
+
     suspend fun saveSettings(settings: Settings)
 
     suspend fun saveWorriedDialogSetting(isEnable: Boolean)
@@ -29,6 +31,8 @@ interface SettingsRepository {
     suspend fun saveBiomAuthSetting(isEnable: Boolean)
 
     suspend fun saveSelectedCountryId(supportedCountry: SupportedCountry)
+
+    suspend fun saveFontSizeDayView(fontSize: Int)
 
     suspend fun saveUserNickname(nickname: String)
 

@@ -16,6 +16,7 @@ class IntConfiguration(
 
     private val preferenceKey = intPreferencesKey(key)
 
+
     override val flow: Flow<Int> = dataStore.data.map { preferences ->
         preferences[preferenceKey] ?: default
     }
