@@ -1,4 +1,4 @@
-package antuere.how_are_you.presentation.screens.day_customization
+package antuere.how_are_you.presentation.screens.customization
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -10,13 +10,13 @@ import antuere.how_are_you.LocalAppState
 import antuere.how_are_you.R
 import antuere.how_are_you.presentation.base.ui_compose_components.top_bar.AppBarState
 import antuere.how_are_you.presentation.base.ui_text.UiText
-import antuere.how_are_you.presentation.screens.day_customization.ui_compose.DayCustomizationScreenContent
+import antuere.how_are_you.presentation.screens.customization.ui_compose.CustomizationScreenContent
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
 @Composable
-fun DayCustomizationScreen(
-    viewModel: DayCustomizationViewModel = hiltViewModel(),
+fun CustomizationScreen(
+    viewModel: CustomizationViewModel = hiltViewModel(),
 ) {
     val appState = LocalAppState.current
     val viewState by viewModel.collectAsState()
@@ -44,7 +44,7 @@ fun DayCustomizationScreen(
 //        }
     }
 
-    DayCustomizationScreenContent(
+    CustomizationScreenContent(
         viewState = { viewState },
         onIntent = { viewModel.onIntent(it) },
     )

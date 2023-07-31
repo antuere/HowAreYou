@@ -18,13 +18,13 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import antuere.how_are_you.R
 import antuere.how_are_you.presentation.base.ui_compose_components.card.CardWithIcons
 import antuere.how_are_you.presentation.base.ui_compose_components.card.GradientCard
 import antuere.how_are_you.presentation.base.ui_theme.GradientDefaults
 import antuere.how_are_you.presentation.screens.help_for_you.state.HelpForYouIntent
 import antuere.how_are_you.presentation.screens.help_for_you.state.HelpForYouState
-import antuere.how_are_you.util.extensions.fixedSize
 import antuere.how_are_you.util.extensions.paddingTopBar
 import eu.wewox.textflow.TextFlow
 
@@ -62,7 +62,7 @@ fun HelpForYouScreenContent(
                 TextFlow(
                     text = viewState().titleText.asString(),
                     color = MaterialTheme.colorScheme.onPrimaryContainer,
-                    fontSize = dimensionResource(id = R.dimen.textSize_normal_1).value.fixedSize,
+                    fontSize = dimensionResource(id = R.dimen.textSize_normal_1).value.sp,
                     style = MaterialTheme.typography.titleMedium
                 ) {
                     Image(

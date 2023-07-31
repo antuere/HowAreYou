@@ -28,7 +28,7 @@ fun PrivacyPolicyInfo(
                 color = MaterialTheme.colorScheme.primary
             )
         ) {
-            append(stringResource(R.string.privacy_policy_info_end))
+            append("\n${stringResource(R.string.privacy_policy_info_end)}")
         }
         pop()
     }

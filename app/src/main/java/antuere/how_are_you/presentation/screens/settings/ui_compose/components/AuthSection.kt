@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
@@ -20,7 +19,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.sp
 import antuere.domain.util.Constants
 import antuere.how_are_you.R
-import antuere.how_are_you.util.extensions.fixedSize
+import antuere.how_are_you.presentation.base.ui_compose_components.divider.DefaultDivider
 
 @Composable
 fun AuthSection(
@@ -46,7 +45,7 @@ fun AuthSection(
 
         Text(
             modifier = Modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_normal_2)),
-            fontSize = dimensionResource(id = R.dimen.textSize_normal_0).value.fixedSize,
+            fontSize = dimensionResource(id = R.dimen.textSize_normal_0).value.sp,
             text = stringResource(id = R.string.how_are_you_text)
         )
 
@@ -104,11 +103,9 @@ fun AuthSection(
             }
         }
         Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_4)))
-        Divider(
+        DefaultDivider(
             modifier = Modifier
                 .padding(horizontal = dimensionResource(id = R.dimen.padding_normal_2))
-                .fillMaxWidth(),
-            color = MaterialTheme.colorScheme.onSurfaceVariant
         )
     }
 }

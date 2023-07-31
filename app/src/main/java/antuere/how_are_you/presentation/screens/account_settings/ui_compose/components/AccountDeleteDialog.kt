@@ -22,10 +22,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.DialogProperties
 import antuere.how_are_you.R
 import antuere.how_are_you.presentation.base.ui_compose_components.dialog.DefaultDialogFlowRow
-import antuere.how_are_you.util.extensions.fixedSize
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -42,7 +42,7 @@ fun AccountDeleteDialog(
     ) {
         Surface(
             modifier = Modifier.fillMaxWidth(0.9F),
-            color = MaterialTheme.colorScheme.background,
+            color = MaterialTheme.colorScheme.onPrimary,
             shape = MaterialTheme.shapes.extraLarge
         ) {
             Column(
@@ -61,7 +61,7 @@ fun AccountDeleteDialog(
                 Text(
                     text = stringResource(R.string.dialog_reauth_title),
                     fontWeight = FontWeight.Bold,
-                    style = MaterialTheme.typography.headlineSmall.copy(fontSize = 24f.fixedSize)
+                    style = MaterialTheme.typography.headlineSmall.copy(fontSize = 24f.sp)
                 )
                 Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_2)))
 

@@ -2,6 +2,7 @@ package antuere.data.repository
 
 import antuere.data.preferences_data_store.settings_data_store.SettingsDataStore
 import antuere.data.preferences_data_store.settings_data_store.mapping.SettingsEntityMapper
+import antuere.domain.dto.AppTheme
 import antuere.domain.dto.Settings
 import antuere.domain.dto.helplines.SupportedCountry
 import antuere.domain.repository.SettingsRepository
@@ -81,6 +82,14 @@ class SettingsRepositoryImpl @Inject constructor(
         return settingsDataStore.nicknameConfiguration.flow
     }
 
+    override suspend fun getAppTheme(): Flow<AppTheme> {
+        return settingsDataStore.appThemeConfiguration.flow
+    }
+
+    override suspend fun saveAppTheme(appTheme: AppTheme) {
+        settingsDataStore.appThemeConfiguration.set(appTheme)
+    }
+
     override suspend fun resetUserNickname() {
         settingsDataStore.nicknameConfiguration.reset()
     }
@@ -100,6 +109,7 @@ class SettingsRepositoryImpl @Inject constructor(
     override suspend fun resetAllSettings() {
         settingsDataStore.pinCodeConfiguration.reset()
         settingsDataStore.nicknameConfiguration.reset()
+        settingsDataStore.appThemeConfiguration.reset()
         settingsDataStore.allSettingsConfiguration.reset()
         settingsDataStore.countryIdConfiguration.reset()
         settingsDataStore.fontSizeDayView.reset()

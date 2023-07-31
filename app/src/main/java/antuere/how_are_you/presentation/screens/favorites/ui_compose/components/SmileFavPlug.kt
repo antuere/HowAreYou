@@ -50,6 +50,7 @@ fun SmileFavPlug(
             text = message.asString(),
             fontWeight = FontWeight.Medium,
             fontSize = dimensionResource(id = R.dimen.textSize_normal_0).value.sp,
+            color = MaterialTheme.colorScheme.onBackground,
             textAlign = TextAlign.Center
         )
     }

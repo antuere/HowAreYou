@@ -55,7 +55,6 @@ class MainActivity : FragmentActivity() {
         })
     }
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Timber.plant(Timber.DebugTree())
@@ -70,18 +69,20 @@ class MainActivity : FragmentActivity() {
             }
         }
 
-
         setContent {
-            HowAreYouTheme {
-                val isEnablePin by splashViewModel.isEnablePin.collectAsState()
-                val startScreen by splashViewModel.startScreen.collectAsState()
-                val isShowSplash by splashViewModel.isShowSplash.collectAsState()
-                val appState: AppStateImpl = rememberAppState()
+            Timber.i("Theme feature: in setContent")
+            val isEnablePin by splashViewModel.isEnablePin.collectAsState()
+            val startScreen by splashViewModel.startScreen.collectAsState()
+            val isShowSplash by splashViewModel.isShowSplash.collectAsState()
+            val appTheme by splashViewModel.appTheme.collectAsState()
+            val appState: AppStateImpl = rememberAppState()
 
-                appState.dialogListener.SetupDialogListener()
-                appState.SetupAppColors()
+            if (!isShowSplash) {
+                HowAreYouTheme(appTheme = appTheme) {
+                    Timber.i("Theme feature: howAreYou theme")
+                    appState.dialogListener.SetupDialogListener()
+                    appState.SetupAppColors()
 
-                if (!isShowSplash) {
                     RenderUI(
                         startScreen = startScreen,
                         appState = appState,
@@ -99,6 +100,7 @@ class MainActivity : FragmentActivity() {
         appState: AppStateImpl,
         isEnablePin: () -> Boolean,
     ) {
+        Timber.i("Theme feature: render ui")
         val appBarState by appState.appBarState
         val navController = appState.navController
         var timeWhenAppClosed by rememberSaveable { mutableStateOf(0L) }

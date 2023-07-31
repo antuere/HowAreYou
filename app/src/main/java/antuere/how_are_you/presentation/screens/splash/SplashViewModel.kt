@@ -2,6 +2,7 @@ package antuere.how_are_you.presentation.screens.splash
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import antuere.domain.dto.AppTheme
 import antuere.domain.repository.QuoteRepository
 import antuere.domain.repository.SettingsRepository
 import antuere.how_are_you.presentation.base.navigation.Screen
@@ -31,11 +32,21 @@ class SplashViewModel @Inject constructor(
     val startScreen: StateFlow<Screen>
         get() = _startScreen
 
+    private var _appTheme = MutableStateFlow(AppTheme.DEFAULT)
+    val appTheme: StateFlow<AppTheme>
+        get() = _appTheme
+
     init {
-        defineStartScreen()
+        initSettings()
     }
 
-    private fun defineStartScreen() {
+    private fun initSettings() {
+        viewModelScope.launch(Dispatchers.IO) {
+            settingsRepository.getAppTheme().collectLatest {
+                _appTheme.value = it
+            }
+        }
+
         viewModelScope.launch(Dispatchers.IO) {
             val isFirstLaunch = settingsRepository.isFirstLaunch()
 

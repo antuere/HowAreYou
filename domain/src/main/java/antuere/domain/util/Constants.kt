@@ -28,6 +28,7 @@ object Constants {
     const val SETTINGS_FONT_SIZE_DAY_VIEW_KEY = "font_size_key"
     const val SETTINGS_FIRST_LAUNCH_KEY = "launch_key"
     const val SETTINGS_PIN_CODE_KEY = "pin_code_auth_key"
+    const val SETTINGS_APP_THEME_KEY = "app_theme_key"
     const val SETTINGS_WORRIED_DIALOG_KEY = "worried_dialog_key"
 
     const val ANIM_DEFAULT_DURATION = 300

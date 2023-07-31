@@ -1,13 +1,10 @@
-package antuere.how_are_you.presentation.screens.day_customization.ui_compose
+package antuere.how_are_you.presentation.screens.customization.ui_compose.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Divider
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -24,6 +21,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import antuere.how_are_you.R
+import antuere.how_are_you.presentation.base.ui_compose_components.divider.DefaultDivider
 
 @Composable
 fun FontSizeSettings(
@@ -61,15 +59,9 @@ fun FontSizeSettings(
         Text(
             text = stringResource(R.string.day_customization_example_text),
             fontSize = sliderPosition.sp,
-//            style = MaterialTheme.typography.bodyMedium
-
         )
         Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_2)))
 
-        Divider(
-            modifier = Modifier.fillMaxWidth(),
-            color = MaterialTheme.colorScheme.onSurfaceVariant
-        )
-
+        DefaultDivider()
     }
 }

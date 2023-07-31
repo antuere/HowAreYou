@@ -111,7 +111,6 @@ object GradientDefaults {
         ).toImmutableList()
     }
 
-    @Composable
     private fun smileGradient(topColor: Color, botColor: Color): Brush {
         return Brush.linearGradient(
             listOf(topColor, botColor)

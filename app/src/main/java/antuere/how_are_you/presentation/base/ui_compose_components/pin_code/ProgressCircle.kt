@@ -5,6 +5,7 @@ import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.keyframes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
@@ -36,7 +37,7 @@ fun ProgressCircle(
 fun ProgressCircleAnimated(
     @DrawableRes drawId: Int,
     modifier: Modifier = Modifier,
-    colorFilter: ColorFilter? = null,
+    colorFilter: ColorFilter? = ColorFilter.tint(MaterialTheme.colorScheme.primary),
     alpha: Float = 1F,
 ) {
     val scale = remember { Animatable(1f) }
@@ -57,9 +58,7 @@ fun ProgressCircleAnimated(
         modifier = modifier
             .padding(horizontal = 2.dp)
             .scale(scale.value),
-        painter = painterResource(
-            id = drawId
-        ),
+        painter = painterResource(id = drawId),
         alpha = alpha,
         contentDescription = null,
         colorFilter = colorFilter

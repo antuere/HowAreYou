@@ -1,4 +1,4 @@
-package antuere.how_are_you.presentation.screens.settings.ui_compose.components
+package antuere.how_are_you.presentation.base.ui_compose_components.settings
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
@@ -31,7 +31,7 @@ fun SettingItem(
 ) {
     Row(
         modifier = modifier
-            .clip(MaterialTheme.shapes.large)
+            .clip(MaterialTheme.shapes.medium)
             .clickable { onClick() },
         verticalAlignment = Alignment.CenterVertically
     ) {

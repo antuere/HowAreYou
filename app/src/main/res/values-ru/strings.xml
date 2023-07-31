@@ -193,7 +193,7 @@
     <string name="onboard_helplines_title">Получайте помощь</string>
     <string name="onboard_helplines_desc">Вы сможете выбрать свою страну и получить контактные данные организаций, предоставляющих психологическую помощь на расстоянии. Список стран будет пополняться с обновлениями. \nКроме того, мы предлагаем возможность написать нам на почту или в Telegram, чтобы вы могли пообщаться с профессионалами напрямую и получить необходимую поддержку!</string>
     <string name="onboard_enter_btn">Вперед к осознанности!</string>
-    <string name="settings_day_customization">Настройки дня</string>
+    <string name="settings_day_customization">Настройки оформления</string>
     <string name="account_settings">Управление аккаунтом</string>
     <string name="delete_data">Удалить записанные дни</string>
     <string name="delete_account">Удалить аккаунт</string>
@@ -215,7 +215,8 @@
     <string name="privacy_policy_info_start">При входе или регистрации вы соглашаетесь с</string>
     <string name="privacy_policy_info_end">Политикой конфиденциальности</string>
     <string name="settings_privacy_policy">Политика конфиденциальности</string>
-    <string name="day_customization">Настройка дня</string>
+    <string name="day_customization">Настройки оформления</string>
     <string name="day_description_text_size">Размер текста описания дня</string>
     <string name="day_customization_example_text">Сегодня был отличный день!</string>
+    <string name="change_the_theme">Изменить тему</string>
 </resources>

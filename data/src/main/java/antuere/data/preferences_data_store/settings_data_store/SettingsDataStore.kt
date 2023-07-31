@@ -4,12 +4,14 @@ import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
+import antuere.data.preferences_data_store.configurations.AppThemeConfiguration
 import antuere.data.preferences_data_store.configurations.BooleanConfiguration
 import antuere.data.preferences_data_store.configurations.Configuration
 import antuere.data.preferences_data_store.configurations.IntConfiguration
 import antuere.data.preferences_data_store.configurations.SettingsConfiguration
 import antuere.data.preferences_data_store.configurations.StringConfiguration
 import antuere.data.preferences_data_store.settings_data_store.entities.SettingsEntity
+import antuere.domain.dto.AppTheme
 import antuere.domain.util.Constants
 
 class SettingsDataStore(context: Context, name: String) {
@@ -23,6 +25,9 @@ class SettingsDataStore(context: Context, name: String) {
             default = true,
             dataStore = settingsDataStore
         )
+
+    val appThemeConfiguration: Configuration<AppTheme> =
+        AppThemeConfiguration(dataStore = settingsDataStore)
 
     val nicknameConfiguration: Configuration<String> =
         StringConfiguration(

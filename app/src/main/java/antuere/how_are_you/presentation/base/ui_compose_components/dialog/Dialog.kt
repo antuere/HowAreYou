@@ -72,7 +72,7 @@ fun Dialog(
                 }
             }
         },
-        containerColor = MaterialTheme.colorScheme.background,
+        containerColor = MaterialTheme.colorScheme.onPrimary,
         iconContentColor = iconColor
     )
 }

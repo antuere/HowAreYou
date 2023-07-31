@@ -23,7 +23,6 @@ import antuere.domain.dto.mental_tips.MentalTip
 import antuere.how_are_you.R
 import antuere.how_are_you.presentation.base.ui_compose_components.card.GradientCard
 import antuere.how_are_you.presentation.base.ui_theme.GradientDefaults
-import antuere.how_are_you.util.extensions.fixedSize
 
 @Composable
 fun MentalTipItem(
@@ -51,7 +50,7 @@ fun MentalTipItem(
             modifier = Modifier
                 .padding(horizontal = dimensionResource(id = R.dimen.padding_normal_1))
                 .align(Alignment.CenterHorizontally),
-            fontSize = dimensionResource(id = R.dimen.textSize_big_0).value.fixedSize,
+            fontSize = dimensionResource(id = R.dimen.textSize_big_0).value.sp,
             fontWeight = FontWeight.Medium,
             textAlign = TextAlign.Center,
             text = stringResource(id = mentalTip.titleRes),

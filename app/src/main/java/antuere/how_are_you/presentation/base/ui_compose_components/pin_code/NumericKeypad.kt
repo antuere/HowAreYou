@@ -27,7 +27,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import antuere.how_are_you.R
-import antuere.how_are_you.util.extensions.fixedSize
 
 @Composable
 fun NumericKeypad(
@@ -143,7 +142,7 @@ fun NumericKeypad(
             ) {
                 Text(
                     text = stringResource(id = R.string.clear_pin),
-                    fontSize = 14f.fixedSize,
+                    fontSize = 14f.sp,
                     color = MaterialTheme.colorScheme.onSecondary,
                     textAlign = TextAlign.Center,
                     softWrap = false,

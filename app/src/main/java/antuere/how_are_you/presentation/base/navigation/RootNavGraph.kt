@@ -17,7 +17,7 @@ import antuere.how_are_you.presentation.base.ui_animations.materialSharedAxisZOu
 import antuere.how_are_you.presentation.screens.account_settings.AccountSettingsScreen
 import antuere.how_are_you.presentation.screens.add_day.AddDayScreen
 import antuere.how_are_you.presentation.screens.cats.CatsScreen
-import antuere.how_are_you.presentation.screens.day_customization.DayCustomizationScreen
+import antuere.how_are_you.presentation.screens.customization.CustomizationScreen
 import antuere.how_are_you.presentation.screens.detail.DetailScreen
 import antuere.how_are_you.presentation.screens.favorites.FavoritesScreen
 import antuere.how_are_you.presentation.screens.help_for_you.HelpForYouScreen
@@ -197,11 +197,11 @@ fun NavGraphBuilder.initRootNavGraph(
     }
 
     composable(
-        route = Screen.DayCustomization.route,
+        route = Screen.Customization.route,
         enterTransition = { materialSharedAxisZIn(forward = true) },
         exitTransition = { materialSharedAxisZOut(forward = false) }
     ) {
-        DayCustomizationScreen()
+        CustomizationScreen()
     }
 
     composable(

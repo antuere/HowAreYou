@@ -19,9 +19,9 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.sp
 import antuere.how_are_you.R
 import antuere.how_are_you.presentation.screens.onboard.ui_compose.OnboardPage
-import antuere.how_are_you.util.extensions.fixedSize
 
 @Composable
 fun OnboardPageItem(
@@ -46,7 +46,7 @@ fun OnboardPageItem(
         Text(
             modifier = Modifier.align(Alignment.CenterHorizontally),
             style = MaterialTheme.typography.headlineSmall,
-            fontSize = dimensionResource(id = R.dimen.textSize_big_0).value.fixedSize,
+            fontSize = dimensionResource(id = R.dimen.textSize_big_0).value.sp,
             textAlign = TextAlign.Center,
             text = onboardPage.title.asString(),
         )

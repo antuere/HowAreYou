@@ -41,7 +41,7 @@ fun DetailScreenContent(
     if (isLoading) {
         FullScreenProgressIndicator()
     } else {
-        Crossfade(isEditMode) { isEditModeOn ->
+        Crossfade(isEditMode, label = "DetailScreenCrossFade") { isEditModeOn ->
             when (isEditModeOn) {
                 true -> {
                     Column(
@@ -81,6 +81,10 @@ fun DetailScreenContent(
                             .fillMaxSize()
                             .paddingTopBar()
                             .verticalScroll(rememberScrollState()),
+//                            .paint(
+//                                painter = painterResource(id = R.drawable.onboard_cat),
+//                                contentScale = ContentScale.FillBounds
+//                            ),
                         verticalArrangement = Arrangement.Top,
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {

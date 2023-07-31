@@ -2,6 +2,7 @@ package antuere.how_are_you.presentation.base.app_state
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHostState
@@ -16,7 +17,7 @@ import antuere.how_are_you.presentation.base.ui_compose_components.top_bar.AppBa
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import kotlinx.coroutines.*
-
+import timber.log.Timber
 
 class AppStateImpl(
     val navController: NavHostController,
@@ -73,24 +74,26 @@ class AppStateImpl(
 
     @Composable
     override fun SetupAppColors() {
+        Timber.i("Theme feature: setup app colors")
         val systemUiController = rememberSystemUiController()
-        val isUseDarkIcons = !appBarState.value.isVisibleBottomBar
+        val isDarkIcons = !isSystemInDarkTheme()
+        val isVisibleBottomBar = !appBarState.value.isVisibleBottomBar
         val colorNavBarColor =
             if (appBarState.value.isVisibleBottomBar) MaterialTheme.colorScheme.surface else MaterialTheme.colorScheme.background
         val colorStatusBar =
             if (appBarState.value.isVisibleTopBar) MaterialTheme.colorScheme.surface else MaterialTheme.colorScheme.background
 
-        LaunchedEffect(isUseDarkIcons, colorNavBarColor) {
+        LaunchedEffect(isVisibleBottomBar, colorNavBarColor) {
             systemUiController.setNavigationBarColor(
                 color = colorNavBarColor,
-                darkIcons = true,
+                darkIcons = isDarkIcons,
             )
         }
 
-        LaunchedEffect(appBarState.value.isVisibleTopBar) {
+        LaunchedEffect(appBarState.value.isVisibleTopBar, MaterialTheme.colorScheme.primary) {
             systemUiController.setStatusBarColor(
                 color = colorStatusBar,
-                darkIcons = true
+                darkIcons = isDarkIcons
             )
         }
     }

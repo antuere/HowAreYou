@@ -1,6 +1,7 @@
 package antuere.how_are_you.presentation.base.ui_compose_components.pin_code
 
 import androidx.compose.foundation.layout.Row
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
@@ -23,30 +24,53 @@ fun PinCirclesIndicates(pinCodeCirclesState: PinCirclesState) {
                     )
                 }
             }
+
             PinCirclesState.FIRST -> {
                 ProgressCircleAnimated(drawId = R.drawable.ic_circle_filled)
                 repeat(3) {
                     ProgressCircle(drawId = R.drawable.ic_circle_outlined)
                 }
             }
+
             PinCirclesState.SECOND -> {
-                ProgressCircle(drawId = R.drawable.ic_circle_filled)
+                ProgressCircle(
+                    drawId = R.drawable.ic_circle_filled,
+                    colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary)
+                )
                 ProgressCircleAnimated(drawId = R.drawable.ic_circle_filled)
                 ProgressCircle(drawId = R.drawable.ic_circle_outlined)
                 ProgressCircle(drawId = R.drawable.ic_circle_outlined)
             }
+
             PinCirclesState.THIRD -> {
-                ProgressCircle(drawId = R.drawable.ic_circle_filled)
-                ProgressCircle(drawId = R.drawable.ic_circle_filled)
+                ProgressCircle(
+                    drawId = R.drawable.ic_circle_filled,
+                    colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary)
+                )
+                ProgressCircle(
+                    drawId = R.drawable.ic_circle_filled,
+                    colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary)
+                )
                 ProgressCircleAnimated(drawId = R.drawable.ic_circle_filled)
                 ProgressCircle(drawId = R.drawable.ic_circle_outlined)
             }
+
             PinCirclesState.FOURTH -> {
-                ProgressCircle(drawId = R.drawable.ic_circle_filled)
-                ProgressCircle(drawId = R.drawable.ic_circle_filled)
-                ProgressCircle(drawId = R.drawable.ic_circle_filled)
+                ProgressCircle(
+                    drawId = R.drawable.ic_circle_filled,
+                    colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary)
+                )
+                ProgressCircle(
+                    drawId = R.drawable.ic_circle_filled,
+                    colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary)
+                )
+                ProgressCircle(
+                    drawId = R.drawable.ic_circle_filled,
+                    colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary)
+                )
                 ProgressCircleAnimated(drawId = R.drawable.ic_circle_filled)
             }
+
             PinCirclesState.WRONG_PIN -> {
                 repeat(4) {
                     ProgressCircle(

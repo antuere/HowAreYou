@@ -18,10 +18,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.sp
 import antuere.how_are_you.R
 import antuere.how_are_you.presentation.base.ui_compose_components.card.GradientCard
 import antuere.how_are_you.presentation.base.ui_theme.GradientDefaults
-import antuere.how_are_you.util.extensions.fixedSize
 
 @Composable
 fun ResetPasswordTitleText() {
@@ -46,7 +46,7 @@ fun ResetPasswordTitleText() {
                 .padding(dimensionResource(id = R.dimen.padding_normal_0)),
             text = stringResource(id = R.string.reset_password_plug),
             fontWeight = FontWeight.Medium,
-            fontSize = dimensionResource(id = R.dimen.textSize_normal_0).value.fixedSize,
+            fontSize = dimensionResource(id = R.dimen.textSize_normal_0).value.sp,
             textAlign = TextAlign.Center
         )
     }

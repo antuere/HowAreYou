@@ -1,0 +1,3 @@
+package antuere.how_are_you.presentation.screens.customization.state
+
+sealed interface CustomizationSideEffect

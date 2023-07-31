@@ -1,5 +1,6 @@
 package antuere.domain.repository
 
+import antuere.domain.dto.AppTheme
 import antuere.domain.dto.Settings
 import antuere.domain.dto.helplines.SupportedCountry
 import kotlinx.coroutines.flow.Flow
@@ -38,11 +39,15 @@ interface SettingsRepository {
 
     suspend fun getUserNickname(): Flow<String>
 
-    suspend fun resetUserNickname()
+    suspend fun getAppTheme(): Flow<AppTheme>
+
+    suspend fun saveAppTheme(appTheme: AppTheme)
 
     suspend fun savePinCode(pinCode: String)
 
     suspend fun getPinCode(): Flow<String>
+
+    suspend fun resetUserNickname()
 
     suspend fun resetPinCode()
 

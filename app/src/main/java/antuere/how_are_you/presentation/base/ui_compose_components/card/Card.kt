@@ -31,9 +31,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import antuere.how_are_you.R
+import antuere.how_are_you.presentation.base.ui_theme.ColorDefaults
 import antuere.how_are_you.presentation.base.ui_theme.GradientDefaults
-import antuere.how_are_you.util.extensions.fixedSize
 
 @Composable
 fun CardWithFab(
@@ -56,7 +57,7 @@ fun CardWithFab(
             Text(
                 text = titleText,
                 modifier = Modifier.align(textAlignment),
-                fontSize = 16f.fixedSize,
+                fontSize = 16.sp,
                 color = MaterialTheme.colorScheme.onPrimaryContainer,
                 style = MaterialTheme.typography.titleMedium
             )
@@ -99,6 +100,7 @@ fun CardWithImage(
                 painter = painterResource(id = imageRes),
                 contentScale = ContentScale.Crop,
                 alignment = imageAlignment,
+                colorFilter = ColorDefaults.themeFilter(),
                 contentDescription = null
             )
         }
@@ -112,7 +114,7 @@ fun CardWithImage(
                 text = titleText,
                 modifier = Modifier.align(textAlignment),
                 textAlign = TextAlign.Center,
-                fontSize = dimensionResource(id = R.dimen.textSize_normal_0).value.fixedSize,
+                fontSize = dimensionResource(id = R.dimen.textSize_normal_0).value.sp,
                 color = MaterialTheme.colorScheme.onPrimaryContainer
             )
         }

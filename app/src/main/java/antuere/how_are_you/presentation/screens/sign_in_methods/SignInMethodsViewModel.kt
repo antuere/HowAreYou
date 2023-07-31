@@ -85,7 +85,6 @@ class SignInMethodsViewModel @Inject constructor(
                 settingsRepository.saveUserNickname(name)
 
                 updateState { state.copy(isLoading = false) }
-                delay(20)
                 sideEffect(SignInMethodsSideEffect.NavigateUp)
             }
         }

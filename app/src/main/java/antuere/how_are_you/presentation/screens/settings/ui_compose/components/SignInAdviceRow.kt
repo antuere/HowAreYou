@@ -16,8 +16,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import antuere.how_are_you.R
-import antuere.how_are_you.util.extensions.fixedSize
 
 @Composable
 fun SignInAdviceRow(
@@ -29,7 +29,7 @@ fun SignInAdviceRow(
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(
-            fontSize = dimensionResource(id = R.dimen.textSize_normal_0).value.fixedSize,
+            fontSize = dimensionResource(id = R.dimen.textSize_normal_0).value.sp,
             text = stringResource(id = R.string.sign_in_advice)
         )
         Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.spacer_height_2)))

@@ -28,7 +28,7 @@
     <string name="favorites">Favorites</string>
     <string name="help_for_you">Help for you</string>
     <string name="cats">Lovely cats</string>
-    <string name="day_customization">Day customization</string>
+    <string name="day_customization">Design customization</string>
     <string name="settings">Settings</string>
     <string name="home">Home</string>
     <string name="mental_tips">Mental tips</string>
@@ -142,7 +142,7 @@
     <string name="hello_user_plug">Hello, user</string>
     <string name="sign_in">Sign in</string>
     <string name="settings_privacy_policy">Privacy policy</string>
-    <string name="settings_day_customization">Day customization</string>
+    <string name="settings_day_customization">Design customization</string>
     <string name="account_settings">Manage account</string>
     <string name="settings_sign_in_title">Registration</string>
     <string name="settings_sign_in_desc">After registration, your days will be stored on a secure server and you can use our app on any other device without fear of data loss!\nWe will store only your nickname and days, in a secure encrypted form!</string>
@@ -280,5 +280,6 @@
     <string name="saveLocalData">Keep my days local on the device</string>
     <string name="day_description_text_size">Day description text size</string>
     <string name="day_customization_example_text">Today was a great day!</string>
+    <string name="change_the_theme">Change the theme</string>
 
 </resources>

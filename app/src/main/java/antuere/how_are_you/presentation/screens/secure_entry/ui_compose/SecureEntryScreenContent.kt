@@ -11,13 +11,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.sp
 import antuere.how_are_you.R
 import antuere.how_are_you.presentation.base.ui_compose_components.IconApp
 import antuere.how_are_you.presentation.base.ui_compose_components.pin_code.NumericKeypadWrapper
 import antuere.how_are_you.presentation.base.ui_compose_components.pin_code.PinCirclesIndicatesWrapper
 import antuere.how_are_you.presentation.screens.secure_entry.state.SecureEntryIntent
 import antuere.how_are_you.presentation.screens.secure_entry.state.SecureEntryState
-import antuere.how_are_you.util.extensions.fixedSize
 import antuere.how_are_you.util.extensions.paddingTopBar
 
 @Composable
@@ -52,7 +52,7 @@ fun SecureEntryScreenContent(
         TextButton(onClick = { onIntent(SecureEntryIntent.SignOutBtnClicked) }) {
             Text(
                 text = stringResource(id = R.string.sign_out),
-                fontSize = 14f.fixedSize,
+                fontSize = 14f.sp,
                 color = MaterialTheme.colorScheme.secondary
             )
         }
