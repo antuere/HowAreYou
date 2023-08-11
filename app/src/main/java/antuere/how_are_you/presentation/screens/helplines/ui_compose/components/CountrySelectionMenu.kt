@@ -45,6 +45,7 @@ fun CountrySelectionMenu(
             modifier = Modifier.menuAnchor(),
             readOnly = true,
             value = textFieldValue,
+            enabled = false,
             onValueChange = {},
             label = { Text(text = stringResource(id = R.string.country)) },
             leadingIcon = {
@@ -58,6 +59,10 @@ fun CountrySelectionMenu(
                 )
             },
             trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = isExpanded) },
+            colors = OutlinedTextFieldDefaults.colors(
+                disabledBorderColor = MaterialTheme.colorScheme.onBackground,
+                disabledTrailingIconColor = MaterialTheme.colorScheme.onBackground
+            )
         )
 
         ExposedDropdownMenu(

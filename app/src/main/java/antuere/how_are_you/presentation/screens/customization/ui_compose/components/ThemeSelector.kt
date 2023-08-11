@@ -37,7 +37,11 @@ fun ThemeSelector(
     val allThemes = remember {
         AppTheme.values()
     }
-    val pagerState = rememberPagerState(initialPage = allThemes.indexOf(value))
+    val pagerState = rememberPagerState(
+        initialPage = allThemes.indexOf(value),
+        initialPageOffsetFraction = 0f,
+        pageCount = { allThemes.size }
+    )
 
     LaunchedEffect(pagerState) {
         snapshotFlow { pagerState.currentPage }.collect { page ->
@@ -51,7 +55,6 @@ fun ThemeSelector(
     ) {
         HorizontalPager(
             modifier = Modifier.fillMaxWidth(),
-            pageCount = allThemes.size,
             contentPadding = PaddingValues(horizontal = 32.dp),
             state = pagerState
         ) { page ->

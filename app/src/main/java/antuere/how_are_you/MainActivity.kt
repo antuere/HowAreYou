@@ -7,6 +7,7 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.animation.*
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -21,6 +22,7 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Lifecycle
+import androidx.navigation.compose.NavHost
 import antuere.domain.util.TimeUtility
 import antuere.how_are_you.broadcastReceivers.DateChangeReceiver
 import antuere.how_are_you.presentation.base.app_state.AppState
@@ -35,12 +37,12 @@ import antuere.how_are_you.presentation.base.ui_theme.HowAreYouTheme
 import antuere.how_are_you.presentation.screens.home.HomeViewModel
 import antuere.how_are_you.presentation.screens.splash.SplashViewModel
 import antuere.how_are_you.util.ComposableLifecycle
-import com.google.accompanist.navigation.animation.AnimatedNavHost
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 import java.util.*
 
 val LocalAppState = compositionLocalOf<AppState> { error("App state not set yet!") }
+val LocalDarkThemeValue = compositionLocalOf<Boolean> { error("DarkTheme value not set yet!") }
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @AndroidEntryPoint
@@ -75,91 +77,90 @@ class MainActivity : FragmentActivity() {
             val startScreen by splashViewModel.startScreen.collectAsState()
             val isShowSplash by splashViewModel.isShowSplash.collectAsState()
             val appTheme by splashViewModel.appTheme.collectAsState()
-            val appState: AppStateImpl = rememberAppState()
+            val appState = rememberAppState()
 
             if (!isShowSplash) {
-                HowAreYouTheme(appTheme = appTheme) {
-                    Timber.i("Theme feature: howAreYou theme")
-                    appState.dialogListener.SetupDialogListener()
-                    appState.SetupAppColors()
-
-                    RenderUI(
-                        startScreen = startScreen,
-                        appState = appState,
-                        isEnablePin = { isEnablePin }
+                CompositionLocalProvider(
+                    LocalDarkThemeValue provides isSystemInDarkTheme(),
+                    LocalAppState provides appState,
+                    LocalDensity provides Density(
+                        density = LocalDensity.current.density,
+                        fontScale = 1f
                     )
+                ) {
+                    HowAreYouTheme(appTheme = appTheme) {
+                        appState.dialogListener.SetupDialogListener()
+                        appState.SetupAppColors()
+
+                        RenderUI(
+                            startScreen = startScreen,
+                            appState = appState,
+                            isEnablePin = { isEnablePin }
+                        )
+                    }
                 }
             }
         }
     }
 
     @Composable
-    @OptIn(ExperimentalAnimationApi::class, ExperimentalComposeUiApi::class)
+    @OptIn(ExperimentalComposeUiApi::class)
     private fun RenderUI(
         startScreen: Screen,
         appState: AppStateImpl,
         isEnablePin: () -> Boolean,
     ) {
-        Timber.i("Theme feature: render ui")
         val appBarState by appState.appBarState
         val navController = appState.navController
         var timeWhenAppClosed by rememberSaveable { mutableStateOf(0L) }
 
-        CompositionLocalProvider(
-            LocalAppState provides appState,
-            LocalDensity provides Density(
-                density = LocalDensity.current.density,
-                fontScale = 1f
-            )
-        ) {
-            Scaffold(
-                modifier = Modifier.semantics { testTagsAsResourceId = true },
-                snackbarHost = {
-                    SnackbarHost(appState.snackbarHostState) { data ->
-                        DefaultSnackbar(text = data.visuals.message)
-                    }
-                },
-                bottomBar = {
-                    if (appBarState.isVisibleBottomBar) {
-                        DefaultBottomNavBar(navController = navController)
-                    }
-                },
-                topBar = {
-                    if (appBarState.isVisibleTopBar) {
-                        DefaultTopBar(
-                            title = appBarState.topBarTitle,
-                            topBarType = appBarState.topBarType,
-                            navigationIcon = appBarState.navigationIcon,
-                            navigationOnClick = appBarState.onClickNavigationBtn,
-                            actions = appBarState.actions
-                        )
-                    }
-                }) { innerPadding ->
-                AnimatedNavHost(
-                    modifier = Modifier
-                        .systemBarsPadding()
-                        .navigationBarsPadding(),
-                    navController = navController,
-                    startDestination = startScreen.route
-                ) {
-                    initRootNavGraph(
-                        navController = navController,
-                        homeViewModel = { homeViewModel })
+        Scaffold(
+            modifier = Modifier.semantics { testTagsAsResourceId = true },
+            snackbarHost = {
+                SnackbarHost(appState.snackbarHostState) { data ->
+                    DefaultSnackbar(text = data.visuals.message)
                 }
+            },
+            bottomBar = {
+                if (appBarState.isVisibleBottomBar) {
+                    DefaultBottomNavBar(navController = navController)
+                }
+            },
+            topBar = {
+                if (appBarState.isVisibleTopBar) {
+                    DefaultTopBar(
+                        title = appBarState.topBarTitle,
+                        topBarType = appBarState.topBarType,
+                        navigationIcon = appBarState.navigationIcon,
+                        navigationOnClick = appBarState.onClickNavigationBtn,
+                        actions = appBarState.actions
+                    )
+                }
+            }) { innerPadding ->
+            NavHost(
+                modifier = Modifier
+                    .systemBarsPadding()
+                    .navigationBarsPadding(),
+                navController = navController,
+                startDestination = startScreen.route
+            ) {
+                initRootNavGraph(
+                    navController = navController,
+                    homeViewModel = { homeViewModel })
+            }
 
-                ComposableLifecycle { _, event ->
-                    if (event == Lifecycle.Event.ON_STOP) {
-                        timeWhenAppClosed = System.currentTimeMillis()
+            ComposableLifecycle { _, event ->
+                if (event == Lifecycle.Event.ON_STOP) {
+                    timeWhenAppClosed = System.currentTimeMillis()
+                }
+                if (event == Lifecycle.Event.ON_RESUME) {
+                    if (isEnablePin() && TimeUtility.isNeedLockApp(timeWhenAppClosed)) {
+                        navController.navigateToSecure()
                     }
-                    if (event == Lifecycle.Event.ON_RESUME) {
-                        if (isEnablePin() && TimeUtility.isNeedLockApp(timeWhenAppClosed)) {
-                            navController.navigateToSecure()
-                        }
-                        timeWhenAppClosed = 0
-                    }
-                    if (event == Lifecycle.Event.ON_DESTROY) {
-                        unregisterReceiver(dateChangeReceiver)
-                    }
+                    timeWhenAppClosed = 0
+                }
+                if (event == Lifecycle.Event.ON_DESTROY) {
+                    unregisterReceiver(dateChangeReceiver)
                 }
             }
         }

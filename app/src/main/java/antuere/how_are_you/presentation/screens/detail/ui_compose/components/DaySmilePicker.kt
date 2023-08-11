@@ -26,7 +26,12 @@ fun DaySmilePicker(
     smileImages: ImmutableList<Int>,
     currentSmile: Int,
 ) {
-    val pagerState = rememberPagerState(initialPage = smileImages.indexOf(currentSmile))
+    val pagerState = rememberPagerState(
+        initialPage = smileImages.indexOf(currentSmile),
+        initialPageOffsetFraction = 0f
+    ) {
+        smileImages.size
+    }
 
     LaunchedEffect(pagerState) {
         snapshotFlow { pagerState.currentPage }.collect { page ->
@@ -42,7 +47,6 @@ fun DaySmilePicker(
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 shape = MaterialTheme.shapes.large
             ),
-        pageCount = smileImages.size,
         contentPadding = PaddingValues(horizontal = 32.dp),
         state = pagerState
     ) { page ->

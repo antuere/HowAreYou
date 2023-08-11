@@ -1,23 +1,30 @@
 package antuere.how_are_you.presentation.base.app_state
 
 import androidx.activity.compose.BackHandler
-import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.hapticfeedback.HapticFeedback
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import antuere.domain.util.Constants
+import antuere.how_are_you.LocalDarkThemeValue
 import antuere.how_are_you.presentation.base.ui_compose_components.dialog.UIDialog
 import antuere.how_are_you.presentation.base.ui_compose_components.dialog.UIDialogListener
 import antuere.how_are_you.presentation.base.ui_compose_components.top_bar.AppBarState
-import com.google.accompanist.navigation.animation.rememberAnimatedNavController
+import com.google.accompanist.systemuicontroller.SystemUiController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
-import kotlinx.coroutines.*
-import timber.log.Timber
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class AppStateImpl(
     val navController: NavHostController,
@@ -26,6 +33,7 @@ class AppStateImpl(
     val dialogListener: UIDialogListener,
     val appBarState: MutableState<AppBarState>,
     private val isDisableBackHandler: MutableState<Boolean>,
+    val systemUiController: SystemUiController,
 ) : AppState {
 
     override fun showDialog(dialog: UIDialog) {
@@ -74,9 +82,8 @@ class AppStateImpl(
 
     @Composable
     override fun SetupAppColors() {
-        Timber.i("Theme feature: setup app colors")
-        val systemUiController = rememberSystemUiController()
-        val isDarkIcons = !isSystemInDarkTheme()
+        val isDarkIcons = !LocalDarkThemeValue.current
+
         val isVisibleBottomBar = !appBarState.value.isVisibleBottomBar
         val colorNavBarColor =
             if (appBarState.value.isVisibleBottomBar) MaterialTheme.colorScheme.surface else MaterialTheme.colorScheme.background
@@ -112,10 +119,9 @@ class AppStateImpl(
     }
 }
 
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun rememberAppState(
-    navController: NavHostController = rememberAnimatedNavController(),
+    navController: NavHostController = rememberNavController(),
     snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
     scope: CoroutineScope = rememberCoroutineScope(),
     dialogListener: UIDialogListener = remember {
@@ -125,6 +131,7 @@ fun rememberAppState(
         mutableStateOf(AppBarState(isVisibleTopBar = false, isVisibleBottomBar = false))
     },
     isDisableBackHandler: MutableState<Boolean> = remember { mutableStateOf(true) },
+    systemUiController: SystemUiController = rememberSystemUiController()
 ) = remember {
     AppStateImpl(
         navController = navController,
@@ -132,6 +139,7 @@ fun rememberAppState(
         scope = scope,
         appBarState = appBarState,
         dialogListener = dialogListener,
-        isDisableBackHandler = isDisableBackHandler
+        isDisableBackHandler = isDisableBackHandler,
+        systemUiController = systemUiController
     )
 }

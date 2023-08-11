@@ -29,7 +29,12 @@ fun OnboardScreenContent(
     viewState: () -> OnboardState,
     onIntent: (OnboardIntent) -> Unit,
 ) {
-    val pagerState = rememberPagerState()
+    val pagerState = rememberPagerState(
+        initialPage = 0,
+        initialPageOffsetFraction = 0f
+    ) {
+        viewState().pages.size
+    }
 
     Column(
         verticalArrangement = Arrangement.Center,
@@ -49,7 +54,6 @@ fun OnboardScreenContent(
                 .fillMaxWidth()
                 .weight(1f)
                 .testTag("onboard_pager"),
-            pageCount = viewState().pages.size,
             state = pagerState,
         ) { page ->
             val onboardPage = viewState().pages[page]

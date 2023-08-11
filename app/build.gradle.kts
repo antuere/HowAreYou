@@ -1,7 +1,8 @@
-import org.jetbrains.kotlin.util.capitalizeDecapitalize.capitalizeAsciiOnly
+
 import com.android.build.gradle.internal.tasks.FinalizeBundleTask
-import java.util.Properties
+import org.jetbrains.kotlin.util.capitalizeDecapitalize.capitalizeAsciiOnly
 import java.io.FileInputStream
+import java.util.Properties
 
 plugins {
     alias(libs.plugins.android.app)
@@ -23,7 +24,7 @@ if(keystorePropertiesFile.exists()){
 
 android {
     namespace = "antuere.how_are_you"
-    compileSdk = 33
+    compileSdk = 34
 
     signingConfigs {
         create("release_apk") {
@@ -37,7 +38,7 @@ android {
     defaultConfig {
         applicationId = "antuere.how_are_you"
         minSdk = 24
-        targetSdk = 33
+        targetSdk = 34
         versionCode = 31 // versionName 31 - 1.1.0-dev
         versionName = "1.1.0-dev"
 
@@ -111,7 +112,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.7"
+        kotlinCompilerExtensionVersion = "1.5.1"
     }
 }
 

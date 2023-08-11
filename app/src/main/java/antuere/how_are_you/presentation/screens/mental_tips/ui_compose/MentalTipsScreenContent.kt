@@ -22,10 +22,15 @@ import com.google.accompanist.pager.HorizontalPagerIndicator
 fun MentalTipsScreenContent(
     viewState: () -> MentalTipsState,
 ) {
-    val pagerState = rememberPagerState()
-
     when (val state = viewState()) {
         is MentalTipsState.Loaded -> {
+            val pagerState = rememberPagerState(
+                initialPage = 0,
+                initialPageOffsetFraction = 0f
+            ) {
+                state.listMentalTips.size
+            }
+
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -38,7 +43,6 @@ fun MentalTipsScreenContent(
                     modifier = Modifier
                         .fillMaxWidth()
                         .wrapContentHeight(),
-                    pageCount = state.listMentalTips.size,
                     state = pagerState,
                 ) { page ->
                     val mentalTip = state.listMentalTips[page]

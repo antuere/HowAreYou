@@ -6,6 +6,7 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
+import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import antuere.domain.util.Constants
 import antuere.how_are_you.presentation.base.ui_animations.materialFadeThroughIn
@@ -34,7 +35,6 @@ import antuere.how_are_you.presentation.screens.settings.SettingsScreen
 import antuere.how_are_you.presentation.screens.sign_in_methods.SignInMethodsScreen
 import antuere.how_are_you.presentation.screens.sign_in_with_email.SignInEmailScreen
 import antuere.how_are_you.presentation.screens.sign_up_with_email.SignUpEmailScreen
-import com.google.accompanist.navigation.animation.composable
 
 
 @OptIn(ExperimentalAnimationApi::class)

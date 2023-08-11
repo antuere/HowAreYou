@@ -24,4 +24,5 @@ fun InfoAboutApp(
         ),
          text = "HowAreYou v.${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})"
     )
+    Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_4)))
 }

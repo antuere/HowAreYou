@@ -1,7 +1,6 @@
 package antuere.how_are_you.presentation.base.ui_theme
 
 import android.app.Activity
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
@@ -10,7 +9,7 @@ import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 import antuere.domain.dto.AppTheme
-import timber.log.Timber
+import antuere.how_are_you.LocalDarkThemeValue
 
 private val DefaultColorScheme_Dark = darkColorScheme(
     primary = default_dark_theme_primary,
@@ -55,7 +54,7 @@ private val DefaultColorScheme_Light = lightColorScheme(
     outlineVariant = default_light_theme_outline_variant,
     inverseSurface = default_light_theme_inverseSurface,
 
-)
+    )
 
 private val RedColorScheme_Dark = darkColorScheme(
     primary = red_dark_theme_primary,
@@ -191,11 +190,10 @@ private val YellowColorScheme_Light = lightColorScheme(
 
 @Composable
 fun HowAreYouTheme(
-    isDarkTheme: Boolean = isSystemInDarkTheme(),
+    isDarkTheme: Boolean = LocalDarkThemeValue.current,
     appTheme: AppTheme,
     content: @Composable () -> Unit,
 ) {
-    Timber.i("Theme feature: in howAreYouTheme")
     val colorScheme = when (appTheme) {
         AppTheme.DEFAULT -> if (isDarkTheme) DefaultColorScheme_Dark else DefaultColorScheme_Light
         AppTheme.RED -> if (isDarkTheme) RedColorScheme_Dark else RedColorScheme_Light

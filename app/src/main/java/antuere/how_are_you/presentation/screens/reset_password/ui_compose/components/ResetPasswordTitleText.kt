@@ -47,6 +47,7 @@ fun ResetPasswordTitleText() {
             text = stringResource(id = R.string.reset_password_plug),
             fontWeight = FontWeight.Medium,
             fontSize = dimensionResource(id = R.dimen.textSize_normal_0).value.sp,
+            color = MaterialTheme.colorScheme.onBackground,
             textAlign = TextAlign.Center
         )
     }
