@@ -281,5 +281,6 @@
     <string name="day_description_text_size">Day description text size</string>
     <string name="day_customization_example_text">Today was a great day!</string>
     <string name="change_the_theme">Change the theme</string>
+    <string name="select_theme">Select theme</string>
 
 </resources>

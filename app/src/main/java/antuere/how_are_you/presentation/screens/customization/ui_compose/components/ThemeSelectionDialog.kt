@@ -61,7 +61,7 @@ fun ThemeSelectionDialog(
                 Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height_2)))
 
                 Text(
-                    text = "Current theme ${currentValue.name}",
+                    text = stringResource(R.string.select_theme),
                     fontWeight = FontWeight.Bold,
                     style = MaterialTheme.typography.headlineSmall.copy(fontSize = 24f.sp)
                 )

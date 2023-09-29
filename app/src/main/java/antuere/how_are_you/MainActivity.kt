@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.animation.*
@@ -22,6 +23,7 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.NavHost
 import antuere.domain.util.TimeUtility
 import antuere.how_are_you.broadcastReceivers.DateChangeReceiver
@@ -38,7 +40,6 @@ import antuere.how_are_you.presentation.screens.home.HomeViewModel
 import antuere.how_are_you.presentation.screens.splash.SplashViewModel
 import antuere.how_are_you.util.ComposableLifecycle
 import dagger.hilt.android.AndroidEntryPoint
-import timber.log.Timber
 import java.util.*
 
 val LocalAppState = compositionLocalOf<AppState> { error("App state not set yet!") }
@@ -59,7 +60,6 @@ class MainActivity : FragmentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Timber.plant(Timber.DebugTree())
         WindowCompat.setDecorFitsSystemWindows(window, false)
         registerReceiver(dateChangeReceiver, IntentFilter(Intent.ACTION_DATE_CHANGED))
 
@@ -72,26 +72,26 @@ class MainActivity : FragmentActivity() {
         }
 
         setContent {
-            Timber.i("Theme feature: in setContent")
-            val isEnablePin by splashViewModel.isEnablePin.collectAsState()
-            val startScreen by splashViewModel.startScreen.collectAsState()
-            val isShowSplash by splashViewModel.isShowSplash.collectAsState()
-            val appTheme by splashViewModel.appTheme.collectAsState()
+            Log.i("Theme feature: ", "Theme feature: in setContent, ${Math.random()}")
+            val isEnablePin by splashViewModel.isEnablePin.collectAsStateWithLifecycle()
+            val startScreen by splashViewModel.startScreen.collectAsStateWithLifecycle()
+            val isShowSplash by splashViewModel.isShowSplash.collectAsStateWithLifecycle()
+            val appTheme by splashViewModel.appTheme.collectAsStateWithLifecycle()
             val appState = rememberAppState()
 
-            if (!isShowSplash) {
-                CompositionLocalProvider(
-                    LocalDarkThemeValue provides isSystemInDarkTheme(),
-                    LocalAppState provides appState,
-                    LocalDensity provides Density(
-                        density = LocalDensity.current.density,
-                        fontScale = 1f
-                    )
-                ) {
-                    HowAreYouTheme(appTheme = appTheme) {
-                        appState.dialogListener.SetupDialogListener()
-                        appState.SetupAppColors()
+            CompositionLocalProvider(
+                LocalDarkThemeValue provides isSystemInDarkTheme(),
+                LocalAppState provides appState,
+                LocalDensity provides Density(
+                    density = LocalDensity.current.density,
+                    fontScale = 1f
+                )
+            ) {
+                HowAreYouTheme(appTheme = appTheme) {
+                    appState.dialogListener.SetupDialogListener()
+                    appState.SetupAppColors()
 
+                    if (!isShowSplash) {
                         RenderUI(
                             startScreen = startScreen,
                             appState = appState,
@@ -146,7 +146,8 @@ class MainActivity : FragmentActivity() {
             ) {
                 initRootNavGraph(
                     navController = navController,
-                    homeViewModel = { homeViewModel })
+                    homeViewModel = { homeViewModel }
+                )
             }
 
             ComposableLifecycle { _, event ->

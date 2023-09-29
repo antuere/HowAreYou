@@ -19,8 +19,8 @@ class AppThemeConfiguration(
     override val flow: Flow<AppTheme> = dataStore.data.map { preferences ->
         when (preferences[preferencesKey] ?: AppTheme.DEFAULT) {
             AppTheme.DEFAULT.name -> AppTheme.DEFAULT
-            AppTheme.GREEN.name -> AppTheme.GREEN
-            AppTheme.YELLOW.name -> AppTheme.YELLOW
+//            AppTheme.GREEN.name -> AppTheme.GREEN
+//            AppTheme.YELLOW.name -> AppTheme.YELLOW
             AppTheme.RED.name -> AppTheme.RED
             else -> AppTheme.DEFAULT
         }

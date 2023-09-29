@@ -219,4 +219,5 @@
     <string name="day_description_text_size">Размер текста описания дня</string>
     <string name="day_customization_example_text">Сегодня был отличный день!</string>
     <string name="change_the_theme">Изменить тему</string>
+    <string name="select_theme">Выберите тему</string>
 </resources>

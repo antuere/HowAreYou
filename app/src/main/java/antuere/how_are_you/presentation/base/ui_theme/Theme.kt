@@ -197,8 +197,8 @@ fun HowAreYouTheme(
     val colorScheme = when (appTheme) {
         AppTheme.DEFAULT -> if (isDarkTheme) DefaultColorScheme_Dark else DefaultColorScheme_Light
         AppTheme.RED -> if (isDarkTheme) RedColorScheme_Dark else RedColorScheme_Light
-        AppTheme.GREEN -> if (isDarkTheme) GreenColorScheme_Dark else GreenColorScheme_Light
-        AppTheme.YELLOW -> if (isDarkTheme) YellowColorScheme_Dark else YellowColorScheme_Light
+//        AppTheme.GREEN -> if (isDarkTheme) GreenColorScheme_Dark else GreenColorScheme_Light
+//        AppTheme.YELLOW -> if (isDarkTheme) YellowColorScheme_Dark else YellowColorScheme_Light
         else -> if (isDarkTheme) DefaultColorScheme_Dark else DefaultColorScheme_Light
     }
 
@@ -212,7 +212,6 @@ fun HowAreYouTheme(
         SideEffect {
             val window = (view.context as Activity).window
             WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = isDarkTheme
-//            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = true
         }
     }
 

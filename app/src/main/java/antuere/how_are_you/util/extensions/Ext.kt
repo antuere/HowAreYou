@@ -8,12 +8,16 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.sp
 import androidx.fragment.app.FragmentActivity
+import antuere.domain.dto.AppTheme
 import antuere.domain.dto.helplines.SupportedCountry
 import antuere.how_are_you.R
 import antuere.how_are_you.presentation.base.ui_text.UiText
+import antuere.how_are_you.presentation.base.ui_theme.default_light_theme_secondary
+import antuere.how_are_you.presentation.base.ui_theme.red_light_theme_secondary
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import java.util.Locale
@@ -53,6 +57,13 @@ fun LazyListState.animateScrollAndCentralize(index: Int, scope: CoroutineScope) 
         }
     }
 }
+
+val AppTheme.primaryColor: Color
+    get() = when(this){
+        AppTheme.DEFAULT -> default_light_theme_secondary
+        AppTheme.RED -> red_light_theme_secondary
+    }
+
 
 fun LazyGridState.isScrollInInitialState(): Boolean =
     firstVisibleItemIndex == 0 && firstVisibleItemScrollOffset == 0
