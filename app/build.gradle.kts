@@ -38,7 +38,7 @@ android {
     defaultConfig {
         applicationId = "antuere.how_are_you"
         minSdk = 24
-        targetSdk = 34
+        targetSdk = 36
         versionCode = 31 // versionName 31 - 1.1.0-dev
         versionName = "1.1.0-dev"
 
