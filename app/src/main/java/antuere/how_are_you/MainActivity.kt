@@ -72,7 +72,6 @@ class MainActivity : FragmentActivity() {
         }
 
         setContent {
-            Log.i("Theme feature: ", "Theme feature: in setContent, ${Math.random()}")
             val isEnablePin by splashViewModel.isEnablePin.collectAsStateWithLifecycle()
             val startScreen by splashViewModel.startScreen.collectAsStateWithLifecycle()
             val isShowSplash by splashViewModel.isShowSplash.collectAsStateWithLifecycle()
@@ -104,7 +103,6 @@ class MainActivity : FragmentActivity() {
     }
 
     @Composable
-    @OptIn(ExperimentalComposeUiApi::class)
     private fun RenderUI(
         startScreen: Screen,
         appState: AppStateImpl,
