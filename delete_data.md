@@ -1,7 +1,7 @@
 ---
 layout: page
 title: How delete user data
-permalink: "/delete_data"
+permalink: /delete_data/
 ---
 
 To delete your recorded days from the server you need to:

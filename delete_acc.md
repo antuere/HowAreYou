@@ -1,7 +1,7 @@
 ---
 layout: page
 title: How delete HowAreYou account
-permalink: "/delete_account"
+permalink: /delete_account/
 ---
 
 To delete your HowAreYou account, you need to:

@@ -1,7 +1,7 @@
 ---
 layout: page
 title: Privacy policy
-permalink: "/privacy_policy"
+permalink: /privacy_policy
 ---
 
 Onitrona[^1] built the HowAreYou app as free app. This SERVICE is provided by Onitrona at no cost and is intended for use as is.
