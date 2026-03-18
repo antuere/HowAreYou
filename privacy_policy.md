@@ -14,15 +14,43 @@ The terms used in this Privacy Policy have the same meanings as in our Terms and
 
 **Information Collection and Use**
 
-For a better experience, while using our Service, we may require you to provide us with certain personally identifiable information: user name, email address and records of the days made in our app. This data will only be collected if you register for a HowAreYou account. The information that we request will be retained by us and used as described in this privacy policy.
+The Application collects information when you download and use it. This information may include information such as
 
-The app does use third-party services that may collect information used to identify you.
+*   Your name and email
+*   Your records of the days made in our app
+*   The operating system you use on your mobile device
 
-Link to the privacy policy of third-party service providers used by the app:
+The Application does not gather precise information about the location of your mobile device.
+
+The Application does not use Artificial Intelligence (AI) technologies to process your data or provide features.
+
+The Service Provider may use the information you provided to contact you from time to time to provide you with important information, required notices and marketing promotions.
+
+For a better experience, while using the Application, the Service Provider may require you to provide us with certain personally identifiable information. The information that the Service Provider request will be retained by them and used as described in this privacy policy.
+
+**Third Party Access**
+
+Only aggregated, anonymized data is periodically transmitted to external services to aid the Service Provider in improving the Application and their service. The Service Provider may share your information with third parties in the ways that are described in this privacy statement.
+
+Please note that the Application utilizes third-party services that have their own Privacy Policy about handling data. Below are the links to the Privacy Policy of the third-party service providers used by the Application:
 
 *   [Google Play Services](https://www.google.com/policies/privacy/)
-*   [Google Analytics for Firebase](https://firebase.google.com/policies/analytics)
-*   [Firebase Services](https://firebase.google.com/support/privacy)
+*   [Google Analytics for Firebase](https://firebase.google.com/support/privacy)
+*   [Firebase Crashlytics](https://firebase.google.com/support/privacy/)
+
+The Service Provider may disclose User Provided and Automatically Collected Information:
+
+*   as required by law, such as to comply with a subpoena, or similar legal process;
+*   when they believe in good faith that disclosure is necessary to protect their rights, protect your safety or the safety of others, investigate fraud, or respond to a government request;
+*   with their trusted services providers who work on their behalf, do not have an independent use of the information we disclose to them, and have agreed to adhere to the rules set forth in this privacy statement.
+
+**Opt-Out Rights**
+
+You can stop all collection of information by the Application easily by uninstalling it. You may use the standard uninstall processes as may be available as part of your mobile device or via the mobile application marketplace or network.
+
+**Data Retention Policy**
+
+The Service Provider will retain User Provided data for as long as you use the Application and for a reasonable time thereafter. If you'd like them to delete User Provided Data that you have provided via the Application, please read [this](https://antuere.github.io/HowAreYou/delete_data)
 
 **Log Data**
 
@@ -61,11 +89,11 @@ These Services do not address anyone under the age of 13. We do not knowingly co
 
 We may update our Privacy Policy from time to time. Thus, you are advised to review this page periodically for any changes. We will notify you of any changes by posting the new Privacy Policy on this page.
 
-This policy is effective as of 2023-06-21
+This policy is effective as of 2026-03-18
 
 **Contact Us**
 
-If you have any questions or suggestions about our Privacy Policy, do not hesitate to contact us at howareyou@onitrona.ru.
+If you have any questions or suggestions about our Privacy Policy, do not hesitate to contact us at antuere@yandex.ru.
 
 ---
 
