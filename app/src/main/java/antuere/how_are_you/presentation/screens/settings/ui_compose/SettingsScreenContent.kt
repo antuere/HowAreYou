@@ -36,6 +36,7 @@ fun SettingsScreenContent(
             onDismissRequest = { onIntent(SettingsIntent.PinCreationSheetClosed(false)) },
             sheetState = bottomSheetState,
             containerColor = MaterialTheme.colorScheme.onPrimary,
+            windowInsets = WindowInsets(0)
         ) {
             Box(
                 modifier = Modifier.fillMaxWidth(),

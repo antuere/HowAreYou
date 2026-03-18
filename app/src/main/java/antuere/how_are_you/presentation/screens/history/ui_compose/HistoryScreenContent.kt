@@ -30,6 +30,7 @@ import antuere.how_are_you.presentation.screens.history.ui_compose.components.To
 import antuere.how_are_you.presentation.screens.history.ui_compose.components.date_picker.DefaultDateRangePicker
 import antuere.how_are_you.util.extensions.paddingBotAndTopBar
 
+
 @Composable
 fun HistoryScreenContent(
     viewState: () -> HistoryState,

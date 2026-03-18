@@ -24,7 +24,7 @@ if(keystorePropertiesFile.exists()){
 
 android {
     namespace = "antuere.how_are_you"
-    compileSdk = 36
+    compileSdk = 34
 
     signingConfigs {
         create("release_apk") {
@@ -39,8 +39,8 @@ android {
         applicationId = "antuere.how_are_you"
         minSdk = 24
         targetSdk = 36
-        versionCode = 34 // versionName 34 - 1.1.1
-        versionName = "1.1.1"
+        versionCode = 33 // versionName 33 - 1.1.0
+        versionName = "1.1.0"
 
         testInstrumentationRunnerArguments["androidx.benchmark.suppressErrors"] = "EMULATOR"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"

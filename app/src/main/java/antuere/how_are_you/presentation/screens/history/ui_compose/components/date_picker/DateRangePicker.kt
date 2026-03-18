@@ -17,7 +17,6 @@ import androidx.compose.ui.window.DialogProperties
 import antuere.domain.util.TimeFormat
 import antuere.domain.util.TimeUtility
 import antuere.how_are_you.R
-import java.time.LocalDate
 import java.util.*
 
 
@@ -28,11 +27,9 @@ fun DefaultDateRangePicker(
     onDismissRequest: () -> Unit,
     dateSelected: (SelectedDates) -> Unit,
 ) {
-    val state = rememberDateRangePickerState(
-        selectableDates = PastOrPresentSelectableDates
-    )
+    val state = rememberDateRangePickerState()
 
-    BasicAlertDialog(
+    AlertDialog(
         onDismissRequest = onDismissRequest,
         properties = DialogProperties(usePlatformDefaultWidth = false)
     ) {
@@ -77,6 +74,7 @@ fun DefaultDateRangePicker(
                     state = state,
                     modifier = Modifier.weight(1f),
                     showModeToggle = false,
+                    dateValidator = { it <= System.currentTimeMillis() },
                     headline = { CustomDateRangePickerHeadline(state = state) }
                 )
             }
@@ -84,6 +82,7 @@ fun DefaultDateRangePicker(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CustomDateRangePickerHeadline(
     state: DateRangePickerState,
@@ -113,6 +112,7 @@ fun CustomDateRangePickerHeadline(
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun CustomDatePickerHeadline(
     state: DateRangePickerState,
@@ -163,16 +163,6 @@ private fun CustomDatePickerHeadline(
         } else {
             endDatePlaceholder()
         }
-    }
-}
-
-internal object PastOrPresentSelectableDates : SelectableDates {
-    override fun isSelectableDate(utcTimeMillis: Long): Boolean {
-        return utcTimeMillis <= System.currentTimeMillis()
-    }
-
-    override fun isSelectableYear(year: Int): Boolean {
-        return year <= LocalDate.now().year
     }
 }
 

@@ -7,7 +7,7 @@ plugins {
 
 android {
     namespace = "antuere.macrobenchmark"
-    compileSdk = 36
+    compileSdk = 34
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
