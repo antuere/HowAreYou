@@ -16,9 +16,9 @@ The terms used in this Privacy Policy have the same meanings as in our Terms and
 
 The Application collects information when you download and use it. This information may include information such as
 
-*   Your name and email
-*   Your records of the days made in our app
-*   The operating system you use on your mobile device
+* **Personal Information:** Your name and email address (if you choose to register).
+*   **Health Data:** Records of your daily mood, well-being, or other health-related metrics that you create within the app.
+*   **Technical Information:** The operating system version you use on your mobile device, device model, and unique device identifiers.
 
 The Application does not gather precise information about the location of your mobile device.
 
@@ -27,6 +27,17 @@ The Application does not use Artificial Intelligence (AI) technologies to proces
 The Service Provider may use the information you provided to contact you from time to time to provide you with important information, required notices and marketing promotions.
 
 For a better experience, while using the Application, the Service Provider may require you to provide us with certain personally identifiable information. The information that the Service Provider request will be retained by them and used as described in this privacy policy.
+
+**Health Data**
+
+This section describes how handle your Health Data:.
+
+*   **Data Collected:** The app allows you to log your daily records. This includes information about your mood, energy levels, sleep patterns, and other self-tracked health metrics that you choose to record.
+*   **Storage:** Your Health Data is stored localy on your device and synchronized using **Firebase** (Google's cloud platform) only if you register in app. Registration allows your data to be backed up and accessible across multiple devices when you are logged into your account.
+*   **Purpose and Usage:** This data is used solely to provide you with the core functionality of the app (e.g., displaying your history, showing statistics, identifying trends). I do not use this data for advertising purposes, and I do not sell it to third parties.
+*   **Security Measures:** Access to your Health Data in Firebase is protected by industry-standard security rules. Only you (the authenticated user) have access to your personal health records. I do not have employees who browse through user data.
+*   **Sharing:** Your Health Data is **never shared** with third parties for marketing, advertising, or research purposes without your explicit consent.
+*   **Data Deletion:** You can request deletion of your account and all associated Health Data at any time. Please follow the instructions on [this page](https://antuere.github.io/HowAreYou/delete_data).
 
 **Third Party Access**
 
@@ -89,7 +100,7 @@ These Services do not address anyone under the age of 13. We do not knowingly co
 
 We may update our Privacy Policy from time to time. Thus, you are advised to review this page periodically for any changes. We will notify you of any changes by posting the new Privacy Policy on this page.
 
-This policy is effective as of 2026-03-18
+This policy is effective as of 2026-03-19
 
 **Contact Us**
 
